@@ -274,22 +274,22 @@
 % armazenados nos metadados do PDF.
 \title{
     % Obrigatório nas duas línguas
-    titlept={Título do trabalho},
-    titleen={Title of the document},
+    titlept={Algoritmos para conexidade em\\ grafos dinâmicos},
+    titleen={Algorithms for dynamic graph connectivity},
     % Opcional, mas se houver deve existir nas duas línguas
     subtitlept={um subtítulo},
     subtitleen={a subtitle},
 }
 
-\author[fem]{Nome Completo}
+\author{Arthur Henrique Dias Rodrigues}
 
 % Para TCCs, este comando define o supervisor
-\orientador[fem]{Profª. Drª. Fulana de Tal}
+\orientador[fem]{Profª. Drª. Cristina Gomes Fernandes}
 
 % Se não houver, remova; se houver mais de um, basta
 % repetir o comando quantas vezes forem necessárias
-\coorientador{Prof. Dr. Ciclano de Tal}
-\coorientador[fem]{Profª. Drª. Beltrana de Tal}
+%\coorientador{Prof. Dr. Ciclano de Tal}
+%\coorientador[fem]{Profª. Drª. Beltrana de Tal}
 
 % A página de rosto da versão para depósito (ou seja, a versão final
 % antes da defesa) deve ser diferente da página de rosto da versão
@@ -330,10 +330,10 @@
   %apoio={During the development if this work, the author received\\
   %       financial support from FAPESP -- grant \#aaaa/nnnnn-d},
   %
-  apoio={Durante o desenvolvimento deste trabalho o autor
-         recebeu auxílio financeiro da XXXX},
+  %apoio={Durante o desenvolvimento deste trabalho o autor
+  %       recebeu auxílio financeiro da XXXX},
   local={São Paulo},
-  data=2017-08-10, % YYYY-MM-DD
+  data=2023-11-05, % YYYY-MM-DD
   % A licença do seu trabalho. Use CC-BY, CC-BY-NC, CC-BY-ND, CC-BY-SA,
   % CC-BY-NC-SA ou CC-BY-NC-ND para escolher a licença Creative Commons
   % correspondente (o sistema insere automaticamente o texto da licença).
@@ -342,8 +342,8 @@
   % observe que apenas TCCs sob alguma licença Creative Commons serão
   % acrescentados ao BDTA. Se você tem alguma intenção de publicar o
   % trabalho comercialmente no futuro, sugerimos a licença CC-BY-NC-ND.
-  direitos={CC-BY}, % Creative Commons Attribution 4.0 International License
-  %direitos={CC-BY-NC-ND}, % Creative Commons Attribution / NonCommercial /
+  %direitos={CC-BY}, % Creative Commons Attribution 4.0 International License
+  direitos={CC-BY-NC-ND}, % Creative Commons Attribution / NonCommercial /
                            % NoDerivatives 4.0 International License
   %direitos={Autorizo a reprodução e divulgação total ou parcial
   %          deste trabalho, por qualquer meio convencional ou
@@ -514,6 +514,7 @@ texto texto texto texto. Texto opcional.
 % Espaçamento simples
 \singlespacing
 
+\nocite{*}
 \input{conteudo/1-intro}
 \input{conteudo/2-DF}
 \input{conteudo/3-treaps}
@@ -591,7 +592,8 @@ texto texto texto texto. Texto opcional.
 \addtocontents{toc}{\vspace{2\baselineskip plus .5\baselineskip minus .5\baselineskip}}
 
 % A bibliografia é obrigatória
-
+%\bibliographystyle{plain}
+%\bibliography{bibliografia}
 \printbibliography[
   title=\refname\label{bibliografia}, % "Referências", recomendado pela ABNT
   %title=\bibname\label{bibliografia}, % "Bibliografia"
