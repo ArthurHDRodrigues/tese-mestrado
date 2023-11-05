@@ -1,0 +1,201 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%          Limitante inferior                  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{O limitante inferior de~$\Omega(\lg n)$}
+\label{sec:lim}
+Nessa seção explicaremos o limitante inferior de consumo de tempo amortizado de~$\Omega(\lg n)$ para o problema de conexidade em grafos dinâmicos~\cite{lowerBoundPatrascu}. Esse limitante é incondicional e é válido mesmo para os algoritmos que usam técnicas de aleatorização, no estilo Las Vegas ou Monte Carlo. Além disso, esse limitante é válido mesmo se limitarmos o problema de conexidade dinâmica a florestas ou caminhos. 
+
+\NEW{
+Esse resultado é consequência de um limitante inferior para o \defi{problema de verificação de soma parcial em $S_k$ (VSP$S_k$)}, que não comentamos até então. Para transportar o limitante de um problema para o outro, reduziremos o problema VSP$S_k$ ao problema de conexidade em grafos dinâmicos.
+}
+
+O limitante inferior para o problema VSP$S_k$ usa o modelo de computação \textit{cell-probe}. Dessa forma nosso limitante também usará esse modelo. Portanto, devemos iniciar nossa discussão na próxima seção explicando como esse modelo de computação funciona e como é mensurado o consumo de tempo de um algoritmo nesse modelo. Em seguida, definiremos VSP$S_k$ e seu limitante inferior formalmente e, concluindo esse capítulo, faremos a redução dele para o problema de conexidade dinâmica em grafos.
+
+\section{O modelo de computação \textit{cell-probe}}
+\label{sec:lim-cell-probe}
+No modelo \textit{cell-probe}, a memória do computador é representada por uma coleção de células. Cada célula é composta por uma quantidade fixa de~$b$ bits e possui um identificador único, que é chamado de \defi{endereço} da célula. Algoritmos nesse modelo podem ler e escrever dados nas células e realizar operações elementares, como aritmética básica, em uma unidade de processamento externa à memória~\cite{Ajtai1988}.
+
+Ao limitar o número de células para $2^b$, garantimos que o endereço de qualquer célula pode ser representado por uma única célula. Assim aproximando esse modelo abstrato à implementação de memória RAM dos computadores usuais. Lembramos que, nessa implementação de computadores, as operações aritméticas e \textit{bit-wise} são realizadas na CPU, externas à memória e o consumo de tempo real causado por essas operações é muito menor do que o tempo de escrita e leitura da memória. O modelo \textit{cell-probe} representa essa disparidade de consumo de tempo, definindo o consumo de tempo de um algoritmo como sendo proporcional à quantidade de células da memória escritas ou lidas. \NEW{Desconsiderando assim o tempo necessário para a realização de operações que, em um computador usual, seriam realizadas pela CPU.}
+
+Muitos resultados sobre algoritmos que usam esse modelo estão em função do parâmetro~$b$, pois esse parâmetro determina quanta informação pode ser armazenada em uma única célula. \NEW{Outra informação que parametriza o consumo de tempo nesse modelo é a quantidade de bits~$\delta$ necessários para representar cada argumento do algoritmo. É costumeiro separar esses parâmetros, pois em diversas aplicações um tende a ser assintoticamente maior do que o outro.}
+
+\section{O problema de verificação de soma parcial em $S_k$}
+
+O grupo $S_k$ é o grupo finito formado pelo conjunto de todas as bijeções que têm como domínio e codomínio o conjunto~${[k]:=\{1,2,\ldots,k\}}$ munido da operação de composição de funções~\cite{agozine2010}. Essas bijeções também são chamadas de permutações. Podemos visualizar uma permutação desenhando o domínio e codomínio em duas colunas e desenhando setas relacionando cada elemento do domínio com sua imagem, como feito na Figura~\ref{fig:LIM-exemplo-uma-perm}.
+
+\begin{figure}[htb]
+\centering
+\input{fig/LIM-exemplo-uma-perm}
+\caption{Exemplo de uma permutação com $k=6$.}
+\label{fig:LIM-exemplo-uma-perm}
+\end{figure}
+
+Podemos, com a técnica de visualização empregada na Figura~\ref{fig:LIM-exemplo-uma-perm}, ilustrar também como é feita a composição de uma sequência de permutações ${\phi=(\phi_1, \phi_2, \ldots, \phi_p)}$, que pode ser vista na Figura~\ref{fig:LIM-exemplo-comp}. Algebricamente falando, essa composição é somente a composição de funções. Visualmente, a composição forma~$k$ caminhos direcionados constituídos pelas setas que ilustram cada permutação. Podemos calcular a permutação~$\varphi$ resultante da composição das permutações de~$\phi$ percorrendo, para cada elemento $q\in [k]$, o caminho direcionado iniciado em~$q$ no domínio de $\phi_1$ até chegar ao valor~$r$ no codomínio de~$\phi_p$. Dessa forma, teremos $\varphi(q)=r$. Também podemos, com essa ideia de percorrer os caminhos direcionados, calcular a composição parcial de~$\phi_1$ até~$\phi_i$, percorrendo o caminho parcialmente até o codomínio de~$\phi_i$, com $1\leqslant i \leqslant p$.
+
+\begin{figure}[htb]
+\centering
+\input{fig/LIM-exemplo-comp}
+\caption{Exemplo de uma composição de permutações adotando $p=4$. Temos~$\varphi = \phi_4\circ \phi_3\circ \phi_2\circ \phi_1$.}
+\label{fig:LIM-exemplo-comp}
+\end{figure}
+
+Notemos que a substituição de um $\phi_i$ da sequência~$\phi$ pode alterar drasticamente os~$k$ caminhos ilustrados e consequentemente alterar a permutação resultante~$\varphi$. Surge então um novo problema dinâmico, o \defi{problema da verificação de soma parcial em $S_{k}$ (VSP$S_k$)}, que visa manter uma sequência de~$p$ permutações ${\phi=(\phi_1, \phi_2, \ldots, \phi_p)}$ de forma a implementar eficientemente a seguinte biblioteca:
+\begin{itemize}
+\item \VPSPupdate($\phi$, $i$, $\varphi$): a $i$-ésima coordenada de $\phi$ recebe a permutação~$\varphi$ ; e
+\item \VPSPverify($\phi$, $i$, $\varphi$): retorna verdadeiro se~$\phi_i\circ \ldots\circ \phi_1 = \varphi$ e falso, caso contrário.
+\end{itemize}
+
+Mihai Patrascu e Erik D. Demaine~\cite{lowerBoundPatrascu} elaboram o seguinte resultado:
+
+\begin{theorem}
+\label{theo:lim}\NEW{
+Os consumos de tempo $t_u$ e $t_q$ das rotinas \VPSPupdate{} e~\VPSPverify, respectivamente, implementado com qualquer estrutura de dados sob o modelo \textit{cell-probe} para solucionar VSP$S_k$ estão relacionados e limitados por
+$$
+\min\{t_u,t_q\}\lg \left( \frac{\max\{t_u,t_q\}}{\min\{t_u,t_q\}}\right) = \Omega\left(\frac{\delta}{b}\lg p\right),
+$$
+onde cada célula possui $b$ bits e são necessários $\delta$ bits para representar cada parâmetro da rotina.  Esse limitante continua válido mesmo se a estrutura de dados utilizar amortização, não determinismo, aleatorização Las Vegas ou Monte Carlo com erro probabilístico~$p^{-\Omega(1)}$.}
+\end{theorem}
+
+\NEW{
+Apesar de tentadora, a demonstração completa deste resultado é longa, complexa e foge do escopo desse texto, logo optamos por não detalhá-la aqui e somente esboçá-la.
+
+Na Seção 5.2 desse artigo, os autores enunciam o Lema~5.1 cuja prova envolve a construção de uma árvore binária que modela fluxo de células da memória lidas e escritas ao longo de uma sequência de operações da biblioteca dinâmica de VSP$S_k$. Esse lema limita inferiormente a quantidade esperada de leituras feitas em células escritas ao longo dessa sequência, o que implica, como os autores mostram ao fim dessa mesma seção, em um limitante inferior de
+\begin{equation}
+    \Omega\left(\frac{\delta}{b}\lg p\right) \label{eq:lim}
+\end{equation}
+amortizado para cada operação dessa sequência.
+
+Há uma nuance na amortização presente nesse limitante. A sequência de operações em que o custo das operações é amortizado é composta por ambas as rotinas~\VPSPupdate{} e~\VPSPverify, isso significa que pelo menos uma dessas rotinas está limitada inferiormente por~$\Omega(\frac{\delta}{b}\lg p)$, mas não que \textit{ambas} estão limitadas. Ou seja, é possível que uma dessas rotinas consuma tempo constante e assim, nesse caso, a outra necessariamente consumirá tempo~$\Omega(\frac{\delta}{b}\lg p)$. Elaboraremos um exemplo envolvendo grafos dinâmicos em que isso ocorre ao final desse capítulo. 
+
+
+Na Seção 5.5, os autores explicitam essa nuance desenvolvendo um método que converte limitantes amortizados em limitantes que relacionam $t_u$ a $t_q$ e, ao aplicar esse método ao limitante~\eqref{eq:lim}, concluem o Teorema~\ref{theo:lim}. Pontuamos que esse método se apoia em uma análise mais fina da sequência modelada pela árvore binária usada pelo Lema citado anteriormente, logo discorrer detalhadamente sobre ele também foge do escopo desse trabalho.
+}
+
+
+
+\section[Redução do VSP$S_k$ para conexidade dinâmica]{Redução do problema de VSP$S_k$ para o de conexidade dinâmica}
+
+Para fazer a redução de VSP$S_k$ ao problema de conexidade dinâmica, \NEW{seguiremos o processo descrito na Seção~6.1 de Patrascu e Demaine~\cite{lowerBoundPatrascu} para}  converter uma instância de VSP$S_k$ em uma instância do problema de conexidade em grafos dinâmicos. 
+
+A Figura~\ref{fig:LIM-exemplo-comp} nos indica como vamos traduzir um problema no outro. Em essência, vamos converter cada número dessa figura em um vértice e cada seta em uma aresta, obtendo assim um grafo formado por $k$ caminhos disjuntos, cada um de comprimento~$p$, como pode ser visto na Figura~\ref{fig:LIM-convertido}. Formalmente, para a sequência $\phi$ de uma instância de~VSP$S_k$, construiremos um grafo dinâmico $G(\phi)$ cujo conjunto de vértices consiste nos pares~$(x,y)$, com $1\leqslant x \leqslant p+1$ e $1\leqslant y \leqslant k$. Logo $G(\phi)$ terá $n:=k\cdot (p+1)$ vértices. Cada vértice~$(x,y)$ com~$1\leqslant x \leqslant p$ será adjacente ao vértice~$(x+1,\phi_x(y))$. 
+
+\NEW{Em nossas rotinas, também será necessário calcular o valor $\phi_x(y)$ em $O(1)$, para isso, manteremos uma cópia de $\phi$ junto a~$G(\phi)$ e para manter o pseudo-código mais limpo, quando for claro, referenciaremos essa cópia simplesmente por~$\phi$ ao invés da descrição mais carregada~$G(\phi).\phi$.}
+
+
+\begin{figure}[htb]
+\centering
+\input{fig/LIM-convertido}
+\caption{Instância de VSP$S_k$ da Figura~\ref{fig:LIM-exemplo-comp} convertida em uma instância do problema de conexidade em grafos dinâmicos.}
+\label{fig:LIM-convertido}
+\end{figure}
+
+Podemos encapsular essa conversão em uma rotina chamada \VPSPconvert($\phi$, $p$, $k$), descrita no Algoritmo~\ref{Algo:VPSPconvert}, que recebe a sequência~$\phi$, seu comprimento $p$ e o tamanho~$k$ do domínio e codomínio das permutações e retorna o grafo dinâmico~$G(\phi)$.
+
+\begin{algorithm}[htb]
+\caption{\VPSPconvert($\phi$, $p$, $k$)}
+\label{Algo:VPSPconvert}
+\begin{algorithmic}[1]
+\State $G(\phi)$ $\gets$ \dymGraphCreate($(p+1)\cdot k)$
+\State $G(\phi).\phi$ $\gets$ $\phi$
+\For {$x$ $\gets$ 1 até $p+1$}
+  \For {$y$ $\gets$ 1 até $k$}
+    \State \dymGraphAddEdge($G(\phi)$, $(x,~y)$, $(x+1, ~\phi_x(y))$)
+  \EndFor
+\EndFor
+\State \Return $G(\phi)$
+\end{algorithmic}
+\end{algorithm}
+
+
+Com essa conversão feita, podemos implementar a biblioteca de VSP$S_k$ usando a biblioteca de conexidade em grafos dinâmicos. A implementação de \mbox{\VPSPupdate($G(\phi)$, $i$,~$\varphi$)} pode ser vista no Algoritmo~\ref{Algo:VPSPupdate}. Nesse algoritmo, primeiro removemos todas as arestas associadas à permutação~$\phi_i$. Em seguida, inserimos~$k$ novas arestas ligando~$(i,y)$ a~$(i+1,\varphi(y))$, para cada $y\in[k]$.
+
+
+\begin{algorithm}[htb]
+\caption{\VPSPupdate($G(\phi)$, $i$, $\varphi$)}
+\label{Algo:VPSPupdate}
+\begin{algorithmic}[1]
+\For {$y$ $\gets$ 1 até $k$}
+  \State \dymGraphDelEdge($G(\phi)$, $(i,y)$, $(i+1,\phi_i(y)$))
+\EndFor
+\For {$y$ $\gets$ 1 até $k$}
+  \State \dymGraphAddEdge($G(\phi)$, $(i,y)$, $(i+1,\varphi(y)$))
+\EndFor
+\State $\phi_i$ $\gets$ $\varphi$ 
+\end{algorithmic}
+\end{algorithm}
+
+
+Implementamos \VPSPverify($G(\phi)$, $i$, $\varphi$) com~$k$ chamadas à consulta de conexidade de grafos dinâmicos, feita pela rotina \dymGraphQuery{}. Para cada $y\in[k]$, testamos a conexidade entre os vértices~$(1,y)$ e~$(i+1,\varphi(y))$. O teste retorna verdadeiro se e só se existe um caminho entre esses vértices, mas nesse grafo, se existe um tal caminho em $G(\phi)$, que significa que~$\varphi(y) = \phi_i\circ\dots\circ\phi_1(y)$. Caso todos os testes de conexidade retornem verdadeiro, então teremos $\varphi = \phi_i\circ\dots\circ\phi_1$ e \VPSPverify{} deve retornar verdade. Caso contrário, essa rotina deve retornar falso. 
+
+\begin{algorithm}[htb]
+\caption{\VPSPverify($G(\phi)$, $i$, $\varphi$)}
+\label{Algo:VPSPverify}
+\begin{algorithmic}[1]
+\For {$y$ $\gets$ 1 até $k$}
+  \If {\textbf{não} \dymGraphQuery($G(\phi)$, $(1,y)$, $(i+1,\varphi(y)$))}
+    \State \Return Falso
+  \EndIf
+\EndFor
+\State \Return Verdadeiro
+\end{algorithmic}
+\end{algorithm}
+
+Para entender essa rotina melhor, vamos esmiuçar a execução dela em um exemplo. Na Figura~\ref{fig:LIM-exemplo-verify}, vemos um grafo~$G(\phi)$ e uma permutação~$\varphi$ e queremos verificar se a composição de todas as cinco permutações é igual à permutação~$\varphi$, também ilustrada nessa figura. Para tal, realizaremos a chamada \mbox{\VPSPverify($G(\phi)$, $5$, $\varphi$)}. Como podemos ver no Algoritmo~\ref{Algo:VPSPverify}, nessa chamada a rotina \VPSPverify{} testará a conexidade entre os vértices da forma $(1,y)$ e $(6,\varphi(y))$, para $y\in [6]$. O primeiro desses testes será entre os vértices $(1,1)$ e $(6,3)$, pois, como pode ser visto na figura, temos que $\varphi(1) = 3$. Como podemos constatar pela figura, existe um caminho ligando esses vértices, logo o teste de conexidade retorna Verdadeiro e verificamos assim que
+$$
+\varphi(1) = 3 = \phi_5\circ \phi_4\circ \phi_3\circ \phi_2\circ \phi_1(1).
+$$
+Iremos então continuar testando a conexidade entre esses pares de vértices até que ou encontremos um par desconexo, que significa que~$\varphi(y) \neq \phi_5\circ\ldots\circ \phi_1(y)$, ou testamos todos, o que significa que de fato $\varphi$ é igual à composição de todas as cinco permutações de $\phi$. O segundo teste de conexidade é entre os vértices~$(1,2)$ e~$(6,1)$, pois $\varphi(2)=1$, e novamente podemos observar que existe um caminho entre esses vértices, assim a consulta de conexidade retorna Verdadeiro e portanto verificamos que $\varphi(2) = \phi_5\circ\ldots\circ \phi_1(2)$. O mesmo ocorre para as duas próximas iterações do laço da rotina~\VPSPverify{}. Como~$\varphi(3)=4$ e~$\varphi(4)=5$ , testamos sequencialmente a conexidade entre os vértices~$(1,3)$ e~$(6,4)$ e entre~$(1,4)$ e~$(6,5)$, verificando em ambos os casos que esses vértices estão interligados. Analogamente, como~$\varphi(5)=6$, testamos a conexidade entre $(1,5)$ e~$(6,6)$, que retorna Falso, pois não há caminho entre esses vértices. Isso significa que~$\varphi(5)\neq \phi_5\circ\ldots\circ \phi_1(5)$. Podemos verificar essa desigualdade pela Figura~\ref{fig:LIM-exemplo-verify}, acompanhando o caminho iniciado em~$(1,5)$. Podemos constatar que ele liga esse vértice ao vértice~$(6,2)$, o que representa que
+$$
+ \varphi_5\circ \phi_4\circ \phi_3\circ \phi_2\circ \phi_1(5) = 2 \neq 6 = \varphi(5).
+$$
+Ao encontrar essa desconexidade, encerramos a nossa busca e retornamos Falso, finalizando assim a execução da chamada~\VPSPverify($G(\phi)$, $5$, $\varphi$).
+
+\begin{figure}[htb]
+\centering
+\scalebox{.85}{
+\input{fig/LIM-exemplo-verify}
+}
+\caption{Instância de VSP$S_k$ da Figura~\ref{fig:LIM-exemplo-comp} convertida em uma instância do problema de conexidade em grafos dinâmicos.}
+\label{fig:LIM-exemplo-verify}
+\end{figure}
+
+\section{Limitante inferior para conexidade dinâmica}
+
+Com as implementações das rotinas~\VPSPupdate{} e~\VPSPverify{} descritas respectivamente pelos Algoritmos~\ref{Algo:VPSPupdate} e~\ref{Algo:VPSPverify}, podemos transferir o limitante inferior do Teorema~\ref{theo:lim} para o problema de conexidade dinâmica. 
+
+Para fazer isso, calcularemos os valores dos parâmetros~$\delta$ e~$b$ usados no enunciado do Teorema~\ref{theo:lim}. Em particular, definiremos  $\delta$ em termos de $b$. Ambas as rotinas têm como parâmetro a tripa ($G(\phi)$, $i$, $\varphi$). Primeiro notemos que $G(\phi)$ é passado por referência e logo, como comentado na Seção~\ref{sec:lim-cell-probe}, um endereço de célula será armazenado em uma única célula e assim usará até $b$ bits. O inteiro $i$ também usa $b$ bits, já que também assumimos que deva ser possível armazenar os inteiros com que trabalhamos em uma célula. Para implementar a permutação~$\varphi$, mantemos um vetor $V$ de inteiros com comprimento $k$ de forma que $V[i] = \varphi(i)$, com essa implementação, $\varphi$ precisará de $k\cdot b$
+bits, pois cada entrada de $V$ consome $b$ bits. Assim concluímos que $\delta = \Theta(k\cdot b)$.  Substituindo~$\delta$ no resultado do Teorema~\ref{theo:lim}, obtemos que
+\begin{equation}
+\Omega\left( \frac{\delta}{b}\lg p \right)\implies \Omega\left(\frac{k\cdot b}{b}\lg p\right)\implies \Omega(k\lg p).\label{eq:lim-kp}
+\end{equation}
+
+Lembremos que a igualdade~$n=k\cdot (p+1)$ relaciona os valores~$k$ e~$p$ ao número~$n$ de vértices do grafo dinâmico~$G(\phi)$. Para obter um limitante exclusivamente em função de~$n$, escolheremos uma família de instâncias de VSP$S_k$ que permita a substituição de $k$ e~$p$ da equação~\ref{eq:lim-kp} por $n$. Especificamente, escolheremos a família em que~$k = p-1$. Com essa escolha deduzimos que
+\begin{align*}
+n&=k\cdot (p+1)\\
+&=(p-1)\cdot  (p+1)\\
+&=p^2-1.
+\end{align*}
+Dessa forma, teremos:
+\begin{align}
+    \Omega(k \lg p) &= \Omega(k\cdot  2\cdot \lg p) \nonumber\\
+        &= \Omega(k \lg p^2) \nonumber\\
+        &= \Omega(k \lg n).\nonumber
+\end{align}
+
+Para concluirmos, note que $\Omega(k\lg n)$ limita inferiormente o consumo de tempo das rotinas \VPSPupdate{} e \VPSPverify{}. O algoritmo \VPSPupdate{} faz~$k$ remoções e inserções de arestas e \VPSPverify{} faz~$k$ consultas de conexidade. \NEW{Logo se denotarmos por $t_m$ a soma do consumo de tempo de uma execução de \dymGraphAddEdge{} e \dymGraphDelEdge{} e $t_c$ o consumo de tempo de \dymGraphQuery{}, então deduzimos que $t_u = k t_m$ e $t_q = k t_c$. Substituindo esses valores no Teorema~\ref{theo:lim}, teremos:
+\begin{align*}
+\min\{t_u,t_q\}\lg \left( \frac{\max\{t_u,t_q\}}{\min\{t_u,t_q\}}\right) &= \Omega\left(\frac{\delta}{b}\lg p\right)&\implies\\
+\min\{k t_m,k t_c\}\lg \left( \frac{\max\{k t_m,k t_c\}}{\min\{k t_m,k t_c\}}\right) &= \Omega(k \lg n)&\implies\\
+k\min\{ t_m, t_c\}\lg \left( \frac{\max\{ t_m, t_c\}}{\min\{ t_m,t_c\}}\right) &= \Omega(k \lg n)
+\end{align*}
+Portanto obtemos o seguinte limitante amortizado: 
+$$
+\min\{ t_m, t_c\}\lg \left( \frac{\max\{ t_m, t_c\}}{\min\{ t_m,t_c\}}\right) = \Omega(\lg n)
+$$
+para cada uma das chamadas das operações de conexidade em grafos dinâmica.
+
+Ressaltamos novamente que esse limitante restringe $t_m$ a $t_c$ e vice versa e assim, ainda é possível temosque se isso ocorre, então o outro consumo de tempo será $\Omega( \lg n)$
+
+Como exemplo, em 2015, Kejlberg-Rasmussen \textit{et al. }\cite{kejlbergrasmussen_et_al} apresentaram uma estrutura de dados que permite fazer consulta de conexidade em grafos dinâmicos em tempo constante e, respeitando o limite inferior elaborado aqui, possui consumo de tempo para adição e remoção de aresta de $\O{\sqrt{\frac{n(\lg \lg n)^2}{\lg n}}}$.}
+
+

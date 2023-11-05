@@ -1,302 +1,373 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%% INSERINDO COMENTÁRIOS EM ARQUIVOS .bib %%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% 1. Como em outros arquivos LaTeX, comentários são iniciados por "%" e,
-%    portanto, é preciso usar "\%" para imprimir o caractere "%". Esquecer
-%    disso pode gerar erros difíceis de encontrar!
-%
-% 2. Não é possível inserir comentários dentro de uma entrada, apenas fora.
-%
-% 3. Não é possível incluir o caractere arroba em um comentário.
-%
-% 4. Se quiser desabilitar temporariamente um campo ("comentar" o campo),
-%    troque seu nome para algum nome inválido, como "author-disable".
-%    Se quiser fazer alguma observação permanente dentro de uma entrada,
-%    você também pode usar algum nome de campo inválido, como "lembrete",
-%    ou usar o campo "annotation", que normalmente é ignorado.
-%
-% 5. Se quiser desabilitar temporariamente uma entrada inteira ("comentar" a
-%    entrada), não basta colocar "%" nas linhas correspondentes por causa do
-%    caractere arroba; também é preciso remover a arroba.
-%
-% 6. Na verdade, as regras não são bem essas, mas segui-las é uma boa ideia:
-%    https://tex.stackexchange.com/a/262282
-%
-% Por exemplo, esta entrada está comentada, ou seja, não tem efeito: se
-% houvesse uma referência a ela no texto, a referência ficaria inválida.
-% Observe que, para isso, o caractere arroba foi apagado!
-%
-%Book{JW82,
-% author    = {Richard A. Johnson and Dean W. Wichern},
-% title     = {Applied Multivariate Statistical Analysis},
-% publisher = {Prentice-Hall},
-% year      = {1983}
-%}
+@article{Vuillemin1980AUL,
+  author={Jean Vuillemin},
+  title={A unifying look at data structures},
+  journal={Communications of the ACM},
+  year={1980},
+  volume={23},
+  number={4},
+  pages={229-239}
+} %OK
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% O CAMPO "MONTH" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% biblatex prefere o uso do campo "date" para definir ano, mês etc. No
-% entanto, se você quiser garantir compatibilidade tanto com biblatex
-% quanto com bibtex, use os campos "year" e "month". Ambos reconhecem
-% diversos formatos para o campo "month", mas apenas um funciona
-% corretamente com os dois: o nome do mês em inglês, abreviado com três
-% letras minúsculas e sem chaves, ou seja:
-%
-% ...
-% author = {Somebody},
-% year = {2011},
-% month = oct,
-% title = {Some title},
-% ...
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Esta entrada não está em uso em tese.tex, apenas em
-% apresentacao.tex, mas isso não é um problema: você pode
-% ter um banco de dados com todos os papers que são de seu
-% interesse e, em um dado texto, citar apenas alguns deles.
-@Manual{CORBA:spec,
- title       = {{CORBA} v3.0 Specification},
- author      = {{Object Management Group}},
- shortauthor = {OMG},
- month       = jul,
- year        = {2002},
- note        = {OMG Document 02-06-33}
+@article{SP1975,
+author = {Spira, Philip Martin and Pan, Anthony},
+title = {On Finding and Updating Spanning Trees and Shortest Paths},
+journal = {SIAM Journal on Computing},
+volume = {4},
+number = {3},
+pages = {375-380},
+year = {1975},
+doi = {10.1137/0204032}
+}
+@article{CH1978,
+author = {Chin, Francis and Houck, David},
+title = {Algorithms for updating minimal spanning trees},
+journal = {Journal of Computer and System Sciences},
+volume = {16},
+number = {3},
+pages = {333-344},
+year = {1978},
+issn = {0022-0000},
+doi = {https://doi.org/10.1016/0022-0000(78)90022-3},
+url = {https://www.sciencedirect.com/science/article/pii/0022000078900223},
 }
 
-@Book{eco:09,
- author   = {Umberto Eco},
- title    = {Como se Faz uma Tese},
- edition  = 22,
- publisher= {Perspectiva},
- note     = {Tradução Gilson Cesar Cardoso de Souza},
- year     = {2009},
+@article{Eppstein1992SparsificationaTF,
+  author={David Eppstein and Zvi Galil and Giuseppe F. Italiano and Amnon Nissenzweig},
+  title={Sparsification -- {A} technique for speeding up dynamic graph algorithms},
+  journal={Journal of the ACM},
+  year={1997},
+  volume={44},
+  number={5},
+  pages={669-696}
+} % OK
+
+@article{poly_log,
+  author = {Jacob Holm and Kristian de Lichtenberg and Mikkel Thorup},
+  title = {Poly-logarithmic deterministic fully-dynamic algorithms for connectivity, minimum spanning tree, 2-edge, and biconnectivity},
+  journal = {Journal of the ACM},
+  volume={48},
+  number={4},
+  year = {2001},
+  pages = {723-760}
+} % OK
+
+@inproceedings{Thorup2000,
+  author = {Thorup, Mikkel},
+  title = {Near-Optimal Fully-Dynamic Graph Connectivity},
+  booktitle = {Proceedings of the 32th Annual ACM Symposium on Theory of Computing},
+  series = {STOC '00},
+  year = {2000},
+  pages = {343--350},
+  isbn = {1581131844},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/335305.335345},
+  doi = {10.1145/335305.335345},
+  location = {Portland, Oregon, USA}
+} % OK
+
+@inproceedings{QC22,
+  author = {Qing Chen and Oded Lachish and Sven Helmer Michal H. Böhlen},
+  title = {Dynamic Spanning Trees for Connectivity Queries on Fully-dynamic Undirected Graphs (Extended Version)},
+  booktitle = {Proceedings of the
+Very Large Data Bases Endowment},
+  series = {PVLDB '22},
+  year = {2022},
+  pages = {3263-3276},
+  isbn = {21508097},
+  publisher = {Very Large Data Bases}
+}
+@article{HHSRecentAdvances2022,
+author = {Hanauer, Kathrin and Henzinger, Monika and Schulz, Christian},
+title = {Recent Advances in Fully Dynamic Graph Algorithms – {A} Quick Reference Guide},
+journal = {ACM J. Exp. Algorithmics},
+year = {2022},
+volume = {27},
+publisher = {Association for Computing Machinery},
+url = {https://doi.org/10.1145/3555806},
+articleno = {1.11}
 }
 
-@Book{zobel:04,
- author   = {Justin Zobel},
- title    = {Writing for Computer Science: The Art of Effective Communication},
- publisher= {Springer},
- edition  = 2,
- year     = {2004},
+@article{HenzingerKing,
+  author = {Henzinger, Monika R. and King, Valerie},
+  title = {Randomized Fully Dynamic Graph Algorithms with Polylogarithmic Time per Operation},
+  journal = {Journal of ACM},
+  year = {1999},
+  volume = {46},
+  number = {4},
+  pages = {502–516}
+} % OK
+
+@article{HenzingerThorup,
+  author = {Henzinger, Monika R. and Thorup, Mikkel},
+  title = {Sampling to Provide or to Bound: With Applications to Fully Dynamic Graph Algorithms},
+  journal = {Random Structures and Algorithms},
+  year = {1997},
+  volume = {11},
+  number = {4},
+  pages = {369–379}
+} % OK
+
+  
+@article{AragonSeidel1996,
+  author = {Seidel, Raimund and Aragon, Cecilia},
+  title = {Randomized Search Trees},
+  journal = {Algorithmica},
+  year = {1996},
+  volume = {16},
+  pages = {540-545}
+} % OK
+
+
+
+@inproceedings{bruceM,
+  author = {Bruce M. Kapron and Valerie King and Ben Mountjoy},
+  title = {Dynamic graph connectivity in polylogarithmic worst case time},
+  booktitle = {Proceedings of the 24th Annual ACM-SIAM Symposium on Discrete Algorithms},
+  series = {SODA' 13},
+  year = {2013},
+  pages = {1131-1142},
+  publisher = {Society for Industrial and Applied Mathematics},
+  address = {USA},
+  location = {New Orleans, Louisiana}
+} % OK
+
+@article{frederickson1983data,
+  title={Data Structures for On-Line Updating of Minimum Spanning Trees, with Applications},
+  author={Greg N. Frederickson},
+  journal={SIAM Journal on Computing},
+  year={1985},
+  volume={14},
+  pages={781-798}
+} % OK
+
+
+@book{CLRS,
+   title = {Introduction to Algorithms},
+   author = {Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest and Clifford Stein},
+   publisher = {The MIT Press},
+   isbn =      {0262032937; 9780262032933; 0262531968; 9780262531962; 0070131511; 9780070131514},
+   year = {2001},
+   edition = {2}
+} % OK
+
+@article{tarjan1985,
+  author = {Tarjan, Robert E. and Vishkin, Uzi},
+  title = {An Efficient Parallel Biconnectivity Algorithm},
+  journal = {SIAM Journal on Computing},
+  volume = {14},
+  number = {4},
+  pages = {862-874},
+  year = {1985}
+} % OK
+
+@article{SleatroTarjanLinkCutTree1983,
+  author = {Daniel D. Sleator and Robert Endre Tarjan},
+  title = {A data structure for dynamic trees},
+  journal = {Journal of Computer and System Sciences},
+  volume = {26},
+  number = {3},
+  pages = {362-391},
+  year = {1983}
 }
 
-@Book{waz:09,
- author   = {Raul S. Wazlawick},
- title    = {Metodologia de Pesquisa em Ciência da Computação},
- publisher= {Campus},
- edition  = 1,
- year     = {2009},
+@inproceedings{xpAnalyGiuseppe,
+author = {Amato, Giuseppe and Cattaneo, Giuseppe and Italiano, Giuseppe F.},
+title = {Experimental Analysis of Dynamic Minimum Spanning Tree Algorithms},
+year = {1997},
+isbn = {0898713900},
+publisher = {Society for Industrial and Applied Mathematics},
+address = {USA},
+booktitle = {Proceedings of the 8th Annual ACM-SIAM Symposium on Discrete Algorithms},
+pages = {314–323},
+numpages = {10},
+location = {New Orleans, Louisiana, USA},
+series = {SODA '97}
 }
 
-@Book{Higham:98,
- author   = {Nicholas J. Higham},
- title    = {Handbook of Writing for the Mathematical Sciences},
- edition  = 2,
- publisher= {SIAM: Society for Industrial and Applied Mathematics},
- month    = aug,
- year     = {1998},
+@article{EmpiricalStudy1997,
+author = {Alberts, David and Cattaneo, Giuseppe and Italiano, Giuseppe F.},
+title = {An Empirical Study of Dynamic Graph Algorithms},
+journal = {ACM J. Exp. Algorithmics},
+year = {1997},
+issue_date = {1997},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {2},
+issn = {1084-6654},
+url = {https://doi.org/10.1145/264216.264223},
+doi = {10.1145/264216.264223},
+pages = {5–45},
+numpages = {40}
+}
+@article{EmpiricalStudy2002,
+author = {Iyer, Raj and Karger, David and Rahul, Hariharan and Thorup, Mikkel},
+title = {An Experimental Study of Polylogarithmic, Fully Dynamic, Connectivity Algorithms},
+year = {2002},
+issue_date = {2001},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {6},
+issn = {1084-6654},
+url = {https://doi.org/10.1145/945394.945398},
+doi = {10.1145/945394.945398},
+journal = {ACM J. Exp. Algorithmics},
+pages = {4–34},
+numpages = {30}
 }
 
-@book{Knuth:96,
- author   = {Donald E. Knuth and Tracy Larrabee and Paul M. Roberts},
- title    = {Mathematical Writing},
- publisher= {The Mathematical Association of America},
- month    = sep,
- year     = {1996}
+@book{Zaroliagis2002,
+author="Zaroliagis, Christos D.",
+title="Implementations and Experimental Studies of Dynamic Graph Algorithms",
+bookTitle="Experimental Algorithmics: From Algorithm Design to Robust and Efficient Software",
+year="2002",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="229--278",
+isbn="978-3-540-36383-5",
+doi="10.1007/3-540-36383-1_11",
+url="https://doi.org/10.1007/3-540-36383-1_11"
 }
 
-@InProceedings{alves03:simi,
- author   = {Carlos E. R. Alves and Edson N. Cáceres and Frank Dehne and Siang W. Song},
- title    = {A Parallel Wavefront Algorithm for Efficient Biological Sequence Comparison},
- booktitle= {ICCSA'03: The 2003 International Conference on Computational Science and its Applications},
- year     = {2003},
- pages    = {249-258},
- month    = may,
- publisher= {Springer-Verlag}
+@InProceedings{MSF-HK,
+author="Henzinger, Monika R.
+and King, Valerie",
+title="Maintaining minimum spanning trees in dynamic graphs",
+booktitle="Automata, Languages and Programming",
+year="1997",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="594--604",
+isbn="978-3-540-69194-5"
 }
 
-@Article{MenaChalco08,
- author   = {Jesús P. Mena-Chalco and Helaine Carrer and Yossi Zana and Roberto M. Cesar-Jr.},
- title    = {Identification of Protein Coding Regions Using the Modified {G}abor-Wavelet Transform},
- journal  = {IEEE/ACM Transactions on Computational Biology and Bioinformatics},
- volume   = {5},
- pages    = {198-207},
- year     = {2008},
+
+@article{tarjanWerneck2010,
+author = {Tarjan, Robert E. and Werneck, Renato F.},
+title = {Dynamic Trees in Practice},
+year = {2010},
+issue_date = {2009},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {14},
+issn = {1084-6654},
+url = {https://doi.org/10.1145/1498698.1594231},
+doi = {10.1145/1498698.1594231},
+journal = {ACM J. Exp. Algorithmics},
+month = {jan},
+articleno = {5},
+numpages = {21},
 }
 
-@Article{floats2014,
- author    = {Frank Mittelbach},
- title     = {How to influence the position of float environments like figure and table in {\LaTeX}?},
- journal   = {{TUGboat}},
- journalsubtitle = {Communications of the \TeX\ Users Group},
- volume    = {35},
- number    = {3},
- year      = 2014,
- url       = {tug.org/TUGboat/tb35-3/tb111mitt-float.pdf},
- urldate   = {2020-01-09},
- publisher = {\TeX\ {Users} {Group}},
- address   = {Portland ({OR}), {USA}},
+@article{simpleAndEfficient2022,
+author = {David A. Bader and Paul Burkhardt},
+title = {A Simple and Efficient Algorithm for Finding Minimum Spanning Tree Replacement Edges},
+year = {2022},
+volume = {26},
+number = {4},
+pages = {577--588},
+journal = {Journal of Graph Algorithms and Applications},
 }
 
-@Techreport{alvisi99:analysisCIC,
- author      = {Lorenzo Alvisi and Elmootazbellah Elnozahy and Sriram S. Rao and Syed A. Husain and Asanka Del Mel},
- title       = {An Analysis of Comunication-Induced Checkpointing},
- institution = {Department of Computer Science, University of Texas at Austin},
- year        = {1999},
- number      = {TR-99-01},
- address     = {Austin, USA}
+
+
+@InProceedings{xpstudy2002,
+author="Cattaneo, Giuseppe
+and Faruolo, Pompeo
+and Petrillo, Umberto Ferraro
+and Italiano, Giuseppe F.",
+editor="Mount, David M.
+and Stein, Clifford",
+title="Maintaining Dynamic Minimum Spanning Trees: An Experimental Study",
+booktitle="Algorithm Engineering and Experiments",
+year="2002",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="111--125"
 }
 
-@Misc{gridftp,
- author   = {William Allcock},
- title    = {{GridFTP} Protocol Specification. {Global Grid Forum} Recommendation ({GFD}.20)},
- year     = {2003}
+@article{lowerBoundPatrascu,
+author = {Patrascu, Mihai and Demaine, Erik D.},
+title = {Logarithmic Lower Bounds in the Cell-Probe Model},
+journal = {SIAM Journal on Computing},
+volume = {35},
+number = {4},
+pages = {932-963},
+year = {2006},
+doi = {10.1137/S0097539705447256}
 }
 
-% A entrada "year" eh usada por bibtex;
-% biblatex pode usar "year" ou "date"
-@Manual{natbib,
- title       = "Reference sheet for \texttt{natbib} usage",
- author      = "Patrick W. Daly",
- year        = {2010},
- date        = {2010-09-13},
- urldate     = {2018-12-20},
- url         = {mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf},
+@article{EPPSTEIN-planar,
+author = {David Eppstein and Giuseppe F Italiano and Roberto Tamassia and Robert E Tarjan and Jeffery Westbrook and Moti Yung},
+title = {Maintenance of a minimum spanning forest in a dynamic plane graph},
+journal = {Journal of Algorithms},
+volume = {13},
+number = {1},
+pages = {33-54},
+year = {1992},
+issn = {0196-6774},
+doi = {https://doi.org/10.1016/0196-6774(92)90004-V},
 }
 
-@Manual{biblatex,
- title       = "The \texttt{biblatex} Package",
- author      = "Philipp Lehman and Philip Kime and Moritz Wemheuer and Audrey Boruvka and Joseph Wright",
- year        = 2018,
- date        = {2018-10-30},
- urldate     = {2018-12-20},
- url         = {mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf},
+@Article{Ajtai1988,
+author={Miklós Ajtai},
+title={A lower bound for finding predecessors in {Y}ao's cell probe model},
+journal={Combinatorica},
+volume={8},
+year={1988},
+number={3},
+pages={235-247},
+issn={1439-6912},
+doi={10.1007/BF02126797}
 }
 
-@PhdThesis{garcia01:PhD,
- author   = {Islene C. Garcia},
- title    = {Visões Progressivas de Computações Distribuídas},
- school   = {Instituto de Computação, Universidade de Campinas},
- address  = {Campinas, Brasil},
- year     = {2001},
- month    = dec
+
+@InProceedings{AHLTMinDiameter,
+author="Alstrup, Stephen
+and Holm, Jacob
+and de Lichtenberg, Kristian
+and Thorup, Mikkel",
+title="Minimizing diameters of dynamic trees",
+booktitle="Automata, Languages and Programming",
+year="1997",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="270--280",
+abstract="In this paper we consider an on-line problem related to minimizing the diameter of a dynamic tree T. A new edge f is added, and our task is to delete the edge e of the induced cycle so as to minimize the diameter of the resulting tree TU {\{}f{\}}{\{}e{\}}. Starting with a tree with n nodes, we show how each such best swap can be found in worst-case O(log2n) time. The problem was raised by Italiano and Ramaswami at ICALP'94 together with a related problem for edge deletions. Italiano and Ramaswami solved both problems in O(n) time per operation.",
+isbn="978-3-540-69194-5"
 }
 
-@Conference{bronevetsky02,
- author     = {Greg Bronevetsky and Daniel Marques and Keshav Pingali and Paul Stodghill},
- title      = {Automated Application-Level Checkpointing of {MPI} Programs},
- booktitle  = {PPoPP'03: Proceedings of the 9th ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming},
- year       = {2003},
- pages      = {84-89},
- eventdate  = {2003-06-11/2003-06-13},
- venue      = {San Diego, California}
+@InProceedings{kejlbergrasmussen_et_al,
+  author =	{Casper Kejlberg-Rasmussen and Tsvi Kopelowitz and Seth Pettie and Mikkel Thorup},
+  title =	{{Faster Worst Case Deterministic Dynamic Connectivity}},
+  booktitle =	{Proceedings of the 24th Annual European Symposium on Algorithms},
+  series =	{Leibniz International Proceedings in Informatics (LIPIcs)},
+  year =	{2016},
+  publisher =	{Schloss Dagstuhl--Leibniz-Zentrum fuer Informatik},
+  address =	{Dagstuhl, Germany},
+  pages =	{53:1--53:15}
 }
 
-@InCollection{bobaoglu93:concepts,
- author   = {Ozalp Babaoglu and Keith Marzullo},
- title    = {Consistent Global States of Distributed Systems: Fundamental Concepts and Mechanisms},
- editor   = {Sape Mullender},
- booktitle= {Distributed Systems},
- edition  = 2,
- year     = {1993},
- pages    = {55-96}
-}
 
-@MastersThesis{schmidt03:MSc,
- author   = {Rodrigo M. Schmidt},
- title    = {Coleta de Lixo para Protocolos de \emph{Checkpointing}},
- school   = {Instituto de Computação, Universidade de Campinas},
- address  = {Campinas, Brasil},
- year     = {2003},
- month    = oct
-}
+@book{agozine2010,
+   title = {Grupos, Corpos e Teoria de Galois},
+   author = {Paulo Agozzini Martin},
+   publisher = {Editora Livraria da Física},
+   isbn =      {978-85-7861-065-4},
+   year = {2010},
+   edition = {1}
+} % OK
 
-@online{fowler04:designDead,
- author   = {Martin Fowler},
- title    = {Is Design Dead?},
- year     = {2004},
- month    = may,
- urldate  = {2010-01-30},
- url      = {martinfowler.com/articles/designDead.html},
-}
-
-@online{FSF:GNU-GPL,
- author      = {{Free Software Foundation}},
- shortauthor = {FSF},
- title       = {{GNU} General Public License},
- year        = 2007,
- urldate     = {2010-01-30},
- url         = {www.gnu.org/copyleft/gpl.html},
-}
-
-@article{alon09:how,
- author   = {Uri Alon},
- title    = {How To Choose a Good Scientific Problem},
- journal  = {Molecular Cell},
- year     = {2009},
- volume   = {35},
- number   = {6},
- pages    = {726--728},
- publisher= {Cell Press},
- month    = sep,
- doi      = {10.1016/j.molcel.2009.09.013},
-}
-
-@book{tufte01:visualDisplay,
- author   = {Edward Tufte},
- title    = {The Visual Display of Quantitative Information},
- year     = {2001},
- edition  = 2,
- publisher= {Graphics Press},
- month    = may,
-}
-
-@Manual{usp:guidelines,
- author      = {{Universidade de São Paulo --- Sistema Integrado de Bibliotecas}},
- shortauthor = {SIBiUSP},
- title       = {Diretrizes para Apresentação de
-	        Dissertações e Teses da {USP}:
-	        Documento Eletrônico e Impresso},
- year        = 2009,
- url         = {www.teses.usp.br/index.php?option=com_content&view=article&id=52&Itemid=67},
- urldate     = {2017-11-10},
-}
-
-@online{carlis:09,
- author  = {John V. Carlis},
- title   = {Design: The Key to Writing
-            (and Advising) a One-Draft {Ph.D} Dissertation},
- year    = 2009,
- url     = {www-users.cs.umn.edu/~carlis/one-draft.pdf},
- urldate = {2017-11-10},
-}
-
-@book{craftresearch,
- author    = {Wayne C. Booth and Gregory G. Colomb and Joseph M. Williams},
- title     = {The Craft of Research},
- publisher = {The University of Chicago Press},
- year      = 2008,
-}
-
-@book{dissertjourney,
- author    = {Carol M. Roberts},
- title     = {The Dissertation Journey},
- publisher = {Corwin},
- year      = 2010,
- edition   = 2,
- location  = {Thousand Oaks, CA},
-}
-
-@manual{sbctemplate,
- author  = {Luciana P. Nedel and Rafael H. Bordini and Flávio Rech Wagner and Jomi F. H\"{u}bner},
- title   = {Instructions for Authors of {SBC} Conferences Papers and Abstracts},
- year    = 2017,
- url     = {www.sbc.org.br/documentos-da-sbc/category/169-templates-para-artigos-e-capitulos-de-livros},
- urldate = {2018-12-13},
+@Inbook{Wulff-Nilsen2016,
+author="Wulff-Nilsen, Christian",
+editor="Kao, Ming-Yang",
+title="Faster Deterministic Fully-Dynamic Graph Connectivity",
+bookTitle="Encyclopedia of Algorithms",
+year="2016",
+publisher="Springer New York",
+address="New York, NY",
+pages="738--741",
+isbn="978-1-4939-2864-4",
+doi="10.1007/978-1-4939-2864-4_569",
+url="https://doi.org/10.1007/978-1-4939-2864-4_569"
 }

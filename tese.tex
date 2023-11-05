@@ -82,6 +82,172 @@
 ]{biblatex}
 
 
+
+
+\usepackage{color}
+\newcommand{\red}{\color{red}}
+\newcommand{\blue}{\color{blue}}
+
+\usepackage{slashbox}
+
+
+
+\definecolor{ccqqqq}{rgb}{1,0,0}
+\definecolor{qqqqff}{rgb}{0,0,1}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Defini o estlo no algorithmic
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[Algoritmo]{algorithm}
+\usepackage[noend]{algpseudocode}
+\algrenewcommand\alglinenumber[1]{\footnotesize #1}
+\algrenewcommand\algorithmicif{\textbf{se}}
+\algrenewcommand\algorithmicfor{\textbf{para}}
+\algrenewcommand\algorithmicelse{\textbf{senão}}
+\algrenewcommand\algorithmicwhile{\textbf{enquanto}}
+\algrenewcommand\algorithmicdo{\textbf{faça}}
+\algrenewcommand\algorithmicend{\textbf{fim}}
+\algrenewcommand\algorithmicthen{\textbf{então}}
+\algrenewcommand\algorithmicreturn{\textbf{retorne}}
+\makeatletter
+\newcommand\fs@nobottomruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled
+  \def\@fs@pre{}%\hrule height.8pt depth0pt \kern2pt
+  \def\@fs@post{}% Formerly \def\@fs@post{\kern2pt\hrule\relax}%
+  \def\@fs@mid{\vspace{1mm}}%\kern2pt\hrule\kern2pt
+  \let\@fs@iftopcapt\iftrue}
+\makeatother
+
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\def\Nil{\text{NIL}}
+\makeatother
+
+\newtheorem{theorem}{Teorema}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Comandos de observações       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\TODO}[1]{{{\red #1}}}
+%\newcommand{\NOTE}[1]{{{\blue #1}}}
+\newcommand{\NEW}[1]{{\blue #1}}
+
+
+\newcommand{\defi}[1]{\textbf{#1}} % defini estilo ao definir algo no texto
+
+\newcommand{\node}{n\acute{o}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comandos de notação assintotica   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\O}[1]{\text{O}\left(#1\right)}
+\newcommand{\Otil}[1]{\text{Õ}(#1)}
+\newcommand{\OTheta}[1]{\Theta(#1)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Métodos de C           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\malloc}{\text{alloc}}  %(int)
+\newcommand{\free}{\text{delete}}    %(ptn)
+\newcommand{\random}{\text{rand}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
+\newcommand{\sizeof}{\text{sizeof}}  %(int)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Métodos de Grafos      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\graphCreate}{\text{newGLA}}
+\newcommand{\graphAdd}{\text{addEdgeGLA}}
+\newcommand{\graphDel}{\text{remEdgeGLA}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Métodos de Treap       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\treapCreate}{\text{newNode}}
+\newcommand{\treapSearch}{\text{search}}
+\newcommand{\treapGetLast}{\text{getLast}}
+\newcommand{\treapGetRoot}{\text{getRoot}}
+\newcommand{\treapOrder}{\text{order}}
+\newcommand{\treapJoin}{\text{join}}
+\newcommand{\treapSplit}{\text{split}}
+\newcommand{\treapGetSize}{\text{getSize}}
+\newcommand{\treapGetEdgesLevel}{\text{getEdgesLevel}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Métodos de Euler Tour Tree %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\ETTCreate}{\text{newETTree}}     % (v)
+\newcommand{\ETTAddEdge}{\text{addEdgeETT}} % ($F$, $uu$, $vv$)
+\newcommand{\ETTDelEdge}{\text{remEdgeETT}} % ($F$, $uu$, $vv$)
+\newcommand{\ETTQuery}{\text{connectedETT}} % ($F$, $uu$, $vv$)
+\newcommand{\ETmovetofront}{\text{makeStart}} % ($F$, $uu$)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Métodos da tabela hash         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\dymForestHash}{$H$}  %simbolo que identifica a matriz/hash da floresta
+
+\newcommand{\nivel}{\text{NIVEL}} 
+\newcommand{\hashCreate}{\text{{\AlgoName{C}{RIA}\AlgoName{D}{ICIO}}}}     
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Métodos de Florestas dinamicas %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\dymForestCreate}{\text{newDF}}  %(n)
+\newcommand{\dymForestAddEdge}{\text{addEdgeDF}}    %(F, u, v)
+\newcommand{\dymForestDelEdge}{\text{remEdgeDF}}    %(F, u, v)
+\newcommand{\dymForestQuery}{\text{connectedDF}}    %(F, u, v)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Métodos de Grafos dinamicas %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\dymGraphCreate}{\text{newDG}}    %(n)
+\newcommand{\dymGraphAddEdge}{\text{addEdge}} %(G, u, v)
+\newcommand{\dymGraphDelEdge}{\text{remEdge}} %(G, u, v)
+\newcommand{\dymGraphQuery}{\text{connected}} %(G, u, v)
+\newcommand{\dymGraphReplace}{\text{replace}} %(G, u, v, i)
+\newcommand{\dymGraphHash}{$H$}  %simbolo que identifica a matriz/hash da floresta
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Métodos de MSF         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\MSFCreate}{\text{newWDG}} %(n)
+\newcommand{\MSFaddEdge}{\text{addWEdge}}    %(G, u, v, w)
+\newcommand{\MSFdelEdge}{\text{delWEdge}}    %(G, u, v)
+\newcommand{\MSFweight}{\text{MSFWeight}}    %(G)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Métodos de VPSP
+% Verify partial sum of permutations%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\AlgoName}[2]{\text{#1{\footnotesize #2}}}
+\newcommand{\VPSPconvert}{\AlgoName{C}{ONVERTA}}
+\newcommand{\VPSPupdate}{\AlgoName{S}{UBSTITUA}}
+\newcommand{\VPSPverify}{\AlgoName{V}{ERIFIQUE}}
+%\newcommand{\VPSPconvert}{\text{convert}}
+%\newcommand{\VPSPupdate}{\text{update}}
+%\newcommand{\VPSPverify}{\text{verify}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     Nomes de Algoritmos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\HDT}{HDT}
+\newcommand{\HK}{HK}
+\newcommand{\CLHB}{CLHB}
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -348,12 +514,12 @@ texto texto texto texto. Texto opcional.
 % Espaçamento simples
 \singlespacing
 
-\input{conteudo/00-exemplo-introducao}
-\input{conteudo/01-exemplo-normas-ime}
-\input{conteudo/02-exemplo-usando-o-modelo}
-\input{conteudo/03-exemplo-latex}
-\input{conteudo/04-exemplo-tutorial}
-\input{conteudo/05-exemplo-exemplos}
+\input{conteudo/1-intro}
+\input{conteudo/2-DF}
+\input{conteudo/3-treaps}
+\input{conteudo/experimentos}
+\input{conteudo/limitante}
+\input{conteudo/MSF}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% APÊNDICES E ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -393,7 +559,7 @@ texto texto texto texto. Texto opcional.
 % só há apêndices, sem anexos, provavelmente não é necessário.
 \addappheadtotoc
 
-\input{conteudo/apendice-exemplo-pseudocodigo}
+%\input{conteudo/apendice-exemplo-pseudocodigo}
 \par
 
 %%%% Anexos %%%%
@@ -410,7 +576,7 @@ texto texto texto texto. Texto opcional.
 % só há anexos, sem apêndices, provavelmente não é necessário.
 \addappheadtotoc
 
-\input{conteudo/anexo-exemplo-faq}
+%\input{conteudo/anexo-exemplo-faq}
 \par
 
 
