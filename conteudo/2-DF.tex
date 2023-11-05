@@ -67,7 +67,7 @@ Notemos que Euler tour trees armazenam sequências Eulerianas. No entanto, para 
 \begin{itemize}
 \item  \treapCreate($u$, $v$): cria e retorna uma ABB com somente um nó que armazena o par de vértices $uv$;
 \item \treapGetRoot($\node$): retorna a raiz da ABB que contém $\node$;
-\item \treapJoin($T_1$, $T_2$, $\ldots$, $T_k$): junta as ABBs $T_1$, $T_2$, $\ldots$ $t_{k-1}$ e $T_k$ de modo que a sequência armazenada na árvore resultante é a concatenação das sequências armazenada em~$T_1$, $T_2$, $\ldots$, $T_k$ e retorna a raiz dessa árvore resultante.
+\item \treapJoin($T_1$, $T_2$, $\ldots$, $T_k$): junta as ABBs $T_1$, $T_2$, $\ldots$ $T_{k-1}$ e $T_k$ de modo que a sequência armazenada na árvore resultante é a concatenação das sequências armazenada em~$T_1$, $T_2$, $\ldots$, $T_k$ e retorna a raiz dessa árvore resultante.
 \end{itemize}
 
 A implementação será detalhada na Seção~\ref{sec:TreapDeChaveImplicita}. Veremos que o consumo esperado de \treapCreate, \treapGetRoot{} e \treapJoin{} será, respectivamente,~$\O{1}$,~$\O{\lg n}$ e~$\O{h}$, onde~$n$ é o número de nós na ABB e~$h$ é a soma das alturas de~$T_1$, $T_2$, $\ldots$, $T_k$. \NEW{Na Seção~\ref{sec:imple-treap}, mostraremos como implementar \treapJoin{} para o caso $k=2$, a extensão para o caso geral é imediato a partir desse caso particular.}
