@@ -110,13 +110,12 @@
 \algrenewcommand\algorithmicend{\textbf{fim}}
 \algrenewcommand\algorithmicthen{\textbf{então}}
 \algrenewcommand\algorithmicreturn{\textbf{retorne}}
-\makeatletter
-\newcommand\fs@nobottomruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled
-  \def\@fs@pre{}%\hrule height.8pt depth0pt \kern2pt
-  \def\@fs@post{}% Formerly \def\@fs@post{\kern2pt\hrule\relax}%
-  \def\@fs@mid{\vspace{1mm}}%\kern2pt\hrule\kern2pt
-  \let\@fs@iftopcapt\iftrue}
-\makeatother
+
+
+\DeclareFloatStyle{rulednotop}{capposition=top,font=normalsize,heightadjust=all}
+%\DeclareFloatStyle{rulednotop}{midcode=rule,postcode=lowrule,capposition=top,heightadjust=all}
+\floatsetup[algorithm]{style=rulednotop}
+\captionsetup[algorithm]{textfont=normalsize}
 
 
 \makeatletter
@@ -152,7 +151,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\malloc}{\text{alloc}}  %(int)
 \newcommand{\free}{\text{delete}}    %(ptn)
-\newcommand{\random}{\text{rand}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
+\newcommand{\random}{\text{\AlgoName{S}{ORTEIE}}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
 \newcommand{\sizeof}{\text{sizeof}}  %(int)
 
 
@@ -160,20 +159,20 @@
 %     Métodos de Grafos      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\graphCreate}{\text{newGLA}}
-\newcommand{\graphAdd}{\text{addEdgeGLA}}
+\newcommand{\graphAdd}{\text{\AlgoName{L}{IGUE\AlgoName{GLA}{}}}}
 \newcommand{\graphDel}{\text{remEdgeGLA}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de Treap       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\treapCreate}{\text{newNode}}
-\newcommand{\treapSearch}{\text{search}}
+\newcommand{\treapSearch}{\text{\AlgoName{B}{USCA}}}
 \newcommand{\treapGetLast}{\text{getLast}}
-\newcommand{\treapGetRoot}{\text{getRoot}}
-\newcommand{\treapOrder}{\text{order}}
-\newcommand{\treapJoin}{\text{join}}
-\newcommand{\treapSplit}{\text{split}}
-\newcommand{\treapGetSize}{\text{getSize}}
+\newcommand{\treapGetRoot}{\text{\AlgoName{R}{AIZ}}}
+\newcommand{\treapOrder}{\text{\AlgoName{O}{RDEM}}}
+\newcommand{\treapJoin}{\text{\AlgoName{J}{UNTA}}}
+\newcommand{\treapSplit}{\text{\AlgoName{C}{ORTA}}}
+\newcommand{\treapGetSize}{\text{\AlgoName{T}{AMANHO}}}
 \newcommand{\treapGetEdgesLevel}{\text{getEdgesLevel}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -202,7 +201,7 @@
 \newcommand{\dymForestCreate}{\text{newDF}}  %(n)
 \newcommand{\dymForestAddEdge}{\text{addEdgeDF}}    %(F, u, v)
 \newcommand{\dymForestDelEdge}{\text{remEdgeDF}}    %(F, u, v)
-\newcommand{\dymForestQuery}{\text{connectedDF}}    %(F, u, v)
+\newcommand{\dymForestQuery}{\text{\AlgoName{C}{ONECTADO}\AlgoName{DF}{}}}    %(F, u, v)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Grafos dinamicas %
@@ -210,8 +209,8 @@
 \newcommand{\dymGraphCreate}{\text{newDG}}    %(n)
 \newcommand{\dymGraphAddEdge}{\text{addEdge}} %(G, u, v)
 \newcommand{\dymGraphDelEdge}{\text{remEdge}} %(G, u, v)
-\newcommand{\dymGraphQuery}{\text{connected}} %(G, u, v)
-\newcommand{\dymGraphReplace}{\text{replace}} %(G, u, v, i)
+\newcommand{\dymGraphQuery}{\text{\AlgoName{C}{ONECTADO}}} %(G, u, v)
+\newcommand{\dymGraphReplace}{\text{\AlgoName{R}{EPONHA}}} %(G, u, v, i)
 \newcommand{\dymGraphHash}{$H$}  %simbolo que identifica a matriz/hash da floresta
 
 
@@ -233,9 +232,6 @@
 \newcommand{\VPSPconvert}{\AlgoName{C}{ONVERTA}}
 \newcommand{\VPSPupdate}{\AlgoName{S}{UBSTITUA}}
 \newcommand{\VPSPverify}{\AlgoName{V}{ERIFIQUE}}
-%\newcommand{\VPSPconvert}{\text{convert}}
-%\newcommand{\VPSPupdate}{\text{update}}
-%\newcommand{\VPSPverify}{\text{verify}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -439,12 +435,8 @@ texto texto texto texto. Texto opcional.
 \disablenewpage{\chapter*{Lista de abreviaturas}}
 
 \begin{tabular}{rl}
-   CFT & Transformada contínua de Fourier (\emph{Continuous Fourier Transform})\\
-   DFT & Transformada discreta de Fourier (\emph{Discrete Fourier Transform})\\
-  EIIP & Potencial de interação elétron-íon (\emph{Electron-Ion Interaction Potentials})\\
-  STFT & Transformada de Fourier de tempo reduzido (\emph{Short-Time Fourier Transform})\\
-  ABNT & Associação Brasileira de Normas Técnicas\\
-   URL & Localizador Uniforme de Recursos (\emph{Uniform Resource Locator})\\
+   ETT & Euler Tour Tree\\
+   ABB & Árvore binária de busca\\
    IME & Instituto de Matemática e Estatística\\
    USP & Universidade de São Paulo
 \end{tabular}
