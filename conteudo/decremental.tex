@@ -1,0 +1,107 @@
+\chapter{Caso decremental do problema MSF}
+
+Nesse caso particular, o grafo inicial possui um conjunto de arestas não vázio e a única modificação permitida é a remoção de arestas. Como o grafo inicial não é vázio, precisaremos de um algoritmo de pré-processamento que lerá um arquivo que descreve esse grafo inicial e o constroí e, após essa construção, leremos um segundo arquivo que lista quais e em qual ordem as arestas devem ser removidas.
+
+Podemos adaptar o algoritmo \HDT{} que resolve o problema de conexidade em grafos dinâmicos para solucionar o caso decremental do problema MSF.
+As modificações visam manter o seguinte invariante adicional junto aos invariantes comentados na Seção~\ref{sec:fatia-em-niveis}.
+\begin{enumerate}[label=(\roman*)]
+    \setcounter{enumi}{3}
+    \item Cada $F_{\leqslant i}$ é uma MSF de $G_{\leqslant i}$.\label{invar:MSF}
+    \item Para $e$ e $f$ arestas em uma mesma componente conexa das florestas $F_i$ com pesos $w(e)$ e $w(f)$ e níveis $l(e)$ e $l(f)$, então\label{invar:MSF:mono}
+	    $$w(e) \leq w(f) \iff l(e) \leq l(f).$$
+\end{enumerate}
+
+O intuito da invariante~\ref{invar:MSF} é garantir que $F_{\lceil \log n \rceil}$ seja uma MSF do grafo dinâmico, assim podemos responder a consultas usando essa floresta. A invariante~\ref{invar:MSF:mono} nos auxiliará a manter a invariante~\ref{invar:MSF}.
+
+\section{Pré-processamento}
+
+
+O algoritmo de pré-processamento que constrói nosso grafo inicial é simples.
+Criaremos um grafo dinâmico $G$ vázio e em seguida leremos o arquivo que descreve sua configuração inicial, armazenaremos as arestas contidas nesse arquivo em uma fila de prioridade de mínimo cuja chave é o peso das arestas. 
+Após o término dessa leitura, inseriremos cada aresta em $G$ seguindo a ordem de extração da fila de prioridade.
+
+Notemos que o grafo obtido após esse algoritmo mantém as invariantes adicionais. Como as arestas estão sendo inseridas em ordem crescente de peso em $F_{\lceil \log n \rceil}$, teremos que essa floresta será de pesos mínimos, logo satisfaz a invariante~\ref{invar:MSF} e como somentes essa floresta contém arestas, a invariante~\ref{invar:MSF:mono} também está satisfeita.
+
+
+\section{Tratando remoções de arestas}
+
+\textbf{RESUMO DE MODIFICAÇÕES:}
+\begin{itemize}
+	\item Substituir campos $res$ e $cres$ (que serviam para obter o conjunto de arestas reservas) por $minW$ e $nte$;
+	\item Substituir cada hash $R_i[v]$ por uma fila $nte$;
+	\item Modificar laço da linha de~\dymGraphReplaceMSF{} como descrito.
+\end{itemize}
+
+Após remover uma aresta $uv$ de nível~$i$, começamos o processo de busca por uma aresta substituta.
+Relembramos que essa busca é encapsulado pela rotina~\dymGraphReplace.
+A rotina modificada está descrita no Algoritmo~\ref{Algo:dymGraphReplaceMSF}.
+
+Para manter o invariante~\ref{invar:MSF}, precisamos garantir que, caso exista alguma aresta substituta, a de menor peso seja escolhida.
+Para tal, percorreremos as arestas reservas em ordem crescente de peso.
+Dessa forma, a primeira aresta reserva que for descoberta como uma substituta, será a de menor peso.
+
+Já argumentamos que as aresta substitutas, se existirem, estão em algum nível $\geq i$.
+A invariante~\ref{invar:MSF:mono} garante que, se continuarmos realizando essa busca em ordem crescente de nível, no primeiro nível que houver uma substituta, terá uma substituta de menor peso.
+
+Assim, para cada nível, percorremos as arestas reservas em ordem crescente de peso usando a rotina~\treapGetEdgeMinWeight($\node$), descrita no Algoritmo~\ref{Algo:treapGetEdgeMinWeight}, e que retorna a aresta de menor peso na subárvore enraizada em~$\node$.
+
+
+Para manter as arestas reservas em ordem crescente de peso, basta armazená-las em uma fila, pois no Algoritmo de pré-processamento elas já são inseridas em ordem crescente.
+Como no algoritmo de pré-processamento as arestas são inseridas em ordem crescente, então as arestas reservas serão inseridas nas filas de $R_i$ em ordem crescente.
+
+
+Não é necessário esforço adicional para manter a invariante~\ref{invar:MSF:mono}, ao realizar a buscar em cada nível em ordem crescente de peso, as arestas de menor peso serão testadas primeiro.
+Dessa forma, caso não sejam substitutas, serão rebaixadas antes das arestas reservas de maior peso.
+
+Note que as invariantes~\ref{invar:MSF} e~\ref{invar:MSF:mono} podem ser quebradas se permitimos a inserção de novas arestas.
+
+\begin{algorithm}
+\caption{\dymGraphReplaceMSF($G$, $u$, $v$, $niv$)}
+\label{Algo:dymGraphReplaceMSF}
+\begin{algorithmic}[1]
+\For {$i$ $\gets$ $niv$ até $\lceil \lg n \rceil$}\label{Algo:dymGraphReplace:linha:primeira}
+\State $T_v$ $\gets$  \treapGetRoot($F_i[v,v]$)
+\State $T_u$ $\gets$  \treapGetRoot($F_i[u,u]$)
+\If {$\treapGetSize(T_v) < \treapGetSize(T_u)$}\Comment{Garantimos que $|T_v|\geqslant |T_u|$}
+\State $u$ $\leftrightarrow$ $v$
+\State $T_u \leftrightarrow T_v$
+\EndIf
+\For {$xy$ em $T_u$ com nível = $i$}\label{Algo:dymGraphReplace:linha:moveTu}\Comment{Move $T_u$ para o nível $i-1$}
+\State \nivel$[x,y]$ $\gets$ $i-1$
+\State \dymForestAddEdge($G$.$F_{i-1}$, $x$, $y$) 
+\EndFor
+\While {$xy$ $\gets$ \treapGetEdgeMinWeight($T_u$)}\Comment{Procura substituta para $uv$}
+\If {$y \in T_v$}
+\For {$j \gets i$ até $\lceil \lg n \rceil$}\label{Algo:dymGraphReplace:linha:inseresub}
+\State \dymForestAddEdge($G$.$F_j$, $x$, $y$)
+\EndFor
+\State \Return
+\Else
+\State \nivel$[x,y]$ $\gets$ $i-1$
+\State \graphAdd($G$.$R_{i-1}$, $x$, $y$)
+\EndIf
+\EndWhile
+\EndFor\label{Algo:dymGraphReplace:linha:ultima}
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{\treapGetEdgeMinWeight($\node$)}
+\label{Algo:treapGetEdgeMinWeight}
+\begin{algorithmic}[1]
+\If {$\node$ $=$ \Nil{} ou $\node$.$minW$ $=0$}
+\State \Return \Nil
+\EndIf
+\If {$\node.weight$ $=$ $\node$.$minW$}
+	\State  \Return get($\node.nte$)\Comment{Retorna o primeiro nó da fila $nte$}
+	\State [...] \Comment{Atualiza campo $minW$ até a raiz}
+\EndIf
+
+\If {$\node.esq.minW$ $\leq$ $\node.dir$.$minW$}
+\State  \Return \treapGetEdgeMinWeight($\node.esq$)
+\EndIf
+\State \Return \treapGetEdgeMinWeight($\node.dir$)
+
+\end{algorithmic}
+\end{algorithm}

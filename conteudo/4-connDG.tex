@@ -41,6 +41,7 @@ Notemos que somente a remoção de arestas de~$F$ é lenta, isso se deve à nece
 
 
 \section{Fatiamento do grafo em níveis}
+\label{sec:fatia-em-niveis}
 Cada aresta do grafo possuirá um \defi{nível} entre $1$ e $\lceil \lg n \rceil$, onde $n$ é o número de vértices do grafo. O valor inicial do nível de uma aresta recém inserida é $\lceil \lg n \rceil$ e é decrementado toda vez que percorremos a aresta em busca de uma aresta substituta. O nível de uma aresta nunca aumentá, somente diminuirá. 
 
 Dado um grafo $G$, podemos definir o grafo~$G_{\leqslant i}$ como o grafo induzido pelas arestas de nível menor ou igual a~$i$. Para cada nível $i$, manteremos uma floresta maximal~$F_{\leqslant i}$ de~$G_{\leqslant i}$ e o grafo~$R_i$, guardado com listas de adjacências, dado pelas arestas reservas de nível~$i$. Trivialmente temos que $G = G_{\leqslant \lceil \lg n \rceil}$ e portanto $F_{\leqslant \lceil \lg n \rceil}$ é uma floresta maximal de~$G$. Ao longo da sequência de modificações realizadas no grafo, manteremos algumas invariantes importantes:
