@@ -72,10 +72,10 @@ O consumo de tempo das rotinas \treapGetRoot{}, \treapSearch{}, \treapGetLast{} 
 \caption{\treapSearch($T$, $k$)}
 \label{Algo:TREAPsearch}
 \begin{algorithmic}[1]
-\If { $T$.$esq$.$tam$ $\geqslant$ $k$}
+	\If { \treapGetSize($T$.$esq$) $\geqslant$ $k$}
 \State \Return \treapSearch($T$.$esq$, $k$)
 \EndIf
-\If { $T$.$esq$.$tam$+1 = $k$}
+	\If {\treapGetSize($T$.$esq$)+1 = $k$}
 \State \Return $T$
 \EndIf
 \State \Return \treapSearch($T.dir$, $k$-\treapGetSize($T$.$esq$)-1)
@@ -90,7 +90,7 @@ O consumo de tempo das rotinas \treapGetRoot{}, \treapSearch{}, \treapGetLast{} 
 \end{algorithmic}
 \end{algorithm}
 
-Para representar essa escolha aleatória, usaremos uma função auxiliar \random($r$) que retorna um inteiro positivo menor do que $r$ com probabilidade uniforme. Esse tipo de função está presente nativamente em diversas linguagens de programação \TODO{(}e a elaboração de sua implementação foge do escopo desse texto \TODO{). Removo a parte entre parênteses?}. Consideraremos que seu consumo de tempo é~$\O{1}$.
+Para representar essa escolha aleatória, usaremos uma função auxiliar \random($r$) que retorna um inteiro positivo menor do que $r$ com probabilidade uniforme. Esse tipo de função está presente nativamente em diversas linguagens de programação e a elaboração de sua implementação foge do escopo desse texto. Consideraremos que seu consumo de tempo é~$\O{1}$.
 
 \begin{algorithm}
 \caption{\treapOrder($u$)}
@@ -113,7 +113,6 @@ Com essa técnica de balanceamento de treaps em mãos, podemos apresentar a impl
 \caption{\treapCreate($v$)}
 \label{Algo:TREAPbuild}
 \begin{algorithmic}[1]
-\State \malloc(\sizeof($\node$))\Comment{aloca espaço para um novo nó}
 \State $\node$.$tam$ $\gets 1$
 \State $\node$.$prio$ $\gets$ \random($2^{31}$)
 \State $\node$.$info$ $\gets$ $v$

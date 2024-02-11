@@ -1,11 +1,11 @@
 \chapter{Avaliação empírica}
 
-Nesse capítulo faremos experimentos comparativos para avaliar a eficiência do algoritmo de conexidade dinâmica elaborado no Capítulo~\ref{sec:connDG}. Como esse algoritmo foi desenvolvido por por Holm, de Lichtenberg e Thorup, ele é conhecido na literatura pelo acrônimo \HDT.
+Nesse capítulo faremos experimentos comparativos para avaliar a eficiência do algoritmo de conexidade dinâmica elaborado no Capítulo~\ref{sec:connDG}. Como esse algoritmo foi desenvolvido  por Holm, de Lichtenberg e Thorup, ele é conhecido na literatura pelo acrônimo \HDT.
 
-Desde de sua invenção, houveram três estudos experimentais desse algoritmo~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}, o principal comparador é um algoritmo desenvolvido por Henzinger e King e portanto denotado por \HK, pois ele empata o consumo amortizado esperado de $\O{\lg^2 n}$ de \HDT. Ambos os algoritmos visam manter uma MSF do grafo dinâmico para realizar o teste de conexidade. A principal diferença entre eles é que \HK{} sorteia arestas reservas e as testa para verificar se substituem uma aresta removida da MSF.
+Desde de sua invenção, houveram três estudos experimentais desse algoritmo~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}. O principal concorrente é um algoritmo desenvolvido por Henzinger e King e portanto denotado por \HK, pois ele empata o consumo amortizado esperado de $\O{\lg^2 n}$ de \HDT. Ambos os algoritmos visam manter uma MSF do grafo dinâmico para realizar o teste de conexidade. A principal diferença entre eles é que \HK{} sorteia arestas reservas e as testa para verificar se substituem uma aresta removida da MSF.
 
 
-Já o de Chen \textit{et al.} será chamado por \CLHB.
+O de Chen \textit{et al.} será chamado por \CLHB.
 
 Em $2022$, Chen et al. \cite{QC22} propõem uma nova estrutura simplesmente chamada \defi{árvore dinâmica} (\textit{D-tree}). Essa estrutura consiste em uma árvore enraizada $k$-ária, com $k$ grande o suficiente. Os autores não apresentam análises de complexidade das operações, mas comparam o desempenho da nova estrutura de dados com a de Henzinger e King em bancos de dados imensos bem conhecidos. No entanto, não comparam sua implementação com outros algoritmos, como o de Holm et al.
 
