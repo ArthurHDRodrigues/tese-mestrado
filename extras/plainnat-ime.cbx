@@ -5,7 +5,7 @@
 \ProvidesFile{plainnat-ime.cbx}
 [2021/02/04 v1.1 plainnat-like citations by IME/USP]
 
-\RequireCitationStyle{authoryear}
+\RequireCitationStyle{numeric}
 \RequirePackage{regexpatch}
 
 % Sobrenomes nas citações (e na bibliografia) em Small Caps
@@ -30,17 +30,17 @@
 % implementamos esta: https://tex.stackexchange.com/a/537666 ,
 % criada por um dos desenvolvedores de biblatex.
 
-\renewbibmacro*{cite}{%
-  \printtext[bibhyperref]{%
-    \iffieldundef{shorthand}
-      {\ifboolexpr{test {\ifnameundef{labelname}}
-                or test {\iffieldundef{labelyear}}}
-         {\usebibmacro{cite:label}%
-          \setunit{\printdelim{nonameyeardelim}}}
-         {\printnames{labelname}%
-          \setunit{\printdelim{nameyeardelim}}}%
-       \usebibmacro{cite:labeldate+extradate}}
-      {\usebibmacro{cite:shorthand}}}}
+%\renewbibmacro*{cite}{%
+%  \printtext[bibhyperref]{%
+%    \iffieldundef{shorthand}
+%      {\ifboolexpr{test {\ifnameundef{labelname}}
+%                or test {\iffieldundef{labelyear}}}
+%         {\usebibmacro{cite:label}%
+%          \setunit{\printdelim{nonameyeardelim}}}
+%         {\printnames{labelname}%
+%          \setunit{\printdelim{nameyeardelim}}}%
+%       \usebibmacro{cite:labeldate+extradate}}
+%      {\usebibmacro{cite:shorthand}}}}
 
 \renewbibmacro*{citeyear}{%
   \printtext[bibhyperref]{%
