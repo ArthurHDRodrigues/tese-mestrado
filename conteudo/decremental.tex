@@ -62,7 +62,7 @@ Note que as invariantes~\ref{invar:MSF} e~\ref{invar:MSF:mono} podem ser quebrad
 \For {$i$ $\gets$ $niv$ até $\lceil \lg n \rceil$}\label{Algo:dymGraphReplace:linha:primeira}
 \State $T_v$ $\gets$  \treapGetRoot($F_i[v,v]$)
 \State $T_u$ $\gets$  \treapGetRoot($F_i[u,u]$)
-\If {$\treapGetSize(T_v) < \treapGetSize(T_u)$}\Comment{Garantimos que $|T_v|\geqslant |T_u|$}
+\If {\treapGetSize($T_v$) < \treapGetSize($T_u$)}\Comment{Garantimos que $|T_v|\geqslant |T_u|$}
 \State $u$ $\leftrightarrow$ $v$
 \State $T_u \leftrightarrow T_v$
 \EndIf
