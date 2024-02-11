@@ -147,45 +147,45 @@
 \newcommand{\OTheta}[1]{\Theta(#1)}
 
 
-\newcommand{\AlgoName}[1]{{\scshape #1}}
+\newcommand{\AlgoName}[1]{\text{\scshape #1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de C           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\malloc}{\text{\TODO{alloc}}}  %(int)
 \newcommand{\free}{\text{\TODO{delete}}}    %(ptn)
-\newcommand{\random}{\AlgoName{Sorteie}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
+\newcommand{\random}{\AlgoName{sorteie}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
 \newcommand{\sizeof}{\text{\TODO{sizeof}}}  %(int)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de Grafos      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\graphCreate}{\AlgoName{Grafo}}
-\newcommand{\graphAdd}{\AlgoName{LigueGLA}}
-\newcommand{\graphDel}{\AlgoName{RemoveGLA}}
+\newcommand{\graphCreate}{\AlgoName{novoGrafo}}
+\newcommand{\graphAdd}{\AlgoName{ligueGLA}}
+\newcommand{\graphDel}{\AlgoName{removeGLA}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de Treap       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\treapCreate}{\AlgoName{novoNó}}
-\newcommand{\treapSearch}{\AlgoName{Busca}}
-\newcommand{\treapGetLast}{\AlgoName{Último}}
-\newcommand{\treapGetRoot}{\AlgoName{Raiz}}
-\newcommand{\treapOrder}{\AlgoName{Ordem}}
-\newcommand{\treapJoin}{\AlgoName{Junta}}
-\newcommand{\treapSplit}{\AlgoName{Corta}}
-\newcommand{\treapGetSize}{\AlgoName{Tamanho}}
-\newcommand{\treapGetEdgesLevel}{\AlgoName{ArestasDeNível}}
+\newcommand{\treapSearch}{\AlgoName{busca}}
+\newcommand{\treapGetLast}{\AlgoName{último}}
+\newcommand{\treapGetRoot}{\AlgoName{raiz}}
+\newcommand{\treapOrder}{\AlgoName{ordem}}
+\newcommand{\treapJoin}{\AlgoName{junta}}
+\newcommand{\treapSplit}{\AlgoName{corta}}
+\newcommand{\treapGetSize}{\AlgoName{tamanho}}
+\newcommand{\treapGetEdgesLevel}{\AlgoName{arestasDeNível}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Euler Tour Tree %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\ETTCreate}{\text{newETTree}}     % (v)
-\newcommand{\ETTAddEdge}{\text{addEdgeETT}} % ($F$, $uu$, $vv$)
-\newcommand{\ETTDelEdge}{\text{remEdgeETT}} % ($F$, $uu$, $vv$)
-\newcommand{\ETTQuery}{\text{connectedETT}} % ($F$, $uu$, $vv$)
-\newcommand{\ETmovetofront}{\text{makeStart}} % ($F$, $uu$)
+\newcommand{\ETTCreate}{\AlgoName{novoETT}}     % (v)
+\newcommand{\ETTAddEdge}{\AlgoName{ligueETT}} % ($F$, $uu$, $vv$)
+\newcommand{\ETTDelEdge}{\AlgoName{removaETT}} % ($F$, $uu$, $vv$)
+\newcommand{\ETTQuery}{\AlgoName{conectadoETT}} % ($F$, $uu$, $vv$)
+\newcommand{\ETmovetofront}{\AlgoName{movaInício}} % ($F$, $uu$)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -193,27 +193,27 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\dymForestHash}{$H$}  %simbolo que identifica a matriz/hash da floresta
 
-\newcommand{\nivel}{\text{NIVEL}} 
-\newcommand{\hashCreate}{\text{{\AlgoName{C}{RIA}\AlgoName{D}{ICIO}}}}     
+\newcommand{\nivel}{\AlgoName{NIVEL}} 
+\newcommand{\hashCreate}{\AlgoName{novoDicio}}     
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Florestas dinamicas %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\dymForestCreate}{\text{newDF}}  %(n)
-\newcommand{\dymForestAddEdge}{\text{addEdgeDF}}    %(F, u, v)
-\newcommand{\dymForestDelEdge}{\text{remEdgeDF}}    %(F, u, v)
-\newcommand{\dymForestQuery}{\text{\AlgoName{C}{ONECTADO}\AlgoName{DF}{}}}    %(F, u, v)
+\newcommand{\dymForestCreate}{\AlgoName{novaFD}}  %(n)
+\newcommand{\dymForestAddEdge}{\AlgoName{ligueFD}}    %(F, u, v)
+\newcommand{\dymForestDelEdge}{\AlgoName{removaFD}}    %(F, u, v)
+\newcommand{\dymForestQuery}{\AlgoName{\AlgoName{conectadoFD}}}    %(F, u, v)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Grafos dinamicas %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\dymGraphCreate}{\text{newDG}}    %(n)
-\newcommand{\dymGraphAddEdge}{\text{addEdge}} %(G, u, v)
-\newcommand{\dymGraphDelEdge}{\text{remEdge}} %(G, u, v)
-\newcommand{\dymGraphQuery}{\text{\AlgoName{C}{ONECTADO}}} %(G, u, v)
-\newcommand{\dymGraphReplace}{\text{\AlgoName{R}{EPONHA}}} %(G, u, v, i)
+\newcommand{\dymGraphCreate}{\AlgoName{novoGD}}    %(n)
+\newcommand{\dymGraphAddEdge}{\AlgoName{ligueGD}} %(G, u, v)
+\newcommand{\dymGraphDelEdge}{\AlgoName{removaGD}} %(G, u, v)
+\newcommand{\dymGraphQuery}{\AlgoName{\AlgoName{conectadoGD}}} %(G, u, v)
+\newcommand{\dymGraphReplace}{\AlgoName{\AlgoName{substituaGD}}} %(G, u, v, i)
 \newcommand{\dymGraphHash}{$H$}  %simbolo que identifica a matriz/hash da floresta
 
 
@@ -221,21 +221,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de MSF         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\MSFCreate}{\text{newWDG}} %(n)
-\newcommand{\MSFaddEdge}{\text{addWEdge}}    %(G, u, v, w)
-\newcommand{\MSFdelEdge}{\text{delWEdge}}    %(G, u, v)
-\newcommand{\MSFweight}{\text{MSFWeight}}    %(G)
+\newcommand{\MSFCreate}{\AlgoName{novoGDP}} %(n)
+\newcommand{\MSFaddEdge}{\AlgoName{ligueGDP}}    %(G, u, v, w)
+\newcommand{\MSFdelEdge}{\AlgoName{removaGDP}}    %(G, u, v)
+\newcommand{\MSFweight}{\AlgoName{pesoGDP}}    %(G)
 
-\newcommand{\dymGraphReplaceMSF}{\text{\AlgoName{R}{EPONHA}}} %(G, u, v, i)
-\newcommand{\treapGetEdgeMinWeight}{\text{getEdgeMinWeight}}
+\newcommand{\dymGraphReplaceMSF}{\AlgoName{substituaGDP}} %(G, u, v, i)
+\newcommand{\treapGetEdgeMinWeight}{\AlgoName{arestaMinPesoGDP}}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de VPSP
 % Verify partial sum of permutations%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\VPSPconvert}{\AlgoName{C}{ONVERTA}}
-\newcommand{\VPSPupdate}{\AlgoName{S}{UBSTITUA}}
-\newcommand{\VPSPverify}{\AlgoName{V}{ERIFIQUE}}
+\newcommand{\VPSPconvert}{\AlgoName{converta}}
+\newcommand{\VPSPupdate}{\AlgoName{substitua}}
+\newcommand{\VPSPverify}{\AlgoName{verifique}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
