@@ -112,10 +112,10 @@
 \algrenewcommand\algorithmicreturn{\textbf{retorne}}
 
 
-\DeclareFloatStyle{rulednotop}{capposition=top,font=normalsize,heightadjust=all}
+%\DeclareFloatStyle{rulednotop}{capposition=top,font=normalsize,heightadjust=all}
 %\DeclareFloatStyle{rulednotop}{midcode=rule,postcode=lowrule,capposition=top,heightadjust=all}
-\floatsetup[algorithm]{style=rulednotop}
-\captionsetup[algorithm]{textfont=normalsize}
+%\floatsetup[algorithm]{style=rulednotop}
+%\captionsetup[algorithm]{textfont=normalsize}
 
 
 \makeatletter
@@ -146,34 +146,37 @@
 \newcommand{\Otil}[1]{\text{Õ}(#1)}
 \newcommand{\OTheta}[1]{\Theta(#1)}
 
+
+\newcommand{\AlgoName}[1]{{\scshape #1}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de C           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\malloc}{\text{alloc}}  %(int)
-\newcommand{\free}{\text{delete}}    %(ptn)
-\newcommand{\random}{\text{\AlgoName{S}{ORTEIE}}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
-\newcommand{\sizeof}{\text{sizeof}}  %(int)
+\newcommand{\malloc}{\text{\TODO{alloc}}}  %(int)
+\newcommand{\free}{\text{\TODO{delete}}}    %(ptn)
+\newcommand{\random}{\AlgoName{Sorteie}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
+\newcommand{\sizeof}{\text{\TODO{sizeof}}}  %(int)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de Grafos      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\graphCreate}{\text{newGLA}}
-\newcommand{\graphAdd}{\text{\AlgoName{L}{IGUE\AlgoName{GLA}{}}}}
-\newcommand{\graphDel}{\text{remEdgeGLA}}
+\newcommand{\graphCreate}{\AlgoName{Grafo}}
+\newcommand{\graphAdd}{\AlgoName{LigueGLA}}
+\newcommand{\graphDel}{\AlgoName{RemoveGLA}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de Treap       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\treapCreate}{\text{newNode}}
-\newcommand{\treapSearch}{\text{\AlgoName{B}{USCA}}}
-\newcommand{\treapGetLast}{\text{getLast}}
-\newcommand{\treapGetRoot}{\text{\AlgoName{R}{AIZ}}}
-\newcommand{\treapOrder}{\text{\AlgoName{O}{RDEM}}}
-\newcommand{\treapJoin}{\text{\AlgoName{J}{UNTA}}}
-\newcommand{\treapSplit}{\text{\AlgoName{C}{ORTA}}}
-\newcommand{\treapGetSize}{\text{\AlgoName{T}{AMANHO}}}
-\newcommand{\treapGetEdgesLevel}{\text{getEdgesLevel}}
+\newcommand{\treapCreate}{\AlgoName{novoNó}}
+\newcommand{\treapSearch}{\AlgoName{Busca}}
+\newcommand{\treapGetLast}{\AlgoName{Último}}
+\newcommand{\treapGetRoot}{\AlgoName{Raiz}}
+\newcommand{\treapOrder}{\AlgoName{Ordem}}
+\newcommand{\treapJoin}{\AlgoName{Junta}}
+\newcommand{\treapSplit}{\AlgoName{Corta}}
+\newcommand{\treapGetSize}{\AlgoName{Tamanho}}
+\newcommand{\treapGetEdgesLevel}{\AlgoName{ArestasDeNível}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Euler Tour Tree %
@@ -230,7 +233,6 @@
 % Verify partial sum of permutations%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\AlgoName}[2]{\text{#1{\footnotesize #2}}}
 \newcommand{\VPSPconvert}{\AlgoName{C}{ONVERTA}}
 \newcommand{\VPSPupdate}{\AlgoName{S}{UBSTITUA}}
 \newcommand{\VPSPverify}{\AlgoName{V}{ERIFIQUE}}
