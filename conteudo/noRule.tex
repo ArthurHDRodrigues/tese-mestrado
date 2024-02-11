@@ -1,0 +1,31 @@
+%
+% Prova de conceito de um ambiente de algoritmo sem as linhas horizontais
+%
+% Fonte: https://tex.stackexchange.com/questions/180174/remove-top-rule-from-algorithm-package
+%
+\documentclass{article}
+\usepackage[noend]{algorithmic}
+\usepackage{algorithm}
+
+\makeatletter
+\newcommand\fs@ruled@notop{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled
+  %\def\@fs@pre{\hrule height.8pt depth0pt \kern2pt}% <----removed
+  \def\@fs@pre{}%
+  \def\@fs@post{\kern2pt\hrule\relax}%
+  \def\@fs@mid{\kern2pt\hrule\kern2pt}%
+  \let\@fs@iftopcapt\iftrue}
+\newcommand\fst@algorithm{\fs@ruled@notop}
+\makeatother
+
+\begin{document}
+
+\begin{algorithm}
+\caption{Iterate} \label{alg:it}
+\begin{algorithmic}
+\STATE n = 1
+\FOR { $i=1$ \TO $n$ }
+   \State $print(i)$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+\end{document}
