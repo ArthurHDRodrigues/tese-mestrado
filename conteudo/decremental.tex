@@ -1,6 +1,6 @@
 \chapter{Caso decremental do problema MSF}
 
-Nesse caso particular, o grafo inicial possui um conjunto de arestas não vázio e a única modificação permitida é a remoção de arestas. Como o grafo inicial não é vázio, precisaremos de um algoritmo de pré-processamento que lerá um arquivo que descreve esse grafo inicial e o constroí e, após essa construção, leremos um segundo arquivo que lista quais e em qual ordem as arestas devem ser removidas.
+Nesse caso particular, o grafo inicial possui um conjunto de arestas não vazio e a única modificação permitida é a remoção de arestas. Como o grafo inicial não é vazio, precisaremos de um algoritmo de pré-processamento que lerá um arquivo que descreve esse grafo inicial e o constrói e, após essa construção, leremos um segundo arquivo que lista quais e em qual ordem as arestas devem ser removidas.
 
 Podemos adaptar o algoritmo \HDT{} que resolve o problema de conexidade em grafos dinâmicos para solucionar o caso decremental do problema MSF.
 As modificações visam manter o seguinte invariante adicional junto aos invariantes comentados na Seção~\ref{sec:fatia-em-niveis}.
@@ -17,10 +17,10 @@ O intuito da invariante~\ref{invar:MSF} é garantir que $F_{\lceil \log n \rceil
 
 
 O algoritmo de pré-processamento que constrói nosso grafo inicial é simples.
-Criaremos um grafo dinâmico $G$ vázio e em seguida leremos o arquivo que descreve sua configuração inicial, armazenaremos as arestas contidas nesse arquivo em uma fila de prioridade de mínimo cuja chave é o peso das arestas. 
+Criaremos um grafo dinâmico $G$ vazio e em seguida leremos o arquivo que descreve sua configuração inicial, armazenaremos as arestas contidas nesse arquivo em uma fila de prioridade de mínimo cuja chave é o peso das arestas. 
 Após o término dessa leitura, inseriremos cada aresta em $G$ seguindo a ordem de extração da fila de prioridade.
 
-Notemos que o grafo obtido após esse algoritmo mantém as invariantes adicionais. Como as arestas estão sendo inseridas em ordem crescente de peso em $F_{\lceil \log n \rceil}$, teremos que essa floresta será de pesos mínimos, logo satisfaz a invariante~\ref{invar:MSF} e como somentes essa floresta contém arestas, a invariante~\ref{invar:MSF:mono} também está satisfeita.
+Notemos que o grafo obtido após esse algoritmo mantém as invariantes adicionais. Como as arestas estão sendo inseridas em ordem crescente de peso em $F_{\lceil \log n \rceil}$, teremos que essa floresta será de pesos mínimos, logo satisfaz a invariante~\ref{invar:MSF} e como somente essa floresta contém arestas, a invariante~\ref{invar:MSF:mono} também está satisfeita.
 
 
 \section{Tratando remoções de arestas}
