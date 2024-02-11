@@ -37,7 +37,7 @@ A representação da árvore~$T$ é essencialmente a sequência de arcos que for
 
 
 
-Note que a sequência depende do vértice inicial e da ordem em que cada vizinho de cada vértice é visitado. Chamaremos uma tal sequência de \defi{sequência Euleriana} da árvore $T$.
+Note que a sequência depende do vértice inicial e da ordem em que cada vizinho de cada vértice é visitado. Chamaremos uma tal sequência de \defi{sequência Euleriana} da árvore~$T$.
 
 Henzinger e King \cite{HenzingerKing} propuseram armazenar uma sequência Euleriana em uma \defi{árvore binária de busca} (ABB), que é uma árvore binária composta por nós que possuem  quatro campos: chave, pai, filho esquerdo e filho direito~\cite{CLRS}.
 
@@ -67,10 +67,10 @@ Notemos que Euler tour trees armazenam sequências Eulerianas. No entanto, para 
 \begin{itemize}
 \item  \treapCreate($u$, $v$): cria e retorna uma ABB com somente um nó que armazena o par de vértices $uv$;
 \item \treapGetRoot($\node$): retorna a raiz da ABB que contém $\node$;
-\item \treapJoin($T_1$, $T_2$, $\ldots$, $T_k$): junta as ABBs $T_1$, $T_2$, $\ldots$ $T_{k-1}$ e $T_k$ de modo que a sequência armazenada na árvore resultante é a concatenação das sequências armazenada em~$T_1$, $T_2$, $\ldots$, $T_k$ e retorna a raiz dessa árvore resultante.
+\item \treapJoin($T_1, T_2, \ldots, T_k$): junta as ABBs $T_1, T_2, \ldots, T_{k-1}$ e $T_k$ de modo que a sequência armazenada na árvore resultante é a concatenação das sequências armazenada em~$T_1, T_2, \ldots, T_k$ e retorna a raiz dessa árvore resultante.
 \end{itemize}
 
-A implementação será detalhada na Seção~\ref{sec:TreapDeChaveImplicita}. Veremos que o consumo esperado de \treapCreate, \treapGetRoot{} e \treapJoin{} será, respectivamente,~$\O{1}$,~$\O{\lg n}$ e~$\O{h}$, onde~$n$ é o número de nós na ABB e~$h$ é a soma das alturas de~$T_1$, $T_2$, $\ldots$, $T_k$. \NEW{Na Seção~\ref{sec:imple-treap}, mostraremos como implementar \treapJoin{} para o caso $k=2$, a extensão para o caso geral é imediato a partir desse caso particular.}
+A implementação será detalhada na Seção~\ref{sec:TreapDeChaveImplicita}. Veremos que o consumo esperado de \treapCreate, \treapGetRoot{} e \treapJoin{} será, respectivamente,~$\O{1}$,~$\O{\lg n}$ e~$\O{h}$, onde~$n$ é o número de nós na ABB e~$h$ é a soma das alturas de~$T_1, T_2, \ldots, T_k$. Na Seção~\ref{sec:imple-treap}, mostraremos como implementar \treapJoin{} para o caso $k=2$, a extensão para o caso geral é imediato a partir desse caso particular.
 
 \TODO{Remover ocorrencia de hash e colocar dicionario ou tabela de simbolos}
 Além disso, precisaremos também de uma tabela de símbolos para guardar, para cada par de vértices $uv$ da floresta, um apontador para um nó da ABB que contém esse par, ou $\Nil$ se um tal nó não existe. Quando $ u\neq v$, existe no máximo um nó nas ABBs com o par $uv$, porém para o par $uu$ podem existir vários nós na ABB da componente de $u$ na floresta. Para tal, usaremos um dicionário que guarda na $uv$-ésima posição um ponteiro para tal ocorrência de $uv$ ou $\Nil$, caso não haja ocorrência de $uv$. Para manusear a tabela, usaremos a seguinte biblioteca, que assumiremos que cada rotina dela consome tempo esperado~$\O{1}$~\cite{CLRS}.
