@@ -19,9 +19,38 @@ O algoritmo de Holm et al. para MSF possui consumo amortizado $\O{\lg^4 n}$ para
 
 Em $2000$, Thorup \cite{Thorup2000} apresenta uma estrutura de dados aleatorizada que resolve o problema de conectividade dinâmica com consumo de tempo amortizado $\O{\lg n(\lg\lg n)^3}$ por operação.
 
+\section{Metodologia}
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+ \hline
+	Nome & $|V|$ & $|E|$ & N° de atualizações\\
+ \hline
+	email-dnc (DNC)\cite{nr-aaai15}&$1.9\times 10^3$&$3.74\times 10^4$&$3.2\times 10^4$\\
+ \hline
+	Call (CA)\cite{nr-aaai15}&$7\times 10^3$&$5.1\times 10^4$&$2.3\times 10^4$\\
+ \hline
+	messages (MS)\cite{nr-aaai15}&$2\times 10^3$&$6\times 10^4$&$6.3\times 10^4$\\
+ \hline
+	FB-FORUM (FB)\cite{nr-aaai15}&$8.99\times 10^2$&$3.5\times 10^4$&$3.8\times 10^4$\\
+ \hline
+	Wiki-elec(WI)\cite{nr-aaai15}&$7.1\times 10^3$&$1.07\times 10.5$&$2.1\times 10^5$\\
+ \hline
+	tech-as-topology(Tech)\cite{nr-aaai15}&$3.4\times 10^4$&$1.71\times 10^5$&$2.7\times 10^5$\\
+ \hline
+	Enron(EN)\cite{nr-aaai15}&$8.7\times 10^4$&$1.1\times 10^6$&$1.28\times 10^6$\\
+ \hline
+\end{tabular}
+\end{center}
 
 
+\section{Resultados}
+\subsection{Consultas de conexidade}
+\legenda
+\tabela{csv/call/query_call.csv}{Consulta de teste de conexidade Call}{QueryCall}
+\tabela{csv/tech/query_tech.csv}{Consulta de teste de conexidade Tech}{QueryCall}
+\tabela{csv/fb/query_fb.csv}{Consulta de teste de conexidade FB}{QueryCall}
+\tabela{csv/fb/query_fb.csv}{Consulta de teste de conexidade FB}{QueryCall}
 
-\TODO{Escrever sobre \cite{Wulff-Nilsen2016}}
+%\TODO{Escrever sobre \cite{Wulff-Nilsen2016}}
 
-\TODO{adicionar \cite{kejlbergrasmussen_et_al}}
+%\TODO{adicionar \cite{kejlbergrasmussen_et_al}}
