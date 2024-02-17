@@ -249,6 +249,45 @@
 \newcommand{\CLHB}{CLHB}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comandos para gráficos 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\legenda}{
+\begin{center}
+\begin{tabular}{| c c c c c c c c|}
+\hline
+	\ref{pgfplots:Dtree:QueryCall} & Dtree & \ref{pgfplots:nDtree:QueryCall} & nDtree & \ref{pgfplots:HK:QueryCall} & HK & \ref{pgfplots:HDT:QueryCall} & HDT\\
+\hline
+\end{tabular}
+\end{center}
+}
+
+\newcommand{\tabela}[3]{
+\begin{figure}
+\begin{tikzpicture}
+    \node at (4,6.2) {#2};
+    \begin{axis}[
+		 ylabel=tempo total (s),
+		 xticklabel=\empty,
+		 xlabel=\empty,
+		 xlabel=pontos de testes,
+		 scaled x ticks=false,
+	         ]
+    \addplot[red] table [x=ts, y=Dtree, col sep=comma] {#1};
+	    \label{pgfplots:Dtree:#3}
+    \addplot[blue] table [x=ts, y=nDtree, col sep=comma] {#1};
+	    \label{pgfplots:nDtree:#3}
+    \addplot[brown] table [x=ts, y=HK, col sep=comma] {#1};
+	    \label{pgfplots:HK:#3}
+    \addplot[black] table [x=ts, y=HDT, col sep=comma] {#1};
+	    \label{pgfplots:HDT:#3}
+\end{axis}
+\end{tikzpicture}
+    \caption{Performance de teste de conexidade em tech}
+\end{figure}
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
