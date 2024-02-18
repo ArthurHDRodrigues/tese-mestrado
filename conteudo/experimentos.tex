@@ -1,24 +1,36 @@
 \chapter{Avaliação empírica}
+\label{sec:avaliacao-empirica}
 
-Nesse capítulo faremos experimentos comparativos para avaliar a eficiência do algoritmo de conexidade dinâmica elaborado no Capítulo~\ref{sec:connDG}. Como esse algoritmo foi desenvolvido  por Holm, de Lichtenberg e Thorup, ele é conhecido na literatura pelo acrônimo \HDT.
+Nesse capítulo faremos experimentos comparativos para avaliar a eficiência do algoritmo de conexidade dinâmica elaborado no Capítulo~\ref{sec:connDG}. Como esse algoritmo foi desenvolvido  por Holm, de Lichtenberg e Thorup, ele é conhecido na literatura pelo acrônimo~\HDT.
 
 Desde de sua invenção, houveram três estudos experimentais desse algoritmo~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}.
-O principal concorrente é um algoritmo desenvolvido por Henzinger e King e portanto denotado por \HK, pois ele empata o consumo amortizado esperado de $\O{\lg^2 n}$ de \HDT. Ambos os algoritmos visam manter uma MSF do grafo dinâmico para realizar o teste de conexidade. A principal diferença entre eles é que \HK{} sorteia arestas reservas e as testa para verificar se substituem uma aresta removida da MSF.
+O principal algoritmo concorrente foi desenvolvido por Henzinger e King, portanto ele é denotado por~\HK. Ele empata o consumo assintótico amortizado esperado de $\O{\lg^2 n}$ de~\HDT.
 
+Ambos os algoritmos visam manter uma floresta geradora do grafo dinâmico para realizar o teste de conexidade e usam a mesma estratégia de atribuir níveis às arestas do grafo para amortizar o custo das operações.
 
-O de Chen \textit{et al.} será chamado por \CLHB.
-
-Em $2022$, Chen et al. \cite{QC22} propõem uma nova estrutura simplesmente chamada \defi{árvore dinâmica} (\textit{D-tree}). Essa estrutura consiste em uma árvore enraizada $k$-ária, com $k$ grande o suficiente. Os autores não apresentam análises de complexidade das operações, mas comparam o desempenho da nova estrutura de dados com a de Henzinger e King em bancos de dados imensos bem conhecidos. No entanto, não comparam sua implementação com outros algoritmos, como o de Holm et al.
-
-
-
-O primeiro algoritmo poli-logarítmico para o problema de conectividade dinâmica foi apresentado por Henzinger e King~\cite{HenzingerKing} e possui consumo amortizado esperado $\O{\lg^2 n}$ para cada operação. 
+A principal diferença entre eles é que~\HK{} sorteia arestas reservas e as testa para verificar se substituem uma aresta removida da MSF. Portanto seu consumo de tempo é necessáriamente esperado, enquanto que~\HDT{} pode ser completamente deterministico se a implementação das florestas dinâmicas usadas for deterministica. 
 
 
 
-O algoritmo de Holm et al. para MSF possui consumo amortizado $\O{\lg^4 n}$ para cada operação, sendo assim a primeira estrutura de dados determinística com consumo de tempo poli-logarítmico para o problema MSF. Uma implementação eficiente deste algoritmo foi apresentada por Cattaneo et al. \cite{xpstudy2002} junto a um outro algoritmo mais simples e assintoticamente pior, mas que teve bom desempenho nos experimentos práticos realizados.
+Os estudos comparativos~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002} apontam que\TODO{completar}.
 
-Em $2000$, Thorup \cite{Thorup2000} apresenta uma estrutura de dados aleatorizada que resolve o problema de conectividade dinâmica com consumo de tempo amortizado $\O{\lg n(\lg\lg n)^3}$ por operação.
+
+\section{Breve descrição de~\CLHB{}}
+
+
+Em $2022$, Chen \textit{et al.}\cite{QC22} propõem uma heuristica para garantir baixo consumo de tempo da consulta de conexidade. Nessa capítulo denotaremos esse algortimo por~\CLHB.
+Assim como~\HDT e~\HK, \CLHB{} mantém uma floresta geradora~$F$ do grafo dinâmico para fazer os testes de conexidade.
+No entanto, em~\CLHB{}, essa floresta é enraizada.
+Para manter essa floresta, é usada uma árvore enraizada $k$-ária.
+Cada vértice~$v$ de~$F$ é representado por exatamente um nó que possui os campos: pai, filhos, tam.\TODO{Confirmar quais campos}
+
+O campo pai é um ponteiro que indica o pai de~$v$. O nó que representa a raíz de~$F$ possui~\Nil{} como valor do campo pai.
+O campo filhos é uma tabela de símbolos que armazena um ponteiro para cada nó que representa um vértices incidente a~$v$.
+
+
+Os autores não apresentam análises de complexidade das operações, mas comparam o desempenho da nova estrutura de dados com a de Henzinger e King em bancos de dados imensos bem conhecidos. No entanto, não comparam sua implementação com outros algoritmos, como o de Holm et al.
+
+
 
 \section{Metodologia}
 \begin{center}
@@ -47,9 +59,6 @@ Em $2000$, Thorup \cite{Thorup2000} apresenta uma estrutura de dados aleatorizad
 \section{Resultados}
 
 
-
-
-
 \newpage
 
 \subsection{Inserção de aresta de arestas reservas}
@@ -57,6 +66,7 @@ Em $2000$, Thorup \cite{Thorup2000} apresenta uma estrutura de dados aleatorizad
 \begin{figure}
 \tabela{csv/call/updates/call_insertion_nte.csv}{Call}{insertionCall}
 \tabela{csv/dnc/updates/dnc_insertion_nte.csv}{DNC}{QueryDNC}
+\tabela{csv/enron/updates/enron_insertion_nte.csv}{EN}{QueryENRON}
 \tabela{csv/fb/updates/fb_insertion_nte.csv}{FB}{QueryFB}
 \tabela{csv/messages/updates/messages_insertion_nte.csv}{MS}{QueryMS}
 \tabela{csv/tech/updates/tech_insertion_nte.csv}{Tech}{QueryTech}
@@ -72,6 +82,7 @@ Em $2000$, Thorup \cite{Thorup2000} apresenta uma estrutura de dados aleatorizad
 \begin{figure}
 \tabela{csv/call/updates/call_insertion_te.csv}{Call}{insertionCall}
 \tabela{csv/dnc/updates/dnc_insertion_te.csv}{DNC}{QueryDNC}
+\tabela{csv/enron/updates/enron_insertion_te.csv}{EN}{QueryENRON}
 \tabela{csv/fb/updates/fb_insertion_te.csv}{FB}{QueryFB}
 \tabela{csv/messages/updates/messages_insertion_te.csv}{MS}{QueryMS}
 \tabela{csv/tech/updates/tech_insertion_te.csv}{Tech}{QueryTech}
@@ -85,6 +96,7 @@ Em $2000$, Thorup \cite{Thorup2000} apresenta uma estrutura de dados aleatorizad
 \begin{figure}
 \tabela{csv/call/updates/call_insertion_nte.csv}{Call}{insertionCall}
 \tabela{csv/dnc/updates/dnc_deletion_nte.csv}{DNC}{QueryDNC}
+\tabela{csv/enron/updates/enron_deletion_nte.csv}{EN}{QueryENRON}
 \tabela{csv/fb/updates/fb_deletion_nte.csv}{FB}{QueryFB}
 \tabela{csv/messages/updates/messages_deletion_nte.csv}{MS}{QueryMS}
 \tabela{csv/tech/updates/tech_deletion_nte.csv}{Tech}{QueryTech}
@@ -99,6 +111,7 @@ Em $2000$, Thorup \cite{Thorup2000} apresenta uma estrutura de dados aleatorizad
 \begin{figure}
 \tabela{csv/call/updates/call_insertion_te.csv}{Call}{insertionCall}
 \tabela{csv/dnc/updates/dnc_deletion_te.csv}{DNC}{QueryDNC}
+\tabela{csv/enron/updates/enron_deletion_te.csv}{EN}{QueryENRON}
 \tabela{csv/fb/updates/fb_deletion_te.csv}{FB}{QueryFB}
 \tabela{csv/messages/updates/messages_deletion_te.csv}{MS}{QueryMS}
 \tabela{csv/tech/updates/tech_deletion_te.csv}{Tech}{QueryTech}
@@ -113,6 +126,7 @@ Em $2000$, Thorup \cite{Thorup2000} apresenta uma estrutura de dados aleatorizad
 \begin{figure}
 \tabela{csv/call/query_call.csv}{Call}{QueryCall}
 \tabela{csv/dnc/query_dnc.csv}{DNC}{QueryDNC}
+\tabela{csv/enron/query_enron.csv}{EN}{QueryEN}
 \tabela{csv/fb/query_fb.csv}{FB}{QueryFB}
 \tabela{csv/messages/query_messages.csv}{MS}{QueryMS}
 \tabela{csv/tech/query_tech.csv}{Tech}{QueryTech}
@@ -121,6 +135,23 @@ Em $2000$, Thorup \cite{Thorup2000} apresenta uma estrutura de dados aleatorizad
 \end{figure}
 
 
-%\TODO{Escrever sobre \cite{Wulff-Nilsen2016}}
-
-%\TODO{adicionar \cite{kejlbergrasmussen_et_al}}
+\section{Sensibilidade a diametro}
+\begin{figure}
+\begin{tikzpicture}
+    \begin{axis}[
+		 ylabel=tempo médio (s),
+		 %xticklabel=\empty,
+		 xlabel=\empty,
+		 xlabel=pontos de testes,
+		 %scaled x ticks=false,
+		 width=0.5\linewidth,
+	         ]
+    \addplot[orange] table [x=avg_sp, y=Dtree, col sep=comma] {csv/avg_sp.csv};
+	    \label{pgfplots:Dtree:avgsp}
+    \addplot[black] table [x=avg_sp, y=HK, col sep=comma] {csv/avg_sp.csv};
+	    \label{pgfplots:HK:avgsp}
+    \addplot[blue] table [x=avg_sp, y=HDT, col sep=comma] {csv/avg_sp.csv};
+	    \label{pgfplots:HDT:avgsp}
+\end{axis}
+\end{tikzpicture}
+\end{figure}
