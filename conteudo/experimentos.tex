@@ -2,7 +2,8 @@
 
 Nesse capítulo faremos experimentos comparativos para avaliar a eficiência do algoritmo de conexidade dinâmica elaborado no Capítulo~\ref{sec:connDG}. Como esse algoritmo foi desenvolvido  por Holm, de Lichtenberg e Thorup, ele é conhecido na literatura pelo acrônimo \HDT.
 
-Desde de sua invenção, houveram três estudos experimentais desse algoritmo~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}. O principal concorrente é um algoritmo desenvolvido por Henzinger e King e portanto denotado por \HK, pois ele empata o consumo amortizado esperado de $\O{\lg^2 n}$ de \HDT. Ambos os algoritmos visam manter uma MSF do grafo dinâmico para realizar o teste de conexidade. A principal diferença entre eles é que \HK{} sorteia arestas reservas e as testa para verificar se substituem uma aresta removida da MSF.
+Desde de sua invenção, houveram três estudos experimentais desse algoritmo~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}.
+O principal concorrente é um algoritmo desenvolvido por Henzinger e King e portanto denotado por \HK, pois ele empata o consumo amortizado esperado de $\O{\lg^2 n}$ de \HDT. Ambos os algoritmos visam manter uma MSF do grafo dinâmico para realizar o teste de conexidade. A principal diferença entre eles é que \HK{} sorteia arestas reservas e as testa para verificar se substituem uma aresta removida da MSF.
 
 
 O de Chen \textit{et al.} será chamado por \CLHB.
@@ -44,12 +45,81 @@ Em $2000$, Thorup \cite{Thorup2000} apresenta uma estrutura de dados aleatorizad
 
 
 \section{Resultados}
+
+
+
+
+
+\newpage
+
+\subsection{Inserção de aresta de arestas reservas}
+\legenda
+\begin{figure}
+\tabela{csv/call/updates/call_insertion_nte.csv}{Call}{insertionCall}
+\tabela{csv/dnc/updates/dnc_insertion_nte.csv}{DNC}{QueryDNC}
+\tabela{csv/fb/updates/fb_insertion_nte.csv}{FB}{QueryFB}
+\tabela{csv/messages/updates/messages_insertion_nte.csv}{MS}{QueryMS}
+\tabela{csv/tech/updates/tech_insertion_nte.csv}{Tech}{QueryTech}
+\tabela{csv/wiki/updates/wiki_insertion_nte.csv}{WI}{QueryWiki}
+\caption{Performance de inserção de arestas reservas}
+\end{figure}
+
+
+
+\newpage
+\subsection{Inserção de aresta de arestas da árvore}
+\legenda
+\begin{figure}
+\tabela{csv/call/updates/call_insertion_te.csv}{Call}{insertionCall}
+\tabela{csv/dnc/updates/dnc_insertion_te.csv}{DNC}{QueryDNC}
+\tabela{csv/fb/updates/fb_insertion_te.csv}{FB}{QueryFB}
+\tabela{csv/messages/updates/messages_insertion_te.csv}{MS}{QueryMS}
+\tabela{csv/tech/updates/tech_insertion_te.csv}{Tech}{QueryTech}
+\tabela{csv/wiki/updates/wiki_insertion_te.csv}{WI}{QueryWiki}
+\caption{Performance de inserção de arestas da árvore}
+\end{figure}
+
+\newpage
+\subsection{Remoção de aresta de arestas reservas}
+\legenda
+\begin{figure}
+\tabela{csv/call/updates/call_insertion_nte.csv}{Call}{insertionCall}
+\tabela{csv/dnc/updates/dnc_deletion_nte.csv}{DNC}{QueryDNC}
+\tabela{csv/fb/updates/fb_deletion_nte.csv}{FB}{QueryFB}
+\tabela{csv/messages/updates/messages_deletion_nte.csv}{MS}{QueryMS}
+\tabela{csv/tech/updates/tech_deletion_nte.csv}{Tech}{QueryTech}
+\tabela{csv/wiki/updates/wiki_deletion_nte.csv}{WI}{QueryWiki}
+\caption{Performance de inserção de arestas reservas}
+\end{figure}
+
+
+\newpage
+\subsection{Remoção de aresta de arestas da árvore}
+\legenda
+\begin{figure}
+\tabela{csv/call/updates/call_insertion_te.csv}{Call}{insertionCall}
+\tabela{csv/dnc/updates/dnc_deletion_te.csv}{DNC}{QueryDNC}
+\tabela{csv/fb/updates/fb_deletion_te.csv}{FB}{QueryFB}
+\tabela{csv/messages/updates/messages_deletion_te.csv}{MS}{QueryMS}
+\tabela{csv/tech/updates/tech_deletion_te.csv}{Tech}{QueryTech}
+\tabela{csv/wiki/updates/wiki_deletion_te.csv}{WI}{QueryWiki}
+\caption{Performance de inserção de arestas da árvore}
+\end{figure}
+
+
+\newpage
 \subsection{Consultas de conexidade}
 \legenda
-\tabela{csv/call/query_call.csv}{Consulta de teste de conexidade Call}{QueryCall}
-\tabela{csv/tech/query_tech.csv}{Consulta de teste de conexidade Tech}{QueryCall}
-\tabela{csv/fb/query_fb.csv}{Consulta de teste de conexidade FB}{QueryCall}
-\tabela{csv/fb/query_fb.csv}{Consulta de teste de conexidade FB}{QueryCall}
+\begin{figure}
+\tabela{csv/call/query_call.csv}{Call}{QueryCall}
+\tabela{csv/dnc/query_dnc.csv}{DNC}{QueryDNC}
+\tabela{csv/fb/query_fb.csv}{FB}{QueryFB}
+\tabela{csv/messages/query_messages.csv}{MS}{QueryMS}
+\tabela{csv/tech/query_tech.csv}{Tech}{QueryTech}
+\tabela{csv/wiki/query_wiki.csv}{WI}{QueryWiki}
+\caption{Performance da consulta de conexidade}
+\end{figure}
+
 
 %\TODO{Escrever sobre \cite{Wulff-Nilsen2016}}
 
