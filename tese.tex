@@ -246,7 +246,7 @@
 
 \newcommand{\HDT}{HDT}
 \newcommand{\HK}{HK}
-\newcommand{\CLHB}{Dtree}
+\newcommand{\CLHB}{CLHB}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -265,14 +265,14 @@
 
 \newcommand{\tabela}[3]{
 \begin{tikzpicture}
-    \node at (2.5,4) {#2};
     \begin{axis}[
-		 ylabel=tempo total (s),
+		 ylabel=tempo médio (s),
 		 xticklabel=\empty,
 		 xlabel=\empty,
 		 xlabel=pontos de testes,
 		 scaled x ticks=false,
-		 width=0.4\linewidth,
+		 width=0.3\linewidth,
+                 title={#2}
 	         ]
     \addplot[orange] table [x=ts, y=Dtree, col sep=comma] {#1};
 	    \label{pgfplots:Dtree:#3}
@@ -372,7 +372,7 @@
   %apoio={Durante o desenvolvimento deste trabalho o autor
   %       recebeu auxílio financeiro da XXXX},
   local={São Paulo},
-  data=2023-11-05, % YYYY-MM-DD
+  data=2024-05-12, % YYYY-MM-DD
   % A licença do seu trabalho. Use CC-BY, CC-BY-NC, CC-BY-ND, CC-BY-SA,
   % CC-BY-NC-SA ou CC-BY-NC-ND para escolher a licença Creative Commons
   % correspondente (o sistema insere automaticamente o texto da licença).
@@ -475,23 +475,23 @@ texto texto texto texto. Texto opcional.
 %%%%% Listas criadas manualmente
 
 %\chapter*{Lista de abreviaturas}
-\disablenewpage{\chapter*{Lista de abreviaturas}}
-
-\begin{tabular}{rl}
-   ETT & Euler Tour Tree\\
-   ABB & Árvore binária de busca\\
-   IME & Instituto de Matemática e Estatística\\
-   USP & Universidade de São Paulo
-\end{tabular}
+%\disablenewpage{\chapter*{Lista de abreviaturas}}
+%
+%\begin{tabular}{rl}
+%   ETT & Euler Tour Tree\\
+%   ABB & Árvore binária de busca\\
+%   IME & Instituto de Matemática e Estatística\\
+%   USP & Universidade de São Paulo
+%\end{tabular}
 
 %\chapter*{Lista de símbolos}
-\disablenewpage{\chapter*{Lista de símbolos}}
+%\disablenewpage{\chapter*{Lista de símbolos}}
 
-\begin{tabular}{rl}
-  $\omega$ & Frequência angular\\
-    $\psi$ & Função de análise \emph{wavelet}\\
-    $\Psi$ & Transformada de Fourier de $\psi$\\
-\end{tabular}
+%\begin{tabular}{rl}
+%  $\omega$ & Frequência angular\\
+%    $\psi$ & Função de análise \emph{wavelet}\\
+%    $\Psi$ & Transformada de Fourier de $\psi$\\
+%\end{tabular}
 
 % Quebra de página manual
 \clearpage
@@ -500,17 +500,17 @@ texto texto texto texto. Texto opcional.
 
 % Você pode escolher se quer ou não permitir a quebra de página
 %\listoffigures
-\disablenewpage{\listoffigures}
+%\disablenewpage{\listoffigures}
 
 % Você pode escolher se quer ou não permitir a quebra de página
 %\listoftables
-\disablenewpage{\listoftables}
+%\disablenewpage{\listoftables}
 
 % Esta lista é criada "automaticamente" pela package float quando
 % definimos o novo tipo de float "program" (em utils.tex)
 % Você pode escolher se quer ou não permitir a quebra de página
 %\listof{program}{\programlistname}
-\disablenewpage{\listof{program}{\programlistname}}
+%\disablenewpage{\listof{program}{\programlistname}}
 
 % Sumário (obrigatório)
 \tableofcontents
@@ -556,7 +556,6 @@ texto texto texto texto. Texto opcional.
 \input{conteudo/4-connDG}
 \input{conteudo/experimentos}
 \input{conteudo/limitante}
-\input{conteudo/decremental}
 \input{conteudo/MSF}
 
 
@@ -593,10 +592,12 @@ texto texto texto texto. Texto opcional.
 
 \appendix
 
+
 % \addappheadtotoc acrescenta a palavra "Apêndice" ao sumário; se
 % só há apêndices, sem anexos, provavelmente não é necessário.
 \addappheadtotoc
 
+\input{conteudo/decremental}
 %\input{conteudo/apendice-exemplo-pseudocodigo}
 \par
 
