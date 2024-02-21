@@ -8,7 +8,7 @@ O principal algoritmo concorrente foi desenvolvido por Henzinger e King, portant
 
 Ambos os algoritmos visam manter uma floresta geradora do grafo dinâmico para realizar o teste de conexidade e usam a mesma estratégia de atribuir níveis às arestas do grafo para amortizar o custo das operações.
 
-A principal diferença entre eles é que~\HK{} sorteia arestas reservas e as testa para verificar se substituem uma aresta removida da MSF. Portanto seu consumo de tempo é necessáriamente esperado, enquanto que~\HDT{} pode ser completamente deterministico se a implementação das florestas dinâmicas usadas for deterministica. 
+A principal diferença entre eles é que~\HK{} sorteia arestas reservas e as testa para verificar se substituem uma aresta removida da MSF. Portanto seu consumo de tempo é necessariamente esperado, enquanto que~\HDT{} pode ser completamente determinístico se a implementação das florestas dinâmicas usadas for determinística. 
 
 
 
@@ -18,13 +18,13 @@ Os estudos comparativos~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis
 \section{Breve descrição de~\CLHB{}}
 
 
-Em $2022$, Chen \textit{et al.}\cite{QC22} propõem uma heuristica para garantir baixo consumo de tempo da consulta de conexidade. Nessa capítulo denotaremos esse algortimo por~\CLHB.
+Em $2022$, Chen \textit{et al.}\cite{QC22} propõem uma heurística para garantir baixo consumo de tempo da consulta de conexidade. Nessa capítulo denotaremos esse algoritmo por~\CLHB.
 Assim como~\HDT e~\HK, \CLHB{} mantém uma floresta geradora~$F$ do grafo dinâmico para fazer os testes de conexidade.
 No entanto, em~\CLHB{}, essa floresta é enraizada.
 Para manter essa floresta, é usada uma árvore enraizada $k$-ária.
 Cada vértice~$v$ de~$F$ é representado por exatamente um nó que possui os campos: pai, filhos, tam.\TODO{Confirmar quais campos}
 
-O campo pai é um ponteiro que indica o pai de~$v$. O nó que representa a raíz de~$F$ possui~\Nil{} como valor do campo pai.
+O campo pai é um ponteiro que indica o pai de~$v$. O nó que representa a raiz de~$F$ possui~\Nil{} como valor do campo pai.
 O campo filhos é uma tabela de símbolos que armazena um ponteiro para cada nó que representa um vértices incidente a~$v$.
 
 
@@ -135,7 +135,7 @@ Os autores não apresentam análises de complexidade das operações, mas compar
 \end{figure}
 
 
-\section{Sensibilidade a diametro}
+\section{Sensibilidade a diâmetro}
 \begin{figure}
 \begin{tikzpicture}
     \begin{axis}[
