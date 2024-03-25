@@ -17,10 +17,8 @@ jobs:
     - uses: actions/checkout@v4
     - name: check syntax
       run: |
-        ls
-        pwd
         files=$(ls conteudo/ | grep .tex)
         for f in $files; do
           echo "=== Checking $f ==="
-          cat conteudo/$f | aspell list -a -t --home-dir=$(pwd) --personal=allowed-words.txt
+          cat conteudo/$f | aspell list lang pt_Br -a -t --home-dir=$(pwd) --personal=allowed-words.txt
         done
