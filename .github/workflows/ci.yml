@@ -12,7 +12,8 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y \
-          aspell
+          aspell \
+          aspell-pt-br
     - uses: actions/checkout@v4
     - name: check syntax
       run: |
