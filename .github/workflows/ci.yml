@@ -13,7 +13,7 @@ jobs:
       run: |
         ls
         pwd
-        files=$(ls conteudo/ | grep *.tex)
+        files=$(ls conteudo/ | grep .tex)
         for f in $files; do
           echo "=== Checking $f ==="
           cat conteudo/$f | aspell list -a -t --home-dir=$(pwd) --personal=allowed-words.txt
