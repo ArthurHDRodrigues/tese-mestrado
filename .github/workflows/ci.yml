@@ -10,7 +10,8 @@ jobs:
     steps:
     - name: Instal dependencies
       run: |
-        sudo apt update && apt install -y \
+        sudo apt update
+        sudo apt install -y \
           aspell
     - uses: actions/checkout@v4
     - name: check syntax
