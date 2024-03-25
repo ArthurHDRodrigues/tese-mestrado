@@ -8,6 +8,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Instal dependencies
+      run: |
+        sudo apt update && apt install -y \
+          aspell
     - uses: actions/checkout@v4
     - name: check syntax
       run: |
