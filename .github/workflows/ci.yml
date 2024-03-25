@@ -9,8 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Build the pdf
+    - name: check syntax
       run: |
         ls
         pwd
-        ./check
+        files=$(ls conteudo/ | grep *.tex)
+        for f in $files; do
+          echo "=== Checking $f ==="
+          cat conteudo/$f | aspell list -a -t --home-dir=$(pwd) --personal=allowed-words.txt
+        done
