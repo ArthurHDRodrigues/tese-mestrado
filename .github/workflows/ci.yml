@@ -28,5 +28,6 @@ jobs:
       run: |
         docker run --rm --net=none -v "$(pwd):/tmp" arthurhdrodrigues/latex:latest /bin/bash -c "cd /tmp && ./build.sh"
     - uses: actions/upload-artifact@v4
-      name: artifact
-      path: ./tese.pdf
+      with:
+        name: artifact
+        path: ./tese.pdf
