@@ -13,11 +13,11 @@ Há no entanto aplicações em que o grafo modela uma situação menos estática
 Formalmente, um \defi{grafo dinâmico} é uma sequência de grafos~$(G_0, G_1,\ldots, G_T)$, onde~$G_0$ é um grafo com $n$ vértices e nenhuma aresta e
 cada $G_t$ para $1\leq t\leq T$ é obtido a partir de $G_{t-1}$ pela adição ou remoção de uma aresta. Ou seja, teremos que $E(G_t) := E(G_{t-1})\cup \{uv\}$, para alguma aresta~$uv\notin E(G_{t-1})$;
 ou $E(G_t) := E(G_{t-1})\setminus \{uv\}$, onde~$uv\in E(G_{t-1})$, respectivamente.
-As operações de adição e remoção de arestas são chamadas de \defi{modificações} do grafo dinâmico.
+As operações de adição e remoção de arestas são chamadas de \defi{modificações} ou \defi{atualizações} do grafo dinâmico.
 
-Um problema em grafos dinâmicos envolve verificar se para um dado $0\leq t\leq T$, $G_t$ satisfaz alguma determinada propriedade.
+Um problema em grafos dinâmicos envolve verificar se $G_t$ satisfaz alguma determinada propriedade, para um dado $0\leq t\leq T$.
 A operação de verificação dessa propriedade é chamada de \defi{consulta}.
-Solucionar um tal problema infere desenvolver uma estrutura de dados capaz de dar suporte às modificações e consulta de forma eficiente.
+Solucionar um tal problema infere desenvolver um algoritmo ou estrutura de dados capaz de dar suporte às modificações e consultas de forma eficiente.
 
 
 No presente texto estudaremos resultados relacionados a conexidade em grafos dinâmicos.
@@ -26,11 +26,16 @@ No capítulo~\ref{sec:connDF}, estudaremos o problema de conexidade em florestas
 Essa estrutura de dados utiliza árvores binárias de busca de chave implícita, cuja a implementação será elaborada no capítulo~\ref{sec:TreapDeChaveImplicita}.
 No capítulo~\ref{sec:connDG}, expandiremos nosso estudo sobre conexidade estudando o problema de conexidade em grafos dinâmicos.
 
-No capítulo~\ref{sec:avaliacao-empirica} faremos uma avaliação empírica do algoritmo explicado no capítulo~\ref{sec:connDG}. Comparando sua implementação com os principais algoritmos concorrentes relacionados a esse problema. No capítulo~\ref{sec:lim}, demonstraremos um limitante inferior para o problema de conexidade de~$\Omega(\lg n)$ que é válido tanto para grafos dinâmicos quanto para florestas dinâmicas.
+No capítulo~\ref{sec:avaliacao-empirica} faremos uma avaliação empírica do algoritmo explicado no capítulo~\ref{sec:connDG}. Comparando sua implementação com os principais algoritmos concorrentes relacionados a esse problema. No capítulo~\ref{sec:lim}, demonstraremos um limitante inferior para o problema de conexidade que é válido tanto para grafos dinâmicos quanto para florestas dinâmicas.
+}
 
+\TODO{
+Pensei em concluir o capítulo aqui e remover todo o texto após a linha abaixo.
+Dessa forma definia cada problema no começo do capítulo em que o abordamomos. O que acha?
+\hrule
+}
 
 O \defi{problema de conexidade em grafos dinâmicos}, que consiste em dado um grafo que é submetido a uma sequência de inserções e remoções de arestas, responder à seguinte pergunta “Os vértices $u$ e $v$ estão conectados por um caminho?”. Formalmente, o problema consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca: 
-\TODO{definir melhor o que é grafo dinâmico}
 \TODO{Explicar mais como fazer isso}
 \begin{itemize}
 \item \dymGraphCreate($n$): cria e devolve um grafo dinâmico com $n$ vértices isolados;
@@ -47,7 +52,6 @@ Um grafo é dito \defi{ponderado} se cada uma de suas arestas possui um peso ass
 \item \MSFdelEdge($G$, $u$, $v$): remove a aresta $uv$ de $G$; e
 \item \MSFweight($G$): devolve o peso de uma MSF de $G$.
 \end{itemize}
-}
 
 Os algoritmos para o caso geral desse problema são significativamente mais complexos. No entanto, o caso decremental, que começa com um grafo ponderado arbitrário e abre mão de dar suporte à operação \MSFaddEdge{} em troca de uma implementação mais simples, tem um papel importante na resolução do caso geral desse problema.  É nossa intenção, se possível, incluir também esse caso do problema da floresta maximal de peso mínimo na dissertação.
 
