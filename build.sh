@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pdflatex tese.tex
+pdflatex --interaction=nonstopmode tese.tex
 makeindex -s mkidxhead.ist -l -c tese.idx
 biber tese
-pdflatex tese.tex
+pdflatex --interaction=nonstopmode  tese.tex
