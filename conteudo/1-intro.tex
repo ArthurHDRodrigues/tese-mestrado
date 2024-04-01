@@ -11,7 +11,7 @@ Há no entanto aplicações em que o grafo modela uma situação menos estática
 \defi{Algoritmos em grafos dinâmicos} é o termo usado para se referir à área de projeto de algoritmos que se concentra em resolver problemas clássicos de forma eficiente nesse contexto em que o grafo está sofrendo alterações. A literatura nessa área tem mais de $40$ anos e muito progresso significativo tem ocorrido recentemente.  Com isso, há uma carência de material escrito $-$ especialmente em português $-$ nos livros de algoritmos sobre essa área tão atraente e atual.
 
 \NEW{
-Formalmente, um \defi{grafo dinâmico} é uma sequência de grafos~$(G_0, G_1,\ldots, G_T)$, onde~$G_0$ é um grafo com $n$ vértices e nenhuma aresta e
+Formalmente, um \defi[grafo!dinâmico]{grafo dinâmico} é uma sequência de grafos~$(G_0, G_1,\ldots, G_T)$, onde~$G_0$ é um grafo com $n$ vértices e nenhuma aresta e
 cada $G_t$ para $1\leq t\leq T$ é obtido a partir de $G_{t-1}$ pela adição ou remoção de uma aresta. Ou seja, teremos que $E(G_t) := E(G_{t-1})\cup \{uv\}$, para alguma aresta~$uv\notin E(G_{t-1})$;
 ou $E(G_t) := E(G_{t-1})\setminus \{uv\}$, onde~$uv\in E(G_{t-1})$, respectivamente.
 As operações de adição e remoção de arestas são chamadas de \defi{modificações} ou \defi{atualizações} do grafo dinâmico.
@@ -36,7 +36,7 @@ Dessa forma definia cada problema no começo do capítulo em que o abordamomos. 
 \hrule
 }
 
-O \defi{problema de conexidade em grafos dinâmicos}, que consiste em dado um grafo que é submetido a uma sequência de inserções e remoções de arestas, responder à seguinte pergunta “Os vértices $u$ e $v$ estão conectados por um caminho?”. Formalmente, o problema consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca: 
+O \defi[problema!de conexidade em!grafos dinâmicos]{problema de conexidade em grafos dinâmicos}, que consiste em dado um grafo que é submetido a uma sequência de inserções e remoções de arestas, responder à seguinte pergunta “Os vértices $u$ e $v$ estão conectados por um caminho?”. Formalmente, o problema consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca: 
 \TODO{Explicar mais como fazer isso}
 \begin{itemize}
 \item \dymGraphCreate($n$): cria e devolve um grafo dinâmico com $n$ vértices isolados;
@@ -46,7 +46,7 @@ O \defi{problema de conexidade em grafos dinâmicos}, que consiste em dado um gr
 \end{itemize}
 
 \TODO{Quais pesos colocamos nas arestas}
-Um grafo é dito \defi{ponderado} se cada uma de suas arestas possui um peso associado. Nesse caso, podemos nos perguntar como encontrar uma floresta maximal de peso mínimo (MSF) desse grafo. Para o caso estático, essa pergunta já foi bem tratada pela literatura. No entanto, no caso dinâmico, esse problema possui uma camada adicional de complexidade, pois além de encontrar uma MSF do grafo inicial, é necessário mantê-la ao longo de uma sequência de inserções e remoções de arestas. Esse \defi{problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos} pode ser reescrito como desenvolver uma implementação tão eficiente quanto possível para a seguinte biblioteca:
+Um grafo é dito \defi[grafo!ponderado]{ponderado} se cada uma de suas arestas possui um peso associado. Nesse caso, podemos nos perguntar como encontrar uma floresta maximal de peso mínimo (MSF) desse grafo. Para o caso estático, essa pergunta já foi bem tratada pela literatura. No entanto, no caso dinâmico, esse problema possui uma camada adicional de complexidade, pois além de encontrar uma MSF do grafo inicial, é necessário mantê-la ao longo de uma sequência de inserções e remoções de arestas. Esse \defi[problema!da floresta maximal de peso mínimo em grafos ponderados dinâmicos]{problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos} pode ser reescrito como desenvolver uma implementação tão eficiente quanto possível para a seguinte biblioteca:
 \begin{itemize}
 \item \MSFCreate($n$): cria e devolve um grafo ponderado dinâmico com $n$ vértices isolados;
 \item \MSFaddEdge($G$, $u$, $v$, $w$): adiciona a aresta~$uv$ com peso~$w$ em~$G$;
@@ -88,8 +88,7 @@ Desde $1997$, os algoritmos com consumo de tempo amortizado foram predominantes 
 
 \TODO{adicionar \cite{kejlbergrasmussen_et_al}}
 
-Em $2022$, Chen et al. \cite{QC22} propõem uma nova estrutura chamada \defi{árvore dinâmica
-} (\textit{D-tree}). Essa estrutura consiste em uma árvore enraizada $k$-ária, com $k$ grande o suficiente. Os autores não apresentam análises de complexidade das operações, mas comparam o desempenho da nova estrutura de dados com a de Henzinger e King em bancos de dados imensos bem conhecidos. No entanto, não comparam sua implementação com outros algoritmos, como o de Holm et al.
+Em $2022$, Chen et al. \cite{QC22} propõem uma heurística\todo{reescrever isso}. Essa estrutura consiste em uma árvore enraizada $k$-ária, com $k$ grande o suficiente. Os autores não apresentam análises de complexidade das operações, mas comparam o desempenho da nova estrutura de dados com a de Henzinger e King em bancos de dados imensos bem conhecidos. No entanto, não comparam sua implementação com outros algoritmos, como o de Holm et al.
 
 Em $2022$, Bader e Burkhardt~\cite{simpleAndEfficient2022} introduzem a primeira solução eficiente para um problema tangente ao de MSF. Neste problema, dado um grafo ponderado com $n$ vértices e $m$ arestas e uma dada MSF dele, é quisto encontrar, para cada aresta da MSF, uma aresta que a substituiria em caso de sua remoção. O consumo de tempo dessa solução é~$\O{m+n}$.
 
