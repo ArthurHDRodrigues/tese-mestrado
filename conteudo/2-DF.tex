@@ -37,7 +37,7 @@ A representação da árvore~$T$ é essencialmente a sequência de arcos que for
 
 Note que a sequência depende do vértice inicial e da ordem em que cada vizinho de cada vértice é visitado. Chamaremos uma tal sequência de \defi{sequência Euleriana} da árvore~$T$.
 
-Henzinger e King \cite{HenzingerKing} propuseram armazenar uma sequência Euleriana em uma \defi[árvore!binária de busca]{árvore binária de busca} (ABB), que é uma árvore binária composta por nós que possuem  quatro campos: chave, pai, filho esquerdo e filho direito~\cite{CLRS}.
+Henzinger e King \cite{HenzingerKing} propuseram armazenar uma sequência Euleriana em uma \defi[arvore@\'arvore!binária de busca]{árvore binária de busca} (ABB), que é uma árvore binária composta por nós que possuem  quatro campos: chave, pai, filho esquerdo e filho direito~\cite{CLRS}.
 
 Os campos pai e filhos atribuem a estrutura de árvore binária à ABB. Isto é, cada nó~$N$ possui até dois filhos (esquerdo e direito), o campo \defi{pai} de cada um dos filhos aponta para~$N$. Nenhum nó é filho de dois outros nós. Pode ocorrer de um nó não possuir algum dos filhos; nesse caso, os campos correspondentes a filhos inexistentes contêm~$\Nil$. Somente um nó não possui pai: este é chamado de \defi{raiz} da ABB.
 
@@ -54,7 +54,7 @@ Cada nó da ABB guarda um elemento da sequência Euleriana, ou seja, um par de v
 \end{figure}
 %\TODO{Perguntar ao Mota sobre o comentario dele, "Tem uns . no meio"
 
-Por exemplo, a ABB na Figura~\ref{fig:seq-treap-indices} está armazenando a sequência Euleriana~\eqref{eq:eulerSeq}. Uma tal ABB é chamada de \defi[árvore!Euleriana]{árvore Euleriana}. Henzinger e King propuseram representar uma floresta por uma coleção de Euler Tour Trees: uma para cada componente da floresta. Dessa forma, como veremos na Seção~\ref{sec:impleDF-ETT}, é possível obter uma implementação de uma floresta dinâmica em que as operações de consulta de conexidade e de inserção e remoção de aresta têm custo~$\O{\lg n}$, onde $n$ é o número de vértices da floresta.
+Por exemplo, a ABB na Figura~\ref{fig:seq-treap-indices} está armazenando a sequência Euleriana~\eqref{eq:eulerSeq}. Uma tal ABB é chamada de \defi[arvore@\'arvore!Euleriana]{árvore Euleriana}. Henzinger e King propuseram representar uma floresta por uma coleção de Euler Tour Trees: uma para cada componente da floresta. Dessa forma, como veremos na Seção~\ref{sec:impleDF-ETT}, é possível obter uma implementação de uma floresta dinâmica em que as operações de consulta de conexidade e de inserção e remoção de aresta têm custo~$\O{\lg n}$, onde $n$ é o número de vértices da floresta.
 
 
 \section{Implementação de floresta dinâmica com Euler tour trees}

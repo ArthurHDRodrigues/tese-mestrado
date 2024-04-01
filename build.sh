@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e 
 pdflatex tese.tex
 makeindex -s mkidxhead.ist -l -c tese.idx
 biber tese
