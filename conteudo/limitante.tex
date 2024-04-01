@@ -3,9 +3,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{O limitante inferior de~$\Omega(\lg n)$}
 \label{sec:lim}
-Nessa seção explicaremos o limitante inferior de consumo de tempo amortizado de~$\Omega(\lg n)$ para o problema de conexidade em grafos dinâmicos~\cite{lowerBoundPatrascu}. Esse limitante é incondicional e é válido mesmo para os algoritmos que usam técnicas de aleatorização, no estilo Las Vegas ou Monte Carlo. Além disso, esse limitante é válido mesmo se limitarmos o problema de conexidade dinâmica a florestas ou caminhos. 
+Nessa capítulo explicaremos o limitante inferior de consumo de tempo amortizado de~$\Omega(\lg n)$ para o problema de conexidade em grafos dinâmicos~\cite{lowerBoundPatrascu}. Esse limitante é incondicional e é válido mesmo para os algoritmos que usam técnicas de aleatorização, no estilo Las Vegas ou Monte Carlo. Além disso, esse limitante é válido mesmo se limitarmos o problema de conexidade dinâmica a florestas ou caminhos. 
 
-Esse resultado é consequência de um limitante inferior para o \defi{problema de verificação de soma parcial em $S_k$ (VSP$S_k$)}, que não comentamos até então. Para transportar o limitante de um problema para o outro, reduziremos o problema VSP$S_k$ ao problema de conexidade em grafos dinâmicos.
+Esse resultado é consequência de um limitante inferior para o problema de verificação de soma parcial em $S_k$ (VSP$S_k$), 
+que \NEW{será elaborado na Seção~\ref{sec:lim-verificacao-Sk}}. Para transportar o limitante de um problema para o outro, reduziremos o problema VSP$S_k$ ao problema de conexidade em grafos dinâmicos.
 
 O limitante inferior para o problema VSP$S_k$ usa o modelo de computação \textit{cell-probe}. Dessa forma nosso limitante também aplica-se a esse modelo. Portanto, devemos iniciar nossa discussão na próxima seção explicando como esse modelo de computação funciona e como é mensurado o consumo de tempo de um algoritmo nesse modelo. Em seguida, definiremos VSP$S_k$ e seu limitante inferior formalmente e, concluindo esse capítulo, faremos a redução dele para o problema de conexidade dinâmica em grafos.
 
@@ -18,6 +19,7 @@ Ao limitar o número de células para $2^b$, garantimos que o endereço de qualq
 Muitos resultados sobre algoritmos que usam esse modelo estão em função do parâmetro~$b$, pois esse parâmetro determina quanta informação pode ser armazenada em uma única célula. Outra informação que parametriza o consumo de tempo nesse modelo é a quantidade de bits~$\delta$ necessários para representar cada \NEW{parâmetro de entrada} do algoritmo. É costumeiro separar esses parâmetros, pois em diversas aplicações um tende a ser assintoticamente maior do que o outro.
 
 \section{Verificação de soma parcial em~$S_k$}
+\label{sec:lim-verificacao-Sk}
 
 O grupo $S_k$ é o grupo finito formado pelo conjunto de todas as bijeções sobre o conjunto~${[k]:=\{1,2,\ldots,k\}}$ munido da operação de composição de funções~\cite{agozine2010}. Essas bijeções também são chamadas de \defi{permutações}. Podemos visualizar uma permutação desenhando o domínio e codomínio em duas colunas e desenhando setas relacionando cada elemento do domínio com sua imagem, como feito na Figura~\ref{fig:LIM-exemplo-uma-perm}.
 
@@ -37,7 +39,7 @@ Podemos, com a técnica de visualização empregada na Figura~\ref{fig:LIM-exemp
 \label{fig:LIM-exemplo-comp}
 \end{figure}
 
-Notemos que a substituição de um $\phi_i$ da sequência~$\phi$ pode alterar drasticamente os~$k$ caminhos ilustrados e consequentemente alterar a permutação resultante~$\varphi$. Surge então um novo problema dinâmico, o \defi{problema da verificação de soma parcial em $S_{k}$ (VSP$S_k$)}, que visa manter uma sequência de~$p$ permutações ${\phi=(\phi_1, \phi_2, \ldots, \phi_p)}$ de forma a implementar eficientemente a seguinte biblioteca:
+Notemos que a substituição de um $\phi_i$ da sequência~$\phi$ pode alterar drasticamente os~$k$ caminhos ilustrados e consequentemente alterar a permutação resultante~$\varphi$. Surge então um novo problema dinâmico, o \defi[problema!de verificação de soma parcial em $S_k$]{problema da verificação de soma parcial em $S_{k}$ (VSP$S_k$)}, que visa manter uma sequência de~$p$ permutações ${\phi=(\phi_1, \phi_2, \ldots, \phi_p)}$ de forma a implementar eficientemente a seguinte biblioteca:
 \begin{itemize}
 \item \VPSPupdate($\phi$, $i$, $\varphi$): a $i$-ésima coordenada de $\phi$ recebe a permutação~$\varphi$ ; e
 \item \VPSPverify($\phi$, $i$, $\varphi$): retorna verdadeiro se~$\phi_i\circ \ldots\circ \phi_1 = \varphi$ e falso, caso contrário.
