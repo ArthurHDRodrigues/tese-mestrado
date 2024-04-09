@@ -13,12 +13,16 @@ A principal diferença entre eles é que~\HK{} sorteia arestas reservas e as tes
 
 
 \NEW{
+Na literatura, houveram os seguintes estudos comparativos~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}.
+
+
 O estudo~\cite{EmpiricalStudy1997} não analisa~\HDT{} e somente compara~\HK{} com um algoritmo desenvolvido por~Eppstein et al.~\cite{Eppstein1992SparsificationaTF} que utiliza uma técnica chamada esparsificação para reduzir o custo assintótico das operações aplicadas ao grafo.
 
-O estudo conclui que~\HK{} se torna mais eficiente do que o algoritmo de Eppstein et al. quando o número de atualizações aplicadas a um grafo dinâmico é aproximadamente duas vezes o número de vertices do grafo. Esse fenômeno é devido à amortização utilizada por~\HK{}, que necessita de um número razoável de atualizações para diluir o custo das operações. 
+O estudo~\cite{EmpiricalStudy1997} conclui que~\HK{} se torna mais eficiente do que o algoritmo de Eppstein et al. quando o número de atualizações aplicadas a um grafo dinâmico é aproximadamente duas vezes o número de vértices do grafo. Esse fenômeno é devido à amortização utilizada por~\HK{}, que necessita de um número razoável de atualizações para diluir o custo das operações. 
 
-Os estudos comparativos~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002} apontam que\TODO{completar}.
 }
+
+\begin{comment}
 
 \section{Breve descrição de~\CLHB{}}
 
@@ -34,10 +38,20 @@ O campo filhos é uma tabela de símbolos que armazena um ponteiro para cada nó
 
 
 Os autores não apresentam análises de complexidade das operações, mas comparam o desempenho da nova estrutura de dados com a de Henzinger e King em bancos de dados imensos bem conhecidos. No entanto, não comparam sua implementação com outros algoritmos, como o de Holm et al.
-
-
+\end{comment}
 
 \section{Metodologia}
+
+\NEW{
+Em nossos experimentos, faremos testes com conjuntos de dados reais e artificiais.
+A tabela~\ref{tab:datasets} lista os conjuntos de dados reais que usaremos e algumas características dos mesmos.
+
+Como podemos ver na tabela~\ref{tab:datasets}, cada conjunto de dados possui um número variado de atualizações.
+Além disso, esses conjuntos de dados listam somente inserções de arestas.
+}
+
+
+\begin{table}
 \begin{center}
 \begin{tabular}{ |c|c|c|c| } 
  \hline
@@ -58,7 +72,11 @@ Os autores não apresentam análises de complexidade das operações, mas compar
 	Enron(EN)\cite{nr-aaai15}&$8.7\times 10^4$&$1.1\times 10^6$&$1.28\times 10^6$\\
  \hline
 \end{tabular}
+\caption{Tabela com conjuntos de dados usados retirados de~\cite{nr-aaai15}}
+\label{tab:datasets}
 \end{center}
+\end{table}
+
 
 
 \section{Resultados}

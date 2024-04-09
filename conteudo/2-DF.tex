@@ -79,7 +79,10 @@ Além disso, precisaremos também de uma tabela de símbolos para guardar, para 
     \item $var~\gets~F[u,v]$: atribui o valor associado ao par~$uv$ à variável $var$.
 \end{itemize}
 
-A ocorrência $uu$ apontada pela tabela de símbolos é chamada de \defi{ocorrência ativa} de~$u$. Nos Algoritmos~\ref{Algo:dymForestCreate} e~\ref{Algo:dymForestQuery}, apresentamos a implementação de~\dymForestCreate{} e~\dymForestQuery. \TODO{Lembrar oque cada um desses algoritmos fazem}
+A ocorrência $uu$ apontada pela tabela de símbolos é chamada de \defi{ocorrência ativa} de~$u$.
+No Algoritmo~\ref{Algo:dymForestCreate} apresentamos a implementação de~\dymForestCreate{}, que cria e retorna uma nova floresta dinâmica que possui $n$ vértices e nenhuma aresta.
+Já no algoritmo~\ref{Algo:dymForestQuery}, mostramos a implementação de~\dymForestQuery{}, que responde a consulta de conexidade entre dois vértices~$u$ e~$v$ na floresta~$F$.
+
 
 \begin{algorithm}[htb]
 \caption{\dymForestCreate($n$)}
@@ -164,14 +167,13 @@ Na Seção~\ref{sec:imple-treap}, mostraremos a implementação dessas rotinas q
 \State $A$, $B$ $\gets$ \treapSplit($T$, $uu$)
 \State $vv$ $\gets$ \treapGetLast($B$)
 \State $B$, $C$ $\gets$ \treapSplit($T$, $vv$)\Comment{$C$ = $vv$}
-\State \free($C$)
 \State $uu$ $\gets$ \treapCreate($u$, $u$)
 \State \treapJoin($B$, $A$, $uu$)
 \EndIf
 \end{algorithmic}
 \end{algorithm}
 
-A rotina \free($C$) simplesmente desaloca o espaço dos nós da ABB $C$ da memória, assumiremos que essa operação consome tempo proporcional ao número de nós de $C$. Na operação \dymForestDelEdge($F$, $uu$, $vv$), descrita no Algoritmo~\ref{Algo:dymForestDelEdge}, usamos a rotina \treapSplit{} para fatiar a ABB que guarda a sequência que contém $uv$ e $vu$ em cinco parte, nomeadas de $A$ a $E$, como ilustrado na Figura~\ref{fig:algorit-cut-seqxy}, que considera o caso em que $uv$ ocorre antes de $vu$ na sequência. Com essas cinco partes em mãos, descartaremos os trechos $B$ e $D$, e concatenamos as partes $A$ e $E$ para obter a sequência Euleriana das árvores resultantes da remoção de~$uv$. Como todas essas operações são feitas em tempo esperado~$\O{\lg n}$, então \dymForestDelEdge{} também possui consumo esperado de tempo~$\O{\lg n}$.
+Na operação \dymForestDelEdge($F$, $uu$, $vv$), descrita no Algoritmo~\ref{Algo:dymForestDelEdge}, usamos a rotina \treapSplit{} para fatiar a ABB que guarda a sequência que contém $uv$ e $vu$ em cinco parte, nomeadas de $A$ a $E$, como ilustrado na Figura~\ref{fig:algorit-cut-seqxy}, que considera o caso em que $uv$ ocorre antes de $vu$ na sequência. Com essas cinco partes em mãos, descartaremos os trechos $B$ e $D$, e concatenamos as partes $A$ e $E$ para obter a sequência Euleriana das árvores resultantes da remoção de~$uv$. Como todas essas operações são feitas em tempo esperado~$\O{\lg n}$, então \dymForestDelEdge{} também possui consumo esperado de tempo~$\O{\lg n}$.
 
 \begin{figure}[htb]
 \centering
@@ -219,8 +221,6 @@ Em seguida, obteremos a seguinte sequência ao final de \ETTAddEdge($F$,2,5):
 \State $F[u,u]$ $\gets$ $uu$
 \State $F[u,v]$ $\gets$ $\Nil{}$
 \State $F[v,u]$ $\gets$ $\Nil{}$
-\State \free($B$)
-\State \free($D$)
 \State \treapJoin($A$, $E$)
 \end{algorithmic}
 \end{algorithm}

@@ -27,12 +27,12 @@ No capítulo~\ref{sec:connDF}, estudaremos o problema de conexidade em florestas
 Essa estrutura de dados utiliza árvores binárias de busca de chave implícita, cuja a implementação será elaborada no capítulo~\ref{sec:TreapDeChaveImplicita}.
 No capítulo~\ref{sec:connDG}, expandiremos nosso estudo sobre conexidade estudando o problema de conexidade em grafos dinâmicos.
 
-No capítulo~\ref{sec:avaliacao-empirica} faremos uma avaliação empírica do algoritmo explicado no capítulo~\ref{sec:connDG}. Comparando sua implementação com os principais algoritmos concorrentes relacionados a esse problema. No capítulo~\ref{sec:lim}, demonstraremos um limitante inferior para o problema de conexidade que é válido tanto para grafos dinâmicos quanto para florestas dinâmicas.
+No capítulo~\ref{sec:avaliacao-empirica} analisaremos as avaliações empíricas presentes na literatura, reproduziremos o experimento mais recente incluindo o algoritmo explicado no capítulo~\ref{sec:connDG} e faremos mais experimentos com classes específicas de grafos. No capítulo~\ref{sec:lim}, demonstraremos um limitante inferior para o problema de conexidade que é válido tanto para grafos dinâmicos quanto para florestas dinâmicas.
 }
 
 \TODO{
 Pensei em concluir o capítulo aqui e remover todo o texto após a linha abaixo.
-Dessa forma definia cada problema no começo do capítulo em que o abordamomos. O que acha?
+Dessa forma definia cada problema no começo do capítulo em que o abordaremos. O que acha?
 \hrule
 }
 
@@ -62,13 +62,9 @@ Essa seção é inspirada na historiografia feita em \cite{QC22, HHSRecentAdvanc
 
 Soluções para os problemas de conexidade dinâmica e de floresta maximal de peso mínimo se desenvolveram em paralelo ao longo dos anos. Em $1975$, Spira e Pan~\cite{SP1975} atacam o problema MSF propondo um algoritmo cuja complexidade é $\O{n}$ para inserção e $\O{n^2}$ para remoção de arestas, onde $n$ é o número de vértices do grafo. Três anos depois, Chin e Houck~\cite{CH1978} apresentam uma solução mais simples para inserção e remoção de arestas que possui o mesmo consumo de tempo que o algoritmo de Spira e Pan.
 
-\TODO{Dar mais atenção à Def. de camadas}
 Em $1985$, Frederickson~\cite{frederickson1983data} reduz a complexidade de ambas as operações de modificação para $\O{\sqrt{m}}$, onde~$m$ é o número de arestas do grafo \NEW{no momento em que a operação é aplicada}\todo{Achei que assim fica mais preciso}.
-Nesse artigo, o autor propõe uma estrutura de níveis hierárquicos, onde a primeira possui uma floresta maximal do grafo e as camadas seguintes contêm subgrafos dessa floresta.
-Essa ideia sobreviveu ao teste do tempo e continua sendo usada. 
-No entanto, a estrutura interna de cada camada foi modificada com o tempo. Nesse mesmo artigo, Frederickson propõe uma solução para o problema de conectividade dinâmica usando sua solução para o problema MSF.
 
-Em $1997$, Eppstein et al.~\cite{Eppstein1992SparsificationaTF} melhoram o consumo de tempo do algoritmo de Frederickson para~$\O{\sqrt{n}}$. Neste mesmo ano, é realizado o primeiro experimento de desempenho prático, testando diferentes versões do algoritmo de Frederickson~\cite{xpAnalyGiuseppe}.\TODO{dizer resultado do experimento}
+Em $1997$, Eppstein et al.~\cite{Eppstein1992SparsificationaTF} melhoram o consumo de tempo do algoritmo de Frederickson para~$\O{\sqrt{n}}$. Neste mesmo ano, é realizado o primeiro experimento de desempenho prático, testando diferentes versões do algoritmo de Frederickson~\cite{xpAnalyGiuseppe}.
 
 O primeiro algoritmo poli-logarítmico para o problema de conectividade dinâmica foi apresentado por Henzinger e King~\cite{HenzingerKing} e possui consumo amortizado esperado $\O{\lg^3 n}$ para cada operação. Nesse artigo introduzem uma estrutura de dados chamada \defi{Euler tour trees} como uma maneira eficiente de representar florestas dinâmicas. Em seguida, em $1997$, seu consumo esperado por operação é reduzido a $\O{\lg^2 n}$~\cite{HenzingerThorup}.  Implementações e avaliações experimentais foram feitas sobre essa solução para os problemas~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}.
 

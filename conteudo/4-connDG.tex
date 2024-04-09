@@ -60,9 +60,9 @@ A intuição por trás desse fatiamento é que, quando uma aresta titular de ní
 \subsection{Criação de um grafo dinâmico}
 
 A implementação de \dymGraphCreate{} pode ser vista no Algoritmo~\ref{Algo:dymGraphCreate}. Nessa implementação, simplesmente inicializamos cada $F_{\leqslant i}$ e~$R_i$ de~$G$ usando \dymForestCreate{} e~\graphCreate{}, respectivamente. Notemos que essas rotinas retornam a floresta e o grafo dados por~$n$ vértices isolados. Dessa forma~$F_{\leqslant \lceil \lg n \rceil}$ e~$R_{\lceil \lg n \rceil}$ juntos representam um grafo dinâmico vazio, que é exatamente o grafo que queremos construir com \dymGraphCreate{}. Além disso, será útil obter o nível de uma aresta $uv$ em tempo esperado constante, assim manteremos um dicionário $G$.\nivel{} que relaciona cada aresta a seu nível. Para manusear esse dicionário, usaremos uma biblioteca análoga à usada na Seção~\ref{sec:impleDF-ETT}, que relembramos a seguir. Quando for claro, referenciaremos esse dicionario no pseudocódigo somente por \nivel:
-\NEW{Para tirar a impressão de que \hashCreate{} gasta espaço quadrático, removi o $n^2$ que estava como parâmetro.}
 \begin{itemize}
     \item $\nivel~\gets~\hashCreate()$: cria e retorna um dicionário atribuído a~\nivel{} capaz de armazenar~$n^2$ valores;
+\todo{Para tirar a impressão de que \hashCreate{} gasta espaço quadrático, removi o $n^2$ que estava como parâmetro.}
     \item $\nivel[u,v]~\gets~i$: associa o nível~$i$ à aresta $uv$. Se já houver um nível associado a~$uv$, então esse valor é substituído por~$i$;
     \item $var~\gets~\nivel[u,v]$: atribui o nível da aresta $uv$ à variável $var$.
 \end{itemize}
