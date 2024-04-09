@@ -6,7 +6,7 @@
 Nessa capítulo explicaremos o limitante inferior de consumo de tempo amortizado de~$\Omega(\lg n)$ para o problema de conexidade em grafos dinâmicos~\cite{lowerBoundPatrascu}. Esse limitante é incondicional e é válido mesmo para os algoritmos que usam técnicas de aleatorização, no estilo Las Vegas ou Monte Carlo. Além disso, esse limitante é válido mesmo se limitarmos o problema de conexidade dinâmica a florestas ou caminhos. 
 
 Esse resultado é consequência de um limitante inferior para o problema de verificação de soma parcial em $S_k$ (VSP$S_k$), 
-que \NEW{será elaborado na Seção~\ref{sec:lim-verificacao-Sk}}. Para transportar o limitante de um problema para o outro, reduziremos o problema VSP$S_k$ ao problema de conexidade em grafos dinâmicos.
+que será elaborado na Seção~\ref{sec:lim-verificacao-Sk}. Para transportar o limitante de um problema para o outro, reduziremos o problema VSP$S_k$ ao problema de conexidade em grafos dinâmicos.
 
 O limitante inferior para o problema VSP$S_k$ usa o modelo de computação \textit{cell-probe}. Dessa forma nosso limitante também aplica-se a esse modelo. Portanto, devemos iniciar nossa discussão na próxima seção explicando como esse modelo de computação funciona e como é mensurado o consumo de tempo de um algoritmo nesse modelo. Em seguida, definiremos VSP$S_k$ e seu limitante inferior formalmente e, concluindo esse capítulo, faremos a redução dele para o problema de conexidade dinâmica em grafos.
 
@@ -16,7 +16,7 @@ No modelo \textit{cell-probe}, a memória do computador é representada por uma 
 
 Ao limitar o número de células para $2^b$, garantimos que o endereço de qualquer célula pode ser armazenado em uma única célula, assim aproximando esse modelo abstrato à implementação de memória RAM dos computadores usuais. Lembramos que, nessa implementação de computadores, as operações aritméticas e \textit{bit-wise} são realizadas na CPU, externas à memória e o consumo de tempo real causado por essas operações é muito menor do que o tempo de escrita e leitura da memória. O modelo \textit{cell-probe} representa essa disparidade de consumo de tempo, definindo o consumo de tempo de um algoritmo como sendo proporcional à quantidade de células da memória escritas ou lidas, desconsiderando assim o tempo necessário para a realização de operações que, em um computador usual, seriam realizadas pela CPU.
 
-Muitos resultados sobre algoritmos que usam esse modelo estão em função do parâmetro~$b$, pois esse parâmetro determina quanta informação pode ser armazenada em uma única célula. Outra informação que parametriza o consumo de tempo nesse modelo é a quantidade de bits~$\delta$ necessários para representar cada \NEW{parâmetro de entrada} do algoritmo. É costumeiro separar esses parâmetros, pois em diversas aplicações um tende a ser assintoticamente maior do que o outro.
+Muitos resultados sobre algoritmos que usam esse modelo estão em função do parâmetro~$b$, pois esse parâmetro determina quanta informação pode ser armazenada em uma única célula. Outra informação que parametriza o consumo de tempo nesse modelo é a quantidade de bits~$\delta$ necessários para representar cada parâmetro de entrada do algoritmo. É costumeiro separar esses parâmetros, pois em diversas aplicações um tende a ser assintoticamente maior do que o outro.
 
 \section{Verificação de soma parcial em~$S_k$}
 \label{sec:lim-verificacao-Sk}
