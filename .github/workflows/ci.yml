@@ -1,0 +1,33 @@
+name: Spell-check and build
+
+on:
+  push
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y \
+          aspell \
+          aspell-pt-br
+    - uses: actions/checkout@v4
+    - name: Check syntax
+      run: |
+        files=$(ls conteudo/ | grep .tex)
+        for f in $files; do
+          echo "=== Checking $f ==="
+          cat conteudo/$f | aspell list --lang=pt_Br -a -t --home-dir=$(pwd) --personal=allowed-words.txt
+          echo ""
+          echo ""
+        done
+    - name: Build pdf
+      run: |
+        docker run --rm --net=none -v "$(pwd):/tmp" arthurhdrodrigues/latex:latest /bin/bash -c "cd /tmp && ./build.sh"
+    - uses: actions/upload-artifact@v4
+      with:
+        name: tese
+        path: ./tese.pdf

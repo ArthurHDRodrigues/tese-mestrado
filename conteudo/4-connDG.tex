@@ -12,9 +12,9 @@ Note que dois vértices estão na mesma componente conexa de~$G$ se e somente se
 
 A rotina \dymGraphCreate{} retorna um grafo composto por $n$ vértices isolados. Esse grafo já é uma floresta maximal.
 
-Em uma chamada~\dymGraphAddEdge($G$, $u$, $v$), primeiro testamos a conexidade de $u$ com $v$. Se esses vértices não estiverem conectados em~$G$, então inserimos a aresta $uv$ na floresta maximal que estamos mantendo, assim ligando as duas árvores que contém~$u$ e~$v$ nessa floresta. Essas arestas serão chamadas de \defi{arestas da floresta} ou \defi{arestas titulares}.
+Em uma chamada~\dymGraphAddEdge($G$, $u$, $v$), primeiro testamos a conexidade de $u$ com $v$. Se esses vértices não estiverem conectados em~$G$, então inserimos a aresta $uv$ na floresta maximal que estamos mantendo, assim ligando as duas árvores que contém~$u$ e~$v$ nessa floresta. Essas arestas serão chamadas de \defi[aresta!da floresta]{arestas da floresta} ou \defi[aresta!titulares]{arestas titulares}.
 
-Já no caso em que $u$ e $v$ estiverem conectados em~$G$, então a aresta sobressalente~$uv$ será chamada de \defi{aresta reserva} e iremos armazená-la em uma estrutura de dados auxiliar~$R$ dada por listas de adjacências. Para manusear~$R$, usamos a seguinte biblioteca:
+Já no caso em que $u$ e $v$ estiverem conectados em~$G$, então a aresta sobressalente~$uv$ será chamada de \defi[aresta!reserva]{aresta reserva} e iremos armazená-la em uma estrutura de dados auxiliar~$R$ dada por listas de adjacências. Para manusear~$R$, usamos a seguinte biblioteca:
 \begin{itemize}
     \item \graphCreate($n$): cria e devolve um grafo mantido com listas de adjacências com $n$ vértices isolados.
     \item \graphAdd($G$, $u$, $v$): adiciona $u$ na lista de adjacências de $v$ em $G$ e vice-versa.
@@ -23,7 +23,7 @@ Já no caso em que $u$ e $v$ estiverem conectados em~$G$, então a aresta sobres
 
  Vimos, na Seção~\ref{sec:connDF}, que a inserção de arestas em uma floresta dinâmica custa tempo esperado~$\O{\lg n}$. Para implementar as listas de adjacências, usaremos tabelas de símbolos que permitem inserção em tempo esperado~$\O{1}$. Assim o custo de~\dymGraphAddEdge{} será~$\O{\lg n}$.
 
-Para remover uma aresta reserva, basta removê-la das listas de adjacências, que também será feito em tempo esperado~$\O{1}$. Já remover uma aresta~$uv$ da floresta é demasiadamente mais complexo, pois sua remoção gera duas árvores~$T_u$ e~$T_v$, que contêm os vértices~$u$ e~$v$, respectivamente. Esse cenário pode ser visto na Figura~\ref{fig:DG-exemploTu-Tv}. Para manter a propriedade de~$F$ ser maximal em~$G$, é necessário verificar se existe alguma aresta reserva em~$R$ que liga~$T_u$ a~$T_v$. Tal aresta é chamada de \defi{aresta substituta}.
+Para remover uma aresta reserva, basta removê-la das listas de adjacências, que também será feito em tempo esperado~$\O{1}$. Já remover uma aresta~$uv$ da floresta é demasiadamente mais complexo, pois sua remoção gera duas árvores~$T_u$ e~$T_v$, que contêm os vértices~$u$ e~$v$, respectivamente. Esse cenário pode ser visto na Figura~\ref{fig:DG-exemploTu-Tv}. Para manter a propriedade de~$F$ ser maximal em~$G$, é necessário verificar se existe alguma aresta reserva em~$R$ que liga~$T_u$ a~$T_v$. Tal aresta é chamada de \defi[aresta!substituta]{aresta substituta}.
 
 Sem perda de generalidade, podemos supor que $|T_u|\leqslant |T_v|$. Então, para encontrar uma aresta substituta caso tal aresta exista, podemos percorrer cada vértice $t$ de $T_u$ verificando se existe algum vértice $w$ na lista de adjacências de $t$ que não seja vértice de $T_u$. Caso $w$ não seja vértice de $T_u$, como $F$ era maximal, teremos que $w$ necessariamente é um vértice de $T_v$ e assim a aresta $tw$ é uma substituta para a aresta $uv$ que foi removida.
 
@@ -60,9 +60,9 @@ A intuição por trás desse fatiamento é que, quando uma aresta titular de ní
 \subsection{Criação de um grafo dinâmico}
 
 A implementação de \dymGraphCreate{} pode ser vista no Algoritmo~\ref{Algo:dymGraphCreate}. Nessa implementação, simplesmente inicializamos cada $F_{\leqslant i}$ e~$R_i$ de~$G$ usando \dymForestCreate{} e~\graphCreate{}, respectivamente. Notemos que essas rotinas retornam a floresta e o grafo dados por~$n$ vértices isolados. Dessa forma~$F_{\leqslant \lceil \lg n \rceil}$ e~$R_{\lceil \lg n \rceil}$ juntos representam um grafo dinâmico vazio, que é exatamente o grafo que queremos construir com \dymGraphCreate{}. Além disso, será útil obter o nível de uma aresta $uv$ em tempo esperado constante, assim manteremos um dicionário $G$.\nivel{} que relaciona cada aresta a seu nível. Para manusear esse dicionário, usaremos uma biblioteca análoga à usada na Seção~\ref{sec:impleDF-ETT}, que relembramos a seguir. Quando for claro, referenciaremos esse dicionario no pseudocódigo somente por \nivel:
-\NEW{Para tirar a impressão de que \hashCreate{} gasta espaço quadrático, removi o $n^2$ que estava como parâmetro.}
 \begin{itemize}
     \item $\nivel~\gets~\hashCreate()$: cria e retorna um dicionário atribuído a~\nivel{} capaz de armazenar~$n^2$ valores;
+\todo{Para tirar a impressão de que \hashCreate{} gasta espaço quadrático, removi o $n^2$ que estava como parâmetro.}
     \item $\nivel[u,v]~\gets~i$: associa o nível~$i$ à aresta $uv$. Se já houver um nível associado a~$uv$, então esse valor é substituído por~$i$;
     \item $var~\gets~\nivel[u,v]$: atribui o nível da aresta $uv$ à variável $var$.
 \end{itemize}
@@ -124,7 +124,7 @@ O custo esperado de tempo de \dymForestQuery{} e \dymGraphAddEdge{} são~$\O{\lg
 
 \newcommand{\ceil}[1]{\lceil{#1}\rceil}
 
-A complexidade da remoção de uma aresta em um grafo dinâmico vem da busca por uma aresta substituta para a aresta removida. Podemos encapsular essa busca em uma rotina própria chamada \defi{\dymGraphReplace{}}. A rotina \dymGraphReplace{} recebe um grafo dinâmico~$G$, um inteiro $i$ com $1 \leq i \leq \ceil{\lg n}$, e dois vértices $u$ e $v$, extremidades de uma aresta de nível $i$ que acabou de ser removida de $G$ e das florestas~$F_{\leqslant j}$ para~$j \geq i$, e encontra, caso exista, uma aresta substituta em~$G$ com nível mínimo, e a insere na floresta deste nível e nas de nível acima. Dessa forma, a implementação de \dymGraphDelEdge{}, descrita no Algoritmo~\ref{Algo:dymGraphDelEdge}, pode ser feita em poucas linhas.
+A complexidade da remoção de uma aresta em um grafo dinâmico vem da busca por uma aresta substituta para a aresta removida. Podemos encapsular essa busca em uma rotina própria chamada \dymGraphReplace{}. A rotina \dymGraphReplace{} recebe um grafo dinâmico~$G$, um inteiro $i$ com $1 \leq i \leq \ceil{\lg n}$, e dois vértices $u$ e $v$, extremidades de uma aresta de nível $i$ que acabou de ser removida de $G$ e das florestas~$F_{\leqslant j}$ para~$j \geq i$, e encontra, caso exista, uma aresta substituta em~$G$ com nível mínimo, e a insere na floresta deste nível e nas de nível acima. Dessa forma, a implementação de \dymGraphDelEdge{}, descrita no Algoritmo~\ref{Algo:dymGraphDelEdge}, pode ser feita em poucas linhas.
 
 \begin{algorithm}
 \caption{\dymGraphDelEdge($G$, $u$, $v$)}

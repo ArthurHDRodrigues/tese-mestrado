@@ -2,6 +2,7 @@
 
 \section{Motivação}
 \label{sec:Motivação}
+
 Problemas em grafos servem para modelar uma série de aplicações do dia a dia,
 e há uma vasta e clássica literatura que aborda vários problemas centrais em grafos. Estes problemas clássicos consideram um modelo estático da situação. Ou seja, o grafo dado a priori não sofre alterações enquanto estamos resolvendo o problema.
 
@@ -10,14 +11,14 @@ Há no entanto aplicações em que o grafo modela uma situação menos estática
 \defi{Algoritmos em grafos dinâmicos} é o termo usado para se referir à área de projeto de algoritmos que se concentra em resolver problemas clássicos de forma eficiente nesse contexto em que o grafo está sofrendo alterações. A literatura nessa área tem mais de $40$ anos e muito progresso significativo tem ocorrido recentemente.  Com isso, há uma carência de material escrito $-$ especialmente em português $-$ nos livros de algoritmos sobre essa área tão atraente e atual.
 
 \NEW{
-Formalmente, um \defi{grafo dinâmico} é uma sequência de grafos~$(G_0, G_1,\ldots, G_T)$, onde~$G_0$ é um grafo com $n$ vértices e nenhuma aresta e
+Formalmente, um \defi[grafo!dinâmico]{grafo dinâmico} é uma sequência de grafos~$(G_0, G_1,\ldots, G_T)$, onde~$G_0$ é um grafo com $n$ vértices e nenhuma aresta e
 cada $G_t$ para $1\leq t\leq T$ é obtido a partir de $G_{t-1}$ pela adição ou remoção de uma aresta. Ou seja, teremos que $E(G_t) := E(G_{t-1})\cup \{uv\}$, para alguma aresta~$uv\notin E(G_{t-1})$;
 ou $E(G_t) := E(G_{t-1})\setminus \{uv\}$, onde~$uv\in E(G_{t-1})$, respectivamente.
-As operações de adição e remoção de arestas são chamadas de \defi{modificações} do grafo dinâmico.
+As operações de adição e remoção de arestas são chamadas de \defi{modificações} ou \defi{atualizações} do grafo dinâmico.
 
-Um problema em grafos dinâmicos envolve verificar se para um dado $0\leq t\leq T$, $G_t$ satisfaz alguma determinada propriedade.
+Um problema em grafos dinâmicos envolve verificar se $G_t$ satisfaz alguma determinada propriedade, para um dado $0\leq t\leq T$.
 A operação de verificação dessa propriedade é chamada de \defi{consulta}.
-Solucionar um tal problema infere desenvolver uma estrutura de dados capaz de dar suporte às modificações e consulta de forma eficiente.
+Solucionar um tal problema infere desenvolver um algoritmo ou estrutura de dados capaz de dar suporte às modificações e consultas de forma eficiente.
 
 
 No presente texto estudaremos resultados relacionados a conexidade em grafos dinâmicos.
@@ -26,11 +27,16 @@ No capítulo~\ref{sec:connDF}, estudaremos o problema de conexidade em florestas
 Essa estrutura de dados utiliza árvores binárias de busca de chave implícita, cuja a implementação será elaborada no capítulo~\ref{sec:TreapDeChaveImplicita}.
 No capítulo~\ref{sec:connDG}, expandiremos nosso estudo sobre conexidade estudando o problema de conexidade em grafos dinâmicos.
 
-No capítulo~\ref{sec:avaliacao-empirica} faremos uma avaliação empírica do algoritmo explicado no capítulo~\ref{sec:connDG}. Comparando sua implementação com os principais algoritmos concorrentes relacionados a esse problema. No capítulo~\ref{sec:lim}, demonstraremos um limitante inferior para o problema de conexidade de~$\Omega(\lg n)$ que é válido tanto para grafos dinâmicos quanto para florestas dinâmicas.
+No capítulo~\ref{sec:avaliacao-empirica} analisaremos as avaliações empíricas presentes na literatura, reproduziremos o experimento mais recente incluindo o algoritmo explicado no capítulo~\ref{sec:connDG} e faremos mais experimentos com classes específicas de grafos. No capítulo~\ref{sec:lim}, demonstraremos um limitante inferior para o problema de conexidade que é válido tanto para grafos dinâmicos quanto para florestas dinâmicas.
+}
 
+\TODO{
+Pensei em concluir o capítulo aqui e remover todo o texto após a linha abaixo.
+Dessa forma definia cada problema no começo do capítulo em que o abordaremos. O que acha?
+\hrule
+}
 
-O \defi{problema de conexidade em grafos dinâmicos}, que consiste em dado um grafo que é submetido a uma sequência de inserções e remoções de arestas, responder à seguinte pergunta “Os vértices $u$ e $v$ estão conectados por um caminho?”. Formalmente, o problema consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca: 
-\TODO{definir melhor o que é grafo dinâmico}
+O \defi[problema!de conexidade em!grafos dinâmicos]{problema de conexidade em grafos dinâmicos}, que consiste em dado um grafo que é submetido a uma sequência de inserções e remoções de arestas, responder à seguinte pergunta “Os vértices $u$ e $v$ estão conectados por um caminho?”. Formalmente, o problema consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca: 
 \TODO{Explicar mais como fazer isso}
 \begin{itemize}
 \item \dymGraphCreate($n$): cria e devolve um grafo dinâmico com $n$ vértices isolados;
@@ -40,14 +46,13 @@ O \defi{problema de conexidade em grafos dinâmicos}, que consiste em dado um gr
 \end{itemize}
 
 \TODO{Quais pesos colocamos nas arestas}
-Um grafo é dito \defi{ponderado} se cada uma de suas arestas possui um peso associado. Nesse caso, podemos nos perguntar como encontrar uma floresta maximal de peso mínimo (MSF) desse grafo. Para o caso estático, essa pergunta já foi bem tratada pela literatura. No entanto, no caso dinâmico, esse problema possui uma camada adicional de complexidade, pois além de encontrar uma MSF do grafo inicial, é necessário mantê-la ao longo de uma sequência de inserções e remoções de arestas. Esse \defi{problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos} pode ser reescrito como desenvolver uma implementação tão eficiente quanto possível para a seguinte biblioteca:
+Um grafo é dito \defi[grafo!ponderado]{ponderado} se cada uma de suas arestas possui um peso associado. Nesse caso, podemos nos perguntar como encontrar uma floresta maximal de peso mínimo (MSF) desse grafo. Para o caso estático, essa pergunta já foi bem tratada pela literatura. No entanto, no caso dinâmico, esse problema possui uma camada adicional de complexidade, pois além de encontrar uma MSF do grafo inicial, é necessário mantê-la ao longo de uma sequência de inserções e remoções de arestas. Esse \defi[problema!da floresta maximal de peso mínimo em grafos ponderados dinâmicos]{problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos} pode ser reescrito como desenvolver uma implementação tão eficiente quanto possível para a seguinte biblioteca:
 \begin{itemize}
 \item \MSFCreate($n$): cria e devolve um grafo ponderado dinâmico com $n$ vértices isolados;
 \item \MSFaddEdge($G$, $u$, $v$, $w$): adiciona a aresta~$uv$ com peso~$w$ em~$G$;
 \item \MSFdelEdge($G$, $u$, $v$): remove a aresta $uv$ de $G$; e
 \item \MSFweight($G$): devolve o peso de uma MSF de $G$.
 \end{itemize}
-}
 
 Os algoritmos para o caso geral desse problema são significativamente mais complexos. No entanto, o caso decremental, que começa com um grafo ponderado arbitrário e abre mão de dar suporte à operação \MSFaddEdge{} em troca de uma implementação mais simples, tem um papel importante na resolução do caso geral desse problema.  É nossa intenção, se possível, incluir também esse caso do problema da floresta maximal de peso mínimo na dissertação.
 
@@ -57,10 +62,9 @@ Essa seção é inspirada na historiografia feita em \cite{QC22, HHSRecentAdvanc
 
 Soluções para os problemas de conexidade dinâmica e de floresta maximal de peso mínimo se desenvolveram em paralelo ao longo dos anos. Em $1975$, Spira e Pan~\cite{SP1975} atacam o problema MSF propondo um algoritmo cuja complexidade é $\O{n}$ para inserção e $\O{n^2}$ para remoção de arestas, onde $n$ é o número de vértices do grafo. Três anos depois, Chin e Houck~\cite{CH1978} apresentam uma solução mais simples para inserção e remoção de arestas que possui o mesmo consumo de tempo que o algoritmo de Spira e Pan.
 
-\TODO{Dar mais atenção à Def. de camadas}
-Em $1985$, Frederickson~\cite{frederickson1983data} reduz a complexidade de ambas as operações para $\O{\sqrt{m}}$, onde~$m$ é o número de arestas do grafo. Nesse artigo, o autor propõe uma estrutura de camadas hierárquicas, onde a primeira possui uma floresta maximal do grafo e as camadas seguintes contêm subgrafos dessa floresta. Essa ideia sobreviveu ao teste do tempo e continua sendo usada. No entanto, a estrutura interna de cada camada foi modificada com o tempo. Nesse mesmo artigo, Frederickson propõe uma solução para o problema de conectividade dinâmica usando sua solução para o problema MSF.
+Em $1985$, Frederickson~\cite{frederickson1983data} reduz a complexidade de ambas as operações de modificação para $\O{\sqrt{m}}$, onde~$m$ é o número de arestas do grafo \NEW{no momento em que a operação é aplicada}\todo{Achei que assim fica mais preciso}.
 
-Em $1997$, Eppstein et al.~\cite{Eppstein1992SparsificationaTF} melhoram o consumo de tempo do algoritmo de Frederickson para~$\O{\sqrt{n}}$. Neste mesmo ano, é realizado o primeiro experimento de desempenho prático, testando diferentes versões do algoritmo de Frederickson~\cite{xpAnalyGiuseppe}.\TODO{dizer resultado do experimento}
+Em $1997$, Eppstein et al.~\cite{Eppstein1992SparsificationaTF} melhoram o consumo de tempo do algoritmo de Frederickson para~$\O{\sqrt{n}}$. Neste mesmo ano, é realizado o primeiro experimento de desempenho prático, testando diferentes versões do algoritmo de Frederickson~\cite{xpAnalyGiuseppe}.
 
 O primeiro algoritmo poli-logarítmico para o problema de conectividade dinâmica foi apresentado por Henzinger e King~\cite{HenzingerKing} e possui consumo amortizado esperado $\O{\lg^3 n}$ para cada operação. Nesse artigo introduzem uma estrutura de dados chamada \defi{Euler tour trees} como uma maneira eficiente de representar florestas dinâmicas. Em seguida, em $1997$, seu consumo esperado por operação é reduzido a $\O{\lg^2 n}$~\cite{HenzingerThorup}.  Implementações e avaliações experimentais foram feitas sobre essa solução para os problemas~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}.
 
@@ -80,8 +84,7 @@ Desde $1997$, os algoritmos com consumo de tempo amortizado foram predominantes 
 
 \TODO{adicionar \cite{kejlbergrasmussen_et_al}}
 
-Em $2022$, Chen et al. \cite{QC22} propõem uma nova estrutura chamada \defi{árvore dinâmica
-} (\textit{D-tree}). Essa estrutura consiste em uma árvore enraizada $k$-ária, com $k$ grande o suficiente. Os autores não apresentam análises de complexidade das operações, mas comparam o desempenho da nova estrutura de dados com a de Henzinger e King em bancos de dados imensos bem conhecidos. No entanto, não comparam sua implementação com outros algoritmos, como o de Holm et al.
+Em $2022$, Chen et al. \cite{QC22} propõem uma heurística\todo{reescrever isso}. Essa estrutura consiste em uma árvore enraizada $k$-ária, com $k$ grande o suficiente. Os autores não apresentam análises de complexidade das operações, mas comparam o desempenho da nova estrutura de dados com a de Henzinger e King em bancos de dados imensos bem conhecidos. No entanto, não comparam sua implementação com outros algoritmos, como o de Holm et al.
 
 Em $2022$, Bader e Burkhardt~\cite{simpleAndEfficient2022} introduzem a primeira solução eficiente para um problema tangente ao de MSF. Neste problema, dado um grafo ponderado com $n$ vértices e $m$ arestas e uma dada MSF dele, é quisto encontrar, para cada aresta da MSF, uma aresta que a substituiria em caso de sua remoção. O consumo de tempo dessa solução é~$\O{m+n}$.
 
