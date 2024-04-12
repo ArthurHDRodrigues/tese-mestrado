@@ -28,7 +28,7 @@ A operação de verificação dessa propriedade é chamada de \defi{consulta}.
 Solucionar um tal problema envolve desenvolver um algoritmo ou estrutura de dados capaz de dar suporte às modificações e consultas de forma eficiente.
 
 No presente texto estudaremos resultados relacionados a conexidade em grafos dinâmicos.
-O \defi[problema!de conexidade em!grafos dinâmicos]{problema de conexidade em grafos dinâmicos}, que consiste em dado um grafo que é submetido a uma sequência de inserções e remoções de arestas, responder à seguinte pergunta “Os vértices $u$ e $v$ estão conectados por um caminho?”. Formalmente, o problema consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca: 
+O primeiro problema estudado será o \defi[problema!de conexidade em!grafos dinâmicos]{problema de conexidade em grafos dinâmicos}, que consiste em dado um grafo que é submetido a uma sequência de inserções e remoções de arestas, responder à seguinte pergunta “Os vértices $u$ e $v$ estão conectados por um caminho?”. Formalmente, o problema consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca: 
 \TODO{Explicar mais como fazer isso}
 
 Os algoritmos para o caso geral desse problema são significativamente mais complexos. No entanto, o caso decremental, que começa com um grafo ponderado arbitrário e abre mão de dar suporte à operação \MSFaddEdge{} em troca de uma implementação mais simples, tem um papel importante na resolução do caso geral desse problema.  É nossa intenção, se possível, incluir também esse caso do problema da floresta maximal de peso mínimo na dissertação.
@@ -48,7 +48,7 @@ Essa seção é inspirada na historiografia feita em \cite{QC22, HHSRecentAdvanc
 
 Soluções para os problemas de conexidade dinâmica e de floresta maximal de peso mínimo se desenvolveram em paralelo ao longo dos anos. Em $1975$, Spira e Pan~\cite{SP1975} atacam o problema MSF propondo um algoritmo cuja complexidade é $\O{n}$ para inserção e $\O{n^2}$ para remoção de arestas, onde $n$ é o número de vértices do grafo. Três anos depois, Chin e Houck~\cite{CH1978} apresentam uma solução mais simples para inserção e remoção de arestas que possui o mesmo consumo de tempo que o algoritmo de Spira e Pan.
 
-Em $1985$, Frederickson~\cite{frederickson1983data} reduz a complexidade de ambas as operações de modificação para $\O{\sqrt{m}}$, onde~$m$ é o número de arestas do grafo \NEW{no momento em que a operação é aplicada}\todo{Achei que assim fica mais preciso}.
+Em $1985$, Frederickson~\cite{frederickson1983data} reduz a complexidade de ambas as operações de modificação para $\O{\sqrt{m}}$, onde~$m$ é o número de arestas do grafo no momento em que a operação é aplicada.
 
 Em $1997$, Eppstein et al.~\cite{Eppstein1992SparsificationaTF} melhoram o consumo de tempo do algoritmo de Frederickson para~$\O{\sqrt{n}}$. Neste mesmo ano, é realizado o primeiro experimento de desempenho prático, testando diferentes versões do algoritmo de Frederickson~\cite{xpAnalyGiuseppe}.
 
@@ -58,7 +58,12 @@ Inspirados pela solução de Henzinger e King para o problema de conexidade din�
 
 O algoritmo de Holm et al. para MSF possui consumo amortizado $\O{\lg^4 n}$ para cada operação, sendo assim a primeira estrutura de dados determinística com consumo de tempo poli-logarítmico para o problema MSF. Uma implementação eficiente deste algoritmo foi apresentada por Cattaneo et al. \cite{xpstudy2002} junto a um outro algoritmo mais simples e assintoticamente pior, mas que teve bom desempenho nos experimentos práticos realizados.
 
-Em $2000$, Thorup \cite{Thorup2000} apresenta uma estrutura de dados aleatorizada que resolve o problema de conectividade dinâmica com consumo de tempo amortizado $\O{\lg n(\lg\lg n)^3}$ por operação. Todos esses algoritmos possuem tempo poli-logarítmico no pior caso para a consulta.\TODO{escrever como a solução de \cite{Thorup2000} usa estrutura de níveis e é quase ótima.}
+\NEW{
+	Em $2000$, Thorup~\cite{Thorup2000} complementa a solução de~\cite{poly_log} 
+
+$\O{\lg n(\lg\lg n)^3}$ por operação.
+
+}
 
 Em $2006$, Patrascu e Demaine~\cite{lowerBoundPatrascu} provam um limitante inferior de $\Omega(\lg n)$ para o consumo assintótico por operação para o problema de conexidade dinâmica. Esse limitante pode ser facilmente trazido para o problema de floresta maximal de peso mínimo.
 
@@ -73,8 +78,3 @@ Desde $1997$, os algoritmos com consumo de tempo amortizado foram predominantes 
 Em $2022$, Chen et al. \cite{QC22} propõem uma heurística\todo{reescrever isso}. Essa estrutura consiste em uma árvore enraizada $k$-ária, com $k$ grande o suficiente. Os autores não apresentam análises de complexidade das operações, mas comparam o desempenho da nova estrutura de dados com a de Henzinger e King em bancos de dados imensos bem conhecidos. No entanto, não comparam sua implementação com outros algoritmos, como o de Holm et al.
 
 Em $2022$, Bader e Burkhardt~\cite{simpleAndEfficient2022} introduzem a primeira solução eficiente para um problema tangente ao de MSF. Neste problema, dado um grafo ponderado com $n$ vértices e $m$ arestas e uma dada MSF dele, é quisto encontrar, para cada aresta da MSF, uma aresta que a substituiria em caso de sua remoção. O consumo de tempo dessa solução é~$\O{m+n}$.
-
-
-\TODO{Escrever resumo do que haverá em cada seção, estou pensando em escrever isso no final da seção de motivação}
-
-
