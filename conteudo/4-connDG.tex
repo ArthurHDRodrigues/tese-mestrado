@@ -61,10 +61,10 @@ A intuição por trás desse fatiamento é que, quando uma aresta titular de ní
 
 A implementação de \dymGraphCreate{} pode ser vista no Algoritmo~\ref{Algo:dymGraphCreate}. Nessa implementação, simplesmente inicializamos cada $F_{\leqslant i}$ e~$R_i$ de~$G$ usando \dymForestCreate{} e~\graphCreate{}, respectivamente. Notemos que essas rotinas retornam a floresta e o grafo dados por~$n$ vértices isolados. Dessa forma~$F_{\leqslant \lceil \lg n \rceil}$ e~$R_{\lceil \lg n \rceil}$ juntos representam um grafo dinâmico vazio, que é exatamente o grafo que queremos construir com \dymGraphCreate{}. Além disso, será útil obter o nível de uma aresta $uv$ em tempo esperado constante, assim manteremos um dicionário $G$.\nivel{} que relaciona cada aresta a seu nível. Para manusear esse dicionário, usaremos uma biblioteca análoga à usada na Seção~\ref{sec:impleDF-ETT}, que relembramos a seguir. Quando for claro, referenciaremos esse dicionario no pseudocódigo somente por \nivel:
 \begin{itemize}
-    \item $\nivel~\gets~\hashCreate()$: cria e retorna um dicionário atribuído a~\nivel{} capaz de armazenar~$n^2$ valores;
-\todo{Para tirar a impressão de que \hashCreate{} gasta espaço quadrático, removi o $n^2$ que estava como parâmetro.}
-    \item $\nivel[u,v]~\gets~i$: associa o nível~$i$ à aresta $uv$. Se já houver um nível associado a~$uv$, então esse valor é substituído por~$i$;
-    \item $var~\gets~\nivel[u,v]$: atribui o nível da aresta $uv$ à variável $var$.
+    \item $\nivel~\gets~\hashCreate($n$)$: cria e retorna um dicionário~\nivel{};
+    \item $\nivel[u,v]~\gets~i$: insere o par $(u,v)$ com valor associado~$i$. Se o par~$(u,v)$ já estiver presente na tabela de símbolos, então seu valor associado é substituído por~$i$;
+    \item $\nivel[u,v]~\gets~\Nil$: remove o par~$(u,v)$ e seu valor associado da tabela de símbolos;
+    \item $var~\gets~\nivel[u,v]$: atribui o valor associado ao par~$(u,v)$ à variável~$var$.
 \end{itemize}
 
 \begin{algorithm}
@@ -75,7 +75,7 @@ A implementação de \dymGraphCreate{} pode ser vista no Algoritmo~\ref{Algo:dym
 \State $G.F_{\leqslant i} \gets$ \dymForestCreate($n$)
 \State $G.R_i \gets$ \graphCreate($n$)
 \EndFor
-\State $G$.\nivel{} $\gets$ \hashCreate($n^2$)
+\State $G$.\nivel{} $\gets$ \hashCreate($n$)
 \State \Return $G$ 
 \end{algorithmic}
 \end{algorithm}
@@ -131,6 +131,7 @@ A complexidade da remoção de uma aresta em um grafo dinâmico vem da busca por
 \label{Algo:dymGraphDelEdge}
 \begin{algorithmic}[1]
 \State $i$ $\gets$ \nivel[$u,v$]
+\State \nivel[$u,v$] $\gets$ $\Nil$
 \If {$uv$ $\in G.F_{\leqslant\lceil \lg n \rceil}$}\label{Algo:dymGraphDelEdge:linha:if}
 \For {$j$ $\gets$ $i$ até $\lceil \lg n \rceil$}\label{linha2}
 \State \dymForestDelEdge($G$.$F_j$, $u$, $v$))
@@ -173,8 +174,8 @@ Para entender melhor o funcionamento do algoritmo~\dymGraphReplace{}, descrito n
 \State $T_u \leftrightarrow T_v$
 \EndIf
 \For {$xy$ em $T_u$ com nível = $i$}\label{Algo:dymGraphReplace:linha:moveTu}\Comment{Move $T_u$ para o nível $i-1$}
-\State \nivel$[x,y]$ $\gets$ $i-1$
-\State \dymForestAddEdge($G$.$F_{i-1}$, $x$, $y$) 
+\State \nivel$[x,y]$ $\gets$ $i-1$ \label{Algo:dymGraphReplace:linha:moveTu2}
+\State \dymForestAddEdge($G$.$F_{i-1}$, $x$, $y$) \label{Algo:dymGraphReplace:linha:moveTu3}
 \EndFor
 \For {$xy$ em $G$.$R_i$ com $x$ em $T_u$}\label{Algo:dymGraphReplace:linha:achaSub}\Comment{Procura substituta para $uv$}
 \State \graphDel($G$.$R_i$, $x$, $y$)
@@ -184,8 +185,8 @@ Para entender melhor o funcionamento do algoritmo~\dymGraphReplace{}, descrito n
 \EndFor
 \State \Return
 \Else
-\State \nivel$[x,y]$ $\gets$ $i-1$
-\State \graphAdd($G$.$R_{i-1}$, $x$, $y$)
+\State \nivel$[x,y]$ $\gets$ $i-1$ \label{Algo:dymGraphReplace:linha:rebaixar}
+\State \graphAdd($G$.$R_{i-1}$, $x$, $y$) \label{Algo:dymGraphReplace:linha:rebaixar2}
 \EndIf
 \EndFor
 \EndFor\label{Algo:dymGraphReplace:linha:ultima}
@@ -272,19 +273,24 @@ A técnica utilizada para o laço da linha~\ref{Algo:dymGraphReplace:linha:achaS
 Podemos fazer a manutenção desses novos campos sem onerar o custo das outras rotinas. Toda nova aresta inserida em algum nível possui o campo $niv$ igual a $1$, esse campo se torna $0$ somente quando rebaixamos essa aresta de nível. Toda manutenção que o campo $cniv$ pede é a sua atualização toda vez que atualizamos o campo $.tam$ das treaps. Isso se deve ao fato de atualizarmos $.tam$ quando a estrutura das subárvores de um nó são modificadas. Nesse caso, essa modificação de estrutura infere também na necessidade de atualização dos demais contadores. O segundo contador, $cres$, exige atualizações em situações adicionais. Toda vez que adicionamos ou removemos uma aresta reserva ou quando um nó se torna ocorrência ativa, devemos percorrer o caminho desse nó até a raiz atualizando o campo $cres$, o que consome tempo esperado~$\O{\lg n}$.
 
 
-Para concluir essa seção, argumentaremos como ocorre a amortização de custo de \dymGraphDelEdge{}. Notemos que é difícil calcular o número exato de arestas percorridas em uma única execução de \dymGraphReplace{}. No entanto, podemos calcular tal número ao longo de uma sequência de remoções de arestas. \NEW{Suponhamos que um grafo dinâmico inicialmente vazio sofreu $m$ inserções de arestas e que agora iremos remover cada uma delas. No pior dos casos, cada aresta é rebaixada $\lceil \lg n \rceil$ vezes, percorrendo assim todos os níveis da nossa estrutura de dados, e como cada rebaixamento custa $\O{\lg n}$, teremos que o custo total de todos os percussos em todas as remoções de arestas é~$\O{m\lg^2 n}$. Logo o custo amortizado de cada remoção é $\O{\lg^2 n}$.}
+Para concluir essa seção, argumentaremos como ocorre a amortização de custo de \dymGraphDelEdge{}. 
+A amortização ocorre em uma sequência arbitrária válida de $m$ inserções e $t$ remoções de arestas.
+Mostraremos que o custo total desta $m+t$ operações é~$\O{(m+t)\lg^2 n}$,
+o que resulta num custo amortizado por operação de~$\O{\lg^2 n}$.
+Atribuiremos o custo de todos os rebaixamentos sofridos por uma aresta à operação de inserção dessa arestas.
+Precisamente, os custos das linhas~\ref{Algo:dymGraphReplace:linha:moveTu},~\ref{Algo:dymGraphReplace:linha:moveTu2},~\ref{Algo:dymGraphReplace:linha:moveTu3},~\ref{Algo:dymGraphReplace:linha:rebaixar} e~\ref{Algo:dymGraphReplace:linha:rebaixar2} do Algoritmo~\dymGraphReplace{} são pagos pela operação \dymGraphAddEdge{} correspondente.
 
+\NEW{
+Como cada uma das $m$ arestas inseridas durante essa sequência pode ser rebaixada~$\lceil \lg n \rceil$ vezes e cada rebaixamento (o custo das linhas mencionadas anteriormente) custa~$\O{\lg n}$, o custo total induzido pelas inserções de arestas é~$\O{m\lg^2 n}$ .
+}
+Descontadas essas linhas, \dymGraphReplace{}, e consequentemente \dymGraphDelEdge{}, tem custo~$\O{\lg^2 n}$.
+\NEW{
+Portanto, todas as~$t$ remoções custam juntas~$\O{t\lg^2 n}$ esperado e assim o custo total da sequência é~$\O{(m+t)\lg^2 n}$. Como queríamos mostrar.
+}
 
-
-
-
-
-\section{Soluções ótimas para classes específicas de grafos}
-
-O limitante inferior elaborado no Capítulo~\ref{sec:lim} delimita um horizonte de~$\O{\lg n}$ para as soluções do problema de conexidade dinâmica. Vimos no Capítulo~\ref{sec:connDF} que esse horizonte foi alcançado quando restringimos o problema a florestas. Também vimos que a solução ingênua para o problema geral, desenvolvida no início do Capítulo~\ref{sec:connDG}, permite inserção de aresta e consulta de conexidade em tempo ótimo.
-
-Voltamos a destacar que a dificuldade de solucionar o problema de conexidade em grafos dinâmicos é substituir uma aresta que foi removida da MSF que mantemos para realizar a consulta de conexidade.
-
-Em $1992$, Eppstein \textit{et al.} desenvolvem uma maneira de encontrar essa aresta substituta para uma MSF de um grafo planar em~$\O{\lg n}$~\cite{EPPSTEIN-planar}. Consequentemente obtendo assim uma solução ótima para conexidade dinâmica para essa família de grafos.
-
+%Notemos que é difícil calcular o número exato de arestas percorridas em uma única execução de \dymGraphReplace{}.
+%No entanto, podemos calcular tal número ao longo de uma sequência de remoções de arestas.
+%Suponhamos que um grafo dinâmico inicialmente vazio sofreu $m' < m$ remoções.
+%No pior dos casos, cada aresta foi rebaixada $\lceil \lg n \rceil$ vezes, percorrendo assim todos os níveis da nossa estrutura de dados, e como cada rebaixamento custa $\O{\lg n}$, teremos que o custo total de todos os percussos em todas as~$m$ inserções de arestas é~$\O{m\lg^2 n}$.
+%Logo o custo amortizado de cada remoção é $\O{\lg^2 n}$.
 
