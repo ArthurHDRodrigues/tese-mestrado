@@ -129,14 +129,14 @@ Com essa implementação, em uma floresta com~$n$ vértices, \dymForestCreate{} 
 
 Para implementar \dymForestAddEdge{}, descrita no Algoritmo~\ref{Algo:dymForestAddEdge}, primeiro utilizamos a rotina auxiliar \ETmovetofront{}.
 \NEW{
-Essa rotina recebe uma floresta~$F$ e um vértice~$u$ e restrutura a ABB que contém $uu$ de forma que este se torne o primeiro elemento de sua sequências Euleriana e retorna a raiz da ABB resultante. 
+Essa rotina recebe uma floresta~$F$ e um vértice~$u$ e restrutura a ABB que contém $uu$ de forma que este se torne o primeiro elemento de sua sequência Euleriana e retorna a raiz da ABB resultante. 
 }
-Por exemplo, se aplicarmos \ETmovetofront($F$,1), onde $F$ é uma floresta dinâmica que possui a árvore representada pela sequência~\eqref{eq:eulerSeq}, então a ABB $T$ que armazena a sequência~\eqref{eq:eulerSeq} será reorganizada para armazenar a sequência:
+Por exemplo, se aplicarmos \ETmovetofront($F$,1), onde $F$ é uma floresta dinâmica que possui a árvore representada pela sequência~\eqref{eq:eulerSeq}, então a ABB que armazena a sequência~\eqref{eq:eulerSeq} será reorganizada para armazenar a sequência:
 \begin{equation}
 11~14~44~45~55~54~40~03~33~30~00~04~41~12~22~21.\nonumber
 \end{equation}
 \NEW{
-Por sua vez, para implementar~\ETmovetofront{}, precisaremos das seguintes rotinas da biblioteca de Euler tour trees. A implementação de \dymForestDelEdge{} também utilizará essas rotinas.
+Para implementar~\ETmovetofront{}, precisaremos das seguintes rotinas da biblioteca de Euler tour trees. A implementação de \dymForestDelEdge{} também utilizará essas rotinas.
 }
 \begin{itemize}
 %\item \treapSearch($T$, $k$): retorna o nó com chave $k$ da árvore $T$;
@@ -145,7 +145,7 @@ Por sua vez, para implementar~\ETmovetofront{}, precisaremos das seguintes rotin
 %\item \treapGetLast($T$): retorna o nó de maior chave na árvore~$T$.
 \end{itemize}
 
-Na Seção~\ref{sec:imple-treap}, mostraremos a implementação dessas rotinas e que elas consomem~$\O{\lg n}$, onde~$n$ é número de nós em~$T$.
+Na Seção~\ref{sec:imple-treap}, mostraremos a implementação dessas rotinas e que elas consomem~$\O{\lg n}$, onde~$n$ é número de nós da árvore que contém~$\node$.
 
 \NEW{
 A implementação de~\ETmovetofront{} está descrita no Algoritmo~\ref{Algo:ETmovetofront}.
