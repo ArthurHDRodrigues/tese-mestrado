@@ -13,7 +13,12 @@ O problema de conexidade em grafos dinâmicos, descrito na Seção \ref{sec:Moti
 \item \dymForestQuery($F$, $u$, $v$): retorna verdadeiro se $u$ e $v$ estão na mesma componente conexa de $F$ e falso, caso contrário.
 \end{itemize}
  
-Há na literatura uma estrutura de dados bem conhecida chamada \defi{link-cut trees} \cite{SleatroTarjanLinkCutTree1983} que resolve uma versão direcionada desse problema, em que as árvores da floresta são enraizadas. Com essa estrutura de dados e uma rotina adicional, que permite mudar a raiz de uma dada árvore para um de seus outros nós, as link-cut trees resolvem também a versão não direcionada do problema, ou seja, o problema de conexidade em florestas dinâmicas. Nessa seção apresentaremos as \defi{Euler tour trees}, uma solução mais simples e tão eficiente quanto.
+Há na literatura uma estrutura de dados bem conhecida chamada \defi{link-cut trees} \cite{SleatroTarjanLinkCutTree1983} que resolve uma versão direcionada desse problema, em que as árvores da floresta são enraizadas.
+Com essa estrutura de dados e uma rotina adicional, que permite mudar a raiz de uma dada árvore para um de seus outros nós, as link-cut trees resolvem também a versão não direcionada do problema, ou seja, o problema de conexidade em florestas dinâmicas.
+\NEW{
+Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{linkcuttree}.
+} 
+Nessa seção apresentaremos as \defi{Euler tour trees}, uma solução mais simples e tão eficiente quanto.
 
 
 \section{Euler tour trees} 
@@ -33,12 +38,11 @@ Essa representação é obtida de uma árvore~$T$ substituindo-se cada aresta po
 A representação da árvore~$T$ é essencialmente a sequência de arcos que forma uma trilha Euleriana de~$T$.
 Denotamos cada arco pelo par de vértices que o compõe.
 \NEW{
-Isto é, o arco que com origem no vértice~$u$ e destino no vértice~$v$ é escrito como $uv$.
+Isto é, o arco com origem no vértice~$u$ e destino no vértice~$v$ é escrito como $uv$.
 Dessa forma, um laço em~$v$ é escrito como~$vv$.
 Utilizaremos esses laços como representantes dos vértices na sequência. 
+Por exemplo, a sequência~\eqref{eq:eulerSeq} é uma trilha Euleriana da árvore da Figura \ref{fig:exemploSeqEuler}.
 }
-Por exemplo, a sequência~\eqref{eq:eulerSeq} representa a árvore da  Figura \ref{fig:exemploSeqEuler}.
-
 \begin{equation}
 30~00~04~41~12~22~21~11~14~44~45~55~54~40~03~33.\label{eq:eulerSeq}  
 \end{equation}
@@ -57,7 +61,7 @@ Cada nó da ABB guarda um elemento da sequência Euleriana, ou seja, um par de v
 %\scalebox{.6}{
 \centering
 \input{fig/SEQ-INDICES.tex}%}
-\caption{Sequência~\eqref{eq:eulerSeq}  armazenada em uma ABB. Dentro do círculo mostramos o campo $info$ e abaixo do círculo está sua chave.}
+\caption{Sequência~\eqref{eq:eulerSeq}  armazenada em uma ABB. Dentro do círculo mostramos o arco armazenado no nó e abaixo do círculo está sua chave.}
 \label{fig:seq-treap-indices}
 \end{figure}
 
