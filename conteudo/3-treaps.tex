@@ -36,7 +36,7 @@ Com chaves implícitas, a alteração de um nó $x$ torna necessário somente a 
 
 \section{Treaps}
 
-\defi{Heaps} são árvores binárias quase completas constituídas por nós que possuem quatro campos: prioridade, pai e filhos esquerdo e direito~\cite{CLRS}. Os campos referentes aos pais e filhos dão a estrutura de árvore binária ao heap e a \defi{prioridade} de um nó é um inteiro não negativo. Não apresentaremos a definição de árvore binária quase completa, pois ela é desnecessária para a definição de treaps. Para que uma árvore binária quase completa seja considerada um heap é necessário que a prioridade de cada nó seja maior do que a de seus filhos \TODO{Melhorar essa frase}.
+\defi{Heaps} são árvores binárias quase completas constituídas por nós que possuem quatro campos: prioridade, pai e filhos esquerdo e direito~\cite{CLRS}. Os campos referentes aos pais e filhos dão a estrutura de árvore binária ao heap e a \defi{prioridade} de um nó é um inteiro não negativo. Não apresentaremos a definição de árvore binária quase completa, pois ela é desnecessária para a definição de treaps. Para que uma árvore binária quase completa seja considerada um heap é necessário que a prioridade de cada nó seja maior do que a de seus filhos.
 
 \defi{Treaps} são uma mescla entre árvores binária de busca e heaps. Seus nós possuem cinco campos: $pai$, $esq$, $dir$, $chave$ e $prio$. Os campos $esq$ e $dir$ representam os filhos esquerdo e direito de cada nó, respectivamente, e junto ao campo $pai$ descrevem a estrutura de uma árvore binária. O campo $chave$ satisfaz a propriedade de uma ABB enquanto o campo $prio$ armazena a prioridade do nó e satisfaz a propriedade de um heap. Diferentemente de heaps, treaps não precisam ser quase completas.
 
@@ -52,7 +52,10 @@ Tais árvores foram inicialmente nomeadas \defi[arvore@\'arvore!cartesiana]{árv
 
 \section{Implementação de árvore binária de busca de chave implícita com treaps}
 \label{sec:imple-treap}
-A implementação das rotinas \treapGetRoot{}, \treapSearch{}, \treapOrder{} e~\treapGetLast{} independem da técnica que usaremos para balancear a treap, pois são consultas e somente usam a estrutura da ABB de chave implícita, assim já podem ser apresentadas nos Algoritmos~\ref{Algo:treapGetRoot},~\ref{Algo:TREAPsearch},~\ref{Algo:treapGetLast} e~\ref{Algo:TREAPorder}.
+A implementação da rotina \treapGetRoot{} independe da técnica que usaremos para balancear a treap,
+pois é uma consulta e somente usa a estrutura da ABB,
+assim já podem ser apresentada no Algoritmo~\ref{Algo:treapGetRoot}.
+Seu consumo de tempo é~$\O{h}$ onde~$h$ é a altura da árvore.
 
 \begin{algorithm}[htb]
 \caption{\treapGetRoot($\node$)}
@@ -66,63 +69,31 @@ A implementação das rotinas \treapGetRoot{}, \treapSearch{}, \treapOrder{} e~\
 \end{algorithmic}
 \end{algorithm}
 
-O consumo de tempo das rotinas \treapGetRoot{}, \treapSearch{}, \treapGetLast{} e \treapOrder{} é~$\O{h}$ onde~$h$ é a altura da árvore. Para balancear uma treap e assim garantir consumo de tempo logarítmico, Seidel e Aragon~\cite{AragonSeidel1996} propuseram escolher a prioridade de cada nó de forma aleatória com distribuição de probabilidade uniforme em um universo suficientemente grande para que a probabilidade de haver nós com a mesma prioridade seja próxima de $0$. Como exemplo, os autores sugerem usar como universo os inteiros entre $0$ e~$2^{31}$.
-
-\begin{algorithm}
-\caption{\treapSearch($T$, $k$)}
-\label{Algo:TREAPsearch}
-\begin{algorithmic}[1]
-	\If { \treapGetSize($T$.$esq$) $\geqslant$ $k$}
-\State \Return \treapSearch($T$.$esq$, $k$)
-\EndIf
-	\If {\treapGetSize($T$.$esq$)+1 = $k$}
-\State \Return $T$
-\EndIf
-\State \Return \treapSearch($T.dir$, $k$-\treapGetSize($T$.$esq$)-1)
-\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}
-\caption{\treapGetLast($T$)}
-\label{Algo:treapGetLast}
-\begin{algorithmic}[1]
-\State \Return \treapSearch($T$, \treapGetSize($T$))
-\end{algorithmic}
-\end{algorithm}
+Para balancear uma treap e assim garantir consumo de tempo logarítmico, Seidel e Aragon~\cite{AragonSeidel1996} propuseram escolher a prioridade de cada nó de forma aleatória com distribuição de probabilidade uniforme em um universo suficientemente grande para que a probabilidade de haver nós com a mesma prioridade seja próxima de $0$. Como exemplo, os autores sugerem usar como universo os inteiros entre $0$ e~$2^{31}$.
 
 Para representar essa escolha aleatória, usaremos uma função auxiliar \random($r$) que retorna um inteiro positivo menor do que $r$ com probabilidade uniforme. Esse tipo de função está presente nativamente em diversas linguagens de programação e a elaboração de sua implementação foge do escopo desse texto. Consideraremos que seu consumo de tempo é~$\O{1}$.
 
-\begin{algorithm}
-\caption{\treapOrder($u$)}
-\label{Algo:TREAPorder}
-\begin{algorithmic}[1]
-\State $ordem$ $\gets$ 1 + \treapGetSize($u$.$esq$)
-\While { $u$.$pai$ $\neq$ \Nil{}}
-\If { $u = u$.$pai$.$dir$}
-  \State $ordem$ $\gets$ $ordem$ + 1 + \treapGetSize($u$.$pai$.$esq$)
-\EndIf
-  \State $u$ $\gets$ $u$.$pai$
-\EndWhile
-\State \Return $ordem$
-\end{algorithmic}
-\end{algorithm}
 
 Com essa técnica de balanceamento de treaps em mãos, podemos apresentar a implementação dos demais algoritmos que compõem essa biblioteca.
+O primeiro desses é \treapCreate($u$, $v$), que recebe vértices~$u$ e~$v$, cria um nó de treap chamado $\node$, inicializa seus campos e o retorna.
+Essa rotina consome tempo~$\O{1}$. 
 
 \begin{algorithm}
-\caption{\treapCreate($v$)}
+\caption{\treapCreate($u$, $v$)}
 \label{Algo:TREAPbuild}
 \begin{algorithmic}[1]
 \State $\node$.$tam$ $\gets 1$
 \State $\node$.$prio$ $\gets$ \random($2^{31}$)
-\State $\node$.$info$ $\gets$ $v$
+\State $\node$.$info$ $\gets$ ($u$, $v$)
 \State $\node$.$esq$ $\gets$ $\node$.$dir$ $\gets$ $\node$.$pai$ $\gets$ \Nil
 \State \Return $\node$
 \end{algorithmic}
 \end{algorithm}
 
-\newpage
-A rotina \treapCreate{} consome~$\O{1}$ enquanto que \treapJoin{} consome $\O{h}$ onde~$h$ é a soma das alturas das duas árvores que são unidas e \treapSplit{} consome $\O{h}$ onde~$h$ é a altura da árvore original. Como a altura esperada dessas árvores é  $\O{\lg n}$, teremos que o consumo de tempo dessas duas rotinas também será logarítmico.
+No capítulo anterior definimos o protótipo da rotina \treapJoin{} como sendo \treapJoin($T_1, T_2, \ldots, T_k$).
+Essa rotina junta as ABBs $T_1, T_2, \ldots, T_{k-1}$ e $T_k$ de modo que a sequência armazenada na árvore resultante é a concatenação das sequências armazenada em~$T_1, T_2, \ldots, T_k$ e retorna a raiz dessa árvore resultante.
+Aqui elaboraremos o caso em que $k=2$ e assim adotaremos o cabeçalho~\treapJoin($T$, $R$) para esse algortimo, cuja implementação pode ser vista no Algoritmo~\ref{Algo:TREAPjoin}.
+A generalização a partir desse caso particular é imediata.
 
 \begin{algorithm}
 \caption{\treapJoin($T$, $R$)}
@@ -146,6 +117,15 @@ A rotina \treapCreate{} consome~$\O{1}$ enquanto que \treapJoin{} consome $\O{h}
 \EndIf
 \end{algorithmic}
 \end{algorithm}
+
+
+
+
+
+enquanto que \treapJoin{} consome $\O{h}$ onde~$h$ é a soma das alturas das duas árvores que são unidas e \treapSplit{} consome $\O{h}$ onde~$h$ é a altura da árvore original. Como a altura esperada dessas árvores é  $\O{\lg n}$, teremos que o consumo de tempo dessas duas rotinas também será logarítmico.
+
+
+
 \begin{algorithm}
 \caption{\treapSplit($u$)}
 \label{Algo:TREAPsplit}
