@@ -92,7 +92,7 @@ Essa rotina consome tempo~$\O{1}$.
 
 No capítulo anterior definimos o protótipo da rotina \treapJoin{} como sendo \treapJoin($T_1, T_2, \ldots, T_k$).
 Essa rotina junta as ABBs $T_1, T_2, \ldots, T_{k-1}$ e $T_k$ de modo que a sequência armazenada na árvore resultante é a concatenação das sequências armazenada em~$T_1, T_2, \ldots, T_k$ e retorna a raiz dessa árvore resultante.
-Aqui elaboraremos o caso em que $k=2$ e assim adotaremos o cabeçalho~\treapJoin($T$, $R$) para esse algortimo, cuja implementação pode ser vista no Algoritmo~\ref{Algo:TREAPjoin}.
+Aqui elaboraremos o caso em que $k=2$ e assim adotaremos o cabeçalho~\treapJoin($T$, $R$) para esse algoritmo, cuja implementação pode ser vista no Algoritmo~\ref{Algo:TREAPjoin}.
 A generalização a partir desse caso particular é imediata.
 
 \begin{algorithm}
@@ -119,15 +119,15 @@ A generalização a partir desse caso particular é imediata.
 \end{algorithm}
 
 
-Para compreender o funcionamento de~\treapJoin{} podemos utilizar a ideia da imerção das treaps no plano cartesiano para visualizar melhor suas estruturas.
+Para compreender o funcionamento de~\treapJoin{} podemos utilizar a ideia da imersão das treaps no plano cartesiano para visualizar melhor suas estruturas.
 Na Figura~\ref{fig:treap-join}, podemos ver um exemplo de treaps~$T$ e~$R$.
 
 
-Após tratar os casos em que~$T$ e~$R$ podem ser~$\Nil$, precisamos definir o nó que será a raíz da junção das duas árvores.
+Após tratar os casos em que~$T$ e~$R$ podem ser~$\Nil$, precisamos definir o nó que será a raiz da junção das duas árvores.
 Este nó será aquele com maior prioridade, assim mantendo a propriedade de heap, essa comparação é feita na linha~\ref{algo:TREAPjoin:if}.
 
-Se a prioridade da raíz de~$T$ for maior do que a de~$R$, como ilustrado na Figura~\ref{fig:treap-join}, então devemos juntar~$R$ a alguma subárvore de~$T$.
-Como usamos chaves implicitas e a sequência contida em~$R$ ficará após a sequência contida em~$T$ depois da junção dessas árvores,
+Se a prioridade da raiz de~$T$ for maior do que a de~$R$, como ilustrado na Figura~\ref{fig:treap-join}, então devemos juntar~$R$ a alguma subárvore de~$T$.
+Como usamos chaves implícitas e a sequência contida em~$R$ ficará após a sequência contida em~$T$ depois da junção dessas árvores,
 temos que todas as chaves de~$R$ são estritamente maiores do que as chaves de~$T$, logo temos que recursivamente juntar~$R$ com a subárvore enraizada no nó $T$.$dir$.
 Em seguida, corrigimos o campo $pai$ de $T$.$dir$ e o campo~$tam$ de~$T$.
 
@@ -149,7 +149,7 @@ Podemos ver o resultado da junção das treaps~$T$ e~$R$ da Figura~\ref{fig:trea
 \begin{figure}[htb]
 \centering
 \input{fig/TREAP-join-depois.tex}
-\caption{Resultado da junção das treasp~$T$ e~$R$ da Figura~\ref{fig:treap-join}. Ponteiros moodificados estão destacados em vermelho.}
+\caption{Resultado da junção das treaps~$T$ e~$R$ da Figura~\ref{fig:treap-join}. Ponteiros modificados estão destacados em vermelho.}
 \label{fig:treap-join-depois}
 \end{figure}
 Notemos que \treapJoin{} consome $\O{h}$ onde~$h$ é a soma das alturas das duas árvores que são unidas.
@@ -157,7 +157,7 @@ Como a altura esperada dessas árvores é $\O{\lg n}$, teremos que o consumo esp
 
 
 A implementação da rotina~\treapSplit($\node$) pode ser vista no Algoritmo~\ref{Algo:TREAPsplit}.
-Nesse algoritmo percorremos o caminho de~$\node$ até sua raíz reatribuindo a relação de parentesco entre os nós percorridos de forma a cortar a treap em duas:
+Nesse algoritmo percorremos o caminho de~$\node$ até sua raiz reatribuindo a relação de parentesco entre os nós percorridos de forma a cortar a treap em duas:
 A primeira contendo todos os nós com chave menor do que a chave de~$\node$ e a segunda com todos os nós com chave maior do que~$\node$.
 
 
@@ -200,13 +200,13 @@ A primeira contendo todos os nós com chave menor do que a chave de~$\node$ e a 
 \end{algorithm}
 
 Para fazer isso mantemos três ponteiros: $L$, $R$ e~$tmp$. 
-Os dois primeiros apontam para as raizes das árvores resultantes desse corte e o terceiro aponta para o nó cuja relação de parentesco será modificada.
+Os dois primeiros apontam para as raízes das árvores resultantes desse corte e o terceiro aponta para o nó cuja relação de parentesco será modificada.
 
 Simularemos a execução de $\treapSplit(X)$, onde $X$ é o nó de coordenadas $(6,3)$ da Figura~\ref{fig:treap-join-depois}.
 O estado inicial dos ponteiros~$L$ e~$R$ são os filhos de~$X$ e~$tmp$ aponta para~$X$, como mostra a Figura~\ref{fig:treap-split-1}.
 
 Se~$tmp$ for filho a esquerda de seu pai, isto é $tmp$.$pai$.$esq$ $=$ $tmp$, então a chave de $tmp$.$pai$ é maior do que a chave de~$X$ e logo deve ser um nó de~$R$.
-Além disso, sabemos que a prioridade e chave de $tmp$.$pai$ são maiores do que a prioridade e chave de~$R$, logo $tmp$.$pai$ deve ser a nova raíz de~$R$ e~$R$ é o filho a esquerda de~$tmp$.$pai$.
+Além disso, sabemos que a prioridade e chave de $tmp$.$pai$ são maiores do que a prioridade e chave de~$R$, logo $tmp$.$pai$ deve ser a nova raiz de~$R$ e~$R$ é o filho a esquerda de~$tmp$.$pai$.
 Após atualizar os campos de parentesco entre~$R$, $tmp$ e $tmp$.$pai$, atualizamos valor de~$tmp$ para $tmp$.$pai$, obtemos o estado mostrado na Figura~\ref{fig:treap-split-2}.
 Então repetimos esse processo. 
 
@@ -223,7 +223,7 @@ Então repetimos esse processo.
 \caption{Estado após atualização dos ponteiros de parentesco.}
 \label{fig:treap-split-2}
 \end{subfigure}
-\caption{Dois estados da simução de~\treapSplit(X)}
+\caption{Dois estados da simulação de~\treapSplit(X)}
 \end{figure}
 
 Na próxima iteração desse laço repetimos o processo descrito no paragrafo anterior, pois temos que o nó apontado por~$tmp$ é filho a esquerda de seu pai.
@@ -231,7 +231,7 @@ Já na próxima iteração, fazemos as operações simétricas, pois teremos que
 Ao termino dessa iteração, obtemos as treaps da Figura~\ref{fig:treap-split-final}.
 
 
-Notemos que \treapSplit{} consiste em um laço que percorre os nós de uma treap até sua raiz e em cada nó realiza operações de custo constante, logo seu custo de tempo assintótico é proporcional a altura da treap e como essa é balanciada, temos que seu consome esperado é $\O{\lg n}$.
+Notemos que \treapSplit{} consiste em um laço que percorre os nós de uma treap até sua raiz e em cada nó realiza operações de custo constante, logo seu custo de tempo assintótico é proporcional a altura da treap e como essa é balanceada, temos que seu consome esperado é $\O{\lg n}$.
 
 
 
