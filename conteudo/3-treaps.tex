@@ -104,7 +104,7 @@ A generalização a partir desse caso particular é imediata.
 \If { $R$ = \Nil} \Return $T$
 \EndIf
 
-\If { $T$.$prio$ $>$ $R$.$prio$}
+\If { $T$.$prio$ $>$ $R$.$prio$}\label{algo:TREAPjoin:if}
   \State $T$.$dir$ $\gets$ \treapJoin($T$.$dir$, $R$)
   \State $T$.$dir$.$pai$ $\gets$ $T$
   \State $T$.$tam$ $\gets$ \treapGetSize($T$.$dir$)+\treapGetSize($T$.$esq$)+$1$
@@ -119,39 +119,70 @@ A generalização a partir desse caso particular é imediata.
 \end{algorithm}
 
 
+Para compreender o funcionamento de~\treapJoin{} podemos utilizar a ideia da imerção das treaps no plano cartesiano para visualizar melhor suas estruturas.
+Na Figura~\ref{fig:treap-join}, podemos ver um exemplo de treaps~$T$ e~$R$.
+
+
+Após tratar os casos em que~$T$ e~$R$ podem ser~$\Nil$, precisamos definir o nó que será a raíz da junção das duas árvores.
+Este nó será aquele com maior prioridade, assim mantendo a propriedade de heap, essa comparação é feita na linha~\ref{algo:TREAPjoin:if}.
+
+Se a prioridade da raíz de~$T$ for maior do que a de~$R$, como ilustrado na Figura~\ref{fig:treap-join}, então devemos juntar~$R$ a alguma subárvore de~$T$.
+Como usamos chaves implicitas e a sequência contida em~$R$ ficará após a sequência contida em~$T$ depois da junção dessas árvores,
+temos que todas as chaves de~$R$ são estritamente maiores do que as chaves de~$T$, logo temos que recursivamente juntar~$R$ com a subárvore enraizada no nó $T$.$dir$.
+Em seguida, corrigimos o campo $pai$ de $T$.$dir$ e o campo~$tam$ de~$T$.
+
+
+\begin{figure}[htb]
+\centering
+\input{fig/TREAP-join.tex}
+\caption{Exemplo de duas treaps imersas no plano cartesiano.}
+\label{fig:treap-join}
+\end{figure}
+
+
+Caso a prioridade de~$R$ seja maior do que a de~$T$, então temos juntar recursivamente $T$ com a subárvore enraizada em~$R$.$esq$. Esse caso é simétrico ao anterior.
+Podemos ver o resultado da junção das treaps~$T$ e~$R$ da Figura~\ref{fig:treap-join} na Figura~\ref{fig:treap-join-depois}.
 
 
 
-enquanto que \treapJoin{} consome $\O{h}$ onde~$h$ é a soma das alturas das duas árvores que são unidas e \treapSplit{} consome $\O{h}$ onde~$h$ é a altura da árvore original. Como a altura esperada dessas árvores é  $\O{\lg n}$, teremos que o consumo de tempo dessas duas rotinas também será logarítmico.
+
+\begin{figure}[htb]
+\centering
+\input{fig/TREAP-join-depois.tex}
+\caption{Resultado da junção das treasp~$T$ e~$R$ da Figura~\ref{fig:treap-join}. Ponteiros moodificados estão destacados em vermelho.}
+\label{fig:treap-join-depois}
+\end{figure}
 
 
-
+A implementação rotina~\treapSplit($u$) pode ser vista no Algoritmo~\ref{Algo:TREAPsplit}. Nesse algoritmo mantemos três ponteiros: $L$, $R$ e~$tmp$. 
 \begin{algorithm}
-\caption{\treapSplit($u$)}
+\caption{\treapSplit($uu$)}
 \label{Algo:TREAPsplit}
 \begin{algorithmic}[1]
-\If { $u$ $=$ \Nil} \Return \Nil, \Nil
+\If { $uu$ $=$ \Nil} \Return \Nil, \Nil
 \EndIf
-\State $R$ $\gets $ $u$
+\State $R$ $\gets $ $u$.$dir$
 \State $L$ $\gets $ $u$.$esq$
-\State $u$.$esq$ $\gets\Nil$
-\If { $L$ $\neq$ \Nil} $L$.$tam$ $\gets$ \treapGetSize($L$.$dir$)+\treapGetSize($L$.$esq$)+$1$
-\EndIf
-\State $tmp$ $\gets$ $u$
+\State $tmp$ $\gets$ $uu$
 \While { $tmp$.$pai$ $\neq \Nil$}
   \If { $tmp$.$pai$.$dir$ = $tmp$}
-    \State $tmp$.$pai$.$dir$ $\gets$ $L$ \Comment se for filho à direita, então deve ficar em $L$
-    \If { $L$ $\neq$ \Nil} $L$.$pai$ $\gets$ $tmp$.$pai$
+    \State $tmp$.$pai$.$dir$ $\gets$ $L$ 
+    \If { $R$ $\neq$ \Nil}
+    \State $tmp$.$pai$.$tam$ $\gets$ $tmp$.$pai$.$tam$ - $R$.$tam$
+    \EndIf
+    \If { $L$ $\neq$ \Nil}
+    \State $L$.$pai$ $\gets$ $tmp$.$pai$
     \EndIf
     \State $L$ $\gets$ $tmp$.$pai$
-
-    \State $L$.$tam$ $\gets$ \treapGetSize($L$.$dir$)+\treapGetSize($L$.$esq$)+$1$
   \Else
     \State $tmp$.$pai$.$esq$ $\gets$ $R$
-    \If { $R \neq \Nil$} $R$.$pai$ $\gets$ $tmp$.$pai$
+    \If { $L$ $\neq$ \Nil}
+    \State $tmp$.$pai$.$tam$ $\gets$ $tmp$.$pai$.$tam$ - $L$.$tam$
+    \EndIf
+    \If { $R \neq \Nil$}
+    \State $R$.$pai$ $\gets$ $tmp$.$pai$
     \EndIf
     \State $R$ $\gets$ $tmp$.$pai$
-    \State $R$.$tam$ $\gets$ \treapGetSize($R$.$dir$)+\treapGetSize($R$.$esq$)+$1$
   \EndIf
   \State $tmp$ $\gets$ $tmp$.$pai$
 \EndWhile
@@ -161,5 +192,4 @@ enquanto que \treapJoin{} consome $\O{h}$ onde~$h$ é a soma das alturas das dua
 \end{algorithmic}
 \end{algorithm}
 
-
-
+enquanto que \treapJoin{} consome $\O{h}$ onde~$h$ é a soma das alturas das duas árvores que são unidas e \treapSplit{} consome $\O{h}$ onde~$h$ é a altura da árvore original. Como a altura esperada dessas árvores é  $\O{\lg n}$, teremos que o consumo de tempo dessas duas rotinas também será logarítmico.
