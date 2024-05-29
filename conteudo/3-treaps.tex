@@ -152,29 +152,27 @@ Podemos ver o resultado da junção das treaps~$T$ e~$R$ da Figura~\ref{fig:trea
 \caption{Resultado da junção das treasp~$T$ e~$R$ da Figura~\ref{fig:treap-join}. Ponteiros moodificados estão destacados em vermelho.}
 \label{fig:treap-join-depois}
 \end{figure}
+Notemos que \treapJoin{} consome $\O{h}$ onde~$h$ é a soma das alturas das duas árvores que são unidas.
+Como a altura esperada dessas árvores é $\O{\lg n}$, teremos que o consumo esperado de tempo dessas duas rotinas também será logarítmico.
 
 
-A implementação rotina~\treapSplit($u$) pode ser vista no Algoritmo~\ref{Algo:TREAPsplit}. Nesse algoritmo mantemos três ponteiros: $L$, $R$ e~$tmp$. 
+A implementação da rotina~\treapSplit($\node$) pode ser vista no Algoritmo~\ref{Algo:TREAPsplit}.
+Nesse algoritmo percorremos o caminho de~$\node$ até sua raíz reatribuindo a relação de parentesco entre os nós percorridos de forma a cortar a treap em duas:
+A primeira contendo todos os nós com chave menor do que a chave de~$\node$ e a segunda com todos os nós com chave maior do que~$\node$.
+
+
 \begin{algorithm}
-\caption{\treapSplit($uu$)}
+\caption{\treapSplit($\node$)}
 \label{Algo:TREAPsplit}
 \begin{algorithmic}[1]
-\If { $uu$ $=$ \Nil} \Return \Nil, \Nil
+\If { $\node$ $=$ \Nil} \Return \Nil, \Nil
 \EndIf
-\State $R$ $\gets $ $u$.$dir$
-\State $L$ $\gets $ $u$.$esq$
-\State $tmp$ $\gets$ $uu$
+\State $R$ $\gets $ $\node$.$dir$
+\State $L$ $\gets $ $\node$.$esq$
+\State $tmp$ $\gets$ $\node$
+\State $\node$.$dir$ $\gets $ $\node$.$esq$ $\gets $ $\Nil$
 \While { $tmp$.$pai$ $\neq \Nil$}
-  \If { $tmp$.$pai$.$dir$ = $tmp$}
-    \State $tmp$.$pai$.$dir$ $\gets$ $L$ 
-    \If { $R$ $\neq$ \Nil}
-    \State $tmp$.$pai$.$tam$ $\gets$ $tmp$.$pai$.$tam$ - $R$.$tam$
-    \EndIf
-    \If { $L$ $\neq$ \Nil}
-    \State $L$.$pai$ $\gets$ $tmp$.$pai$
-    \EndIf
-    \State $L$ $\gets$ $tmp$.$pai$
-  \Else
+  \If { $tmp$.$pai$.$esq$ = $tmp$}
     \State $tmp$.$pai$.$esq$ $\gets$ $R$
     \If { $L$ $\neq$ \Nil}
     \State $tmp$.$pai$.$tam$ $\gets$ $tmp$.$pai$.$tam$ - $L$.$tam$
@@ -183,6 +181,15 @@ A implementação rotina~\treapSplit($u$) pode ser vista no Algoritmo~\ref{Algo:
     \State $R$.$pai$ $\gets$ $tmp$.$pai$
     \EndIf
     \State $R$ $\gets$ $tmp$.$pai$
+  \Else
+    \State $tmp$.$pai$.$dir$ $\gets$ $L$ 
+    \If { $R$ $\neq$ \Nil}
+    \State $tmp$.$pai$.$tam$ $\gets$ $tmp$.$pai$.$tam$ - $R$.$tam$
+    \EndIf
+    \If { $L$ $\neq$ \Nil}
+    \State $L$.$pai$ $\gets$ $tmp$.$pai$
+    \EndIf
+    \State $L$ $\gets$ $tmp$.$pai$
   \EndIf
   \State $tmp$ $\gets$ $tmp$.$pai$
 \EndWhile
@@ -192,4 +199,46 @@ A implementação rotina~\treapSplit($u$) pode ser vista no Algoritmo~\ref{Algo:
 \end{algorithmic}
 \end{algorithm}
 
-enquanto que \treapJoin{} consome $\O{h}$ onde~$h$ é a soma das alturas das duas árvores que são unidas e \treapSplit{} consome $\O{h}$ onde~$h$ é a altura da árvore original. Como a altura esperada dessas árvores é  $\O{\lg n}$, teremos que o consumo de tempo dessas duas rotinas também será logarítmico.
+Para fazer isso mantemos três ponteiros: $L$, $R$ e~$tmp$. 
+Os dois primeiros apontam para as raizes das árvores resultantes desse corte e o terceiro aponta para o nó cuja relação de parentesco será modificada.
+
+Simularemos a execução de $\treapSplit(X)$, onde $X$ é o nó de coordenadas $(6,3)$ da Figura~\ref{fig:treap-join-depois}.
+O estado inicial dos ponteiros~$L$ e~$R$ são os filhos de~$X$ e~$tmp$ aponta para~$X$, como mostra a Figura~\ref{fig:treap-split-1}.
+
+Se~$tmp$ for filho a esquerda de seu pai, isto é $tmp$.$pai$.$esq$ $=$ $tmp$, então a chave de $tmp$.$pai$ é maior do que a chave de~$X$ e logo deve ser um nó de~$R$.
+Além disso, sabemos que a prioridade e chave de $tmp$.$pai$ são maiores do que a prioridade e chave de~$R$, logo $tmp$.$pai$ deve ser a nova raíz de~$R$ e~$R$ é o filho a esquerda de~$tmp$.$pai$.
+Após atualizar os campos de parentesco entre~$R$, $tmp$ e $tmp$.$pai$, atualizamos valor de~$tmp$ para $tmp$.$pai$, obtemos o estado mostrado na Figura~\ref{fig:treap-split-2}.
+Então repetimos esse processo. 
+
+
+\begin{figure}[htb]
+\begin{subfigure}{0.3\textwidth}
+\input{fig/TREAP-split-1.tex}
+\caption{Estado inicial dos ponteiros $L$, $R$ e $tmp$.}
+\label{fig:treap-split-1}
+\end{subfigure}
+\hspace{1cm}
+\begin{subfigure}{0.3\textwidth}
+\input{fig/TREAP-split-2.tex}
+\caption{Estado após atualização dos ponteiros de parentesco.}
+\label{fig:treap-split-2}
+\end{subfigure}
+\caption{Dois estados da simução de~\treapSplit(X)}
+\end{figure}
+
+Na próxima iteração desse laço repetimos o processo descrito no paragrafo anterior, pois temos que o nó apontado por~$tmp$ é filho a esquerda de seu pai.
+Já na próxima iteração, fazemos as operações simétricas, pois teremos que o nó apontado por $tmp$ é filho a direita de seu pai.
+Ao termino dessa iteração, obtemos as treaps da Figura~\ref{fig:treap-split-final}.
+
+
+Notemos que \treapSplit{} consiste em um laço que percorre os nós de uma treap até sua raiz e em cada nó realiza operações de custo constante, logo seu custo de tempo assintótico é proporcional a altura da treap e como essa é balanciada, temos que seu consome esperado é $\O{\lg n}$.
+
+
+
+
+\begin{figure}[htb]
+\centering
+\input{fig/TREAP-split-final.tex}
+\caption{Resultado de~\treapSplit(X).}
+\label{fig:treap-split-final}
+\end{figure}
