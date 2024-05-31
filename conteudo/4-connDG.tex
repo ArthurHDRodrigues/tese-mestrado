@@ -253,7 +253,7 @@ Como garantimos que~$|T_u| \leqslant 2^{i-1}$ antes de rebaixar as arestas de $T
 Antes de analisar o consumo de tempo de \dymGraphReplace{}, é necessário elaborar mais alguns detalhes sobre a implementação dessa rotina.
 Especificamente, como realizamos os laços das linhas~\ref{Algo:dymGraphReplace:linha:moveTu} e~\ref{Algo:dymGraphReplace:linha:achaSub}.
 
-No laço da linha~\ref{Algo:dymGraphReplace:linha:moveTu}, percorremos o conjunto das arestas de nível~$i$ de~$T_u$. Para acessar esse conjunto eficientemente, adicionaremos dois novos campos aos nós da Euler Tour Tree que armazena~$T_u$. O primeiro será um campo booleano, chamado~$niv$, que valerá~$1$ somente se a aresta representada pelo nó for de nível~$i$. Caso contrário, esse campo valerá~$0$. O segundo campo, chamado~$cniv$, armazena o número de arestas de nível $i$ na subárvore enraizada pelo nó. Podemos ver na Figura~\ref{fig:DG-TREAP-niv}, como exemplo, a floresta $F_{\leqslant i}$ da Figura~\ref{fig:DG-depois-achou-sub} representada por uma Euler tour tree.
+No laço da linha~\ref{Algo:dymGraphReplace:linha:moveTu}, percorremos o conjunto das arestas de nível~$i$ de~$T_u$. Para acessar esse conjunto eficientemente, adicionaremos dois novos campos aos nós da Euler tour tree que armazena~$T_u$. O primeiro será um campo booleano, chamado~$niv$, que valerá~$1$ somente se a aresta representada pelo nó for de nível~$i$. Caso contrário, esse campo valerá~$0$. O segundo campo, chamado~$cniv$, armazena o número de arestas de nível $i$ na subárvore enraizada pelo nó. Podemos ver na Figura~\ref{fig:DG-TREAP-niv}, como exemplo, a floresta $F_{\leqslant i}$ da Figura~\ref{fig:DG-depois-achou-sub} representada por uma Euler tour tree.
 
 \begin{figure}[htb]
 \scalebox{.61}{
@@ -263,31 +263,40 @@ No laço da linha~\ref{Algo:dymGraphReplace:linha:moveTu}, percorremos o conjunt
 \label{fig:DG-TREAP-niv}
 \end{figure}
 
-Com esses dois campos, podemos adicionar uma nova rotina, chamada \treapGetEdgesLevel{} e descrita no Algoritmo~\ref{Algo:treapGetEdgesLevel}, que percorre a Euler Tour Tree que armazena~$T_u$ evitando subárvores que não possuam arestas de nível~$i$ e constrói o conjunto de todas as arestas de nível~$i$ de~$T_u$.
+Com esses dois campos, podemos adicionar uma nova rotina, chamada \treapGetEdgesLevel{} e descrita no Algoritmo~\ref{Algo:treapGetEdgesLevel}, que percorre a Euler tour tree que armazena~$T_u$ evitando subárvores que não possuam arestas de nível~$i$ e constrói o conjunto de todas as arestas de nível~$i$ de~$T_u$.
 
 \begin{algorithm}
 \caption{\treapGetEdgesLevel($\node$)}
 \label{Algo:treapGetEdgesLevel}
 \begin{algorithmic}[1]
 \If {$\node$ $=$ \Nil{} ou $\node$.$cniv$ $=0$}
-\State \Return \Nil
+\State \Return $\emptyset$
 \EndIf
-\If {$\node.esq$ $\neq$ \Nil{} e $\node.esq$.$cniv$ $\geqslant k$}
-\State  \Return \treapGetEdgesLevel($\node.esq$, $k$)
+\State $L$ $\gets$ $\emptyset$
+\If {$\node.esq$ $\neq$ \Nil{} e $\node.esq$.$cniv$ $\geqslant 0$}
+\State  $L$ $\gets$ $L$ $\cup$ \treapGetEdgesLevel($\node.esq$)
 \EndIf
-\If {$\node.esq$ $\neq$ \Nil{} e $\node.esq$.$cniv +1$ $=k$ e $\node.niv$}
-\State  \Return $\node$
+\If {$\node$.$niv$ $=1$}
+\State $L$ $\gets$ $L$ $\cup$ $\{\node\}$
 \EndIf
-\State \Return \treapGetEdgesLevel($\node.dir$, $k-\node.esq$.$cniv-\node.niv$)
-
+\If {$\node.dir$ $\neq$ \Nil{} e $\node.dir$.$cniv$ $\geqslant 0$}
+\State  $L$ $\gets$ $L$ $\cup$ \treapGetEdgesLevel($\node.dir$)
+\EndIf
+\State \Return $L$
 \end{algorithmic}
 \end{algorithm}
 
-Notemos que \treapGetEdgesLevel{} não altera o grafo nem as florestas e nível das arestas, logo preserva as invariantes. Seu consumo de tempo esperado é $\O{k \lg n}$, onde $k$ é o número de arestas de nível~$i$ na árvore de $F_{\leqslant i}$ que contém o $\node$, que corresponde aos $k$ percursos da raiz da Euler Tour Tree até cada nó com campo $niv$ igual a~$1$. Como a Euler Tour Tree é balanceada, o custo de cada percurso é~$\O{\lg n}$.
+Notemos que \treapGetEdgesLevel{} não altera o grafo nem as florestas e nível das arestas, logo preserva as invariantes. Seu consumo de tempo esperado é $\O{k \lg n}$, onde $k$ é o número de arestas de nível~$i$ na árvore de $F_{\leqslant i}$ que contém o $\node$, que corresponde aos $k$ percursos da raiz da Euler tour tree até cada nó com campo $niv$ igual a~$1$. Como a Euler tour tree é balanceada, o custo de cada percurso é~$\O{\lg n}$.
 
 Com essa nova rotina em mãos, realizar o laço da linha~\ref{Algo:dymGraphReplace:linha:moveTu} se torna fácil. Primeiro construímos esse conjunto de arestas titulares de nível~$i$ e então o percorremos, rebaixando cada aresta para o nível~$i-1$.
 
-A técnica utilizada para o laço da linha~\ref{Algo:dymGraphReplace:linha:achaSub} é completamente análoga. Só que agora a informação que queremos extrair da Euler Tour Tree é o conjunto de vértices incidentes a alguma aresta reserva de nível~$i$. Logo, adicionaremos dois outros novos campos aos nós das nossas Euler Tour Trees. O primeiro, chamado $res$, que é igual a~$1$ se o nó é a ocorrência ativa de um vértice $v$, isto é, contém a ocorrência~$vv$ apontada pela tabela de símbolos da floresta e $v$ é incidente alguma aresta reserva de nível~$i$, caso contrário, valerá~$0$. O segundo será um contador, chamado de~$cres$, que armazena o número de nós que satisfazem $res$ $=$ $1$ na subárvore enraizada pelo nó. Podemos ver, na Figura~\ref{fig:DG-TREAP-res}, o valor desses campos para o grafo dinâmico de nível~$i$ da Figura~\ref{fig:DG-depois-achou-sub}. A manutenção desses campos é análoga à manutenção feita nos campos $niv$ e~$cniv$.
+A técnica utilizada para o laço da linha~\ref{Algo:dymGraphReplace:linha:achaSub} é análoga.
+Só que agora a informação que queremos extrair da Euler tour tree é o conjunto de vértices incidentes a alguma aresta reserva de nível~$i$.
+Logo, adicionaremos dois outros novos campos aos nós das nossas Euler tour trees.
+O primeiro, chamado $res$, que é igual a~$1$ se~$v$ é incidente alguma aresta reserva de nível~$i$, caso contrário, valerá~$0$.
+O segundo será um contador, chamado de~$cres$, que armazena o número de nós que satisfazem~$res$~$=$~$1$ na subárvore enraizada pelo nó.
+Podemos ver, na Figura~\ref{fig:DG-TREAP-res}, o valor desses campos para o grafo dinâmico de nível~$i$ da Figura~\ref{fig:DG-depois-achou-sub}.
+A manutenção desses campos é análoga à manutenção feita nos campos~$niv$ e~$cniv$.
 
 \begin{figure}[htb]
 \scalebox{.61}{
