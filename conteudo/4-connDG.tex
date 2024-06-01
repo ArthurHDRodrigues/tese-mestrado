@@ -306,8 +306,13 @@ A manutenção desses campos é análoga à manutenção feita nos campos~$niv$ 
 \label{fig:DG-TREAP-res}
 \end{figure}
 
-Podemos fazer a manutenção desses novos campos sem onerar o custo das outras rotinas. Toda nova aresta inserida em algum nível possui o campo $niv$ igual a $1$, esse campo se torna $0$ somente quando rebaixamos essa aresta de nível. Toda manutenção que o campo $cniv$ pede é a sua atualização toda vez que atualizamos o campo $.tam$ das treaps. Isso se deve ao fato de atualizarmos $.tam$ quando a estrutura das subárvores de um nó são modificadas. Nesse caso, essa modificação de estrutura infere também na necessidade de atualização dos demais contadores. O segundo contador, $cres$, exige atualizações em situações adicionais. Toda vez que adicionamos ou removemos uma aresta reserva ou quando um nó se torna ocorrência ativa, devemos percorrer o caminho desse nó até a raiz atualizando o campo $cres$, o que consome tempo esperado~$\O{\lg n}$.
-
+Podemos fazer a manutenção desses novos campos sem onerar o custo das outras rotinas.
+Toda nova aresta inserida em algum nível possui o campo~$niv$ igual a~$1$, esse campo se torna~$0$ somente quando rebaixamos essa aresta de nível.
+Toda manutenção que o campo~$cniv$ pede é a sua atualização toda vez que atualizamos o campo~$tam$ das treaps.
+Isso se deve ao fato de atualizarmos~$tam$ quando a estrutura das subárvores de um nó são modificadas.
+Nesse caso, essa modificação de estrutura infere também a necessidade de atualização dos demais contadores.
+O segundo contador,~$cres$, exige atualizações em situações adicionais.
+Toda vez que adicionamos ou removemos uma aresta reserva devemos percorrer o caminho desse nó até a raiz atualizando o campo~$cres$, o que consome tempo esperado~$\O{\lg n}$.
 
 Para concluir essa seção, argumentaremos como ocorre a amortização de custo de \dymGraphDelEdge{}. 
 A amortização ocorre em uma sequência arbitrária válida de $m$ inserções e $t$ remoções de arestas.
