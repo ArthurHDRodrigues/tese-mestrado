@@ -20,7 +20,7 @@ O estudo~\cite{EmpiricalStudy1997} conclui que~\HK{} se torna mais eficiente do 
 O estudo~\cite{EmpiricalStudy2002}
 
 Em $2022$, Chen \textit{et al.}\cite{QC22} propõem uma heurística para garantir baixo consumo de tempo da consulta de conexidade e, para mostrar a eficiência dessa heurística, realizam um estudo empírico comparando sua solução com~\HK{}.
-Chamaremos esse algoritmo heuristico de~\CLHB{} e elaboraremos mais sobre ele na próxima seção.
+Chamaremos esse algoritmo heurístico de~\CLHB{} e elaboraremos mais sobre ele na próxima seção.
 
 \section{Escopo}
 
@@ -54,8 +54,8 @@ Na Figura~\ref{fig:sensibilidade-diametro} podemos observar um gráfico que most
 \label{fig:sensibilidade-diametro}
 \end{figure}
 
-No entando, notamos que dos 1324 grafos presentes em~\cite{KONECT} $1015$ vêm de uma única fonte -- 
-propriamente dita, são provenientes da Wikimedia~\cite{wikimedia}, responsavel pela Wikipedia e afins -- 
+No entanto, notamos que dos 1324 grafos presentes em~\cite{KONECT} $1015$ vêm de uma única fonte -- 
+propriamente dita, são provenientes da Wikimedia~\cite{wikimedia}, responsável pela Wikipédia e afins -- 
 e $809$ destes grafos são classificados na mesma categoria, isto é, grafos bipartidos que relacionam autores com paginas web editadas por eles. Como há poucos autores em relação ao número de páginas web, o diâmetro de cada componente conexa desses grafos tende a ser baixo.
 
 Se excluirmos esses~$1014$, a quantidade de grafos com diâmetro estritamente menor do que~$16$ diminui para~$63\%$, como mostra a Figura~\ref{fig:distdiametro}.
@@ -84,10 +84,10 @@ Uma cifra muito menos relevante do que os~$89\%$ incluindo os grafos providos pe
 \end{center}
 \end{figure}
 
-Além disso, observamos uma tendência de grafos que representam infraestruturas fisicas (como rodovias, rotas aéreas e malha energética) possuirem diâmetro muito maior do que~$16$.
+Além disso, observamos uma tendência de grafos que representam infraestruturas físicas (como rodovias, rotas aéreas e malha energética) possuírem diâmetro muito maior do que~$16$.
 O que indica que a eficiência de~\CLHB{} está fortemente ligada ao contexto em que é utilizado. 
 
-Como a proposta desse trabalho é analisar soluções adequadas para uso geral, independente de contexto ou caracteristicas especificas dos grafos utilizados, não consideramos adequado incluir~\CLHB{} em nosso estudo comparativo.
+Como a proposta desse trabalho é analisar soluções adequadas para uso geral, independente de contexto ou características especificas dos grafos utilizados, não consideramos adequado incluir~\CLHB{} em nosso estudo comparativo.
 
 
 Dessa forma, somente compararemos~\HK{} com~\HDT{} e para fazer isso usaremos os grafos listados na Tabela~\ref{tab:datasets}.
