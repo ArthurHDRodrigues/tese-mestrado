@@ -3,45 +3,96 @@
 
 Nesse capítulo faremos experimentos comparativos para avaliar a eficiência do algoritmo de conexidade dinâmica elaborado no Capítulo~\ref{sec:connDG}. Como esse algoritmo foi desenvolvido  por Holm, de Lichtenberg e Thorup, ele é conhecido na literatura pelo acrônimo~\HDT.
 
-O principal algoritmo concorrente foi desenvolvido por Henzinger e King, denotado por~\HK.
+O principal algoritmo concorrente foi desenvolvido por Henzinger e King~\cite{HenzingerKing} e é denotado por~\HK.
 Ele empata o consumo assintótico amortizado esperado de $\O{\lg^2 n}$ de~\HDT.
 
 Ambos os algoritmos visam manter uma floresta maximal geradora do grafo dinâmico para realizar o teste de conexidade e usam a mesma estratégia de atribuir níveis às arestas do grafo para amortizar o custo das operações.
 
 A principal diferença entre eles é que~\HK{} sorteia arestas reservas e as testa para verificar se substituem uma aresta removida da MSF. Portanto seu consumo de tempo é necessariamente esperado, enquanto que~\HDT{} pode ser completamente determinístico se a implementação das florestas dinâmicas usadas for determinística. 
 
-Na literatura, encontramos três estudos comparativos entre algoritmos para o problema de conexidade dinâmica~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}.
+Na literatura, encontramos quatro estudos comparativos entre algoritmos para o problema de conexidade dinâmica~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002, QC22}.
 O estudo~\cite{EmpiricalStudy1997} não analisa~\HDT{} e somente compara~\HK{} com um algoritmo desenvolvido por~Eppstein et al.~\cite{Eppstein1992SparsificationaTF} que utiliza uma técnica chamada esparsificação para reduzir o custo assintótico das operações aplicadas ao grafo.
 O estudo~\cite{EmpiricalStudy1997} conclui que~\HK{} se torna mais eficiente do que o algoritmo de Eppstein et al. quando o número de atualizações aplicadas a um grafo dinâmico é aproximadamente duas vezes o número de vértices do grafo. Esse fenômeno é devido à amortização utilizada por~\HK{}, que necessita de um número razoável de atualizações para diluir o custo das operações. 
 
 
 \TODO{Escrever sobre~\cite{EmpiricalStudy2002, Zaroliagis2002}. Depois escreva o que está incluído nos resultados experimentais que apresentamos a seguir}
 
-\begin{comment}
+O estudo~\cite{EmpiricalStudy2002}
 
-\section{Breve descrição de~\CLHB{}}
+Em $2022$, Chen \textit{et al.}\cite{QC22} propõem uma heurística para garantir baixo consumo de tempo da consulta de conexidade e, para mostrar a eficiência dessa heurística, realizam um estudo empírico comparando sua solução com~\HK{}.
+Chamaremos esse algoritmo heurístico de~\CLHB{} e elaboraremos mais sobre ele na próxima seção.
+
+\section{Escopo}
+
+Em nosso experimento, faremos testes com conjuntos de dados reais.
+Compararemos~\HDT{} com a implementação de~\HK{} apresentada por Chen~\textit{et al.}~\cite{QC22}.
+No entanto não incluiremos o algoritmo desenvolvido por esses autores em nosso experimento.
+
+Como comentado anteriormente, a solução desenvolvida por Chen~\textit{et al.} se baseia na heurística de que grafos reais possuem baixo diâmetro.
+Em um banco de dados com~$1324$ grafos~\cite{KONECT}, os autores notaram que~$1185$ deles possuem diâmetro menor do que~$16$.
+Com essa informação, eles desenvolveram uma estrutura de dados que possui consumo de tempo linear em função do diâmetro do grafo,
+portanto se beneficiando desse baixo diâmetro empiricamente observado.
+
+Na Figura~\ref{fig:sensibilidade-diametro} podemos observar um gráfico que mostra o consumo de tempo de consulta de conexidade em \HK{}, \HDT{} e~\CLHB{} em função do diâmetro do grafo que está sendo operado.
+
+\begin{figure}
+\begin{tikzpicture}
+    \begin{axis}[
+		 ylabel=consumo de consulta de conexidade (s),
+		 xlabel=Diâmetro~$D$,
+		 width=0.5\linewidth,
+	         ]
+    \addplot[orange] table [x=avg_sp, y=Dtree, col sep=comma] {csv/avg_sp.csv};
+    \addlegendentry{\CLHB}
+    \addplot[black] table [x=avg_sp, y=HK, col sep=comma] {csv/avg_sp.csv};
+    \addlegendentry{\HK}
+    \addplot[blue] table [x=avg_sp, y=HDT, col sep=comma] {csv/avg_sp.csv};
+    \addlegendentry{\HDT}
+\end{axis}
+\end{tikzpicture}
+\caption{Consumo de tempo de consulta de conexidade em função do diâmetro do grafo.}
+\label{fig:sensibilidade-diametro}
+\end{figure}
+
+No entanto, notamos que dos 1324 grafos presentes em~\cite{KONECT} $1015$ vêm de uma única fonte -- 
+propriamente dita, são provenientes da Wikimedia~\cite{wikimedia}, responsável pela Wikipédia e afins -- 
+e $809$ destes grafos são classificados na mesma categoria, isto é, grafos bipartidos que relacionam autores com paginas web editadas por eles. Como há poucos autores em relação ao número de páginas web, o diâmetro de cada componente conexa desses grafos tende a ser baixo.
+
+Se excluirmos esses~$1014$, a quantidade de grafos com diâmetro estritamente menor do que~$16$ diminui para~$63\%$, como mostra a Figura~\ref{fig:distdiametro}.
+Uma cifra muito menos relevante do que os~$89\%$ incluindo os grafos providos pela Wikimedia.
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+    \begin{axis}[
+         ybar,
+	 ylabel=$\%$ de grafos com diâmetro $D$,
+         xlabel=Diâmetro $D$,
+         symbolic x coords={1--5,6--10,11--16,17--20,20+},
+         legend pos=north east,
+         nodes near coords,
+         title={Distribuição de diâmetros}
+	 ]
+    \addplot[fill=blue] table [x=intervalo,col sep=comma] {csv/data-analysis/non-wiki-grafico-resumido.csv};
+    %\addlegendentry{s/ wikimedia}
+    \addplot[fill=orange] table [x=intervalo,y=wiki,col sep=comma] {csv/data-analysis/non-wiki-grafico-resumido.csv};
+    %\addlegendentry{c/ wikimedia}
+\end{axis}
+\end{tikzpicture}
+\caption{Em laranja, mostramos a distribuição de diâmetros no banco de dados~\cite{KONECT}. Em azul, a mesma distribuição excluindo grafos originários da Wikimedia.}
+\label{fig:distdiametro}
+\end{center}
+\end{figure}
+
+Além disso, observamos uma tendência de grafos que representam infraestruturas físicas (como rodovias, rotas aéreas e malha energética) possuírem diâmetro muito maior do que~$16$.
+O que indica que a eficiência de~\CLHB{} está fortemente ligada ao contexto em que é utilizado. 
+
+Como a proposta desse trabalho é analisar soluções adequadas para uso geral, independente de contexto ou características especificas dos grafos utilizados, não consideramos adequado incluir~\CLHB{} em nosso estudo comparativo.
 
 
-Em $2022$, Chen \textit{et al.}\cite{QC22} propõem uma heurística para garantir baixo consumo de tempo da consulta de conexidade. Nessa capítulo denotaremos esse algoritmo por~\CLHB.
-Assim como~\HDT e~\HK, \CLHB{} mantém uma floresta geradora~$F$ do grafo dinâmico para fazer os testes de conexidade.
-No entanto, em~\CLHB{}, essa floresta é enraizada.
-Para manter essa floresta, é usada uma árvore enraizada $k$-ária.
-Cada vértice~$v$ de~$F$ é representado por exatamente um nó que possui os campos: pai, filhos, tam.\TODO{Confirmar quais campos}
+Dessa forma, somente compararemos~\HK{} com~\HDT{} e para fazer isso usaremos os grafos listados na Tabela~\ref{tab:datasets}.
+Todos os grafos foram retirados do NetworkRepository~\cite{nr-aaai15}, um grande repositório de grafos.
 
-O campo pai é um ponteiro que indica o pai de~$v$. O nó que representa a raiz de~$F$ possui~\Nil{} como valor do campo pai.
-O campo filhos é uma tabela de símbolos que armazena um ponteiro para cada nó que representa um vértices incidente a~$v$.
-
-
-Os autores não apresentam análises de complexidade das operações, mas comparam o desempenho da nova estrutura de dados com a de Henzinger e King em bancos de dados imensos bem conhecidos. No entanto, não comparam sua implementação com outros algoritmos, como o de Holm et al.
-\end{comment}
-
-\section{Metodologia}
-
-Em nossos experimentos, faremos testes com conjuntos de dados reais e artificiais.
-A tabela~\ref{tab:datasets} lista os conjuntos de dados reais que usaremos e algumas características dos mesmos.
-
-Como podemos ver na tabela~\ref{tab:datasets}, cada conjunto de dados possui um número variado de atualizações.
-Além disso, esses conjuntos de dados listam somente inserções de arestas.
 
 \begin{table}
 \begin{center}
@@ -49,27 +100,30 @@ Além disso, esses conjuntos de dados listam somente inserções de arestas.
  \hline
 	Nome & $|V|$ & $|E|$ & N° de atualizações\\
  \hline
-	email-dnc (DNC)\cite{nr-aaai15}&$1.9\times 10^3$&$3.74\times 10^4$&$3.2\times 10^4$\\
+	email-dnc (DNC)&$1.9\times 10^3$&$3.74\times 10^4$&$3.2\times 10^4$\\
  \hline
-	Call (CA)\cite{nr-aaai15}&$7\times 10^3$&$5.1\times 10^4$&$2.3\times 10^4$\\
+	Call (CA)&$7\times 10^3$&$5.1\times 10^4$&$2.3\times 10^4$\\
  \hline
-	messages (MS)\cite{nr-aaai15}&$2\times 10^3$&$6\times 10^4$&$6.3\times 10^4$\\
+	messages (MS)&$2\times 10^3$&$6\times 10^4$&$6.3\times 10^4$\\
  \hline
-	FB-FORUM (FB)\cite{nr-aaai15}&$8.99\times 10^2$&$3.5\times 10^4$&$3.8\times 10^4$\\
+	FB-FORUM (FB)&$8.99\times 10^2$&$3.5\times 10^4$&$3.8\times 10^4$\\
  \hline
-	Wiki-elec(WI)\cite{nr-aaai15}&$7.1\times 10^3$&$1.07\times 10.5$&$2.1\times 10^5$\\
+	Wiki-elec(WI)&$7.1\times 10^3$&$1.07\times 10.5$&$2.1\times 10^5$\\
  \hline
-	tech-as-topology(Tech)\cite{nr-aaai15}&$3.4\times 10^4$&$1.71\times 10^5$&$2.7\times 10^5$\\
+	tech-as-topology(Tech)&$3.4\times 10^4$&$1.71\times 10^5$&$2.7\times 10^5$\\
  \hline
-	Enron(EN)\cite{nr-aaai15}&$8.7\times 10^4$&$1.1\times 10^6$&$1.28\times 10^6$\\
+	Enron(EN)&$8.7\times 10^4$&$1.1\times 10^6$&$1.28\times 10^6$\\
  \hline
 \end{tabular}
-\caption{Tabela com conjuntos de dados usados retirados de~\cite{nr-aaai15}}
+\caption{Grafos dinâmicos retirados de~\cite{nr-aaai15}}
 \label{tab:datasets}
 \end{center}
 \end{table}
 
 
+\section{Metodologia}
+
+\cite{guideXP1999}
 
 \section{Resultados}
 
@@ -150,23 +204,3 @@ Além disso, esses conjuntos de dados listam somente inserções de arestas.
 \end{figure}
 
 
-\section{Sensibilidade a diâmetro}
-\begin{figure}
-\begin{tikzpicture}
-    \begin{axis}[
-		 ylabel=tempo médio (s),
-		 %xticklabel=\empty,
-		 xlabel=\empty,
-		 xlabel=pontos de testes,
-		 %scaled x ticks=false,
-		 width=0.5\linewidth,
-	         ]
-    \addplot[orange] table [x=avg_sp, y=Dtree, col sep=comma] {csv/avg_sp.csv};
-	    \label{pgfplots:Dtree:avgsp}
-    \addplot[black] table [x=avg_sp, y=HK, col sep=comma] {csv/avg_sp.csv};
-	    \label{pgfplots:HK:avgsp}
-    \addplot[blue] table [x=avg_sp, y=HDT, col sep=comma] {csv/avg_sp.csv};
-	    \label{pgfplots:HDT:avgsp}
-\end{axis}
-\end{tikzpicture}
-\end{figure}
