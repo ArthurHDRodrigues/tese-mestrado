@@ -57,12 +57,12 @@ Essa seção é inspirada na historiografia feita em \cite{QC22, HHSRecentAdvanc
 
 Soluções para os problemas de conexidade dinâmica e de floresta maximal de peso mínimo se desenvolveram em paralelo ao longo dos anos. Em $1975$, Spira e Pan~\cite{SP1975} atacam o problema MSF propondo um algoritmo cuja complexidade é $\O{n}$ para inserção e $\O{n^2}$ para remoção de arestas, onde $n$ é o número de vértices do grafo. Três anos depois, Chin e Houck~\cite{CH1978} apresentam uma solução mais simples para inserção e remoção de arestas que possui o mesmo consumo de tempo que o algoritmo de Spira e Pan.
 
-Em $1985$, Frederickson~\cite{frederickson1983data} reduz a complexidade de ambas as operações de modificação para $\O{\sqrt{m}}$, onde~$m$ é o número de arestas do grafo no momento em que a operação é aplicada.
+Em $1985$, Frederickson~\cite{frederickson1983data} reduz a complexidade de ambas as operações de modificação para $\O{\!\sqrt{m}}$, onde~$m$ é o número de arestas do grafo no momento em que a operação é aplicada.
 
-Em $1997$, Eppstein et al.~\cite{Eppstein1992SparsificationaTF} melhoram o consumo de tempo do algoritmo de Frederickson para~$\O{\sqrt{n}}$.
+Em $1997$, Eppstein et al.~\cite{Eppstein1992SparsificationaTF} melhoram o consumo de tempo do algoritmo de Frederickson para~$\O{\!\sqrt{n}}$.
 Neste mesmo ano, é realizado o primeiro experimento de desempenho prático, testando diferentes versões do algoritmo de Frederickson~\cite{xpAnalyGiuseppe}.
 
-O primeiro algoritmo poli-logarítmico para o problema de conectividade dinâmica foi apresentado por Henzinger e King~\cite{HenzingerKing} e possui consumo amortizado esperado $\O{\lg^3 n}$ para cada operação. Nesse artigo elas introduzem uma estrutura de dados chamada \defi{Euler tour trees} como uma maneira eficiente de representar florestas dinâmicas. Em seguida, em $1997$, seu consumo esperado por operação é reduzido a $\O{\lg^2 n}$~\cite{HenzingerThorup}.  Implementações e avaliações experimentais foram feitas sobre essa solução para os problemas~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}.
+O primeiro algoritmo poli-logarítmico para o problema de conectividade dinâmica foi apresentado por Henzinger e King~\cite{HenzingerKing} e possui consumo amortizado esperado $\O{\lg^3 n}$ para cada operação. Nesse artigo elas introduzem uma estrutura de dados chamada Euler tour trees como uma maneira eficiente de representar florestas dinâmicas. Em seguida, em $1997$, seu consumo esperado por operação é reduzido a $\O{\lg^2 n}$~\cite{HenzingerThorup}.  Implementações e avaliações experimentais foram feitas sobre essa solução para os problemas~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}.
 
 Inspirados pela solução de Henzinger e King para o problema de conexidade dinâmica, em $2001$, Holm, de Lichtenberg e Thorup~\cite{poly_log} atacam ambos os problemas, de conectividade dinâmica e de MSF usando Euler tour trees.
 A solução deles para o problema de conexidade empata com o consumo assintótico da solução de Henzinger e King de~$\O{\lg^2 n}$.
@@ -72,7 +72,7 @@ Apresentaremos a solução de Holm et al. nesse texto com uma implementação al
 
 O algoritmo de Holm et al. para MSF possui consumo amortizado $\O{\lg^4 n}$ para cada operação, sendo assim a primeira estrutura de dados determinística com consumo de tempo poli-logarítmico para o problema MSF. Uma implementação eficiente deste algoritmo foi apresentada por Cattaneo et al. \cite{xpstudy2002} junto a um outro algoritmo mais simples e assintoticamente pior, mas que teve bom desempenho nos experimentos práticos realizados.
 
-Em $2000$, Thorup~\cite{Thorup2000} complementa o algoritmo de Holm et al.~\cite{poly_log}, adicionando uma estrutura de dados auxiliar chamada floresta estrutural, que reduz o consumo de tempo de cada operação para~$\O{\lg n(\lg\lg n)^3}$ esperado amortizado.
+Em $2000$, Thorup~\cite{Thorup2000} complementa o algoritmo de Holm et al.~\cite{poly_log}, adicionando uma estrutura de dados auxiliar chamada floresta estrutural, que reduz o consumo de tempo de cada operação para~$\O{\lg n\, (\lg\lg n)^3}$ esperado amortizado.
 
 Em $2006$, Patrascu e Demaine~\cite{lowerBoundPatrascu} provam um limitante inferior de $\Omega(\lg n)$ para o consumo assintótico por operação para o problema de conexidade dinâmica.
 Esse limitante pode ser facilmente aplicado para o problema de floresta maximal de peso mínimo.
