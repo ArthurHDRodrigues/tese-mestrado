@@ -7,7 +7,7 @@
 O problema de conexidade em grafos dinâmicos, descrito na Seção \ref{sec:Motivação}, pode ser reduzido ao caso em que o grafo é uma floresta, despertando assim o interesse no \defi[problema!de conexidade em florestas dinâmicas]{problema de conexidade em florestas dinâmicas}. Detalharemos como essa redução é feita no Capítulo~\ref{sec:connDG}. Esse problema pode ser apresentado como a implementação da seguinte biblioteca da forma mais eficiente possível: 
 
 \begin{itemize}
-\item \dymForestCreate($n$): cria uma floresta dinâmica com $n$ vértices isolados;
+\item \dymForestCreate($n$): cria e retorna uma floresta dinâmica com $n$ vértices isolados;
 \item \dymForestAddEdge($F$, $u$, $v$): adiciona a aresta $uv$ à floresta dinâmica~$F$;
 \item \dymForestDelEdge($F$, $u$, $v$): remove a aresta $uv$ de $F$; e
 \item \dymForestQuery($F$, $u$, $v$): retorna verdadeiro se $u$ e $v$ estão na mesma componente conexa de $F$ e falso, caso contrário.
@@ -64,7 +64,7 @@ Na representação de Henzinger e King, cada nó da ABB guarda um elemento da se
 Por exemplo, a ABB na Figura~\ref{fig:seq-treap-indices} está armazenando a sequência Euleriana~\eqref{eq:eulerSeq}.
 Uma tal ABB é chamada de \defi{Euler tour tree}. 
 Henzinger e King propuseram representar uma floresta por uma coleção de Euler tour trees: uma para cada componente da floresta. 
-Dessa forma, como veremos na Seção~\ref{sec:impleDF-ETT}, é possível obter uma implementação de uma floresta dinâmica em que as operações de consulta de conexidade e de inserção e remoção de aresta têm custo~$\O{\lg n}$, onde $n$ é o número de vértices da floresta.
+Dessa forma, como veremos na Seção~\ref{sec:impleDF-ETT}, é possível obter uma implementação de uma floresta dinâmica em que as operações de consulta de conexidade e de inserção e remoção de aresta têm consumo esperado~$\O{\lg n}$, onde $n$ é o número de vértices da floresta.
 
 
 \section{Implementação de floresta dinâmica com Euler tour trees}
@@ -79,18 +79,17 @@ Para implementar a biblioteca de florestas dinâmicas com Euler tour trees, cons
 
 A implementação dessas rotinas será detalhada no Capítulo~\ref{sec:TreapDeChaveImplicita}. Veremos que o consumo esperado de \treapCreate{} e \treapGetRoot{} será, respectivamente,~$\O{1}$ e~$\O{\lg n}$, onde~$n$ é o número de nós na ABB.
 
-Para representar uma floresta dinâmica $F$, precisaremos também de uma tabela de símbolos que guardará apontadores para os nós das Abbs que representam~$F$. Note que cada nó representa um elemento $uv$ de uma sequência Euleriana e que cada~$uv$ ocorre no máximo uma vez nas sequências. Entao o par $(u,v)$ será usado como chave e o valor correspondente a tal chave será o apontador para o nó que contém $uv$ nas ABBs que representam~$F$.
+Para representar uma floresta dinâmica $F$, precisaremos também de um dicionário que guardará apontadores para os nós das Abbs que representam~$F$. Note que cada nó representa um elemento $uv$ de uma sequência Euleriana e que cada~$uv$ ocorre no máximo uma vez nas sequências. Entao o par $(u,v)$ será usado como chave e o valor correspondente a tal chave será o apontador para o nó que contém $uv$ nas ABBs que representam~$F$.
 
-
-Para simplificar os pseudo-códigos, usaremos uma representação matricial para essa tabela de símbolos, ou seja, usaremos a seguinte biblioteca.
+Para simplificar os pseudo-códigos, usaremos uma representação matricial para esse dicionário, ou seja, usaremos a seguinte biblioteca.
 \begin{itemize}
-    \item $F \gets \hashCreate(n)$: cria e retorna uma tabela de símbolos~$F$ para uma floresta dinâmica com~$n$ vértices;
+    \item $F \gets \hashCreate(n)$: cria e retorna um dicionário~$F$ para uma floresta dinâmica com~$n$ vértices;
     \item $F[u,v] \gets uv$: insere o nó que contém $uv$, com chave $(u,v)$ e valor associado~$uv$ na tabela~$F$.
-    Se o par~$(u,v)$ já estiver presente na tabela de símbolos, então seu valor associado é substituído por~$uv$;
-    \item $F[u,v] \gets \Nil{}$: remove o nó associado ao~$(u,v)$ e seu valor associado da tabela de símbolos~$F$;
+    Se o par~$(u,v)$ já estiver presente no dicionário, então seu valor associado é substituído por~$uv$;
+    \item $F[u,v] \gets \Nil{}$: remove o nó associado ao~$(u,v)$ e seu valor associado do dicionário~$F$;
     \item $\var \gets F[u,v]$: atribui o valor associado à chave~$(u,v)$ à variável~$\var$; Caso a chave~$(u,v)$ não esteja presente em~$F$, atribui~$\Nil$ a~$\var$.
 \end{itemize}
-Assumiremos que a primeira rotina consome~$\O{n}$ e as demais consomem tempo esperado~$\O{1}$~\cite{CLRS}.
+Existem implementações bem conhecidas de dicionários em que a primeira rotina consome~$\O{n}$ e as demais consomem tempo esperado~$\O{1}$~\cite{CLRS}.
 
 No Algoritmo~\ref{Algo:dymForestCreate} apresentamos a implementação de~\dymForestCreate{}, que cria e retorna uma nova floresta dinâmica que possui $n$ vértices e nenhuma aresta.
 Já no Algoritmo~\ref{Algo:dymForestQuery} mostramos a implementação de~\dymForestQuery{}, que responde à consulta de conexidade entre dois vértices~$u$ e~$v$ na floresta~$F$.
@@ -134,7 +133,7 @@ Para implementar \dymForestAddEdge{} e \dymForestDelEdge{}, precisaremos adicion
 Na Seção~\ref{sec:imple-treap}, mostraremos a implementação dessas rotinas e que~\treapJoin{} consome~$\O{h}$, onde~$h$ é a soma das alturas de~$T_1, T_2, \ldots, T_k$ e \treapSplit{} consome~$\O{\lg n}$, onde~$n$ é número de nós da árvore que contém~$\node$.
 
 Para implementar a operação \dymForestDelEdge($F$, $u$, $v$), descrita no Algoritmo~\ref{Algo:dymForestDelEdge}, 
-primeiro utilizaremos a tabela de símbolos para obter ponteiros para os nós que armazenam os arcos $uv$ e $vu$.
+primeiro utilizaremos o dicionário para obter ponteiros para os nós que armazenam os arcos $uv$ e $vu$.
 
 Em seguida, aplicaremos~\treapSplit($uv$) dividindo essa sequência em duas partes, nomeadas~$A$ e~$B$, como pode ser visto na Figura~\ref{fig:algorit-cut-seqxy}.
 \begin{figure}[htb]

@@ -35,7 +35,7 @@ Como manipularemos muitos ponteiros a ABBs que podem conter $\Nil$, é convenien
 \end{algorithmic}
 \end{algorithm}
 
-Com chaves implícitas, a alteração de um nó $x$ torna necessário somente a atualização do campo $tam$ dos nós contidos no caminho entre o nó $x$ e a raiz da ABB que o contém, ou seja, o custo de tempo dessas atualizações será assintoticamente proporcional à altura da ABB. Resta então o desafio de manter a ABB balanceada. Na próxima seção apresentaremos a estrutura de dados treap, que resolve esse desafio sem onerar o custo assintótico das operações ou adicionar demasiada complexidade aos algoritmos.
+Com chaves implícitas, a alteração de um nó $x$ torna necessário somente a atualização do campo $tam$ dos nós contidos no caminho entre o nó $x$ e a raiz da ABB que o contém, ou seja, o consumo de tempo dessas atualizações será assintoticamente proporcional à altura da ABB. Resta então o desafio de manter a ABB balanceada. Na próxima seção apresentaremos a estrutura de dados treap, que resolve esse desafio sem onerar o custo assintótico das operações ou adicionar demasiada complexidade aos algoritmos.
 
 \section{Treaps}
 
@@ -221,7 +221,7 @@ Na próxima iteração desse laço, repetimos o processo descrito no parágrafo 
 Já na próxima iteração, fazemos as operações simétricas, pois teremos que o nó apontado por $tmp$ é filho direito de seu pai.
 Ao término dessa iteração, obtemos as treaps da Figura~\ref{fig:treap-split-final}.
 
-Notemos que \treapSplit{} consiste em um laço que percorre os nós de uma treap até sua raiz e em cada nó realiza operações de custo constante, logo seu custo de tempo é proporcional a altura da treap e, como essa é balanceada, temos que seu consome esperado é $\O{\lg n}$.
+Notemos que \treapSplit{} consiste em um laço que percorre os nós de uma treap até sua raiz e em cada nó realiza operações de custo constante, logo seu consumo de tempo é proporcional a altura da treap e, como essa é balanceada, temos que seu consome esperado é $\O{\lg n}$.
 
 \begin{figure}[htb]
 \centering
