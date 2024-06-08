@@ -18,7 +18,7 @@ A rotina \dymGraphCreate{} retorna um grafo composto por~$n$ vértices isolados.
 Logo uma floresta maximal para esse grafo consiste também em~$n$ vértices isolados.
 }
 
-Em uma chamada~\dymGraphAddEdge($G$, $u$, $v$), primeiro testamos a conexidade de $u$ com $v$. Se esses vértices não estiverem conectados em~$G$, então inserimos a aresta $uv$ na floresta maximal que estamos mantendo, assim ligando as duas árvores que contém~$u$ e~$v$ nessa floresta. Essas arestas serão chamadas de \defi[aresta!da floresta]{arestas da floresta} ou \defi[aresta!titulares]{arestas titulares}.
+Em uma chamada~\dymGraphAddEdge($G$, $u$, $v$), primeiro testamos a conexidade de $u$ com $v$. Se esses vértices não estiverem conectados em~$G$, então inserimos a aresta $uv$ na floresta maximal que estamos mantendo, assim ligando as duas árvores que contém~$u$ e~$v$ nessa floresta. Essas arestas serão chamadas de \defi[aresta!da floresta]{arestas da floresta} ou \defi[aresta!titular]{arestas titulares}.
 
 Já no caso em que $u$ e $v$ estiverem conectados em~$G$, então a aresta sobressalente~$uv$ será chamada de \defi[aresta!reserva]{aresta reserva} e iremos armazená-la em uma estrutura de dados auxiliar~$R$ dada por listas de adjacências. Para manusear~$R$, usamos a seguinte biblioteca:
 \begin{itemize}
