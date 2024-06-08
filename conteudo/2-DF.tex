@@ -93,11 +93,11 @@ Portanto não há ambiguidade sobre qual nó cada ponteiro deve indicar.
 }
 Para manusear a tabela, usaremos a seguinte biblioteca.
 \begin{itemize}
-    \item $F~\gets~\hashCreate(n)$: cria e retorna uma tabela de símbolos~$F$;
-    \item $F[u,v]~\gets~uv$: insere o par~$(u,v)$ com valor associado~$uv$ na tabela~$F$.
+    \item $F \gets \hashCreate(n)$: cria e retorna uma tabela de símbolos~$F$;
+    \item $F[u,v] \gets uv$: insere o par~$(u,v)$ com valor associado~$uv$ na tabela~$F$.
     Se o par~$(u,v)$ já estiver presente na tabela de símbolos, então seu valor associado é substituído por~$uv$;
-    \item $F[u,v]~\gets~\Nil{}$: remove o par~$(u,v)$ e seu valor associado da tabela de símbolos~$F$;
-    \item $var~\gets~F[u,v]$: atribui o valor associado ao par~$(u,v)$ à variável~$var$; Caso o par~$(u,v)$ não esteja presente em~$F$, atribui~$\Nil$ a~$var$.
+    \item $F[u,v] \gets \Nil{}$: remove o par~$(u,v)$ e seu valor associado da tabela de símbolos~$F$;
+    \item $\var \gets F[u,v]$: atribui o valor associado \emph{var}  ao par~$(u,v)$ à variável~$\var$; Caso o par~$(u,v)$ não esteja presente em~$F$, atribui~$\Nil$ a~$\var$.
 \end{itemize}
 Assumiremos que a primeira rotina consome~$\O{n}$ e as demais consomem tempo esperado~$\O{1}$~\cite{CLRS}.
 
