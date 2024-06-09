@@ -17,21 +17,21 @@ Ou seja,~$E(G_t) := E(G_{t-1})\cup \{uv\}$, para alguma aresta~$uv\notin E(G_{t-
 ou $E(G_t) := E(G_{t-1})\setminus \{uv\}$, onde~$uv\in E(G_{t-1})$, respectivamente.
 As operações de adição e remoção de arestas são chamadas de \defi{modificações} ou \defi{atualizações} do grafo dinâmico.
 \NEW{
-Nos problemas que estudaremos nesse texto, consideraremos que~$G_0$ não possui arestas.
+Nos problemas que estudaremos nesse texto, consideraremos que o grafo inicial~$G_0$ não possui arestas.
 }
 
 Há aplicações em que as conexões possuem um custo ou peso associado,
 representando a latência de comunicação entre dispositivos ou o custo de construção de uma infraestrutura cabeada, por exemplo. 
 Para lidar com tais aplicações, associa-se um valor real a cada aresta do grafo.
 Nesse caso, o grafo resultante é chamado de \defi[grafo!ponderado]{ponderado}.
-Em um problema com grafos dinâmicos ponderados, além de inserções e remoções de arestas, também é considerada a operação
+Em um problema com grafos dinâmicos ponderados também é considerada a operação
 de mudança de peso de uma determinada aresta como uma operação de atualização válida.
 
 Um problema em grafos dinâmicos envolve verificar se~$G_t$ satisfaz alguma determinada propriedade, para um dado~$0\leq t\leq T$.
 A operação de verificação dessa propriedade é chamada de \defi{consulta}.
-Solucionar um tal problema envolve desenvolver um algoritmo ou estrutura de dados capaz de dar suporte às modificações e consultas de forma eficiente.
+Solucionar um tal problema envolve desenvolver um algoritmo ou estrutura de dados capaz de dar suporte às modificações e consultas de forma \nolbreaks{eficiente}.
 
-Em alguns casos, restringimos cada~$G_t$ a uma família de grafos, como, por exemplo, florestas ou~\defi[grafo!plano]{grafos planos}, isto é, um grafo que é planar, com uma imersão específica no plano.
+Em alguns casos, restringimos cada~$G_t$ a uma família de grafos, como, por exemplo, florestas ou~\defi[grafo!plano]{grafos planos}, isto é, um grafo que é planar, com uma imersão específica \nolbreaks{no plano}.
 
 Trabalhar com essas classes mais restritas de grafos permite o desenvolvimento de algoritmos mais simples que podem servir de etapa intermediária para se obter uma solução para o problema geral ou ser de interesse para alguma aplicação específica.
 Usaremos a primeira estratégia no estudo do nosso primeiro problema:
@@ -49,8 +49,12 @@ No Capítulo~\ref{sec:connDF}, estudaremos o problema de conexidade em florestas
 Essa estrutura de dados utiliza árvores binárias de busca de chave implícita, cuja implementação será elaborada no Capítulo~\ref{sec:TreapDeChaveImplicita}.
 No Capítulo~\ref{sec:connDG}, expandiremos nosso estudo sobre conexidade estudando o problema de conexidade em grafos dinâmicos.
 
-No Capítulo~\ref{sec:avaliacao-empirica} apresentaremos um estudo experimental envolvendo o algoritmo explicado no Capítulo~\ref{sec:connDG}, incluindo experimentos com classes específicas de grafos.
-No Capítulo~\ref{sec:MSF}, apresentaremos um algoritmo proposto por Eppstein et al.~\cite{EPPSTEIN-planar} para solucionar o problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos planos. 
+\NEW{
+Começaremos o Capítulo~\ref{sec:avaliacao-empirica} resumindo resultados de estudos experimentais envolvendo algoritmos que resolvem o problema de conexidade em grafos dinâmicos.
+Em seguida, faremos um estudo próprio comparando o algoritmo explicado no Capítulo~\ref{sec:connDG} com seu principal concorrente na literatura.
+}
+
+No Capítulo~\ref{sec:MSF}, apresentaremos um algoritmo proposto por Eppstein et al.~\cite{EPPSTEIN-planar} para solucionar o problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos planos \NEW{sujeitos a alteração no peso das arestas}. 
 
 No Capítulo~\ref{sec:lim}, demonstraremos um limitante inferior de~$\Omega(\lg n)$ por operação para todos os problemas estudados. Esse limitante mostra que os algoritmos apresentados para o problema de conexidade em florestas dinâmicas e para o problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos planos são ótimos.
 No Capítulo~\ref{sec:conclusao} 
@@ -83,7 +87,10 @@ Em $2000$, Thorup~\cite{Thorup2000} complementou o algoritmo de Holm et al.~\cit
 Em $2006$, Patrascu e Demaine~\cite{lowerBoundPatrascu} provaram um limitante inferior de $\Omega(\lg n)$ para o consumo assintótico por operação para o problema de conexidade dinâmica.
 Esse limitante pode ser facilmente aplicado ao problema da floresta maximal de peso mínimo.
 
-Em $2010$, Tarjan e Werneck~\cite{tarjanWerneck2010} fizeram um estudo experimental com diversas estruturas de dados para árvores dinâmicas que resolvem o problema da floresta maximal de peso mínimo.
+Em $2010$, Tarjan e Werneck~\cite{tarjanWerneck2010} fizeram um estudo experimental com diversas estruturas de dados para árvores dinâmicas que resolvem \NEW{ambos os problemas de conexidade em florestas dinâmicas e} da floresta maximal de peso mínimo.
+\NEW{
+Destacando qualidades e deficiências de cada estrutura de dados quando sujeitas a diferentes tipos de cargas de trabalho. 
+}
 
 Em $2016$, Wulff-Nilsen~\cite{Wulff-Nilsen2016} apresentou um novo algoritmo para o problema de conexidade em grafos dinâmicos que dá suporte às atualizações com consumo~$\O{\frac{\lg^2 n}{\lg \lg n}}$ esperado amortizado e~$\O{\frac{\lg n}{\lg \lg n}}$ para a consulta de conexidade.
 
@@ -95,4 +102,4 @@ Em $2015$, Kejlberg-Rasmussen et al.~\cite{kejlbergrasmussen_et_al} apresentaram
 
 Em $2022$, Chen et al. \cite{QC22} propuseram uma heurística baseada no diâmetro do grafo dinâmico e com ela desenvolveram um algoritmo que possui bom desempenho prático quando aplicado a grafos dinâmicos extraídos de situações reais.
 No entanto, quando o diâmetro do grafo em questão ultrapassa~$16$ arestas, algoritmos com consumo de tempo assintótico menor, como o de Henzinger e King~\cite{HenzingerKing}, o superam.
-Nosso estudo experimental indica que o algoritmo de Holm et al.~\cite{poly_log} também supera o desempenho da heuristica de Chen et al. em grafos com diâmetro acima de $16$.
+Nosso estudo experimental indica que o algoritmo de Holm et al.~\cite{poly_log} também supera o desempenho da heuristica de Chen et al. em grafos com diâmetro acima de $16$.\TODO{Atualizar isso após experimentos}
