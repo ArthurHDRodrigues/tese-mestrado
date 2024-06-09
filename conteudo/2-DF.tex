@@ -38,7 +38,7 @@ Denotamos cada arco pelo par de vértices que o compõe.
 Isto é, o arco com origem no vértice~$u$ e destino no vértice~$v$ é escrito como $uv$.
 Dessa forma, um laço em~$v$ é escrito como~$vv$.
 Utilizaremos esses laços como representantes dos vértices na sequência. 
-Por exemplo, a sequência~\eqref{eq:eulerSeq} é uma trilha Euleriana da árvore da Figura \ref{fig:exemploSeqEuler}.
+Por exemplo, a sequência~\eqref{eq:eulerSeq} é uma trilha Euleriana da árvore da Figura~\ref{fig:exemploSeqEuler}.
 \begin{equation}
 30~00~04~41~12~22~21~11~14~44~45~55~54~40~03~33.\label{eq:eulerSeq}  
 \end{equation}
@@ -107,7 +107,7 @@ Já no Algoritmo~\ref{Algo:dymForestQuery} mostramos a implementação de~\dymFo
 \end{algorithmic}
 \end{algorithm}
 
-Com essa implementação \dymForestCreate{} consume tempo~$\O{n}$. A rotina \dymForestQuery{}, descrita no Algoritmo~\ref{Algo:dymForestQuery}, consume tempo esperado $\O{\lg n}$ em uma floresta com~$n$ vértices.
+Com essa implementação \dymForestCreate{} consume tempo~$\O{n}$. A rotina \dymForestQuery{}, \nolbreaks{descrita no Algoritmo~\ref{Algo:dymForestQuery}, consume tempo esperado $\O{\lg n}$ em uma floresta com~$n$ vértices}.
 
 
 \begin{algorithm}[htb]
@@ -133,7 +133,7 @@ Para implementar \dymForestAddEdge{} e \dymForestDelEdge{}, precisaremos adicion
 Na Seção~\ref{sec:imple-treap}, mostraremos a implementação dessas rotinas e que~\treapJoin{} consome~$\O{h}$, onde~$h$ é a soma das alturas de~$T_1, T_2, \ldots, T_k$ e \treapSplit{} consome~$\O{\lg n}$, onde~$n$ é número de nós da árvore que contém~$\node$.
 
 Para implementar a operação \dymForestDelEdge($F$, $u$, $v$), descrita no Algoritmo~\ref{Algo:dymForestDelEdge}, 
-primeiro utilizaremos o dicionário para obter ponteiros para os nós que armazenam os arcos $uv$ e $vu$.
+primeiro utilizaremos o dicionário para obter ponteiros para os nós que armazenam os arcos~$uv$ e~$vu$.
 
 Em seguida, aplicaremos~\treapSplit($uv$) dividindo essa sequência em duas partes, nomeadas~$A$ e~$B$, como pode ser visto na Figura~\ref{fig:algorit-cut-seqxy}.
 \begin{figure}[htb]
