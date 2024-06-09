@@ -72,10 +72,10 @@ Na próxima seção iremos, para cada rotina da biblioteca de grafos dinâmicos,
 
 A implementação de \dymGraphCreate{} pode ser vista no Algoritmo~\ref{Algo:dymGraphCreate}. Nessa implementação, simplesmente inicializamos cada $F_{\leqslant i}$ e~$R_i$ de~$G$ usando \dymForestCreate{} e~\graphCreate{}, respectivamente. Notemos que essas rotinas retornam a floresta e o grafo dados por~$n$ vértices isolados. Dessa forma~$F_{\leqslant \lceil \lg n \rceil}$ e~$R_{\lceil \lg n \rceil}$ juntos representam um grafo dinâmico vazio, que é exatamente o grafo que queremos construir com \dymGraphCreate{}.
 
-\TODO{
-Será útil obter o nível de uma aresta $uv$ em tempo esperado constante, assim manteremos um dicionário $G$.\nivel{} que relaciona cada aresta a seu nível.
+Será útil obter o nível de uma aresta $uv$ em tempo esperado constante.
+\NEW{
+Assim manteremos um dicionário $G$.\nivel, cujas chaves são pares de vértices~$(u,v)$ e o valor correspondente a uma tal chave será o nível da aresta~$uv$. 
 }
-
 Para manusear esse dicionário, usaremos uma biblioteca análoga à usada na Seção~\ref{sec:impleDF-ETT}, que relembramos a seguir.
 
 \begin{itemize}
