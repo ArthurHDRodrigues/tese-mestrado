@@ -139,8 +139,6 @@
 %\newcommand{\defi}[1]{\index{#1}\textbf{#1}} % defini estilo ao definir algo no texto
 \NewDocumentCommand{\defi}{ O{#2} m }{\index{#1}\textbf{#2}}
 
-\newcommand{\node}{\mathit{n\acute{o}}}
-\newcommand{\var}{\mathit{var}}
 
 \renewcommand{\leq}{\leqslant}
 \newcommand{\ceil}[1]{\lceil{#1}\rceil}
@@ -162,6 +160,15 @@
 %\newcommand{\free}{\text{\TODO{delete}}}    %(ptn)
 \newcommand{\random}{\AlgoName{sorteie}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
 \newcommand{\sizeof}{\text{\TODO{sizeof}}}  %(int)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    Nomes de váriaveis      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\varname}[1]{\textit{#1}}
+\newcommand{\altvarname}[1]{$#1$}
+\newcommand{\node}{\mathit{n\acute{o}}}
+\newcommand{\var}{\mathit{var}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
