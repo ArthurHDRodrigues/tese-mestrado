@@ -6,7 +6,7 @@
 
 Com uma implementação tradicional de ABB, em que o campo $chave$ dos nós de uma ABB~$T$ com $t$ nós armazena explicitamente os números de $1$ a $t$, é necessário, na operação \treapJoin($T$, $R$), atualizar todas as chaves de~$R$ para que possuam os valores $1+t,2+t, \ldots, r+t$, onde $r$ é o número de nós em~$R$.
 
-Analogamente, com essa implementação tradicional, ao realizar \treapSplit($T$, $\node$) é necessário atualizar todos os nós com chave maior do que a chave de $\node$.
+Analogamente, com essa implementação tradicional, ao realizar \treapSplit($T$, \varname{nó}) é necessário atualizar todos os nós com chave maior do que a chave de \varname{nó}.
 No pior dos casos, essas atualizações de chaves podem custar tempo $\OTheta{n}$, onde $n$ é o tamanho das árvores envolvidas.
 
 Para reduzir o número de atualizações desse campo, na biblioteca de Euler tour trees, as ABBs utilizadas possuirão \defi{chave implícita}, ou seja, substituímos o campo $chave$ de cada nó pelo campo \defi{tam} que armazena o tamanho da subárvore enraizada naquele nó, isto é, o número de nós nessa subárvore.
@@ -39,7 +39,9 @@ Com chaves implícitas, a alteração de um nó $x$ torna necessário somente a 
 
 \section{Treaps}
 
-\defi{Heaps} são árvores binárias quase completas constituídas por nós que possuem quatro campos: prioridade, pai e filhos esquerdo e direito~\cite{CLRS}. Os campos referentes aos pais e filhos dão a estrutura de árvore binária ao heap e a \defi{prioridade} de um nó é um inteiro não negativo. Não apresentaremos a definição de árvore binária quase completa, pois ela é desnecessária para a definição de treaps. Para que uma árvore binária quase completa seja considerada um heap é necessário que a prioridade de cada nó seja maior do que a de seus filhos.
+\defi{Heaps} são árvores binárias quase completas constituídas por nós que possuem quatro campos: prioridade, pai e filhos esquerdo e direito~\cite{CLRS}.
+Os campos referentes aos pais e filhos dão a estrutura de árvore binária ao heap e a \defi{prioridade} de um nó é um \NEW{número real} não negativo.
+Não apresentaremos a definição de árvore binária quase completa, pois ela é desnecessária para a definição de treaps. Para que uma árvore binária quase completa seja considerada um heap é necessário que a prioridade de cada nó seja maior do que a de seus filhos.
 
 \defi{Treaps} são uma mescla entre árvores binária de busca e heaps. Seus nós possuem cinco campos: $pai$, $esq$, $dir$, $chave$ e $prio$. Os campos $esq$ e $dir$ representam os filhos esquerdo e direito de cada nó, respectivamente, e junto ao campo $pai$ descrevem a estrutura de uma árvore binária. O campo $chave$ satisfaz a propriedade de uma ABB enquanto o campo $prio$ armazena a prioridade do nó e satisfaz a propriedade de um heap. Diferentemente de heaps, treaps não precisam ser quase completas.
 
@@ -60,10 +62,10 @@ pois é uma consulta e somente usa a estrutura da ABB sem fazer modificações.
 Seu consumo de tempo é~$\O{h}$ onde~$h$ é a altura da árvore.
 
 \begin{algorithm}[htb]
-\caption{\treapGetRoot($\node$)}
+\caption{\treapGetRoot(\varname{nó})}
 \label{Algo:treapGetRoot}
 \begin{algorithmic}[1]
-\State $raiz$ $\gets$ $\node$
+\State $raiz$ $\gets$ \varname{nó}
 \While {$raiz$.$pai$ $\neq \Nil$}
 \State  $raiz$ $\gets$  $raiz$.$pai$
 \EndWhile
@@ -73,21 +75,26 @@ Seu consumo de tempo é~$\O{h}$ onde~$h$ é a altura da árvore.
 
 Para balancear uma treap e assim garantir consumo de tempo logarítmico, Seidel e Aragon~\cite{AragonSeidel1996} propuseram escolher a prioridade de cada nó de forma aleatória com distribuição de probabilidade uniforme em um universo suficientemente grande para que a probabilidade de haver nós com a mesma prioridade seja próxima de~$0$.
 
-Para representar essa escolha aleatória, usaremos uma função auxiliar \random($r$) que retorna um inteiro positivo menor do que $r$ com probabilidade uniforme. Esse tipo de função está presente nativamente em diversas linguagens de programação e a elaboração de sua implementação foge do escopo desse texto. Consideraremos que seu consumo de tempo é~$\O{1}$.
+Para representar essa escolha aleatória, usaremos uma função auxiliar \random() que retorna um \NEW{número real entre $0$ e~$1$ escolhido com} probabilidade uniforme. Esse tipo de função está presente nativamente em diversas linguagens de programação e a elaboração de sua implementação foge do escopo desse texto. Consideraremos que seu consumo de tempo é~$\O{1}$.
 
 Com essa técnica de balanceamento de treaps em mãos, podemos apresentar a implementação dos demais algoritmos que compõem essa biblioteca.
-O primeiro desses é \treapCreate($u$, $v$), que recebe vértices~$u$ e~$v$, cria um nó de treap chamado $\node$, inicializa seus campos apropriadamente e o retorna.
+O primeiro desses é \treapCreate($u$, $v$), que recebe vértices~$u$ e~$v$, cria um nó de treap chamado \varname{nó}, inicializa seus campos apropriadamente e o retorna.
 Essa rotina consome tempo~$\O{1}$. 
 
 \begin{algorithm}
 \caption{\treapCreate($u$, $v$)}
 \label{Algo:TREAPbuild}
 \begin{algorithmic}[1]
-\State $\node$.$tam$ $\gets 1$
-\State $\node$.$prio$ $\gets$ \random(\TODO{r})
-\State $\node$.$info$ $\gets$ ($u$, $v$)
+\State \varname{nó}.\varname{tam} $\gets 1$ \Comment\TODO{itálico}
+\State $\node$.$tam$ $\gets 1$ \Comment \TODO{mathmode}
+\State \varname{nó}.\varname{prio} $\gets$ \random() \Comment\TODO{itálico}
+\State $\node$.$prio$ $\gets$ \random() \Comment\TODO{mathmode}
+\State $\node$.$info$ $\gets$ ($u$, $v$) 
+\State $\node$.\textit{info} $\gets$ ($u$, $v$)
 \State $\node$.$esq$ $\gets$ $\node$.$dir$ $\gets$ $\node$.$pai$ $\gets$ \Nil
 \State \Return $\node$
+\State \varname{uu}, \varname{vv}, \varname{dir}, \varname{esq}, \varname{pai}, \varname{tmp} \Comment\TODO{itálico}
+\State $uu$, $vv$, $dir$, $esq$, $pai$, $tmp$  \Comment\TODO{mathmode}
 \end{algorithmic}
 \end{algorithm}
 
