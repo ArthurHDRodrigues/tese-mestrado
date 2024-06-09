@@ -125,7 +125,7 @@ Com essa implementação \dymForestCreate{} consume tempo~$\O{n}$. A rotina \dym
 Para implementar \dymForestAddEdge{} e \dymForestDelEdge{}, precisaremos adicionalmente das seguintes rotinas na biblioteca de Euler tour trees. 
 \begin{itemize}
 \NEW{
-\item \treapSplit($\node$): recebe um ponteiro para um nó~$\node$ e corta a ABB que contém esse nó em três ABBs. A primeira ABB contém todos os nós com chave estritamente menor do que a chave de~$\node$, a segunda contém somente~$\node$ e a última contém todos os nós com chave estritamente maior do que a chave de~$\node$. Essa rotina retorna as raízes dessas três ABBs; e
+\item \treapSplit($\node$): corta a ABB que contém um nó~$\node$ em três ABBs. A primeira ABB contém todos os nós com chave estritamente menor do que a chave de~$\node$, a segunda contém somente~$\node$ e a última contém todos os nós com chave estritamente maior do que a chave de~$\node$. Essa rotina retorna as raízes dessas três ABBs; e
 }
 \item \treapJoin($T_1, T_2, \ldots, T_k$): junta as ABBs $T_1, T_2, \ldots, T_{k-1}$ e $T_k$ de modo que a sequência armazenada na árvore resultante é a concatenação das sequências armazenada em~$T_1, T_2, \ldots, T_k$ e retorna a raiz dessa árvore resultante.
 \end{itemize}
