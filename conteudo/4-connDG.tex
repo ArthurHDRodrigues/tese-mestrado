@@ -224,7 +224,11 @@ Agora passamos a descrever o algoritmo~\dymGraphReplace{}, \NEW{elaborado} no Al
 \label{fig:DG-antes-de-rebaixar}
 \end{figure}
 
-Após a remoção de uma aresta $uv$ de nível $i$ de uma componente $T$ da floresta $F_{\leqslant i}$, a árvore $T$ é dividida em duas árvores, $T_u$ e $T_v$, que contém $u$ e $v$, respectivamente. Podemos supor que~$|T_u|\leqslant |T_v|$. Pela invariante~\ref{invar:tamanho}, vale que $|T| \leq 2^i$ e, como ${|T_u| + |T_v| = |T|}$, concluímos que $|T_u| \leq 2^{i-1}$. Logo podemos mover todas as arestas de nível~$i$ de~$T_u$ para o nível $i-1$ sem infringir a invariante~\ref{invar:tamanho}.
+Após a remoção de uma aresta $uv$ de nível $i$ de uma componente $T$ da floresta $F_{\leqslant i}$, a árvore $T$ é dividida em duas árvores, $T_u$ e $T_v$, que contém $u$ e $v$, respectivamente.
+\NEW{
+Denotando por $|T|$ o número de vértices de uma árvore~$T$.
+}
+Podemos supor que~$|T_u|\leqslant |T_v|$. Pela invariante~\ref{invar:tamanho}, vale que $|T| \leq 2^i$ e, como ${|T_u| + |T_v| = |T|}$, concluímos que $|T_u| \leq 2^{i-1}$. Logo podemos mover todas as arestas de nível~$i$ de~$T_u$ para o nível $i-1$ sem infringir a invariante~\ref{invar:tamanho}.
 Esse rebaixamento é feito no laço da linha~\ref{Algo:dymGraphReplace:linha:moveTu} do Algoritmo~\ref{Algo:dymGraphReplace} e ilustramos a estrutura resultante dele na Figura~\ref{fig:DG-depois-de-rebaixar}.
 
 \begin{figure}[htb]
@@ -235,7 +239,15 @@ Esse rebaixamento é feito no laço da linha~\ref{Algo:dymGraphReplace:linha:mov
 \label{fig:DG-depois-de-rebaixar}
 \end{figure}
 
-Agora percorreremos as arestas reservas em busca de uma substituta. Notemos que, como consequência das invariantes~\ref{invar:SF} e~\ref{invar:contida}, se há uma aresta substituta para~$uv$, então seu nível é maior ou igual a~$i$. Provaremos esse fato por contradição, supondo que exista uma aresta~$xy$ substituta a~$uv$ com nível $j<i$ e, sem perda de generalidade, supondo que~$x$ é um vértice de~$T_u$ e~$y$ é de~$T_v$. É imediato notar que $xy$ é uma aresta de $G_{\leqslant j}$. Como~$xy$ é uma aresta de $G_{\leqslant j}$, temos que $x$ e $y$ estão na mesma componente de $G_{\leqslant j}$, e portanto há uma aresta de $F_{\leqslant j}$ ligando algum vértice de $T_u$ \TODO{deveriam estar na mesma componente de $F_{\leqslant j}$ pela invariante~\ref{invar:SF}. Mas isso contraria a invariante~\ref{invar:contida}, dado que $x$ e $y$ estão em componentes distintas de $F_{\leqslant i}$, após a remoção de~$uv$.}
+Agora percorreremos as arestas reservas em busca de uma substituta.
+Notemos que, como consequência das invariantes~\ref{invar:SF} e~\ref{invar:contida}, se há uma aresta substituta para~$uv$, então seu nível é maior ou igual a~$i$.
+Provaremos esse fato por contradição, supondo que exista uma aresta~$xy$ substituta a~$uv$ com nível $j<i$ e, sem perda de generalidade, supondo que~$x$ é um vértice de~$T_u$ e~$y$ é de~$T_v$.
+\NEW{
+Como $xy$ é uma aresta de nível~$j$, temos que~$xy$ é uma aresta de~$G_{\leqslant j}$ e logo que~$x$ e~$y$ estão na mesma componente de $G_{\leqslant j}$, e portanto, pela invariante~\ref{invar:SF}, estão na mesma componente conexa de~$F_{\leqslant j}$.
+Vamos analisar o caminho~$P$ que liga~$x$ a~$y$.
+Pela invariante~\ref{invar:contida}, temos que~$F_{\leqslant j} \subseteq F_{\leqslant i}$ e assim as arestas de $P$ são arestas de~$F_{\leqslant i}$.
+Como $x$ e $y$ estão em componentes distintas quando removemos $uv$, temos que $uv$ é uma aresta de~$P$ e assim que $uv$ está em $F_{\leqslant j}$, o que contrária o fato de $uv$ ser uma aresta de nível~$i$.
+}
 
 Percorremos as arestas reservas de nível~$i$ incidentes a~$T_u$ procurando uma aresta substituta. Essas arestas estão pintadas de preto na Figura~\ref{fig:DG-depois-de-rebaixar}. Cada aresta percorrida desta forma e que não seja uma substituta de~$uv$ tem seus dois extremos em $T_u$ e também será rebaixada.
 Rebaixamos tais arestas de nível, pois elas deixam de ser candidatas a substitutas de arestas de nível~$i$, uma vez que rebaixamos as arestas de~$T_u$ de nível $i$ para o nível $i-1$. 
@@ -312,24 +324,26 @@ A manutenção desses campos é análoga à manutenção feita nos campos~$niv$ 
 
 Podemos fazer a manutenção desses novos campos sem onerar o custo das outras rotinas.
 Toda nova aresta inserida em algum nível possui o campo~$niv$ igual a~$1$.
-Esse campo se torna~$0$ somente quando rebaixamos essa aresta de nível.
+Esse campo se torna~$0$ somente quando rebaixamos essa aresta de nível,
+\NEW{
+que ocorre somente no laço da linha~\ref{Algo:dymGraphReplace:linha:moveTu} do Algoritmo~\ref{Algo:dymGraphReplace}.
+Nessa ocasião, precisamos percorrer o caminho do nó que representa a aresta rebaixada até sua raiz decrementando~$cniv$, o que consome tempo esperado~$\O{\lg n}$. Como cada iteração desse laço já consome tempo esperado~$\O{\lg n}$, manter esse campo não prejucida o consumo de tempo da rotina.
 
-\TODO{
-Toda manutenção que o campo~$cniv$ pede é a sua atualização toda vez que atualizamos o campo~$tam$ das treaps.
-Isso se deve ao fato de atualizarmos~$tam$ quando a estrutura das subárvores de um nó são modificadas.
-Nesse caso, essa modificação de estrutura infere também a necessidade de atualização dos demais contadores.
+Além disso, precisamos manter~$cniv$ e~$cres$ atualizado nas operações~\treapSplit{} e~\treapJoin{} da biblioteca de treaps, pois essas rotinas modificam a estrutura das treaps. A atualização desses campos consome tempo constante para cada nó da treap afetado pela modificação. Assim não onerando o consumo de tempo dessas rotinas. 
+
+
+Além dessas ocasiões, o contador~$cres$, exige atualizações em situações adicionais.
 }
-O segundo contador,~$cres$, exige atualizações em situações adicionais.
 Toda vez que adicionamos ou removemos uma aresta reserva, devemos percorrer o caminho desse nó até a raiz atualizando o campo~$cres$, o que consome tempo esperado~$\O{\lg n}$.
 
 Para concluir essa seção, argumentaremos como ocorre a amortização de custo de \dymGraphDelEdge{}. 
-A amortização ocorre em uma sequência arbitrária válida de $m$ inserções e $t$ remoções de arestas.
+A amortização ocorre em uma sequência arbitrária válida de $m$ inserções e $t$~remoções de arestas.
 Mostraremos que o custo esperado total desta $m+t$ operações é~$\O{(m+t)\lg^2 n}$,
 o que resulta num custo esperado amortizado por operação de~$\O{\lg^2 n}$.
 Atribuiremos o custo de todos os rebaixamentos sofridos por uma aresta à operação de inserção dessa aresta.
 Precisamente, os custos das linhas~\ref{Algo:dymGraphReplace:linha:moveTu},~\ref{Algo:dymGraphReplace:linha:moveTu2},~\ref{Algo:dymGraphReplace:linha:moveTu3},~\ref{Algo:dymGraphReplace:linha:rebaixar} e~\ref{Algo:dymGraphReplace:linha:rebaixar2} do Algoritmo~\dymGraphReplace{} são pagos pela operação \dymGraphAddEdge{} correspondente.
 
-Como cada uma das $m$ arestas inseridas durante essa sequência pode ser rebaixada~$\lceil \lg n \rceil$ vezes e cada rebaixamento (o custo das linhas mencionadas anteriormente) tem custo esperado~$\O{\lg n}$, o custo esperado total induzido pelas inserções de arestas é~$\O{m\lg^2 n}$ .
+Como cada uma das $m$ arestas inseridas durante essa sequência pode ser rebaixada~$\lceil \lg n \rceil$ vezes e cada rebaixamento (o custo das linhas mencionadas anteriormente) tem custo esperado~$\O{\lg n}$, o custo esperado total induzido pelas inserções de arestas é~$\O{m\lg^2 n}$.
 Descontadas essas linhas, \dymGraphReplace{}, e consequentemente \dymGraphDelEdge{}, tem custo esperado~$\O{\lg^2 n}$.
 Portanto, todas as~$t$ remoções juntas têm custo esperado~$\O{t\lg^2 n}$ e assim o custo esperado total da sequência é~$\O{(m+t)\lg^2 n}$, como queríamos mostrar.
 
