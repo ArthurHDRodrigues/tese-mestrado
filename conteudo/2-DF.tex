@@ -79,9 +79,9 @@ Para implementar a biblioteca de florestas dinâmicas com Euler tour trees, cons
 
 A implementação dessas rotinas será detalhada no Capítulo~\ref{sec:TreapDeChaveImplicita}. Veremos que o consumo esperado de \treapCreate{} e \treapGetRoot{} será, respectivamente,~$\O{1}$ e~$\O{\lg n}$, onde~$n$ é o número de nós na ABB.
 
-Para representar uma floresta dinâmica $F$, precisaremos também de um dicionário que guardará apontadores para os nós das ABBs que representam~$F$. Note que cada nó representa um elemento $uv$ de uma sequência Euleriana e que cada~$uv$ ocorre no máximo uma vez nas sequências. Entao o par $(u,v)$ será usado como chave e o valor correspondente a tal chave será o apontador para o nó que contém $uv$ nas ABBs que representam~$F$.
+Para representar uma floresta dinâmica $F$, precisaremos também de um dicionário que guardará apontadores para os nós das ABBs que representam~$F$. Note que cada nó representa um elemento $uv$ de uma sequência Euleriana e que cada~$uv$ ocorre no máximo uma vez nas sequências. Então o par $(u,v)$ será usado como chave e o valor correspondente a tal chave será o apontador para o nó que contém $uv$ nas ABBs que representam~$F$.
 
-Para simplificar os pseudo-códigos, usaremos uma representação matricial para esse dicionário, ou seja, usaremos a seguinte biblioteca.
+Para simplificar os pseudocódigos, usaremos uma representação matricial para esse dicionário, ou seja, usaremos a seguinte biblioteca.
 \begin{itemize}
     \item $F \gets \hashCreate(n)$: cria e retorna um dicionário~$F$ para uma floresta dinâmica com~$n$ vértices;
     \item $F[u,v] \gets uv$: insere o nó que contém $uv$, com chave $(u,v)$ e valor associado~$uv$ na tabela~$F$.
