@@ -10,28 +10,41 @@ Ambos os algoritmos visam manter uma floresta maximal geradora do grafo dinâmic
 
 A principal diferença entre eles é que~\HK{} sorteia arestas reservas e as testa para verificar se substituem uma aresta removida da MSF. Portanto seu consumo de tempo é necessariamente esperado, enquanto que~\HDT{} pode ser completamente determinístico se a implementação das florestas dinâmicas usadas for determinística. 
 
-Na literatura, encontramos quatro estudos comparativos entre algoritmos para o problema de conexidade dinâmica~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002, QC22}.
-O estudo~\cite{EmpiricalStudy1997} não analisa~\HDT{} e somente compara~\HK{} com um algoritmo desenvolvido por~Eppstein et al.~\cite{Eppstein1992SparsificationaTF} que utiliza uma técnica chamada esparsificação para reduzir o custo assintótico das operações aplicadas ao grafo.
-O estudo~\cite{EmpiricalStudy1997} conclui que~\HK{} se torna mais eficiente do que o algoritmo de Eppstein et al. quando o número de atualizações aplicadas a um grafo dinâmico é aproximadamente duas vezes o número de vértices do grafo. Esse fenômeno é devido à amortização utilizada por~\HK{}, que necessita de um número razoável de atualizações para diluir o custo das operações. 
+\section{Estudos anteriores}
+
+Em $2010$, Tarjan e Werneck~\cite{tarjanWerneck2010} fizeram um estudo experimental com diversas estruturas de dados que solucionam o problema de conexidade para florestas dinâmicas.
+Destacando diferentes qualidades e deficiências de cada estrutura de dados quando sujeitas a diferentes tipos de cargas de trabalho.
+Os autores concluem que as link-cut trees tiveram a melhor performance geral.
+
+Para apresentar os estudo experimentais que abordam conexidade em grafos dinâmicos, usaremos a revisão histórica apresentada por~\cite{Zaroliagis2002}.
+
+O primeiro estudo experimental que trata sobre o problema de conexidade em grafos dinâmicos data de~$1997$ e foi feito por Alberts, Cattaneo, e Italiano~\cite{EmpiricalStudy1997}.
+Esse estudo não analisa~\HDT{} e somente compara~\HK{} com um algoritmo desenvolvido por~Eppstein et al.~\cite{Eppstein1992SparsificationaTF} que utiliza uma técnica chamada esparsificação para reduzir o custo assintótico das operações aplicadas ao grafo para~$\O{\!\sqrt{n}}$.
+Ambos os algoritmos foram implementados em~C++.
+
+O estudo conclui que~\HK{} se torna mais eficiente do que o algoritmo de Eppstein et al. quando o número de atualizações aplicadas a um grafo dinâmico é aproximadamente duas vezes o número de vértices do grafo. Esse fenômeno é devido à amortização utilizada por~\HK{}, que necessita de um número razoável de atualizações para diluir o custo das operações. 
+
+A partir da implementação de~\HK{} fornecida por esses autores, em $2002$, Raj Iyer, David Karger, Hariharan Rahul e Mikkel Thorup~\cite{EmpiricalStudy2002} implementaram \HDT{} e o compararam com~\HK{}.
+
+A implementação de~\HDT{} que esses autores fornecem inclui algumas heurísticas. Dentre elas, sortear arestas reservas e verificar se são substitutas de uma aresta removida antes de realizar a busca determinística~\cite[Seção 4.1]{EmpiricalStudy2002}.
+Essa heurística se baseia na maneira como~\HK{} busca arestas substitutas e os autores decidiram utilizá-la, pois notaram que com poucos sorteios se encontrava uma aresta substituta. 
+Nesse estudo os autores concluem que~\HK{} é dominado por~\HDT{}
 
 
-\TODO{Escrever sobre~\cite{EmpiricalStudy2002, Zaroliagis2002}. Depois escreva o que está incluído nos resultados experimentais que apresentamos a seguir}
 
-O estudo~\cite{EmpiricalStudy2002}
-
-\TODO{citar \cite{tarjanWerneck2010}}
-
-Em $2022$, Chen \textit{et al.}\cite{QC22} propõem uma heurística para garantir baixo consumo de tempo da consulta de conexidade e, para mostrar a eficiência dessa heurística, realizam um estudo empírico comparando sua solução com~\HK{}.
+Em $2022$, Chen et al.\cite{QC22} propõem uma heurística para garantir baixo consumo de tempo da consulta de conexidade e, para mostrar a eficiência dessa heurística, realizam um estudo empírico comparando sua solução com~\HK{} implementadas em Python~$3$.
 Chamaremos esse algoritmo heurístico de~\CLHB{} e elaboraremos mais sobre ele na próxima seção.
+
+
 
 \section{Escopo}
 
 Em nosso experimento, faremos testes com conjuntos de dados reais.
-Compararemos~\HDT{} com a implementação de~\HK{} apresentada por Chen~\textit{et al.}~\cite{QC22}.
+Compararemos~\HDT{} com a implementação de~\HK{} apresentada por Chen~et al.~\cite{QC22}.
 No entanto não incluiremos o algoritmo desenvolvido por esses autores em nosso experimento.
 
-Como comentado anteriormente, a solução desenvolvida por Chen~\textit{et al.} se baseia na heurística de que grafos reais possuem baixo diâmetro.
-Em um banco de dados com~$1324$ grafos~\cite{KONECT}, os autores notaram que~$1185$ deles possuem diâmetro menor do que~$16$.
+Como comentado anteriormente, a solução desenvolvida por Chen~et al. se baseia na heurística de que grafos reais possuem baixo diâmetro.
+Para concluir isso, os autores analisaram~$1324$ grafos presentes em um banco de dados~\cite{KONECT} e notaram que~$1185$ deles possuem diâmetro menor do que~$16$.
 Com essa informação, eles desenvolveram uma estrutura de dados que possui consumo de tempo linear em função do diâmetro do grafo,
 portanto se beneficiando desse baixo diâmetro empiricamente observado.
 
@@ -56,7 +69,7 @@ Na Figura~\ref{fig:sensibilidade-diametro} podemos observar um gráfico que most
 \label{fig:sensibilidade-diametro}
 \end{figure}
 
-No entanto, notamos que dos 1324 grafos presentes em~\cite{KONECT} $1015$ vêm de uma única fonte -- 
+No entanto, analisando esse mesmo banco de dados, notamos que dos~$1324$ grafos presentes nesse banco de dados, $1015$ vêm de uma única fonte -- 
 propriamente dita, são provenientes da Wikimedia~\cite{wikimedia}, responsável pela Wikipédia e afins -- 
 e $809$ destes grafos são classificados na mesma categoria, isto é, grafos bipartidos que relacionam autores com paginas web editadas por eles. Como há poucos autores em relação ao número de páginas web, o diâmetro de cada componente conexa desses grafos tende a ser baixo.
 
