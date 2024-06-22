@@ -142,10 +142,25 @@ Todos os grafos foram retirados do NetworkRepository~\cite{nr-aaai15}, um grande
 
 \section{Resultados}
 
+\begin{tikzpicture}
+    \begin{axis}[
+		 ylabel=tempo médio (s),
+		 xlabel=tempo,
+		 width=0.3\linewidth,
+	         ]
+    \addplot[orange,domain=0:1]{x};
+    \label{pgfplots:Dtree:QueryCall}
+    \addplot[black,domain=0:1]{x};
+    \label{pgfplots:HK:QueryCall}
+    \addplot[blue,domain=0:1]{x};
+    \label{pgfplots:HDT:QueryCall}
+    \end{axis}
+\end{tikzpicture}
+
 
 \newpage
 
-\subsection{Inserção de aresta de arestas reservas}
+\subsection{Inserção de aresta reserva}
 \legenda
 \begin{figure}
 \tabela{csv/call/updates/call_insertion_nte.csv}{Call}{insertionCall}
@@ -153,7 +168,7 @@ Todos os grafos foram retirados do NetworkRepository~\cite{nr-aaai15}, um grande
 \tabela{csv/enron/updates/enron_insertion_nte.csv}{EN}{QueryENRON}
 \tabela{csv/fb/updates/fb_insertion_nte.csv}{FB}{QueryFB}
 \tabela{csv/messages/updates/messages_insertion_nte.csv}{MS}{QueryMS}
-\tabela{csv/tech/updates/tech_insertion_nte.csv}{Tech}{QueryTech}
+%\tabela{csv/tech/updates/tech_insertion_nte.csv}{Tech}{QueryTech}
 \tabela{csv/wiki/updates/wiki_insertion_nte.csv}{WI}{QueryWiki}
 \caption{Performance de inserção de arestas reservas}
 \end{figure}
@@ -161,7 +176,7 @@ Todos os grafos foram retirados do NetworkRepository~\cite{nr-aaai15}, um grande
 
 
 \newpage
-\subsection{Inserção de aresta de arestas da árvore}
+\subsection{Inserção de aresta da árvore}
 \legenda
 \begin{figure}
 \tabela{csv/call/updates/call_insertion_te.csv}{Call}{insertionCall}
@@ -169,13 +184,13 @@ Todos os grafos foram retirados do NetworkRepository~\cite{nr-aaai15}, um grande
 \tabela{csv/enron/updates/enron_insertion_te.csv}{EN}{QueryENRON}
 \tabela{csv/fb/updates/fb_insertion_te.csv}{FB}{QueryFB}
 \tabela{csv/messages/updates/messages_insertion_te.csv}{MS}{QueryMS}
-\tabela{csv/tech/updates/tech_insertion_te.csv}{Tech}{QueryTech}
+%\tabela{csv/tech/updates/tech_insertion_te.csv}{Tech}{QueryTech}
 \tabela{csv/wiki/updates/wiki_insertion_te.csv}{WI}{QueryWiki}
 \caption{Performance de inserção de arestas da árvore}
 \end{figure}
 
 \newpage
-\subsection{Remoção de aresta de arestas reservas}
+\subsection{Remoção de aresta reserva}
 \legenda
 \begin{figure}
 \tabela{csv/call/updates/call_insertion_nte.csv}{Call}{insertionCall}
@@ -183,14 +198,14 @@ Todos os grafos foram retirados do NetworkRepository~\cite{nr-aaai15}, um grande
 \tabela{csv/enron/updates/enron_deletion_nte.csv}{EN}{QueryENRON}
 \tabela{csv/fb/updates/fb_deletion_nte.csv}{FB}{QueryFB}
 \tabela{csv/messages/updates/messages_deletion_nte.csv}{MS}{QueryMS}
-\tabela{csv/tech/updates/tech_deletion_nte.csv}{Tech}{QueryTech}
+%\tabela{csv/tech/updates/tech_deletion_nte.csv}{Tech}{QueryTech}
 \tabela{csv/wiki/updates/wiki_deletion_nte.csv}{WI}{QueryWiki}
 \caption{Performance de inserção de arestas reservas}
 \end{figure}
 
 
 \newpage
-\subsection{Remoção de aresta de arestas da árvore}
+\subsection{Remoção de aresta da árvore}
 \legenda
 \begin{figure}
 \tabela{csv/call/updates/call_insertion_te.csv}{Call}{insertionCall}
@@ -198,14 +213,14 @@ Todos os grafos foram retirados do NetworkRepository~\cite{nr-aaai15}, um grande
 \tabela{csv/enron/updates/enron_deletion_te.csv}{EN}{QueryENRON}
 \tabela{csv/fb/updates/fb_deletion_te.csv}{FB}{QueryFB}
 \tabela{csv/messages/updates/messages_deletion_te.csv}{MS}{QueryMS}
-\tabela{csv/tech/updates/tech_deletion_te.csv}{Tech}{QueryTech}
+%\tabela{csv/tech/updates/tech_deletion_te.csv}{Tech}{QueryTech}
 \tabela{csv/wiki/updates/wiki_deletion_te.csv}{WI}{QueryWiki}
 \caption{Performance de inserção de arestas da árvore}
 \end{figure}
 
 
 \newpage
-\subsection{Consultas de conexidade}
+\subsection{Consulta de conexidade}
 \legenda
 \begin{figure}
 \tabela{csv/call/query_call.csv}{Call}{QueryCall}
@@ -213,9 +228,24 @@ Todos os grafos foram retirados do NetworkRepository~\cite{nr-aaai15}, um grande
 \tabela{csv/enron/query_enron.csv}{EN}{QueryEN}
 \tabela{csv/fb/query_fb.csv}{FB}{QueryFB}
 \tabela{csv/messages/query_messages.csv}{MS}{QueryMS}
-\tabela{csv/tech/query_tech.csv}{Tech}{QueryTech}
+%\tabela{csv/tech/query_tech.csv}{Tech}{QueryTech}
 \tabela{csv/wiki/query_wiki.csv}{WI}{QueryWiki}
 \caption{Performance da consulta de conexidade}
 \end{figure}
 
+\newpage
+\subsection{Soma das distâncias de nós até suas raizes}
+Para cada vértice~$v$ no grafo, é calculado a distância~$D_v$ do nó que representa esse vértice até a raiz da ABB.
+Em seguida é feita a soma de todos os~$D_v$.
+
+\legenda
+\begin{figure}
+\tabela{csv/call/Sd_call.csv}{Call}{QueryCall}
+\tabela{csv/dnc/Sd_dnc.csv}{DNC}{QueryDNC}
+\tabela{csv/enron/Sd_enron.csv}{EN}{QueryEN}
+\tabela{csv/fb/Sd_fb.csv}{FB}{QueryFB}
+\tabela{csv/messages/Sd_messages.csv}{MS}{QueryMS}
+\tabela{csv/wiki/Sd_wiki.csv}{WI}{QueryWiki}
+\caption{Performance da consulta de conexidade}
+\end{figure}
 
