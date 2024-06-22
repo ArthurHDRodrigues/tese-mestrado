@@ -235,8 +235,9 @@
 %     Métodos de MSF         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\MSFCreate}{\AlgoName{novoGDP}} %(n)
-\newcommand{\MSFaddEdge}{\AlgoName{ligueGDP}}    %(G, u, v, w)
-\newcommand{\MSFdelEdge}{\AlgoName{removaGDP}}    %(G, u, v)
+\newcommand{\MSFupdate}{\AlgoName{mudaPesoGDP}} %(n)
+%\newcommand{\MSFaddEdge}{\AlgoName{ligueGDP}}    %(G, u, v, w)
+%\newcommand{\MSFdelEdge}{\AlgoName{removaGDP}}    %(G, u, v)
 \newcommand{\MSFweight}{\AlgoName{pesoGDP}}    %(G)
 
 \newcommand{\dymGraphReplaceMSF}{\AlgoName{substituaGDP}} %(G, u, v, i)
@@ -260,44 +261,6 @@
 \newcommand{\HDT}{HDT}
 \newcommand{\HK}{HK}
 \newcommand{\CLHB}{CLHB}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Comandos para gráficos 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\legenda}{
-\begin{center}
-\begin{tabular}{| c c c c c c c c|}
-\hline
-	\ref{pgfplots:Dtree:QueryCall} & Dtree & \ref{pgfplots:nDtree:QueryCall} & nDtree & \ref{pgfplots:HK:QueryCall} & HK & \ref{pgfplots:HDT:QueryCall} & HDT\\
-\hline
-\end{tabular}
-\end{center}
-}
-
-\newcommand{\tabela}[3]{
-\begin{tikzpicture}
-    \begin{axis}[
-		 ylabel=tempo médio (s),
-		 xticklabel=\empty,
-		 xlabel=\empty,
-		 xlabel=pontos de testes,
-		 scaled x ticks=false,
-		 width=0.3\linewidth,
-                 title={#2}
-	         ]
-%    \addplot[orange] table [x=ts, y=Dtree, col sep=comma] {#1};
-%	    \label{pgfplots:Dtree:#3}
-%    \addplot[brown] table [x=ts, y=nDtree, col sep=comma] {#1};
-%	    \label{pgfplots:nDtree:#3}
-    \addplot[black] table [x=ts, y=HK, col sep=comma] {#1};
-	    \label{pgfplots:HK:#3}
-    \addplot[blue] table [x=ts, y=HDT, col sep=comma] {#1};
-	    \label{pgfplots:HDT:#3}
-\end{axis}
-\end{tikzpicture}
-}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -567,7 +530,6 @@ texto texto texto texto. Texto opcional.
 \input{conteudo/2-DF}
 \input{conteudo/3-treaps}
 \input{conteudo/4-connDG}
-\input{conteudo/5-experimentos}
 \input{conteudo/6-MSF}
 \input{conteudo/7-limitante}
 \input{conteudo/8-conclusoes}
