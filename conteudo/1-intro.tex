@@ -16,9 +16,6 @@ cada $G_t$ para $1\leq t\leq T$ é obtido a partir de $G_{t-1}$ pela adição ou
 Ou seja,~$E(G_t) := E(G_{t-1})\cup \{uv\}$, para alguma aresta~$uv\notin E(G_{t-1})$;
 ou $E(G_t) := E(G_{t-1})\setminus \{uv\}$, onde~$uv\in E(G_{t-1})$, respectivamente.
 As operações de adição e remoção de arestas são chamadas de \defi{modificações} ou \defi{atualizações} do grafo dinâmico.
-\NEW{
-Nos problemas que estudaremos nesse texto, consideraremos que o grafo inicial~$G_0$ não possui arestas.
-}
 
 Há aplicações em que as conexões possuem um custo ou peso associado,
 representando a latência de comunicação entre dispositivos ou o custo de construção de uma infraestrutura cabeada, por exemplo. 
@@ -42,7 +39,7 @@ para em seguida usar as estruturas de dados desenvolvidas nesse problema para so
 
 O segundo problema estudado também será restrito a uma classe específica de grafos.
 Estudaremos o \defi[problema!da floresta maximal de peso mínimo em grafos ponderados dinâmicos]{problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos} restrito a grafos planos.
-Esse problema visa manter uma \defi{floresta maximal de peso mínimo} (MSF) de um grafo dinâmico ponderado plano ao longo da sequência de modificações.
+Esse problema visa manter uma \defi{floresta maximal de peso mínimo} (MSF) de um grafo dinâmico ponderado plano ao longo da sequência de \NEW{modificações nos pesos das arestas}.
 
 Começaremos esse estudo na próxima seção, em que faremos uma revisão histórica dos resultados relacionados aos problemas que serão abordados nos próximos capítulos.
 No Capítulo~\ref{sec:connDF}, estudaremos o problema de conexidade em florestas dinâmicas e uma de suas soluções, proposta por Holm, de Lichtenberg e Thorup~\cite{poly_log}, que envolve Euler tour trees.
