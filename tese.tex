@@ -159,6 +159,7 @@
 \newcommand{\malloc}{\text{\TODO{alloc}}}  %(int)
 %\newcommand{\free}{\text{\TODO{delete}}}    %(ptn)
 \newcommand{\random}{\AlgoName{sorteie}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
+\newcommand{\order}{\AlgoName{ordene}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
 \newcommand{\sizeof}{\text{\TODO{sizeof}}}  %(int)
 
 
@@ -205,11 +206,8 @@
 % Métodos da tabela hash         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\dymForestHash}{$H$}  %simbolo que identifica a matriz/hash da floresta
-
 \newcommand{\nivel}{\AlgoName{nível}} 
 \newcommand{\hashCreate}{\AlgoName{novoDicio}}     
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Florestas dinamicas %
@@ -228,6 +226,17 @@
 \newcommand{\dymGraphQuery}{\AlgoName{\AlgoName{conectadoGD}}} %(G, u, v)
 \newcommand{\dymGraphReplace}{\AlgoName{\AlgoName{substituaGD}}} %(G, u, v, i)
 \newcommand{\dymGraphHash}{$H$}  %simbolo que identifica a matriz/hash da floresta
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Métodos de Link/Cut Tree   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\linkcutCreate}{\AlgoName{novaLC}}  %(n)
+\newcommand{\linkcutAddEdge}{\AlgoName{link}}    %(F, u, v)
+\newcommand{\linkcutDelEdge}{\AlgoName{cut}}    %(F, u, v)
+\newcommand{\linkcutQuery}{\AlgoName{\AlgoName{conectadoLC}}}    %(F, u, v)
+\newcommand{\linkcutMax}{\AlgoName{\AlgoName{max}}}    %(F, u, v)
+\newcommand{\linkcutMin}{\AlgoName{\AlgoName{min}}}    %(F, u, v)
 
 
 
