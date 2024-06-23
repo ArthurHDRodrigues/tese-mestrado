@@ -64,13 +64,24 @@ Em $1985$, Frederickson~\cite{frederickson1983data} reduziu a complexidade de am
 Em $1997$, Eppstein et al.~\cite{Eppstein1992SparsificationaTF} melhoraram o consumo de tempo do algoritmo de Frederickson para~$\O{\!\sqrt{n}}$.
 Neste mesmo ano, foi realizado o primeiro experimento de desempenho prático, testando diferentes versões do algoritmo de Frederickson~\cite{xpAnalyGiuseppe}.
 
-O primeiro algoritmo poli-logarítmico para o problema de conectividade dinâmica foi apresentado por Henzinger e King~\cite{HenzingerKing} e possui consumo amortizado esperado $\O{\lg^3 n}$ para cada operação. Nesse artigo, elas introduziram uma estrutura de dados chamada Euler tour trees como uma maneira eficiente de representar florestas dinâmicas. Em seguida, em $1997$, seu consumo esperado por operação foi reduzido a $\O{\lg^2 n}$~\cite{HenzingerThorup}.  Avaliações experimentais foram feitas sobre essa solução para os problemas~\cite{EmpiricalStudy1997, EmpiricalStudy2002, Zaroliagis2002}.
+O primeiro algoritmo poli-logarítmico para o problema de conectividade dinâmica foi apresentado por Henzinger e King~\cite{HenzingerKing} e possui consumo amortizado esperado $\O{\lg^3 n}$ para cada operação. Nesse artigo, elas introduziram uma estrutura de dados chamada Euler tour trees como uma maneira eficiente de representar florestas dinâmicas. Em seguida, em $1997$, seu consumo esperado por operação foi reduzido a $\O{\lg^2 n}$~\cite{HenzingerThorup}.
+\NEW{
+
+Em $1995$, Nikoletseas, Reif, Spirakis e Yung~\cite{NikoletseasRSY} propuseram uma estrutura de dados para o problema de conexidade em grafos dinâmicos \defi[grafo!estocástico]{estocástico}, em que a sequência de atualizações e consultas é escolhida ao acaso com probabilidade uniforme.
+Nessas condições, essa estrutura de dados permite fazer atualizações em~$\O{\lg^3 n}$ esperado amortizado e consulta em~$\O{1}$ esperado amortizado.
+
+Em $1999$, Fatourou, Spirakis, Zarafidis, e Zoura~\cite{Fatourou} implementaram os algoritmos de Henzinger e King~\cite{HenzingerKing} e Nikoletseas et al.~\cite{NikoletseasRSY} e os compararam. Eles concluiram que a estrutura de dados de Nikoletseas et al. performa melhor do que a de Henzinger e King quando o grafo dinâmico estocástico é denso.
+}
 
 Inspirados na solução de Henzinger e King para o problema de conexidade dinâmica, em $2001$, Holm, de Lichtenberg e Thorup~\cite{poly_log} atacaram ambos os problemas de conectividade dinâmica e de MSF usando Euler tour trees.
 A solução deles para o problema de conexidade empata com o consumo assintótico da solução de Henzinger e King de~$\O{\lg^2 n}$.
 No entanto, se a implementação das Euler tour trees for determinística, então o algoritmo para conexidade dinâmica de Holm et al. é completamente determinístico e seu consumo é somente amortizado,
 enquanto que o consumo na solução de Henzinger e King é esperado e amortizado. 
 Apresentaremos a solução de Holm et al. nesse texto com uma implementação aleatorizada de Euler tour trees.
+\NEW{
+Avaliações experimentais foram feitas sobre essa solução~\cite{EmpiricalStudy1997, EmpiricalStudy2002}.
+Comentaremos esses experimentos na Seção~\ref{sec:conclusao:xp}.
+}
 
 O algoritmo de Holm et al. para MSF possui consumo amortizado $\O{\lg^4 n}$ para cada operação, sendo assim a primeira estrutura de dados determinística com consumo de tempo poli-logarítmico para o problema MSF. Uma implementação eficiente deste algoritmo foi apresentada por Cattaneo et al. \cite{xpstudy2002} junto a um outro algoritmo mais simples e assintoticamente pior, mas que teve bom desempenho nos experimentos práticos realizados.
 
