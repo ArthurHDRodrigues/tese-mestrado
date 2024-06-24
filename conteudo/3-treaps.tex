@@ -73,7 +73,8 @@ Seu consumo de tempo é~$\O{h}$ onde~$h$ é a altura da árvore.
 \end{algorithmic}
 \end{algorithm}
 
-Para balancear uma treap e assim garantir consumo de tempo logarítmico, Seidel e Aragon~\cite{AragonSeidel1996} propuseram escolher a prioridade de cada nó de forma aleatória com distribuição de probabilidade uniforme em um universo suficientemente grande para que a probabilidade de haver nós com a mesma prioridade seja próxima de~$0$.
+Para balancear uma treap e assim garantir consumo de tempo logarítmico, Aragon e Seidel~\cite{AragonSeidel1989, AragonSeidel1996} propuseram escolher a prioridade de cada nó de forma aleatória com distribuição de probabilidade uniforme em um universo suficientemente grande para que a probabilidade de haver nós com a mesma prioridade seja próxima de~$0$.
+
 
 Para representar essa escolha aleatória, usaremos uma função auxiliar \random() que retorna um \NEW{número real entre $0$ e~$1$ escolhido com} probabilidade uniforme. Esse tipo de função está presente nativamente em diversas linguagens de programação e a elaboração de sua implementação foge do escopo desse texto. Consideraremos que seu consumo de tempo é~$\O{1}$.
 
