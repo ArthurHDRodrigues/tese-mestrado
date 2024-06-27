@@ -47,12 +47,12 @@ $$
 forma um ciclo em $G^\star$.
 \end{theorem}
 
-\section{Link/Cut Tree}
+\section{Link-cut Tree}
 \label{sec:linkcuttree}
 
 Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{linkcuttree}.
 
-Biblioteca de link/cut tree:
+Biblioteca de link-cut tree:
 \begin{itemize}
 \item \linkcutCreate($n$): recebe um vértice e devolve um nó de link/cut tree que representa esse vértice.
 \item \linkcutAddEdge($F$, $u$, $v$, $w$): Adiciona a aresta~$uv$ com peso~$w$ à floresta~$F$.
@@ -60,31 +60,45 @@ Biblioteca de link/cut tree:
 \item \linkcutQuery($F$, $u$, $v$): Realiza uma consulta de conexidade entre os vértices~$u$ e~$v$.
 \item \linkcutMax($F$, $u$, $v$): Retorna o nó com peso máximo no caminho entre~$u$ e~$v$ na floresta~$F$.
 \item \linkcutMin($F$, $u$, $v$): Retorna o nó com peso mínimo no caminho entre~$u$ e~$v$ na floresta~$F$.
+\item \linkcutPath($F$, $u$, $v$): Faz o caminho entre $u$ e $v$ ser o preferido.
 \end{itemize}
 
 \section{Ideia do algoritmo}
-Manteremos $F$ e sua floresta dual~$F^\star$ como definida no Teorema~\ref{teo:MSFdual} usando link-cut trees.
+Para um grafo dinâmico~$G$, manteremos uma floresta maximal de pesos mínimos~$F$ e sua floresta dual~$F^\star$ como definida no Teorema~\ref{teo:MSFdual} usando link-cut trees.
+Construiremos~$F$ e~$F^\star$ na rotina \MSFCreate($G_0$), cuja implementação está detalhada no Algoritmo~\ref{Algo:MSFCreate}.
+Nessa rotina, primeiro usaremos a rotina auxiliar~\order{} para ordenar as arestas de~$G_0$ em ordem crescente de peso e retornar uma lista com essas arestas ordenadas.
+Lembramos que~$G_0$ mantém, para cada aresta~$uv$, sua aresta dual~$uv^\star$, dessa forma, para não perder essa informação, faremos com que cada entrada da lista retornada por~\order{}
+possua ponteiros para~$uv$, seu peso~$w$ e~$uv^\star$.
 
-Para implementar \MSFCreate($G_0$), primeiro ordenamos as arestas de~$G_0$ em ordem crescente de peso e em seguida as inserimos sequencialmente em~$G$.
-Antes de inserir uma aresta~$uv$, faremos um teste de conexidade entre~$u$ e~$v$, se~$u$ e~$v$ não estiverem conectados, então inserimos~$uv$ em~$F$, caso contrário inserimos $uv^\star$ em~$F^\star$.
+Em seguida percorreremos essa lista sequencialmente e para cada aresta~$uv$ nela, faremos um teste de conexidade entre os vértices~$u$ e~$v$.
+Se~$u$ e~$v$ não estiverem conectados, então inserimos~$uv$ em~$F$ com peso~$w$, caso contrário inserimos $uv^\star$ em~$F^\star$ com o mesmo peso~$w$.
+
+Como inserimos as arestas em ordem crescente de peso, a floresta~$F$ é de pesos mínimos e logo, pelo Teorema~\ref{teo:MSFdual}, $F^\star$ é de pesos máximos.
 
 \begin{algorithm}[htb]
 \caption{\MSFCreate($n$, $G_0$)}
 \label{Algo:MSFCreate}
 \begin{algorithmic}[1]
 \State \varname{lista} $\gets$ \order($G_0$)
-\For{$uv$ em \varname{lista}}:
-\If \linkcutQuery($F$, $u$, $v$)
-\State \linkcutAddEdge($G$.$F^\star$, $e$, $f$, $w$)
+\For{$uv$ em \varname{lista}}\label{Algo:MSFCreate:linhafor}
+\If \linkcutQuery($F$, $u$, $v$)\label{Algo:MSFCreate:query}
+\State \linkcutAddEdge($G$.$F^\star$, $e$, $f$, $w$)\label{Algo:MSFCreate:link1}
 \Else
-\State \linkcutAddEdge($G$.$F$, $u$, $v$, $w$)
+\State \linkcutAddEdge($G$.$F$, $u$, $v$, $w$)\label{Algo:MSFCreate:link2}
 \EndIf
 \EndFor
 \State \Return $G$
 \end{algorithmic}
 \end{algorithm}
 
-Como inserimos as arestas em ordem crescente de peso, a floresta~$F$ é de pesos mínimos e logo, pelo Teorema~\ref{teo:MSFdual}, $F^\star$ é de pesos máximos.
+Existem diversos algoritmos conhecidos na literatura que podem implementar a rotina \order{}~\cite{CLRS} com consumo de tempo~$\O{m\lg m}$, onde $m$ é o tamanho da lista,
+que, no nosso caso, coincide com o número de arestas do grafo~$G_0$.
+O laço da linha~\ref{Algo:MSFCreate:linhafor} do Algoritmo~\ref{Algo:MSFCreate} itera~$m$ vezes e cada teste de conexidade da linha~\ref{Algo:MSFCreate:query} e cada chamada para a rotina  \linkcutAddEdge{} nas linhas~\ref{Algo:MSFCreate:link1} e~\ref{Algo:MSFCreate:link2} possuem consumo de tempo~$\O{\lg n}$, onde~$n$ é o número de vértices do grafo.
+Logo o consumo de tempo de \MSFCreate{} é $\O{m\lg n}$.
+
+Para implementar \MSFweight{} faremos com que cada nó das link-cut trees tenha um campo~$w$ que contabiliza o peso total da subárvore enraizada naquele nó.
+Dessa forma, para obter o peso da floresta maximal de peso mínimo~$F$ que estamos mantendo, basta retornar o campo $w$ da raiz de~$F$.
+Essa rotina consome tempo constante.
 
 \begin{algorithm}[htb]
 \caption{\MSFweight($G$)}
@@ -94,10 +108,15 @@ Como inserimos as arestas em ordem crescente de peso, a floresta~$F$ é de pesos
 \end{algorithmic}
 \end{algorithm}
 
-Quando atualizamos o peso de uma aresta~$uv$ com a rotina \MSFupdate{}, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFupdate}, precisamos garantir que a floresta~$F$ resultante continuará sendo  de peso mínimo.
-Notemos que ou $uv\in F$ ou $uv^\star\in F^\star$, iremos tratar esses casos separadamente.
+Quando atualizamos o peso de uma aresta~$uv$ com a rotina \MSFupdate{} para um novo peso~$w$, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFupdate}, precisamos garantir que a floresta~$F$ resultante continuará sendo  de peso mínimo.
 
-Se~$uv$ for uma aresta de~$F$ e se existir alguma aresta no corte~$(F, uv)$ com peso menor do que~$w$, então $F$ não será mais de peso mínimo.
+Notemos que ou $uv\in F$ ou $uv^\star\in F^\star$, iremos tratar cada um desses casos separadamente.
+A identificação de qual caso~$uv$ se encontra é feita na linha~\ref{Algo:MSFupdate:linhauvinF} do Algoritmo~\ref{Algo:MSFupdate}, para implementar essa consulta, não podemos fazer como foi feito linha~\ref{Algo:dymGraphReplace:linhayinTv} do \dymGraphReplace(Algoritmo~\ref{Algo:dymGraphReplace}), pois link-cut trees não possuem nós que representam arestas.
+Portanto precisamos recorrer a recursos mais elaborados.
+Manteremos um dicionário que guardará apontadores para os nós de~$F$ e usaremos como o conjunto de chaves os vértices de $G$. O apontador associado à chave~$u$ aponta para o nó que representa o vértice $u$.
+Após usar esse dicionário para obter os nós que representam os vértices~$u$ e~$v$ usamos a rotina \linkcutPath{} para fazer o caminho entre~$u$ e~$v$ ser preferido e verificamos se~$u$ é predecessor ou sucessor de~$v$.
+
+Se~$uv$ for uma aresta de~$F$ e se existir alguma aresta no corte~$(F, uv)$ com peso menor do que~$w$, então~$F$ não será mais de peso mínimo.
 Para corrigir isso, precisamos tomar~$xy$ como a aresta de menor peso no corte~$(F, uv)$,
 então remover~$uv$ de~$F$ e adicionar~$xy$ a~$F$.
 Dessa forma, garantindo que~$F$ seja de peso mínimo.
@@ -105,12 +124,14 @@ Dessa forma, garantindo que~$F$ seja de peso mínimo.
 Para obter a aresta~$xy$, vamos investigar o corte~$(F, uv)$.
 Pelo Teorema~\ref{teo:cutset}, o conjunto~$(F, uv)^\star$ forma um ciclo em~$G^\star$.
 Como~$uv^\star\in(F, uv)$ e~$uv$ é a única aresta de~$F$ cujo dual está em~$(F, uv)$, então as demais arestas desse corte formam um caminho em~$F^\star$ ligando os vértices incidentes a~$uv^\star$.
-Utilizando a rotina \linkcutMin{}  da biblioteca de link/cut trees podemos obter o nó de menor peso nesse percurso.
+Utilizando a rotina \linkcutMin{}  da biblioteca de link-cut trees podemos obter o nó de menor peso nesse percurso.
 
 Note também que, se modificarmos~$F$, então precisaremos atualizar~$F^\star$, removendo $xy^\star$ de~$F^\star$ e adicionando $uv^\star$ com o novo peso~$w$.
 
 Se~$uv$ não for uma aresta de~$F$, então teremos que~$uv^\star$ é uma aresta de~$F^\star$.
-O tratamento desse caso é analogo ao caso anterior e é feito entre as linhas~\ref{Algo:MSFupdate:dualinicio} e~\ref{Algo:MSFupdate:dualfim} do Algoritmo~\ref{Algo:MSFupdate}.
+O tratamento desse caso é análogo ao caso anterior e é feito entre as linhas~\ref{Algo:MSFupdate:dualinicio} e~\ref{Algo:MSFupdate:dualfim} do Algoritmo~\ref{Algo:MSFupdate}.
+
+Como cada rotina de link-cut trees utilizada consome tempo~$\O{\lg n}$ amortizado, então o consumo de tempo de \MSFupdate{} também é~$\O{\lg n}$ amortizado.
 
 
 \begin{algorithm}[htb]
@@ -118,7 +139,7 @@ O tratamento desse caso é analogo ao caso anterior e é feito entre as linhas~\
 \label{Algo:MSFupdate}
 \begin{algorithmic}[1]
 \State $e$,$f$ $\gets$ $uv^\star$
-\If {$uv$ $\in$ $G$.$F$}
+\If {$uv$ $\in$ $G$.$F$}\label{Algo:MSFupdate:linhauvinF}
 
 \State \varname{min} $\gets$ \linkcutMin($F^\star$, $e$, $f$)
 \If {$\varname{min}$.$w$ > $w$}
