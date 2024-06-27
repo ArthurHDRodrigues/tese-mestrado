@@ -45,6 +45,8 @@
   marginparsep=5mm,
 }
 
+\usepackage{nolbreaks}
+
 % Vários pacotes e opções de configuração genéricos; para personalizar o
 % resultado, modifique estes arquivos.
 \input{extras/basics}
@@ -137,9 +139,9 @@
 %\newcommand{\defi}[1]{\index{#1}\textbf{#1}} % defini estilo ao definir algo no texto
 \NewDocumentCommand{\defi}{ O{#2} m }{\index{#1}\textbf{#2}}
 
-\newcommand{\node}{n\acute{o}}
 
 \renewcommand{\leq}{\leqslant}
+\newcommand{\ceil}[1]{\lceil{#1}\rceil}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Comandos de notação assintotica   %
@@ -157,7 +159,17 @@
 \newcommand{\malloc}{\text{\TODO{alloc}}}  %(int)
 %\newcommand{\free}{\text{\TODO{delete}}}    %(ptn)
 \newcommand{\random}{\AlgoName{sorteie}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
+\newcommand{\order}{\AlgoName{ordene}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
 \newcommand{\sizeof}{\text{\TODO{sizeof}}}  %(int)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    Nomes de váriaveis      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\varname}[1]{\textit{#1}}
+\newcommand{\altvarname}[1]{$#1$}
+\newcommand{\node}{\mathit{n\acute{o}}}
+\newcommand{\var}{\mathit{var}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -165,7 +177,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\graphCreate}{\AlgoName{novoGrafo}}
 \newcommand{\graphAdd}{\AlgoName{ligueGLA}}
-\newcommand{\graphDel}{\AlgoName{removeGLA}}
+\newcommand{\graphDel}{\AlgoName{removaGLA}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de Treap       %
@@ -194,11 +206,8 @@
 % Métodos da tabela hash         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\dymForestHash}{$H$}  %simbolo que identifica a matriz/hash da floresta
-
 \newcommand{\nivel}{\AlgoName{nível}} 
 \newcommand{\hashCreate}{\AlgoName{novoDicio}}     
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Florestas dinamicas %
@@ -218,14 +227,27 @@
 \newcommand{\dymGraphReplace}{\AlgoName{\AlgoName{substituaGD}}} %(G, u, v, i)
 \newcommand{\dymGraphHash}{$H$}  %simbolo que identifica a matriz/hash da floresta
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Métodos de Link/Cut Tree   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\linkcutCreate}{\AlgoName{novaLC}}  %(n)
+\newcommand{\linkcutAddEdge}{\AlgoName{link}}    %(F, u, v)
+\newcommand{\linkcutDelEdge}{\AlgoName{cut}}    %(F, u, v)
+\newcommand{\linkcutQuery}{\AlgoName{\AlgoName{conectadoLC}}}    %(F, u, v)
+\newcommand{\linkcutMax}{\AlgoName{\AlgoName{max}}}    %(F, u, v)
+\newcommand{\linkcutMin}{\AlgoName{\AlgoName{min}}}    %(F, u, v)
+\newcommand{\linkcutPath}{\AlgoName{\AlgoName{caminho}}}    %(F, u, v)
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de MSF         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\MSFCreate}{\AlgoName{novoGDP}} %(n)
-\newcommand{\MSFaddEdge}{\AlgoName{ligueGDP}}    %(G, u, v, w)
-\newcommand{\MSFdelEdge}{\AlgoName{removaGDP}}    %(G, u, v)
+\newcommand{\MSFupdate}{\AlgoName{mudaPesoGDP}} %(n)
+%\newcommand{\MSFaddEdge}{\AlgoName{ligueGDP}}    %(G, u, v, w)
+%\newcommand{\MSFdelEdge}{\AlgoName{removaGDP}}    %(G, u, v)
 \newcommand{\MSFweight}{\AlgoName{pesoGDP}}    %(G)
 
 \newcommand{\dymGraphReplaceMSF}{\AlgoName{substituaGDP}} %(G, u, v, i)
@@ -249,44 +271,6 @@
 \newcommand{\HDT}{HDT}
 \newcommand{\HK}{HK}
 \newcommand{\CLHB}{CLHB}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Comandos para gráficos 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\legenda}{
-\begin{center}
-\begin{tabular}{| c c c c c c c c|}
-\hline
-	\ref{pgfplots:Dtree:QueryCall} & Dtree & \ref{pgfplots:nDtree:QueryCall} & nDtree & \ref{pgfplots:HK:QueryCall} & HK & \ref{pgfplots:HDT:QueryCall} & HDT\\
-\hline
-\end{tabular}
-\end{center}
-}
-
-\newcommand{\tabela}[3]{
-\begin{tikzpicture}
-    \begin{axis}[
-		 ylabel=tempo médio (s),
-		 xticklabel=\empty,
-		 xlabel=\empty,
-		 xlabel=pontos de testes,
-		 scaled x ticks=false,
-		 width=0.3\linewidth,
-                 title={#2}
-	         ]
-%    \addplot[orange] table [x=ts, y=Dtree, col sep=comma] {#1};
-%	    \label{pgfplots:Dtree:#3}
-%    \addplot[brown] table [x=ts, y=nDtree, col sep=comma] {#1};
-%	    \label{pgfplots:nDtree:#3}
-    \addplot[black] table [x=ts, y=HK, col sep=comma] {#1};
-	    \label{pgfplots:HK:#3}
-    \addplot[blue] table [x=ts, y=HDT, col sep=comma] {#1};
-	    \label{pgfplots:HDT:#3}
-\end{axis}
-\end{tikzpicture}
-}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -374,7 +358,7 @@
   %apoio={Durante o desenvolvimento deste trabalho o autor
   %       recebeu auxílio financeiro da XXXX},
   local={São Paulo},
-  data=2024-05-12, % YYYY-MM-DD
+  data=2024-07-02, % YYYY-MM-DD
   % A licença do seu trabalho. Use CC-BY, CC-BY-NC, CC-BY-ND, CC-BY-SA,
   % CC-BY-NC-SA ou CC-BY-NC-ND para escolher a licença Creative Commons
   % correspondente (o sistema insere automaticamente o texto da licença).
@@ -556,10 +540,9 @@ texto texto texto texto. Texto opcional.
 \input{conteudo/2-DF}
 \input{conteudo/3-treaps}
 \input{conteudo/4-connDG}
-\input{conteudo/experimentos}
-\input{conteudo/MSF}
-\input{conteudo/limitante}
-\input{conteudo/conclusoes}
+\input{conteudo/6-MSF}
+\input{conteudo/7-limitante}
+\input{conteudo/8-conclusoes}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% APÊNDICES E ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -4,10 +4,10 @@
 \chapter{Conexidade em florestas dinâmicas}
 \label{sec:connDF}
 
-O problema de conexidade em grafos dinâmicos, descrito na Seção \ref{sec:Motivação}, pode ser reduzido ao caso em que o grafo é uma floresta, originando assim o \defi[problema!de conexidade em florestas dinâmicas]{problema de conexidade em florestas dinâmicas}. Detalharemos como essa redução é feita no Capítulo~\ref{sec:connDG}. Esse problema pode ser apresentado como a implementação da seguinte biblioteca da forma mais eficiente possível: 
+O problema de conexidade em grafos dinâmicos, descrito na Seção \ref{sec:Motivação}, pode ser reduzido ao caso em que o grafo é uma floresta, despertando assim o interesse no \defi[problema!de conexidade em florestas dinâmicas]{problema de conexidade em florestas dinâmicas}. Detalharemos como essa redução é feita no Capítulo~\ref{sec:connDG}. Esse problema pode ser apresentado como a implementação da seguinte biblioteca da forma mais eficiente possível: 
 
 \begin{itemize}
-\item \dymForestCreate($n$): cria uma floresta dinâmica com $n$ vértices isolados;
+\item \dymForestCreate($n$): cria e retorna uma floresta dinâmica com $n$ vértices isolados;
 \item \dymForestAddEdge($F$, $u$, $v$): adiciona a aresta $uv$ à floresta dinâmica~$F$;
 \item \dymForestDelEdge($F$, $u$, $v$): remove a aresta $uv$ de $F$; e
 \item \dymForestQuery($F$, $u$, $v$): retorna verdadeiro se $u$ e $v$ estão na mesma componente conexa de $F$ e falso, caso contrário.
@@ -15,15 +15,13 @@ O problema de conexidade em grafos dinâmicos, descrito na Seção \ref{sec:Moti
  
 Há na literatura uma estrutura de dados bem conhecida chamada \defi{link-cut trees} \cite{SleatroTarjanLinkCutTree1983} que resolve uma versão direcionada desse problema, em que as árvores da floresta são enraizadas.
 Com essa estrutura de dados e uma rotina adicional, que permite mudar a raiz de uma dada árvore para um de seus outros nós, as link-cut trees resolvem também a versão não direcionada do problema, ou seja, o problema de conexidade em florestas dinâmicas.
-\NEW{
 Na Seção~\ref{sec:linkcuttree} introduziremos as link-cut trees como solução para um outro problema envolvendo grafos dinâmicos.
-} 
-Nessa seção apresentaremos as Euler tour trees, uma solução mais simples e tão eficiente quanto.
+Nessa seção apresentaremos as Euler tour trees, uma solução mais simples e tão eficiente quanto a solução com link-cut trees.
 
 
 \section{Euler tour trees} 
 
-Tarjan e Vishkin~\cite{tarjan1985} propuseram a \defi{representação por trilha Euleriana} de uma árvore (originalmente nomeada \textit{Euler tour technique}).
+Tarjan e Vishkin~\cite{tarjan1985} propuseram a \defi{representação por trilha Euleriana} de uma árvore (originalmente chamada de \textit{Euler tour technique}).
 Essa representação é obtida de uma árvore~$T$ substituindo-se cada aresta por dois arcos em sentidos opostos e adicionando-se um laço a cada vértice, como pode ser visto na Figura~\ref{fig:exemploSeqEuler}. O digrafo resultante é \defi[grafo!Euleriano]{Euleriano}, ou seja, é conexo e possui uma trilha que começa e termina num mesmo vértice e que passa por todos os arcos do digrafo exatamente uma vez. Uma tal trilha é chamada de \defi{trilha Euleriana} do digrafo.
 
 
@@ -35,14 +33,12 @@ Essa representação é obtida de uma árvore~$T$ substituindo-se cada aresta po
 \label{fig:exemploSeqEuler}
 \end{figure}
 
-A representação da árvore~$T$ é essencialmente a sequência de arcos que forma uma trilha Euleriana de~$T$.
+A representação da árvore~$T$ é essencialmente uma sequência de arcos que forma uma trilha Euleriana de~$T$.
 Denotamos cada arco pelo par de vértices que o compõe.
-\NEW{
 Isto é, o arco com origem no vértice~$u$ e destino no vértice~$v$ é escrito como $uv$.
 Dessa forma, um laço em~$v$ é escrito como~$vv$.
 Utilizaremos esses laços como representantes dos vértices na sequência. 
-Por exemplo, a sequência~\eqref{eq:eulerSeq} é uma trilha Euleriana da árvore da Figura \ref{fig:exemploSeqEuler}.
-}
+Por exemplo, a sequência~\eqref{eq:eulerSeq} é uma trilha Euleriana da árvore da Figura~\ref{fig:exemploSeqEuler}.
 \begin{equation}
 30~00~04~41~12~22~21~11~14~44~45~55~54~40~03~33.\label{eq:eulerSeq}  
 \end{equation}
@@ -51,11 +47,11 @@ Note que a sequência depende do vértice inicial e da ordem em que cada vizinho
 
 Henzinger e King \cite{HenzingerKing} propuseram armazenar uma sequência Euleriana em uma \defi[arvore@\'arvore!binária de busca]{árvore binária de busca} (ABB), que é uma árvore binária composta por nós que possuem  quatro campos: chave, pai, filho esquerdo e filho direito~\cite{CLRS}.
 
-Os campos pai e filhos atribuem a estrutura de árvore binária à ABB. Isto é, cada nó~$N$ possui até dois filhos (esquerdo e direito), o campo \defi{pai} de cada um dos filhos aponta para~$N$. Nenhum nó é filho de dois outros nós. Pode ocorrer de um nó não possuir algum dos filhos; nesse caso, os campos correspondentes a filhos inexistentes contêm~$\Nil$. Somente um nó não possui pai: este é chamado de \defi{raiz} da ABB.
+Os campos pai e filhos descrevem a estrutura de árvore binária à ABB. Isto é, cada nó~$N$ possui até dois filhos (esquerdo e direito), o campo \defi{pai} de cada um dos filhos aponta para~$N$. Nenhum nó é filho de dois outros nós. Pode ocorrer de um nó não possuir algum dos filhos; nesse caso, os campos correspondentes a filhos inexistentes contêm~$\Nil$. Somente um nó não possui pai: este é chamado de \defi{raiz} da ABB.
 
 Para uma árvore binária ser considerada de busca, é necessário que, para todo nó $N$, todas as chaves da subárvore esquerda sejam menores do que a chave de $N$ e, simetricamente, todas as chaves da subárvore direita sejam maiores do que a chave de $N$.
 
-Cada nó da ABB guarda um elemento da sequência Euleriana, ou seja, um par de vértices da árvore $T$, em um campo adicional \defi{info}, e armazena, no campo \defi{chave}, \NEW{um valor entre $1$ e $n$ correspondente ao índice desse elemento na sequência, onde $n$ é o comprimento da sequência.}
+Na representação de Henzinger e King, cada nó da ABB guarda um elemento da sequência Euleriana, ou seja, um par de vértices da árvore $T$, em um campo adicional \defi{info}, e armazena, no campo \defi{chave}, um valor entre $1$ e $n$ correspondente ao índice desse elemento na sequência, onde $n$ é o comprimento da sequência.
 
 \begin{figure}[htb]
 %\scalebox{.6}{
@@ -68,15 +64,13 @@ Cada nó da ABB guarda um elemento da sequência Euleriana, ou seja, um par de v
 Por exemplo, a ABB na Figura~\ref{fig:seq-treap-indices} está armazenando a sequência Euleriana~\eqref{eq:eulerSeq}.
 Uma tal ABB é chamada de \defi{Euler tour tree}. 
 Henzinger e King propuseram representar uma floresta por uma coleção de Euler tour trees: uma para cada componente da floresta. 
-Dessa forma, como veremos na Seção~\ref{sec:impleDF-ETT}, é possível obter uma implementação de uma floresta dinâmica em que as operações de consulta de conexidade e de inserção e remoção de aresta têm custo~$\O{\lg n}$, onde $n$ é o número de vértices da floresta.
+Dessa forma, como veremos na Seção~\ref{sec:impleDF-ETT}, é possível obter uma implementação de uma floresta dinâmica em que as operações de consulta de conexidade e de inserção e remoção de aresta têm consumo esperado~$\O{\lg n}$, onde $n$ é o número de vértices da floresta.
 
 
 \section{Implementação de floresta dinâmica com Euler tour trees}
 \label{sec:impleDF-ETT}
 
-\NEW{
 Para implementar a biblioteca de florestas dinâmicas com Euler tour trees, consideremos inicialmente a seguinte biblioteca.
-}
 
 \begin{itemize}
 \item  \treapCreate($u$, $v$): cria e retorna uma ABB com somente um nó que armazena o par de vértices $uv$;
@@ -85,24 +79,20 @@ Para implementar a biblioteca de florestas dinâmicas com Euler tour trees, cons
 
 A implementação dessas rotinas será detalhada no Capítulo~\ref{sec:TreapDeChaveImplicita}. Veremos que o consumo esperado de \treapCreate{} e \treapGetRoot{} será, respectivamente,~$\O{1}$ e~$\O{\lg n}$, onde~$n$ é o número de nós na ABB.
 
-\NEW{
-Precisaremos também de uma tabela de símbolos que, para cada par de vértices $(u,v)$, 
-armazena um ponteiro para o nó da ABB que contém esse par, ou $\Nil$ se um tal nó não existir.
-Notemos que para cada par de vértices $(u,v)$, existe no máximo um nó nas ABBs contendo $uv$.
-Portanto não há ambiguidade sobre qual nó cada ponteiro deve indicar.
-}
-Para manusear a tabela, usaremos a seguinte biblioteca.
+Para representar uma floresta dinâmica $F$, precisaremos também de um dicionário que guardará apontadores para os nós das ABBs que representam~$F$. Note que cada nó representa um elemento $uv$ de uma sequência Euleriana e que cada~$uv$ ocorre no máximo uma vez nas sequências. Então o par $(u,v)$ será usado como chave e o valor correspondente a tal chave será o apontador para o nó que contém $uv$ nas ABBs que representam~$F$.
+
+Para simplificar os pseudocódigos, usaremos uma representação matricial para esse dicionário, ou seja, usaremos a seguinte biblioteca.
 \begin{itemize}
-    \item $F~\gets~\hashCreate(n)$: cria e retorna uma tabela de símbolos~$F$;
-    \item $F[u,v]~\gets~uv$: insere o par~$(u,v)$ com valor associado~$uv$ na tabela~$F$.
-    Se o par~$(u,v)$ já estiver presente na tabela de símbolos, então seu valor associado é substituído por~$uv$;
-    \item $F[u,v]~\gets~\Nil{}$: remove o par~$(u,v)$ e seu valor associado da tabela de símbolos~$F$;
-    \item $var~\gets~F[u,v]$: atribui o valor associado ao par~$(u,v)$ à variável~$var$; Caso o par~$(u,v)$ não esteja presente em~$F$, atribui~$\Nil$ a~$var$.
+    \item $F \gets \hashCreate(n)$: cria e retorna um dicionário~$F$ para uma floresta dinâmica com~$n$ vértices;
+    \item $F[u,v] \gets uv$: insere o nó que contém $uv$, com chave $(u,v)$ e valor associado~$uv$ na tabela~$F$.
+    Se o par~$(u,v)$ já estiver presente no dicionário, então seu valor associado é substituído por~$uv$;
+    \item $F[u,v] \gets \Nil{}$: remove o nó associado ao~$(u,v)$ e seu valor associado do dicionário~$F$;
+    \item $\var \gets F[u,v]$: atribui o valor associado à chave~$(u,v)$ à variável~$\var$; Caso a chave~$(u,v)$ não esteja presente em~$F$, atribui~$\Nil$ a~$\var$.
 \end{itemize}
-Assumiremos que a primeira rotina consome~$\O{n}$ e as demais consomem tempo esperado~$\O{1}$~\cite{CLRS}.
+Existem implementações bem conhecidas de dicionários em que a primeira rotina consome~$\O{n}$ e as demais consomem tempo esperado~$\O{1}$~\cite{CLRS}.
 
 No Algoritmo~\ref{Algo:dymForestCreate} apresentamos a implementação de~\dymForestCreate{}, que cria e retorna uma nova floresta dinâmica que possui $n$ vértices e nenhuma aresta.
-Já no algoritmo~\ref{Algo:dymForestQuery}, mostramos a implementação de~\dymForestQuery{}, que responde a consulta de conexidade entre dois vértices~$u$ e~$v$ na floresta~$F$.
+Já no Algoritmo~\ref{Algo:dymForestQuery} mostramos a implementação de~\dymForestQuery{}, que responde à consulta de conexidade entre dois vértices~$u$ e~$v$ na floresta~$F$.
 
 
 \begin{algorithm}[htb]
@@ -117,31 +107,33 @@ Já no algoritmo~\ref{Algo:dymForestQuery}, mostramos a implementação de~\dymF
 \end{algorithmic}
 \end{algorithm}
 
-Com essa implementação, em uma floresta com~$n$ vértices, \dymForestCreate{} consumirá tempo~$\O{n}$. A rotina \dymForestQuery{}, descrita no Algoritmo~\ref{Algo:dymForestQuery}, consumirá tempo esperado $\O{\lg n}$.
+Com essa implementação \dymForestCreate{} consume tempo~$\O{n}$. A rotina \dymForestQuery{}, \nolbreaks{descrita no Algoritmo~\ref{Algo:dymForestQuery}, consume tempo esperado $\O{\lg n}$ em uma floresta com~$n$ vértices}.
 
 
 \begin{algorithm}[htb]
 \caption{\dymForestQuery($F$, $u$, $v$)}
 \label{Algo:dymForestQuery}
 \begin{algorithmic}[1]
-\State $uu$ $\gets$ $F[u,u]$
+\State \varname{uu} $\gets$ $F[u,u]$
 \State $vv$ $\gets$ $F[v,v]$
-\State \Return \treapGetRoot($uu$) = \treapGetRoot($vv$)
+\State \Return \treapGetRoot(\varname{uu}) = \treapGetRoot($vv$)
 \end{algorithmic}
 \end{algorithm}
 
-Para implementar \dymForestAddEdge{} e \dymForestDelEdge{}, precisaremos das seguintes rotinas da biblioteca de Euler tour trees. 
+Para implementar \dymForestAddEdge{} e \dymForestDelEdge{}, precisaremos adicionalmente das seguintes rotinas na biblioteca de Euler tour trees. 
 \begin{itemize}
-\item \treapSplit($\node$): recebe um ponteiro para um nó~$\node$, remove~$\node$ de sua ABB e retorna as raízes das duas ABBs resultantes; e
+\NEW{
+\item \treapSplit($\node$): corta a ABB que contém um nó~$\node$ em três ABBs. A primeira ABB contém todos os nós com chave estritamente menor do que a chave de~$\node$, a segunda contém somente~$\node$ e a última contém todos os nós com chave estritamente maior do que a chave de~$\node$. Essa rotina retorna as raízes dessas três ABBs; e
+}
 \item \treapJoin($T_1, T_2, \ldots, T_k$): junta as ABBs $T_1, T_2, \ldots, T_{k-1}$ e $T_k$ de modo que a sequência armazenada na árvore resultante é a concatenação das sequências armazenada em~$T_1, T_2, \ldots, T_k$ e retorna a raiz dessa árvore resultante.
 \end{itemize}
 
 Na Seção~\ref{sec:imple-treap}, mostraremos a implementação dessas rotinas e que~\treapJoin{} consome~$\O{h}$, onde~$h$ é a soma das alturas de~$T_1, T_2, \ldots, T_k$ e \treapSplit{} consome~$\O{\lg n}$, onde~$n$ é número de nós da árvore que contém~$\node$.
 
 Para implementar a operação \dymForestDelEdge($F$, $u$, $v$), descrita no Algoritmo~\ref{Algo:dymForestDelEdge}, 
-primeiro utilizaremos a tabela de símbolos para obter ponteiros para os nós que armazenam os arcos $uv$ e $vu$.
+primeiro utilizaremos o dicionário para obter ponteiros para os nós que armazenam os arcos~$uv$ e~$vu$.
 
-Em seguida, aplicamos~\treapSplit($uv$) dividindo essa sequência em duas partes, nomeadas~$A$ e~$B$, como pode ser visto na Figura~\ref{fig:algorit-cut-seqxy}.
+Em seguida, aplicaremos~\treapSplit($uv$) dividindo essa sequência em duas partes, nomeadas~$A$ e~$B$, como pode ser visto na Figura~\ref{fig:algorit-cut-seqxy}.
 \begin{figure}[htb]
 \centering
 \input{fig/algorit-cut-seqxy.tex}
@@ -149,11 +141,11 @@ Em seguida, aplicamos~\treapSplit($uv$) dividindo essa sequência em duas partes
 \label{fig:algorit-cut-seqxy}
 \end{figure}
 
-Como a sequência original é Euleriana, sabemos que o primeiro e último vértice dessa sequência coincidem, na Figura~\ref{fig:algorit-cut-seqxy} chamaremos esse vértice de~$w$.
-Dessa forma~$A$ representa um caminho de~$w$ até~$u$ e~$B$ representa um caminho de~$v$ até~$w$.
+Como a sequência original é Euleriana, sabemos que o primeiro e último vértice dessa sequência coincidem. Na Figura~\ref{fig:algorit-cut-seqxy} chamamos esse vértice de~$w$.
+Dessa forma~$A$ representa uma trilha de~$w$ até~$u$ e~$B$ representa uma trilha de~$v$ até~$w$.
 
 Note que não sabemos se $vu$ está na sequência~$A$ ou na sequência~$B$, mas não precisaremos dessa informação, pois podemos fazer a concatenação de~$B$ com~$A$,
-chamando \treapJoin($B$, $A$), obtendo um caminho de~$v$ até~$u$ que passa pelo arco~$vu$ em algum ponto.
+chamando \treapJoin($B$, $A$), obtendo uma trilha de~$v$ até~$u$ que passa pelo arco~$vu$ em algum ponto.
 
 Por fim, para concluir esse algoritmo, basta chamar~\treapSplit($vu$) para dividir essa sequência em duas.
 A primeira sendo a sequência Euleriana que representa a árvore que contém o vértice~$v$ e a segunda sendo a sequência Euleriana que contém o vértice~$u$.
@@ -162,59 +154,67 @@ A primeira sendo a sequência Euleriana que representa a árvore que contém o v
 \caption{\dymForestDelEdge($F$, $u$, $v$)}
 \label{Algo:dymForestDelEdge}
 \begin{algorithmic}[1]
-\State $uv$ $\gets$ $F[u,v]$
-\State $vu$ $\gets$ $F[v,u]$ 
-\State $A$, $B$ $\gets$ \treapSplit($uv$)
-\State \treapJoin($B$, $A$)
-\State \treapSplit($vu$)
-\State $F[u,v]$ $\gets$ $\Nil{}$
-\State $F[v,u]$ $\gets$ $\Nil{}$
+\State $uv$ $\gets$ $F[u,v]$\label{Algo:dymForestDelEdge:1}
+\State $vu$ $\gets$ $F[v,u]$\label{Algo:dymForestDelEdge:2}
+\State $A$, $uv$, $B$ $\gets$ \treapSplit($uv$)\label{Algo:dymForestDelEdge:3}
+\State \treapJoin($B$, $A$)\label{Algo:dymForestDelEdge:4}
+\State \treapSplit($vu$)\label{Algo:dymForestDelEdge:5}
+\State $F[u,v]$ $\gets$ $\Nil{}$\label{Algo:dymForestDelEdge:6}
+\State $F[v,u]$ $\gets$ $\Nil{}$\label{Algo:dymForestDelEdge:7}
 \end{algorithmic}
 \end{algorithm}
 
+\NEW{
+Notemos que as linhas~\ref{Algo:dymForestDelEdge:1},~\ref{Algo:dymForestDelEdge:2},~\ref{Algo:dymForestDelEdge:6} e~\ref{Algo:dymForestDelEdge:7} do Algoritmo~\ref{Algo:dymForestDelEdge} consumem tempo esperado constante.
+Enquanto que as linhas~\ref{Algo:dymForestDelEdge:3},~\ref{Algo:dymForestDelEdge:4} e~\ref{Algo:dymForestDelEdge:5}, e consequentemente \dymForestDelEdge{}, possuem consumo de tempo~$\O{\lg n}$, onde~$n$ é o número de vértices de~$F$.
+}
+
 Como exemplo, veremos o que ocorre com a sequência~\eqref{eq:eulerSeq} durante a execução da chamada \dymForestDelEdge($F$, $1$, $4$).
-Primeiro, após a chamada de \treapSplit($14$) obtemos as seguinte duas sequências:
+Primeiro, após a chamada de \treapSplit($14$), obtemos árvores correspondentes às seguinte duas sequências:
 \begin{equation}
 A = 30~00~04~41~12~22~21~11~~~~~~~~~~~~B = 44~45~55~54~40~03~33.\nonumber
 \end{equation}
-Nesse caso, temos que $w=3$. Após \treapJoin($B$, $A$) temos
+Nesse caso, temos que $w=3$. Após \treapJoin($B$, $A$), temos uma árvore que representa a sequência
 \begin{equation}
  44~45~55~54~40~03~33~30~00~04~41~12~22~21~11.\nonumber
 \end{equation}
-Por fim, após \treapSplit($41$) temos: 
+Por fim, após \treapSplit($41$), temos árvores que representam as duas sequências
 \begin{equation}
- 44~45~55~54~40~03~33~30~00~04~~~~~~~~~~~~12~22~21~11.\label{eq:apos-remocao}
+ 44~45~55~54~40~03~33~30~00~04~~~~~\text{e}~~~~~~12~22~21~11.\label{eq:apos-remocao}
 \end{equation}
-Note que as duas sequências resultantes representam a floresta obtida pela remoção da aresta~$14$, que está ilustrada na Figura
+Note que as duas sequências resultantes representam a floresta obtida pela remoção da aresta~$14$, que está ilustrada na Figura~\ref{fig:algorit-del-pos}.
 
 \begin{figure}[htb]
 \centering
 \input{fig/exemploArvoreSemAresta.tex}
-\caption{Floresta resultante de~\dymForestDelEdge($F$, $1$, $4$), representada pelas sequências~\eqref{eq:apos-remocao}.}
+\caption{Floresta resultante de~\dymForestDelEdge($F$, $1$, $4$), representada pelas sequências em~\eqref{eq:apos-remocao}.}
 \label{fig:algorit-del-pos}
 \end{figure}
 
 Para implementar \dymForestAddEdge{}, descrita no Algoritmo~\ref{Algo:dymForestAddEdge}, utilizamos a rotina auxiliar \ETmovetofront{}.
-Essa rotina recebe uma floresta~$F$ e um vértice~$u$ e restrutura a ABB que contém $uu$ de forma que este se torne o primeiro elemento de sua sequência Euleriana e retorna a raiz da ABB resultante. 
+Essa rotina recebe uma floresta~$F$ e um vértice~$u$ e restrutura a ABB que contém \varname{uu} de forma que este se torne o primeiro elemento de sua sequência Euleriana, e retorna a raiz da ABB resultante. 
 
 Por exemplo, se aplicarmos \ETmovetofront($F$,2) e \ETmovetofront($F$,5), onde $F$ é a floresta dinâmica ilustrada na Figura~\ref{fig:algorit-del-pos}, obtemos as sequências:
 \begin{equation}
-55~54~40~03~33~30~00~04~44~45~~~~~~~~~~~~22~21~11~12.\label{eq:apos-moveToFront}
+55~54~40~03~33~30~00~04~44~45~~~~~\text{e}~~~~~~22~21~11~12.\label{eq:apos-moveToFront}
 \end{equation}
 
-Para implementar~\ETmovetofront($F$, $u$), basta cortar a sequência em $uu$ chamando \treapSplit($uu$) e concatenar as sequências resultantes da forma apropriada com~\treapJoin{}. Note que como \treapSplit{} remove $uu$ da sequência, temos que adicioná-lo novamente a sequência como pode ser visto no Algoritmo~\ref{Algo:ETmovetofront}.
+Para implementar~\ETmovetofront($F$, $u$), basta cortar a sequência em \varname{uu} chamando \treapSplit(\varname{uu}) e concatenar as sequências resultantes de forma apropriada com~\treapJoin{}.
+Note que, como \treapSplit{} remove \varname{uu} da sequência, temos que adicioná-lo novamente à sequência como pode ser visto na linha~\ref{Algo:ETmovetofront:3} do Algoritmo~\ref{Algo:ETmovetofront}.
 
 \begin{algorithm}[htb]
 \caption{\ETmovetofront($F$, $u$)}
 \label{Algo:ETmovetofront}
 \begin{algorithmic}[1]
-\State $uu$ $\gets$ $F[u,u]$
-\State $A$, $B$ $\gets$ \treapSplit($uu$)
-\State \Return \treapJoin($uu$, $B$, $A$)
+\State \varname{uu} $\gets$ $F[u,u]$\label{Algo:ETmovetofront:1}
+\State $A$, \varname{uu}, $B$ $\gets$ \treapSplit(\varname{uu})\label{Algo:ETmovetofront:2}
+\State \Return \treapJoin(\varname{uu}, $B$, $A$)\label{Algo:ETmovetofront:3}
 \end{algorithmic}
 \end{algorithm}
 
-
+\NEW{
+Notemos que, devido às linhas~\ref{Algo:ETmovetofront:2} e~\ref{Algo:ETmovetofront:3} do Algoritmo~\ref{Algo:ETmovetofront}, o consumo de tempo de \ETmovetofront{} é $\O{\lg n}$.
+}
 Com a rotina \ETmovetofront{} implementada, podemos elaborar~\dymForestAddEdge{}, descrita no Algoritmo~\ref{Algo:dymForestAddEdge}.
 
 
@@ -232,15 +232,14 @@ Com a rotina \ETmovetofront{} implementada, podemos elaborar~\dymForestAddEdge{}
 \end{algorithmic}
 \end{algorithm}
 
-Primeiro, usamos \ETmovetofront{} para mover~$uu$ e~$vv$ para o início de suas sequências.
-Em seguida, criamos novos nós~$uv$ e~$vu$; os adicionamos à tabela de símbolos e usamos \treapJoin{} pra unir todas as sequências de tal forma que a sequência resultante seja Euleriana.
+Primeiro, usamos \ETmovetofront{} para mover~\varname{uu} e~$vv$ para o início de suas sequências.
+Em seguida, criamos novos nós~$uv$ e~$vu$; os adicionamos à tabela de símbolos e usamos \treapJoin{} pra unir todas as sequências de tal forma que a sequência resultante seja a sequência Euleriana correspondente a árvore resultante da adição da aresta~$uv$.
 
-\newpage
 Dessa forma, se quisermos adicionar uma aresta ligando os vértices~$2$ e~$5$ na floresta da Figura~\ref{fig:algorit-del-pos}, obtendo assim a floresta da Figura~\ref{fig:algorit-add-pos}, primeiro temos que mover $22$ e $55$ para o início de suas sequências, como fizemos com as sequências \eqref{eq:apos-moveToFront}. Em seguida criamos os nós contendo $25$ e $52$ e unimos essas sequências, obtendo assim a sequência:
 \begin{equation}
 55~54~40~03~33~30~00~04~44~45~52~22~21~11~12~25.\label{eq:add}
 \end{equation}
-O consumo esperado de \dymForestAddEdge{} também será~$\O{\lg n}$.
+Logo, o consumo esperado de \dymForestAddEdge{} também será~$\O{\lg n}$.
 
 \begin{figure}[htb]
 \centering
