@@ -200,7 +200,7 @@ Agora passamos a descrever o algoritmo~\dymGraphReplace{}, \NEW{elaborado} no Al
 \EndFor
 \For {$xy$ em $G$.$R_i$ com $x$ em $T_u$}\label{Algo:dymGraphReplace:linha:achaSub}\Comment{Procura substituta para $uv$}
 \State \graphDel($G$.$R_i$, $x$, $y$)
-\If {$y \in T_v$}
+\If {$y \in T_v$}\label{Algo:dymGraphReplace:linhayinTv}
 \For {$j \gets i$ até $\lceil \lg n \rceil$}\label{Algo:dymGraphReplace:linha:inseresub}
 \State \dymForestAddEdge($G$.$F_j$, $x$, $y$)
 \EndFor
