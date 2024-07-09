@@ -162,8 +162,7 @@ A primeira sendo a sequência Euleriana que representa a árvore que contém o v
 \end{algorithmic}
 \end{algorithm}
 
-Notemos que as linhas~\ref{Algo:dymForestDelEdge:1},~\ref{Algo:dymForestDelEdge:2},~\ref{Algo:dymForestDelEdge:6} e~\ref{Algo:dymForestDelEdge:7} do Algoritmo~\ref{Algo:dymForestDelEdge} consumem tempo esperado constante.
-Enquanto que as linhas~\ref{Algo:dymForestDelEdge:3},~\ref{Algo:dymForestDelEdge:4} e~\ref{Algo:dymForestDelEdge:5}, e consequentemente \dymForestDelEdge{}, possuem consumo de tempo~$\O{\lg n}$, onde~$n$ é o número de vértices de~$F$.
+Notemos que as linhas~\ref{Algo:dymForestDelEdge:1},~\ref{Algo:dymForestDelEdge:2},~\ref{Algo:dymForestDelEdge:6} e~\ref{Algo:dymForestDelEdge:7} do Algoritmo~\ref{Algo:dymForestDelEdge} consumem tempo esperado constante, enquanto que as linhas~\ref{Algo:dymForestDelEdge:3},~\ref{Algo:dymForestDelEdge:4} e~\ref{Algo:dymForestDelEdge:5}, e consequentemente \dymForestDelEdge{}, possuem consumo de tempo~$\O{\lg n}$, onde~$n$ é o número de vértices de~$F$.
 
 Como exemplo, veremos o que ocorre com a sequência~\eqref{eq:eulerSeq} durante a execução da chamada \dymForestDelEdge($F$, $1$, $4$).
 Primeiro, após a chamada de \treapSplit($14$), obtemos árvores correspondentes às seguinte duas sequências:
