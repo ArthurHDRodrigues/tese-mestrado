@@ -65,7 +65,7 @@ O primeiro algoritmo poli-logarítmico para o problema de conectividade dinâmic
 Em seguida, em $1997$, seu consumo esperado por operação foi reduzido a $\O{\lg^2 n}$~\cite{HenzingerThorup} amortizado esperado e nesse mesmo ano, foi realizado o primeiro estudo experimental, avaliando diferentes versões do algoritmo de Frederickson~\cite{xpAnalyGiuseppe}.
 
 Ainda em~$1995$, Nikoletseas, Reif, Spirakis e Yung~\cite{NikoletseasRSY} propuseram uma estrutura de dados para o problema de conexidade em grafos dinâmicos \defi[grafo!estocástico]{estocástico}, em que a sequência de atualizações e consultas é escolhida ao acaso com probabilidade uniforme.
-Nessas condições, essa estrutura de dados permite fazer atualizações em~$\O{\lg^3 n}$ esperado amortizado e consulta em~$\O{1}$ esperado amortizado.
+Nessas condições, essa estrutura de dados permite fazer atualizações em tempo~$\O{\lg^3 n}$ esperado amortizado e consulta em tempo~$\O{1}$ esperado amortizado.
 
 Em $1999$, Fatourou, Spirakis, Zarafidis, e Zoura~\cite{Fatourou} implementaram os algoritmos de Henzinger e King~\cite{HenzingerKing} e Nikoletseas et al.~\cite{NikoletseasRSY} e os compararam. Eles concluíram que a estrutura de dados de Nikoletseas et al. performa melhor do que a de Henzinger e King quando o grafo dinâmico estocástico é denso.
 
@@ -81,10 +81,10 @@ O algoritmo de Holm et al. para MSF possui consumo amortizado $\O{\lg^4 n}$ para
 
 Em $2000$, Thorup~\cite{Thorup2000} complementou o algoritmo de Holm et al.~\cite{poly_log}, adicionando uma estrutura de dados auxiliar chamada floresta estrutural, que reduz o consumo de tempo de cada operação para~$\O{\lg n\, (\lg\lg n)^3}$ esperado amortizado.
 Essa é atualmente a estrutura de dados com menor consumo de tempo assintótico conhecida para solucionar o problema de conexidade em grafos dinâmicos.
-Deixando de ser ótima somente por um fator de $\O{(\lg\lg n)^3}$, devido ao limitante inferior de~$\Omega(\lg n)$ provado em~$2006$ por Patrascu e Demaine~\cite{lowerBoundPatrascu}.
+Ela só não é ótima por um fator de $\O{(\lg\lg n)^3}$, devido ao limitante inferior de~$\Omega(\lg n)$ provado em~$2006$ por Patrascu e Demaine~\cite{lowerBoundPatrascu}.
 
-Em $2010$, Tarjan e Werneck~\cite{tarjanWerneck2010} fizeram um estudo experimental com diversas estruturas de dados para árvores dinâmicas que resolvem \NEW{ambos os problemas de conexidade em florestas dinâmicas e} da floresta maximal de peso mínimo.
-Destacando qualidades e deficiências de cada estrutura de dados quando sujeitas a diferentes tipos de cargas de trabalho. 
+Em $2010$, Tarjan e Werneck~\cite{tarjanWerneck2010} fizeram um estudo experimental com diversas estruturas de dados para árvores dinâmicas que resolvem ambos os problemas de conexidade em florestas dinâmicas e da floresta maximal de peso mínimo,
+destacando qualidades e deficiências de cada estrutura de dados quando sujeitas a diferentes tipos de cargas de trabalho. 
 
 Desde $1997$, os algoritmos com consumo de tempo amortizado foram predominantes na literatura, porém todos possuem alguma instância com consumo de tempo $\OTheta{n}$ no pior caso.
 O problema de melhorar o tempo assintótico no pior caso continuou a permear a literatura sem avanços até $2013$, quando Kapron, King e Mountjoy \cite{bruceM} apresentaram uma estrutura de dados para o problema de conexidade em grafos dinâmicos baseada no problema \textit{cutset} que proporciona consumo $\O{\lg^4 n}$ para a inserção de arestas, $\O{\lg^5 n}$ para remoção e responde à consulta de conexidade em tempo~$\O{\lg n / \lg(\lg n)}$.
