@@ -66,7 +66,7 @@ No artigo, os autores demonstram um lema \cite[Lema~5.1]{lowerBoundPatrascu} cuj
 amortizado para cada operação dessa sequência.
 
 Há uma nuance na amortização presente nesse limitante. A sequência de operações é composta por ambas as rotinas~\VPSPupdate{} e~\VPSPverify.
-\NEW{Logo} a amortização do custo da sequência por operação significa que pelo menos uma dessas rotinas, mas não necessariamente \textit{ambas}, está limitada inferiormente por~$\Omega(\frac{\delta}{b}\lg p)$. Ou seja, é possível que uma dessas rotinas consuma tempo constante e assim, nesse caso, a outra necessariamente consumirá tempo~$\Omega(\frac{\delta}{b}\lg p)$. Elaboraremos um exemplo envolvendo grafos dinâmicos em que isso ocorre ao final desse capítulo. 
+Logo a amortização do custo da sequência por operação significa que pelo menos uma dessas rotinas, mas não necessariamente \textit{ambas}, está limitada inferiormente por~$\Omega(\frac{\delta}{b}\lg p)$. Ou seja, é possível que uma dessas rotinas consuma tempo constante e assim, nesse caso, a outra necessariamente consumirá tempo~$\Omega(\frac{\delta}{b}\lg p)$. Elaboraremos um exemplo envolvendo grafos dinâmicos em que isso ocorre ao final desse capítulo. 
 
 
 Na Seção 5.5 do artigo, os autores explicitam essa nuance desenvolvendo um método que converte limitantes amortizados em limitantes que relacionam $t_u$ a $t_q$ e, ao aplicar esse método ao limitante~\eqref{eq:lim}, concluem o Teorema~\ref{theo:lim}. Pontuamos que esse método se apoia em uma análise mais fina da sequência modelada pela árvore binária usada pelo lema citado anteriormente, logo discorrer detalhadamente sobre ele também foge do escopo desse trabalho.
