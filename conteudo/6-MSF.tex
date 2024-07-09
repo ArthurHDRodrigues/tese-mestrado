@@ -1,53 +1,88 @@
 \chapter{Floresta maximal de peso mínimo em grafos planos}
 \label{sec:MSF}
 
-
-Retomemos o problema da floresta maximal de peso mínimo em grafos dinâmicos inicialmente apresentado na Seção~\ref{sec:Motivação} e que é o segundo problema que iremos apresentar.
-Ele consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca:
-
-\begin{itemize}
-\item \MSFCreate($G_0$): recebe um grafo plano ponderado~$G_0$ dado por listas de adjacências e devolve um grafo dinâmico plano ponderado isomorfo a~$G_0$; Para cada aresta~$uv$ em~$G_0$ também é informado a aresta dual~$uv^\star$, dessa forma fixando uma imersão no plano.
-\item \MSFupdate($G$, $u$, $v$, $w$): atribui o peso~$w$ à aresta~$uv$ do grafo dinâmico~$G$.
-\item \MSFweight($G$): devolve o peso de uma MSF de $G$.
-\end{itemize}
+O problema da floresta maximal de peso mínimo em grafos dinâmicos foi inicialmente apresentado na Seção~\ref{sec:Motivação} e é o segundo problema que iremos discutir.
+Nesse capítulo, vamos apresentar o algoritmo de David Eppstein, Giuseppe Italiano, Roberto Tamassia, Robert Tarjan, Jeffery Westbrook e Moti Yung~\cite{EPPSTEIN-planar} para esse problema. Para tanto, precisaremos visitar conceitos de planaridade e dualidade.
+Para esse problema, os grafos em questão podem ter múltiplas arestas entre cada par de vértices, laços em cada vértice e serão conexos.
 
 
-\section{Subdivisão planar e suas representações}
+\section{Planaridade}
 
-Definir:
-\begin{itemize}
-\item grafo planar
-\item imersão no plano
-\item grafo plano
-\item grafo dual
-\item corte induzido por uma árvore e uma aresta da árvore.
-\end{itemize}
+Intuitivamente, um grafo é dito \defi[grafo!planar]{planar}~\cite{planarTheoryAlgorith} se é possível desenhá-lo no plano de forma que suas arestas não se cruzem e um grafo \defi[grafo!plano]{plano} é um grafo planar já desenhado no plano.
+
+Formalmente, uma \defi{imersão no plano} de um grafo~$G=(V,E)$ é um par de funções~$\phi_V:V\mapsto \R^2$ e $\phi_E: E\times [0,1]\mapsto \R^2$ tais que:
+\begin{enumerate}
+\item $\phi_V$ é injetora; 
+\item $\phi_E(uv,0) = \phi_V(u)$ e $\phi_E(uv,1) = \phi_V(v)$, para toda aresta $uv\in E$;
+\item $\phi_E(uv)$ é uma curva sem auto-intersecção.
+\end{enumerate}
+Usaremos somente $\phi$ para nos referirmos ao par $(\phi_V,\phi_E)$.
+
+Um grafo~$G=(V,E)$ é dito \defi{planar}~\cite{noma2003} se existir imersão de~$G$ no plano tal que
+\begin{enumerate}
+\item A imagem das arestas não contém imagens dos vértices no seu interior, ou seja, $\phi_E(uv,x) \neq \phi_V(w)$, para toda aresta $uv\in E$, vértice $w\in V$ e número real~$x$ tal que $0<x<1$;
+\item As curvas associadas a quaisquer duas arestas distintas não se cruzam no seu interior, ou seja, $\phi_E(uv,x)\neq \phi_E(wz,y)$ para toda aresta $uv,wz\in E$ e $0<x,y<1$ números reais.
+\end{enumerate}
+Um grafo planar junto com uma imersão fixada é chamado de grafo \defi{plano}.
+
+
+Para cada vértice $v$ de um grafo plano, é possível construir uma ordenação cíclica~$D(v)$ das aresta incidentes a~$v$~\cite{noma2003}.
+Para obter essa ordenação, percorremos as arestas incidentes a~$v$ em sentido horário até retornar à aresta inicial do percurso.
+Uma aresta $vu$ é \defi{sucessora} de uma aresta $vw$ se a primeira é sucessora da segunda nesse percurso.
+Uma lista de todas essas ordens cíclicas é chamada de~\defi{descrição combinatória plana} da imersão.
+A Tabela \TODO{bla} mostra as ordenações de cada vértice do grafo da Figura \TODO{bla}.
+
+É possível obter uma descrição combinatória plana em tempo linear~\TODO{Citar fonte}.
+
+\section{Dualidade}
+
+Dado um grafo plano~$G$ com imersão~$\phi$, se removermos a imagem de $\phi$ do plano obteremos regiões conexas chamadas de \defi{faces}~\cite{planarTheoryAlgorith}.
+Uma dessas faces é ilimitada, essa face é chamada de \defi{face exterior}.
+A Figura \TODO{1} mostra as faces de um grafo plano.
+
+\TODO{FIGURA 1}
+
+Para cada face~$F_i$, existe um único percurso fechado de~$G$ cuja remoção de sua imagem de~$\phi$ corta o plano em duas regiões conexas.
+Uma delas correspondendo a~$F_i$ e outra sendo todo o restante do plano.
+A \defi{fronteira} de uma face é o conjunto de arestas pertencentes a esse percurso.
+Por exemplo, na Figura~\TODO{1} a imagem de~$\phi$ do percurso \TODO{bla-bla-bla} delimita~\TODO{$F_?$} do restante do plano, logo a fronteira da face~\TODO{$F_?$} é o conjunto de arestas~\TODO{\{blablabla\}}.
+
+Dado um grafo plano, ou seja, um grafo planar~$G=(V,E)$ e uma imersão~$\phi$ desse grafo, o grafo \defi{dual} de~$G$~\cite{planarTheoryAlgorith} é o grafo $G^\star = (F,E^\star)$ cujo conjunto de vértices é o conjunto~$F$ de faces da imersão~$\phi$ e o conjunto de arestas $E^\star$ é construido a partir das arestas de~$G$.
+Para cada aresta~$e\in E$, existe exatamente uma aresta~$e^\star$ no conjunto $E^\star$.
+A aresta~$e^\star$ é chamada de \defi{aresta dual} de~$e$ e os vértices incidentes a essa aresta são as duas faces cujas fronteiras contém~$e$.
+Nesse contexto, chamamos~$G$ de grafo \defi{primal}.
+Para ilustrar a relação entre cada aresta e seu dual, geralmente desenhamos cada aresta do grafo dual cruzando as aresta do grafo primal, como mostra a Figura \TODO{2}.
+
+\TODO{FIGURA 2}
+
+\begin{theorem}[Fórmula de Euler]
+\label{teo:MSFEuler}
+Seja $G=(V,E)$ um grafo planar conexo com~$n$ vértices e~$m$ arestas. Toda imersão de~$G$ no plano possui o mesmo número $f$ de faces e
+$$
+n-m+f = 2.
+$$
+\end{theorem}
+
+O Teorema~\ref{teo:MSFEuler} mostra que o número de vértices do grafo dual é $\OTheta{n}$.
+\TODO{pq? quanto vale $m$?}
 
 \begin{theorem}
 \label{teo:MSFdual}
-Dado uma floresta maximal~$F$ de um grafo planar~$G$, então o conjunto
+Seja~$T$ uma árvore geradora de um grafo planar~$G$. O conjunto
 $$
-F^\star = \{e^\star|e\notin F\}
+T^\star = \{e^\star:e\notin T\}
 $$
-é uma floresta maximal de~$G^\star$.
-Além disso, se~$G$ for ponderado e adotarmos $w(e) = w(e^\star)$, então~$F$ será de peso mínimo se e somente se~$T^\star$ for de peso máximo e vice versa.
+é uma árvore maximal de~$G^\star$.
+Além disso, se~$G$ for ponderado e adotarmos $w(e^\star) = w(e)$, então~$T$ será de peso mínimo se e somente se~$T^\star$ for de peso máximo e vice versa.
 \end{theorem}
 
+A Figura \TODO{3} mostra $T$ e $T^\star$ de uma versão ponderada do grafo da Figura \TODO{2}
 
-Dado um grafo~$G$, um \defi{corte} é um conjunto de arestas cuja remoção aumenta o conjunto de componentes conexas de~$G$.
-Dado $F$ uma floresta maximal de~$G$ e~$uv$ uma aresta de~$F$, então existe um corte associado ao par $(F, uv)$ dado pela união de $uv$ com as arestas que reconectam as duas árvores geradas pela remoção de $uv$.
+\TODO{FIGURA 3}
 
+Dado um grafo plano~$G$ e uma descrição combinatória~$D$ da imersão de~$G$, um \defi{ciclo facial} de~$D$ é um ciclo~$v_0,v_1,\ldots,v_{k-1},v_0$ onde $v_iv_{i+1}$ é sucessor de $v_iv_{i-1}$ em $D(v_i)$. A Figura \TODO{bla} mostra ciclos faciais do grafo da Figura \TODO{bla}.
 
-\begin{theorem}
-\label{teo:cutset}
-Seja~$G$ um grafo planar, $F$ uma floresta maximal de~$G$ e~$uv$ uma aresta de~$F$, então o conjunto
-$$
-(F, uv)^\star := \{e^\star|e\in (F, uv)\}
-$$
-forma um ciclo em $G^\star$.
-\end{theorem}
-
-\section{Link-cut Tree}
+\section{Link-Cut Tree}
 \label{sec:linkcuttree}
 
 Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{linkcuttree}.
@@ -62,6 +97,34 @@ Biblioteca de link-cut tree:
 \item \linkcutMin($F$, $u$, $v$): Retorna o nó com peso mínimo no caminho entre~$u$ e~$v$ na floresta~$F$.
 \item \linkcutPath($F$, $u$, $v$): Faz o caminho entre $u$ e $v$ ser o preferido.
 \end{itemize}
+
+\section{Texto antigo}
+
+Ele consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca:
+
+\begin{itemize}
+\item \MSFCreate($G_0$): recebe um grafo plano ponderado~$G_0$ dado por listas de adjacências e devolve um grafo dinâmico plano ponderado isomorfo a~$G_0$; \TODO{Para cada aresta~$uv$ em~$G_0$ também é informado a aresta dual~$uv^\star$, dessa forma fixando uma imersão no plano.}
+\item \MSFupdate($G$, $u$, $v$, $w$): atribui o peso~$w$ à aresta~$uv$ do grafo dinâmico~$G$.
+\item \MSFweight($G$): devolve o peso de uma MSF de $G$.
+\end{itemize}
+
+
+\section{Subdivisão planar e suas representações}
+
+
+Dado um grafo~$G$, um \defi{corte} é um conjunto de arestas cuja remoção aumenta o conjunto de componentes conexas de~$G$.
+Dado $F$ uma floresta maximal de~$G$ e~$uv$ uma aresta de~$F$, então existe um corte associado ao par $(F, uv)$ dado pela união de $uv$ com as arestas que reconectam as duas árvores geradas pela remoção de $uv$.
+
+
+\begin{theorem}
+\label{teo:cutset}
+Seja~$G$ um grafo planar, $F$ uma floresta maximal de~$G$ e~$uv$ uma aresta de~$F$, então o conjunto
+$$
+(F, uv)^\star := \{e^\star:e\in (F, uv)\}
+$$
+forma um ciclo em $G^\star$.
+\end{theorem}
+
 
 \section{Ideia do algoritmo}
 Para um grafo dinâmico~$G$, manteremos uma floresta maximal de pesos mínimos~$F$ e sua floresta dual~$F^\star$ como definida no Teorema~\ref{teo:MSFdual} usando link-cut trees.
