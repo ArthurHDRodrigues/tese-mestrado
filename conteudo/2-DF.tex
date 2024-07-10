@@ -122,9 +122,7 @@ Com essa implementação \dymForestCreate{} consume tempo~$\O{n}$. A rotina \dym
 
 Para implementar \dymForestAddEdge{} e \dymForestDelEdge{}, precisaremos adicionalmente das seguintes rotinas na biblioteca de Euler tour trees. 
 \begin{itemize}
-\NEW{
 \item \treapSplit($\node$): corta a ABB que contém um nó~$\node$ em três ABBs. A primeira ABB contém todos os nós com chave estritamente menor do que a chave de~$\node$, a segunda contém somente~$\node$ e a última contém todos os nós com chave estritamente maior do que a chave de~$\node$. Essa rotina retorna as raízes dessas três ABBs; e
-}
 \item \treapJoin($T_1, T_2, \ldots, T_k$): junta as ABBs $T_1, T_2, \ldots, T_{k-1}$ e $T_k$ de modo que a sequência armazenada na árvore resultante é a concatenação das sequências armazenada em~$T_1, T_2, \ldots, T_k$ e retorna a raiz dessa árvore resultante.
 \end{itemize}
 
@@ -164,10 +162,7 @@ A primeira sendo a sequência Euleriana que representa a árvore que contém o v
 \end{algorithmic}
 \end{algorithm}
 
-\NEW{
-Notemos que as linhas~\ref{Algo:dymForestDelEdge:1},~\ref{Algo:dymForestDelEdge:2},~\ref{Algo:dymForestDelEdge:6} e~\ref{Algo:dymForestDelEdge:7} do Algoritmo~\ref{Algo:dymForestDelEdge} consumem tempo esperado constante.
-Enquanto que as linhas~\ref{Algo:dymForestDelEdge:3},~\ref{Algo:dymForestDelEdge:4} e~\ref{Algo:dymForestDelEdge:5}, e consequentemente \dymForestDelEdge{}, possuem consumo de tempo~$\O{\lg n}$, onde~$n$ é o número de vértices de~$F$.
-}
+Notemos que as linhas~\ref{Algo:dymForestDelEdge:1},~\ref{Algo:dymForestDelEdge:2},~\ref{Algo:dymForestDelEdge:6} e~\ref{Algo:dymForestDelEdge:7} do Algoritmo~\ref{Algo:dymForestDelEdge} consumem tempo esperado constante, enquanto que as linhas~\ref{Algo:dymForestDelEdge:3},~\ref{Algo:dymForestDelEdge:4} e~\ref{Algo:dymForestDelEdge:5}, e consequentemente \dymForestDelEdge{}, possuem consumo de tempo~$\O{\lg n}$, onde~$n$ é o número de vértices de~$F$.
 
 Como exemplo, veremos o que ocorre com a sequência~\eqref{eq:eulerSeq} durante a execução da chamada \dymForestDelEdge($F$, $1$, $4$).
 Primeiro, após a chamada de \treapSplit($14$), obtemos árvores correspondentes às seguinte duas sequências:
@@ -212,9 +207,7 @@ Note que, como \treapSplit{} remove \varname{uu} da sequência, temos que adicio
 \end{algorithmic}
 \end{algorithm}
 
-\NEW{
 Notemos que, devido às linhas~\ref{Algo:ETmovetofront:2} e~\ref{Algo:ETmovetofront:3} do Algoritmo~\ref{Algo:ETmovetofront}, o consumo de tempo de \ETmovetofront{} é $\O{\lg n}$.
-}
 Com a rotina \ETmovetofront{} implementada, podemos elaborar~\dymForestAddEdge{}, descrita no Algoritmo~\ref{Algo:dymForestAddEdge}.
 
 

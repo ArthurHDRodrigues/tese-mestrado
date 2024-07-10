@@ -39,20 +39,17 @@ para em seguida usar as estruturas de dados desenvolvidas nesse problema para so
 
 O segundo problema estudado também será restrito a uma classe específica de grafos.
 Estudaremos o \defi[problema!da floresta maximal de peso mínimo em grafos ponderados dinâmicos]{problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos} restrito a grafos planos.
-Esse problema visa manter uma \defi{floresta maximal de peso mínimo} (MSF) de um grafo dinâmico ponderado plano ao longo da sequência de \NEW{modificações nos pesos das arestas}.
+Esse problema visa manter uma \defi{floresta maximal de peso mínimo} (MSF) de um grafo dinâmico ponderado plano ao longo da sequência de modificações nos pesos das arestas.
 
 Começaremos esse estudo na próxima seção, em que faremos uma revisão histórica dos resultados relacionados aos problemas que serão abordados nos próximos capítulos.
 No Capítulo~\ref{sec:connDF}, estudaremos o problema de conexidade em florestas dinâmicas e uma de suas soluções, proposta por Holm, de Lichtenberg e Thorup~\cite{poly_log}, que envolve Euler tour trees.
 Essa estrutura de dados utiliza árvores binárias de busca de chave implícita, cuja implementação será elaborada no Capítulo~\ref{sec:TreapDeChaveImplicita}.
 No Capítulo~\ref{sec:connDG}, expandiremos nosso estudo sobre conexidade estudando o problema de conexidade em grafos dinâmicos.
 
-No Capítulo~\ref{sec:MSF}, apresentaremos um algoritmo proposto por Eppstein et al.~\cite{EPPSTEIN-planar} para solucionar o problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos planos \NEW{sujeitos a alteração no peso das arestas}. 
+No Capítulo~\ref{sec:MSF}, apresentaremos um algoritmo proposto por Eppstein et al.~\cite{EPPSTEIN-planar} para solucionar o problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos planos sujeitos a alteração no peso das arestas.
 
 No Capítulo~\ref{sec:lim}, demonstraremos um limitante inferior de~$\Omega(\lg n)$ por operação para todos os problemas estudados. Esse limitante mostra que os algoritmos apresentados para o problema de conexidade em florestas dinâmicas e para o problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos planos são ótimos.
-No Capítulo~\ref{sec:conclusao} 
-\NEW{
-faremos considerações finais sobre nossos estudos.
-}
+No Capítulo~\ref{sec:conclusao} faremos considerações finais sobre nossos estudos.
 
 \newpage
 \section{Historiografia}
@@ -67,43 +64,27 @@ Em $1992$, Eppstein et al.~\cite{Eppstein1992SparsificationaTF,Eppstein1997Spars
 O primeiro algoritmo poli-logarítmico para o problema de conectividade dinâmica foi apresentado por Henzinger e King~\cite{HenzingerKing} em~$1995$ e possui consumo amortizado esperado $\O{\lg^3 n}$ para cada operação. Nesse artigo, elas introduziram uma estrutura de dados chamada Euler tour trees como uma maneira eficiente de representar florestas dinâmicas.
 Em seguida, em $1997$, seu consumo esperado por operação foi reduzido a $\O{\lg^2 n}$~\cite{HenzingerThorup} amortizado esperado e nesse mesmo ano, foi realizado o primeiro estudo experimental, avaliando diferentes versões do algoritmo de Frederickson~\cite{xpAnalyGiuseppe}.
 
-\NEW{
 Ainda em~$1995$, Nikoletseas, Reif, Spirakis e Yung~\cite{NikoletseasRSY} propuseram uma estrutura de dados para o problema de conexidade em grafos dinâmicos \defi[grafo!estocástico]{estocástico}, em que a sequência de atualizações e consultas é escolhida ao acaso com probabilidade uniforme.
-Nessas condições, essa estrutura de dados permite fazer atualizações em~$\O{\lg^3 n}$ esperado amortizado e consulta em~$\O{1}$ esperado amortizado.
-}
+Nessas condições, essa estrutura de dados permite fazer atualizações em tempo~$\O{\lg^3 n}$ esperado amortizado e consulta em tempo~$\O{1}$ esperado amortizado.
 
-\NEW{
 Em $1999$, Fatourou, Spirakis, Zarafidis, e Zoura~\cite{Fatourou} implementaram os algoritmos de Henzinger e King~\cite{HenzingerKing} e Nikoletseas et al.~\cite{NikoletseasRSY} e os compararam. Eles concluíram que a estrutura de dados de Nikoletseas et al. performa melhor do que a de Henzinger e King quando o grafo dinâmico estocástico é denso.
-}
 
 Inspirados na solução de Henzinger e King para o problema de conexidade dinâmica, em $1998$, Holm, de Lichtenberg e Thorup~\cite{poly_log} atacaram ambos os problemas de conectividade dinâmica e de MSF usando Euler tour trees.
 A solução deles para o problema de conexidade empata com o consumo assintótico da solução de Henzinger e King de~$\O{\lg^2 n}$.
 No entanto, se a implementação das Euler tour trees for determinística, então o algoritmo para conexidade dinâmica de Holm et al. é completamente determinístico e seu consumo é somente amortizado,
 enquanto que o consumo na solução de Henzinger e King é esperado e amortizado. 
 Apresentaremos a solução de Holm et al. nesse texto com uma implementação aleatorizada de Euler tour trees.
-\NEW{
 Avaliações experimentais foram feitas sobre essa solução~\cite{EmpiricalStudy1997, EmpiricalStudy2002,xp-Phylogeny}.
 Comentaremos esses experimentos na Seção~\ref{sec:conclusao:xp}.
-}
 
 O algoritmo de Holm et al. para MSF possui consumo amortizado $\O{\lg^4 n}$ para cada operação, sendo assim a primeira estrutura de dados determinística com consumo de tempo poli-logarítmico para o problema MSF. Uma implementação eficiente deste algoritmo foi apresentada por Cattaneo et al. \cite{xpstudy2002} junto a um outro algoritmo mais simples e assintoticamente pior, mas que teve bom desempenho nos experimentos práticos realizados.
 
 Em $2000$, Thorup~\cite{Thorup2000} complementou o algoritmo de Holm et al.~\cite{poly_log}, adicionando uma estrutura de dados auxiliar chamada floresta estrutural, que reduz o consumo de tempo de cada operação para~$\O{\lg n\, (\lg\lg n)^3}$ esperado amortizado.
-\NEW{
 Essa é atualmente a estrutura de dados com menor consumo de tempo assintótico conhecida para solucionar o problema de conexidade em grafos dinâmicos.
-Deixando de ser ótima somente por um fator de $\O{(\lg\lg n)^3}$, devido ao limitante inferior de~$\Omega(\lg n)$ provado em~$2006$ por Patrascu e Demaine~\cite{lowerBoundPatrascu}.
-}
+Ela só não é ótima por um fator de $\O{(\lg\lg n)^3}$, devido ao limitante inferior de~$\Omega(\lg n)$ provado em~$2006$ por Patrascu e Demaine~\cite{lowerBoundPatrascu}.
 
-%Em $2006$, Patrascu e Demaine~\cite{lowerBoundPatrascu} provaram um limitante inferior de $\Omega(\lg n)$ para o consumo assintótico por operação para o problema de conexidade dinâmica.
-%\NEW{
-%Logo, a solução de Thorup~\cite{Thorup2000} deixa de ser ótima somente por um fator de $\O{(\lg\lg n)^3}$.
-%}
-
-Em $2010$, Tarjan e Werneck~\cite{tarjanWerneck2010} fizeram um estudo experimental com diversas estruturas de dados para árvores dinâmicas que resolvem \NEW{ambos os problemas de conexidade em florestas dinâmicas e} da floresta maximal de peso mínimo.
-\NEW{
-Destacando qualidades e deficiências de cada estrutura de dados quando sujeitas a diferentes tipos de cargas de trabalho. 
-}
-
+Em $2010$, Tarjan e Werneck~\cite{tarjanWerneck2010} fizeram um estudo experimental com diversas estruturas de dados para árvores dinâmicas que resolvem ambos os problemas de conexidade em florestas dinâmicas e da floresta maximal de peso mínimo,
+destacando qualidades e deficiências de cada estrutura de dados quando sujeitas a diferentes tipos de cargas de trabalho. 
 
 Desde $1997$, os algoritmos com consumo de tempo amortizado foram predominantes na literatura, porém todos possuem alguma instância com consumo de tempo $\OTheta{n}$ no pior caso.
 O problema de melhorar o tempo assintótico no pior caso continuou a permear a literatura sem avanços até $2013$, quando Kapron, King e Mountjoy \cite{bruceM} apresentaram uma estrutura de dados para o problema de conexidade em grafos dinâmicos baseada no problema \textit{cutset} que proporciona consumo $\O{\lg^4 n}$ para a inserção de arestas, $\O{\lg^5 n}$ para remoção e responde à consulta de conexidade em tempo~$\O{\lg n / \lg(\lg n)}$.
@@ -114,9 +95,7 @@ Em $2015$, Kejlberg-Rasmussen et al.~\cite{kejlbergrasmussen_et_al} apresentaram
 Em $2016$, Wulff-Nilsen~\cite{Wulff-Nilsen2016} apresentou um novo algoritmo para o problema de conexidade em grafos dinâmicos que dá suporte às atualizações com consumo~$\O{\frac{\lg^2 n}{\lg \lg n}}$ amortizado e~$\O{\frac{\lg n}{\lg \lg n}}$ para a consulta de conexidade.
 
 Em $2022$, Chen et al. \cite{QC22} propuseram uma heurística baseada no diâmetro do grafo dinâmico e com ela desenvolveram um algoritmo que possui bom desempenho prático quando aplicado a grafos dinâmicos extraídos de situações reais.
-\NEW{
 O consumo de tempo dessa heurística é linear em função do diâmetro do grafo, portanto as operações de atualização e de consulta possuem consumo de tempo assintótico de~$\O{n}$.
-}
 
 \begin{table}[h!]
 \centering
