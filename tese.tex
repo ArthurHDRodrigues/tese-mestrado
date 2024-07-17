@@ -234,23 +234,39 @@
 % Métodos de Link/Cut Tree   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\linkcutCreate}{\AlgoName{novaLC}}  %(n)
+\newcommand{\linkcutCreate}{\AlgoName{make node}}
 \newcommand{\linkcutAddEdge}{\AlgoName{link}}    %(F, u, v)
 \newcommand{\linkcutDelEdge}{\AlgoName{cut}}    %(F, u, v)
+\newcommand{\linkcutEvert}{\AlgoName{\AlgoName{evert}}}    %(v)
+\newcommand{\linkcutMax}{\AlgoName{\AlgoName{find max}}}    %(F, u, v)
+\newcommand{\linkcutMin}{\AlgoName{\AlgoName{find min}}}    %(F, u, v)
 \newcommand{\linkcutQuery}{\AlgoName{\AlgoName{conectadoLC}}}    %(F, u, v)
-\newcommand{\linkcutMax}{\AlgoName{\AlgoName{max}}}    %(F, u, v)
-\newcommand{\linkcutMin}{\AlgoName{\AlgoName{min}}}    %(F, u, v)
 \newcommand{\linkcutPath}{\AlgoName{\AlgoName{caminho}}}    %(F, u, v)
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Métodos de Link/Cut Tree com ordem  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\hashNP}{\AlgoName{node Path}} 
+\newcommand{\hashEdges}{\AlgoName{hashEdges}} 
+
+\newcommand{\LCOMakeNode}{\AlgoName{Make node}}
+\newcommand{\LCOMerge}{\AlgoName{Merge}}
+\newcommand{\LCOSplit}{\AlgoName{Split}}
+\newcommand{\LCOLink}{\AlgoName{Link}}
+\newcommand{\LCOCycle}{\AlgoName{Cycle}}
+\newcommand{\LCOAddCost}{\AlgoName{Add cost}}
 
 
+\newcommand{\LCOMakeEdge}{\AlgoName{make edge}}
+\newcommand{\LCOSplice}{\AlgoName{splice}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de MSF         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\MSFCreate}{\AlgoName{novoGDP}} %(n)
 \newcommand{\MSFupdate}{\AlgoName{mudaPesoGDP}} %(n)
-%\newcommand{\MSFaddEdge}{\AlgoName{ligueGDP}}    %(G, u, v, w)
-%\newcommand{\MSFdelEdge}{\AlgoName{removaGDP}}    %(G, u, v)
+\newcommand{\MSFaddEdge}{\AlgoName{ligueGDP}}    %(G, u, v, w)
+\newcommand{\MSFdelEdge}{\AlgoName{removaGDP}}    %(G, u, v)
 \newcommand{\MSFweight}{\AlgoName{pesoGDP}}    %(G)
 
 \newcommand{\dymGraphReplaceMSF}{\AlgoName{substituaGDP}} %(G, u, v, i)
