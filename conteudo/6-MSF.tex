@@ -2,13 +2,18 @@
 \label{sec:MSF}
 
 O problema da floresta maximal de peso mínimo em grafos dinâmicos foi inicialmente apresentado na Seção~\ref{sec:Motivação} e é o segundo problema que iremos discutir.
-Nesse capítulo, vamos apresentar o algoritmo de David Eppstein, Giuseppe Italiano, Roberto Tamassia, Robert Tarjan, Jeffery Westbrook e Moti Yung~\cite{EPPSTEIN-planar} para esse problema.
-%O algoritmo se aplica a grafos planares arbitrários porém, por simplicidade, em nossa exposição, nos restringiremos a grafos planares conexos.
-Nesse Capítulo, os grafos podem ter laços e arestas paralelas.
-Começamos visitando conceitos de planaridade e dualidade.
+Nesse capítulo, vamos apresentar o algoritmo de David Eppstein, Giuseppe Italiano, Roberto Tamassia, Robert Tarjan, Jeffery Westbrook e Moti Yung~\cite{EPPSTEIN-planar} que resolve esse problema para grafos que podem ter laços e arestas paralelas.
 
+Começaremos o estudo desse problema com uma revisão de conceitos de planaridade e dualidade apresentados nas Seções~\ref{sec:planaridade} e~\ref{sec:dualidade}, respectivamente.
+Esses conceitos serão usados para definir formalmente o problema, que é feito na Seção~\ref{sec:definition-MSF}, e para fundamentar a estrutura de dados que resolve esse problema, que será apresentada na Seção~\ref{sec:definition-MSF}.
+
+
+  pelas estruturas de dados 
+
+%O algoritmo se aplica a grafos planares arbitrários porém, por simplicidade, em nossa exposição, nos restringiremos a grafos planares conexos.
 
 \section{Planaridade}
+\label{sec:planaridade}
 
 Intuitivamente, um grafo é dito \defi[grafo!planar]{planar}~\cite{planarTheoryAlgorith} se é possível desenhá-lo no plano de forma que suas arestas não se cruzem e um grafo \defi[grafo!plano]{plano} é um grafo planar já desenhado no plano.
 
@@ -30,9 +35,16 @@ Um grafo planar junto com uma imersão fixada é chamado de grafo \defi{plano}.
 Dado um grafo plano~$G$ com imersão~$\phi$, se removermos a imagem de $\phi$ do plano obteremos regiões conexas chamadas de \defi{faces}~\cite{planarTheoryAlgorith}.
 A fronteira de uma face~$f$ é a usa fronteira topológica e corresponde a um subgrafo de~$G$\TODO{Citar Diestel}.
 Cada aresta está na fronteira de duas faces (não necessariamente distintas\TODO{Lema 4.2.1, Diestel}.
-A Figura~\ref{fig:MSF-figura-1-faces} mostra as faces de um grafo plano.
+A Figura~\ref{fig:MSF-basico-0} mostra as faces de um grafo plano.
 
-\TODO{Figura}
+\begin{figure}[htb]
+\scalebox{1.5}{
+\centering
+\input{fig/MSF-basico-0.tex}
+}
+\caption{Um grafo ponderado plano e suas faces.}
+\label{fig:MSF-basico-0}
+\end{figure}
 
 \begin{theorem}[Fórmula de Euler]
 \label{teo:MSFEuler}
@@ -63,13 +75,14 @@ Ademais, cada uma dessas células possuirá também um campo $\varname{orig}$, q
 É possível obter uma descrição combinatória plana em tempo linear~\TODO{Citar fonte}.
 
 \section{Dualidade}
+\label{sec:dualidade}
 
 
 Dado um grafo plano, o grafo \defi{dual} de~$G$~\cite{planarTheoryAlgorith} é o grafo $G^\star = (F,E^\star)$ cujo conjunto de vértices é o conjunto~$F$ de faces de~$G$ e o conjunto de arestas $E^\star$ é construido a partir das arestas de~$G$.
 Para cada aresta~$e\in E$, existe exatamente uma aresta~$e^\star$ no conjunto $E^\star$.
 A aresta~$e^\star$ é chamada de \defi{aresta dual} de~$e$ e os vértices incidentes a essa aresta são as duas faces (não necessariamente distintas) cujas fronteiras contém~$e$.
 Nesse contexto, chamamos~$G$ de grafo \defi{primal}.
-Para ilustrar a relação entre cada aresta e seu dual, geralmente desenhamos cada aresta do grafo dual cruzando a correspondente aresta do grafo primal, como mostra a Figura \TODO{2}.
+Para ilustrar a relação entre cada aresta e seu dual, geralmente desenhamos cada aresta do grafo dual cruzando a correspondente aresta do grafo primal, como mostra a Figura~\ref{fig:MSF-basico-1}.
 
 \begin{figure}[htb]
 \scalebox{1.5}{
@@ -82,7 +95,6 @@ Para ilustrar a relação entre cada aresta e seu dual, geralmente desenhamos ca
 
 
 Se~$G$ tem $n$ vértices e~$m$ arestas, o Teorema~\ref{teo:MSFEuler} mostra que o número de vértices do grafo dual é $\OTheta{n+m}$.
-\TODO{pq? quanto vale $m$?}
 
 \begin{theorem}[\cite{EPPSTEIN-planar}]
 \label{teo:MSFdual}
@@ -94,7 +106,7 @@ $$
 Além disso, se~$G$ for ponderado e adotarmos $w(e^\star) = w(e)$, então~$T$ será de peso mínimo se e somente se~$T^\star$ for de peso máximo e vice versa.
 \end{theorem}
 
-A Figura \TODO{3} mostra $T$ e $T^\star$ de uma versão ponderada do grafo da Figura \TODO{2}
+A Figura~\ref{fig:MSF-figura-2} mostra~$T$ e~$T^\star$ do grafo da Figura~\ref{fig:MSF-basico-1}.
 
 
 \begin{figure}[htb]
@@ -102,7 +114,7 @@ A Figura \TODO{3} mostra $T$ e $T^\star$ de uma versão ponderada do grafo da Fi
 \centering
 \input{fig/MSF-basico-2}
 }
-\caption{$T$ e $T^\star$}
+\caption{A árvore geradora de peso mínimo do grafo da Figura~\ref{fig:MSF-basico-1} e seu dual.}
 \label{fig:MSF-figura-2}
 \end{figure}
 
@@ -122,27 +134,21 @@ forma um ciclo em $G^\star$.
 \end{theorem}
 
 
-\section{Definição dos problemas}
+\section{Definição do problema}
+\label{sec:definition-MSF}
 
 Ele consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca:
 
 \begin{itemize}
-\item \MSFCreate($G_0$): recebe um grafo plano ponderado~$G_0$ dado por listas de adjacências e devolve um grafo dinâmico plano ponderado isomorfo a~$G_0$; \TODO{Para cada aresta~$uv$ em~$G_0$ também é informado a aresta dual~$uv^\star$, dessa forma fixando uma imersão no plano.}
-\item \MSFupdate($G$, $u$, $v$, $w$): atribui o peso~$w$ à aresta~$uv$ do grafo dinâmico~$G$.
-\item \MSFweight($G$): devolve o peso de uma MSF de $G$.
-\end{itemize}
-
-
-
-
-\begin{itemize}
-\item \MSFCreate($G_0$): recebe um grafo plano ponderado~$G_0$ dado por listas de adjacências e devolve um grafo dinâmico plano ponderado isomorfo a~$G_0$; \TODO{Para cada aresta~$uv$ em~$G_0$ também é informado a aresta dual~$uv^\star$, dessa forma fixando uma imersão no plano.}
+\item \MSFCreate($n$): Cria e devolve um grafo plano ponderado~$G$ com $n$ vértices isolados.
 \item \MSFaddEdge($G$, $u$, $v$, $w$): Insere uma nova aresta com peso~$w$ ligando os vértices~$u$ e~$v$.
 \item \MSFdelEdge($G$, $e$): Recebe um grafo plano ponderado~$G$ e uma aresta~$e$ de~$G$ e a remove do grafo.
 \item \MSFupdate($G$, $u$, $v$, $w$): atribui o peso~$w$ à aresta~$uv$ do grafo dinâmico~$G$.
 \item \MSFweight($G$): devolve o peso de uma MSF de $G$.
 \end{itemize}
 
+
+\begin{comment}
 \section{Link-Cut Trees}
 \label{sec:linkcuttree}
 
@@ -156,12 +162,61 @@ Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{lin
 \item \linkcutMax($v$): Retorna o nó de peso máximo no caminho entre~$v$ e a raiz de sua árvore.
 \item \linkcutMin($v$): Retorna o nó de peso mínimo no caminho entre~$v$ e a raiz de sua árvore.
 \end{itemize}
+\end{comment}
+
+\section{Representação de um grafo dinâmico ponderado}
+Nessa seção detalharemos como um grafo dinâmico ponderado conexo~$G$ é representado usando Link-Cut Trees com ordenação nas arestas.
 
 
 
-\section{Tratando o problema restrito a somente mudança de peso com Link-Cut Trees}
+Para representar~$G$, serão mantidas versões modificadas de uma árvore geradora de pesos mínimos~$T$ e sua floresta dual~$T^\star$ como definida no Teorema~\ref{teo:MSFdual} usando Link-Cut Trees com ordenação nas arestas.
 
-Para um grafo dinâmico ponderado conexo~$G$, manteremos uma árvore geradora de pesos mínimos~$T$ e sua floresta dual~$T^\star$ como definida no Teorema~\ref{teo:MSFdual} usando Link-Cut trees.
+\begin{figure}[htb]
+%\scalebox{2}{
+\centering
+\input{fig/MSF-basico-3}
+%}
+\caption{As árvores geradoras modificadas que representam o grafo da Figura~\ref{fig:MSF-basico-1}.}
+\label{fig:MSF-figura-3}
+\end{figure}
+
+
+
+\section{Link-Cut Trees com ordem nas arestas}
+
+
+\begin{itemize}
+\item \LCOMakeNode(): Retorna o identificador único de um novo nó~$v$.
+\item \LCOMerge($u$, $v$): Recebe dois nós $u$ e $v$ de mesmo peso e retorna um único nó~$w$ que é a união desses nós.
+Se~$\alpha$ e~$\beta$ são respectivamente as listas ordenadas de arestas incidentes a~$u$ e a~$v$ seguindo a descrição combinatória plana, então $\alpha\beta$ é a lista de arestas incidentes a~$w$.
+\item \LCOSplit($v$, $e$): Recebe um nó~$v$ e uma aresta~$e$ incidente a~$v$.
+Corta o nó~$v$ em dois nós~$v'$ e~$v''$. Se $\alpha e\beta$ é a lista ordenada de arestas incidentes a~$v$, então $\alpha e$ e~$\beta$ são as listas ordenadas de arestas incidentes a~$v'$ e~$v''$, respectivamente.
+\item \LCOLink($v$, $w$): Adiciona uma aresta de~$v$ a~$w$, tornando~$v$ um filho de~$w$. Essa operação assume que~$v$ é a raiz de uma árvore~$T$ e que $w$ não é um nó de~$T$.
+\item \LCOCycle
+\item \LCOLoop($v$): Recebe um identificador único de um nó e adiciona um laço a ele.
+\item \LCOAddCost($v$, $w$): Recebe o identificador único de um nó e um novo peso~$w$ e atribui o peso~$w$ ao nó~$v$.
+\end{itemize}
+
+Manteremos duas tabelas hash:
+
+\hashNP($v$): Recebe um vértice~$v$ e torna ponteiros para nós~$v_{first}$ e~$v_{last}$.
+
+\hashEdges:\TODO{????}
+
+\begin{figure}[htb]
+\scalebox{1.5}{
+\centering
+\input{fig/MSF-basico-4}
+}
+\caption{As árvores geradoras modificadas que representam o grafo da Figura~\ref{fig:MSF-basico-1}.}
+\label{fig:MSF-figura-4}
+\end{figure}
+
+
+\section{Tratando mudança de peso de arestas}
+
+Descreveremos~\MSFupdate{}.
+
 Construiremos~$T$ e~$T^\star$ na rotina \MSFCreate($G_0$), cuja implementação está detalhada no Algoritmo~\ref{Algo:MSFCreate}.
 Nessa rotina, primeiro usaremos a rotina auxiliar~\order{} para ordenar as arestas de~$G_0$ em ordem crescente de peso e retornar uma lista com essas arestas ordenadas.
 Lembramos que~$G_0$ mantém, para cada aresta~$uv$, sua aresta dual~$uv^\star$, dessa forma, para não perder essa informação, faremos com que cada entrada da lista retornada por~\order{}
@@ -288,150 +343,50 @@ Como cada rotina de link-cut trees utilizada consome tempo~$\O{\lg n}$ amortizad
 \end{algorithmic}
 \end{algorithm}
 
-\newpage
-\section{Link-Cut Trees com ordem nas arestas}
-
-
-\begin{itemize}
-\item \LCOMerge($u$, $v$): Recebe dois nós $u$ e $v$ de mesmo peso e retorna um único nó~$w$ que é a união desses nós.
-Se~$\alpha$ e~$\beta$ são respectivamente as listas ordenadas de arestas incidentes a~$u$ e a~$v$ seguindo a descrição combinatória plana, então $\alpha\beta$ é a lista de arestas incidentes a~$w$.
-\item \LCOSplit($v$, $e$): Recebe um nó~$v$ e uma aresta~$e$ incidente a~$v$.
-Corta o nó~$v$ em dois nós~$v'$ e~$v''$. Se $\alpha e\beta$ é a lista ordenada de arestas incidentes a~$v$, então $\alpha e$ e~$\beta$ são as listas ordenadas de arestas incidentes a~$v'$ e~$v''$, respectivamente.
-\item \LCOLink($v$, $w$): Adiciona uma aresta de~$v$ a~$w$, tornando~$v$ um filho de~$w$. Essa operação assume que~$v$ é a raiz de uma árvore~$T$ e que $w$ não é um nó de~$T$.
-\end{itemize}
-
-
-
-Manteremos duas tabelas hash:
-
-\hashNP($v$): Recebe um vértice~$v$ e torna ponteiros para nós~$v_{first}$ e~$v_{last}$.
-
-\hashEdges:\TODO{????}
-
-
-\section{Implementação de Link-Cut Trees com ordem nas arestas usando Link-Cut Trees}
-
-
-\TODO{ver \cite{EPPSTEIN-planar}}
-
-
-
 \section{Implementação de \LCOSplice{} e \LCOMakeEdge{} com Link-Cut trees com ordem nas arestas}
-\LCOMakeEdge(): Cria e retorna duas link cut trees tradicionais. A primeira representa uma aresta e a segunda o seu dual, como ilustrado na Figura~\TODO{bla}. Cada uma possui~$4$ nós.A aresta representada possui peso~$-\infty$.
+\LCOMakeEdge(): Cria e retorna duas link cut trees tradicionais. A primeira representa uma aresta e a segunda o seu dual, como ilustrado na Figura~\TODO{bla}. Cada uma possui~$4$ nós.A aresta representada possui peso~$\infty$.
+
+
+\LCOSplice{}
+
+
+\begin{algorithm}[htb]
+\caption{\LCOMakeEdge()}
+\label{Algo:LCOMakeEdge}
+\begin{algorithmic}[1]
+\State $u$ $\gets$ \LCOMakeNode()
+\State $v$ $\gets$ \LCOMakeNode()
+\State $f$ $\gets$ \LCOMakeNode()
+\State \LCOLink($u$, $v$)
+\State \LCOLoop($f$)
+\end{algorithmic}
+\end{algorithm}
 
 \section{Resolvendo MSF dinâmico com \LCOSplice{} e \LCOMakeEdge{}}
 
 
 
 
-
-\section{Apresentação do artigo do Eppstein e cia (Ignorar)}
-
-
-\begin{align*}
-D(u) &= \langle a, b, c\rangle \\
-D(v) &= \langle b, a, e\rangle \\
-D(w) &= \langle d, c, e, d\rangle
-\end{align*}
-
-\begin{align*}
-F_0 &= \langle u, w, w, v, u\rangle \\
-F_1 &= \langle u, w, v, u\rangle \\
-F_2 &= \langle u, v, u\rangle\\
-F_3 &= \langle w, w\rangle
-\end{align*}
-
-
-\begin{figure}[htb]
-%\scalebox{1.5}{
-\centering
-\input{fig/MSF-basico-3}
-%}
-\caption{$T$ e $T^\star$}
-\label{fig:MSF-figura-3}
-\end{figure}
-
-
-
-\subsection{Implementação das rotinas de Link-Cut trees com ordem}
-
-
 \begin{algorithm}[htb]
-\caption{\LCOMakeNode($v$)}
-\label{Algo:LCOMakeNode}
-\begin{algorithmic}[1]
-
-\State $\node$ $\gets$ \linkcutCreate()
-
-\State \hashNP($v$) $\gets$ $\node$, $\node$
-
-\end{algorithmic}
-\end{algorithm}
-
-
-\subsection{Implementação das MakeEdge e Splice}
-
-\begin{algorithm}[htb]
-\caption{\LCOMakeEdge()}
-\label{Algo:LCOMakeEdges}
-\begin{algorithmic}[1]
-\For { $i\in\{0,1,2,3\}$ }
-\State $e_i$ $\gets$ \linkcutCreate()
-\EndFor
-\State $u$ $\gets$ \linkcutCreate()
-\State $v$ $\gets$ \linkcutCreate()
-\State $f$ $\gets$ \linkcutCreate()
-\State $f'$ $\gets$ \linkcutCreate()
-
-\State \linkcutAddEdge($u$, $e_2$)
-\State \linkcutAddEdge($e_2$, $e_0$)
-\State \linkcutAddEdge($e_0$, $v$)
-
-
-\State \linkcutAddEdge($e_1$, $f$)
-\State \linkcutAddEdge($f$, $f'$)
-\State \linkcutAddEdge($e_3$, $f'$)
-
-
-\State \hashNP($u$) $\gets$ $u$, $u$
-\State \hashNP($v$) $\gets$ $v$, $v$
-
-\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[htb]
-\caption{\LCOSplice($d$, $e$)}
-\label{Algo:LCOSplice}
-\begin{algorithmic}[1]
-\For { $i\in\{0,1,2,3\}$ }
-\State $e_i$ $\gets$ \linkcutCreate()
-\EndFor
-\State $u$ $\gets$ \linkcutCreate()
-\end{algorithmic}
-\end{algorithm}
-
-
-\subsection{Tratando inserção e remoção de aresta}
-
-\begin{algorithm}[htb]
-\caption{\MSFaddEdge($d$, $e$)}
+\caption{\MSFaddEdge($e$, $d$, $w$)}
 \label{Algo:MSFaddEdge}
 \begin{algorithmic}[1]
-\For { $i\in\{0,1,2,3\}$ }
-\State $e_i$ $\gets$ \linkcutCreate()
-\EndFor
-\State $u$ $\gets$ \linkcutCreate()
+\State $f$ $\gets$ \LCOMakeEdge()
+\State \LCOSplice($e$,$f$)
+\State \LCOSplice($d$,$f$)
+\State \MSFupdate($f$, $w$)
+\State \Return $e$.$id$ 
 \end{algorithmic}
 \end{algorithm}
 
 
 \begin{algorithm}[htb]
-\caption{\MSFdelEdge($d$, $e$)}
-\label{Algo:MSFaddEdge}
+\caption{\MSFdelEdge($e$, $d$)}
+\label{Algo:MSFdelEdge}
 \begin{algorithmic}[1]
-\For { $i\in\{0,1,2,3\}$ }
-\State $e_i$ $\gets$ \linkcutCreate()
-\EndFor
-\State $u$ $\gets$ \linkcutCreate()
+\State $f$ $\gets$ \LCOMakeEdge()
+\State \LCOSplice($e$,$e$)
+\State \LCOSplice($d$,$d$)
+\State \Return $e$.$id$ 
 \end{algorithmic}
 \end{algorithm}
