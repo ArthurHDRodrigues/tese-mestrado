@@ -187,12 +187,13 @@ Para representar~$G$, serão mantidas versões modificadas de uma árvore gerado
 
 \begin{itemize}
 \item \LCOMakeNode(): Retorna o identificador único de um novo nó~$v$.
+\item \LCOFindNode($s$): Recebe um sub-nó $s$ e retorna o identificador desse nó.
 \item \LCOMerge($u$, $v$): Recebe dois nós $u$ e $v$ de mesmo peso e retorna um único nó~$w$ que é a união desses nós.
 Se~$\alpha$ e~$\beta$ são respectivamente as listas ordenadas de arestas incidentes a~$u$ e a~$v$ seguindo a descrição combinatória plana, então $\alpha\beta$ é a lista de arestas incidentes a~$w$.
 \item \LCOSplit($v$, $e$): Recebe um nó~$v$ e uma aresta~$e$ incidente a~$v$.
 Corta o nó~$v$ em dois nós~$v'$ e~$v''$. Se $\alpha e\beta$ é a lista ordenada de arestas incidentes a~$v$, então $\alpha e$ e~$\beta$ são as listas ordenadas de arestas incidentes a~$v'$ e~$v''$, respectivamente.
 \item \LCOLink($v$, $w$): Adiciona uma aresta de~$v$ a~$w$, tornando~$v$ um filho de~$w$. Essa operação assume que~$v$ é a raiz de uma árvore~$T$ e que $w$ não é um nó de~$T$.
-\item \LCOCycle
+\item \LCOCycle($v$, $e$):
 \item \LCOLoop($v$): Recebe um identificador único de um nó e adiciona um laço a ele.
 \item \LCOAddCost($v$, $w$): Recebe o identificador único de um nó e um novo peso~$w$ e atribui o peso~$w$ ao nó~$v$.
 \end{itemize}
@@ -357,25 +358,90 @@ Como cada rotina de link-cut trees utilizada consome tempo~$\O{\lg n}$ amortizad
 \State $u$ $\gets$ \LCOMakeNode()
 \State $v$ $\gets$ \LCOMakeNode()
 \State $f$ $\gets$ \LCOMakeNode()
-\State \LCOLink($u$, $v$)
+\State $e$ $\gets$ \LCOLink($u$, $v$)
 \State \LCOLoop($f$)
+\State \Return $u$, $e$, $v$ 
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[htb]
+\caption{\LCOFindSubNode($v$, $e$)}
+\label{Algo:LCOFindSubNode}
+\begin{algorithmic}[1]
+\If{ $e$ $\in$ $T$}
+\State $v_{first}$, $v_{last}$ $\gets$ $H$($v$)
+\State $e_{first}$, $e_{last}$ $\gets$ $H$($e$)
+\State \linkcutEvert($v_{first}$)
+\If{$e_{first}$.$parent$ $\neq$ $e_{last}$}
+\State \Return $e_{first}$.$parent$
+\EndIf
+\State \Return $e_{last}$.$parent$
+\Else
+\If { \LCOFindNode($e_{first}.rot.parent$) $=$ $v$  }\Comment{$e_{first}$ e $e_{last}$ apontam pra $T^\star$}
+\State \Return $e_{first}.rot.parent$
+\Else
+\State \Return $e_{last}.rot.parent$
+\EndIf
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+$v$, $u$, $e$, $d$ são identificadores
+\begin{algorithm}[htb]
+\caption{\LCOSplice($v$, $e$, $u$, $d$)}
+\label{Algo:LCOSplice}
+\begin{algorithmic}[1]
+\State $s_v$ $\gets$ \LCOFindSubNode($v$, $e$)
+\State $s_u$ $\gets$ \LCOFindSubNode($u$, $d$)
+\If {$v$ e $u$ em componentes conexas distintas}
+\State \LCOCycle($u$, $s_u$)
+\State \LCOCycle($v$, $s_v$)
+\State \LCOMerge($u$, $v$)
+\State $s_E$ $\gets$ $s_v$.$rot$
+\State $s_D$ $\gets$ $s_u$.$rot$
+\State $E$ $\gets$ \LCOFindNode($s_E$)
+\State $F$ $\gets$ \LCOFindNode($s_D$)
+\State \LCOCycle($E$, $s_E$)
+\State \LCOCycle($F$, $s_D$)
+\State \LCOMerge($E$, $F$)
+\State \Return
+\EndIf
+
+\If {$v$ $=$ $u$}
+\State \LCOCycle($v$, $s_v$)
+\State \LCOSplit($u$, $s_u$)
+\State $s_E$ $\gets$ $s_v$.$rot$
+\State $s_D$ $\gets$ $s_u$.$rot$
+\State $E$ $\gets$ \LCOFindNode($s_E$)
+\State $F$ $\gets$ \LCOFindNode($s_D$)
+\State \LCOCycle($E$, $s_E$)
+\State \LCOCycle($F$, $s_D$)
+\State \LCOMerge($E$, $F$)
+\Else
+\If{$e_v$ e $d_u$ não tem a mesma face esquerda}
+\State \Return
+\EndIf
+\State \LCOCycle($u$, $s_u$)
+\State \LCOCycle($v$, $s_v$)
+\State \LCOMerge($u$, $v$)
+
+\State $F$ $\gets$ \LCOFindNode($s_u$.$rot$)
+\State \LCOCycle($F$, \LCOFindNode($s_u$.$rot$)
+\State \LCOSplit($F$, \LCOFindNode($s_v$.$rot$  )
+\EndIf
 \end{algorithmic}
 \end{algorithm}
 
 \section{Resolvendo MSF dinâmico com \LCOSplice{} e \LCOMakeEdge{}}
 
-
-
-
 \begin{algorithm}[htb]
-\caption{\MSFaddEdge($e$, $d$, $w$)}
+\caption{\MSFaddEdge($v$, $e_v$, $u$, $e_u$)}
 \label{Algo:MSFaddEdge}
 \begin{algorithmic}[1]
-\State $f$ $\gets$ \LCOMakeEdge()
-\State \LCOSplice($e$,$f$)
-\State \LCOSplice($d$,$f$)
+\State $x$, $d$, $y$ $\gets$ \LCOMakeEdge()
+\State \LCOSplice($v$, $e_v$, $x$, $d$)
+\State \LCOSplice($u$, $e_u$, $y$, $d$)
 \State \MSFupdate($f$, $w$)
-\State \Return $e$.$id$ 
 \end{algorithmic}
 \end{algorithm}
 
