@@ -7,9 +7,6 @@ Nesse capítulo, vamos apresentar o algoritmo de David Eppstein, Giuseppe Italia
 Começaremos o estudo desse problema com uma revisão de conceitos de planaridade e dualidade apresentados nas Seções~\ref{sec:planaridade} e~\ref{sec:dualidade}, respectivamente.
 Esses conceitos serão usados para definir formalmente o problema, que é feito na Seção~\ref{sec:definition-MSF}, e para fundamentar a estrutura de dados que resolve esse problema, que será apresentada na Seção~\ref{sec:definition-MSF}.
 
-
-  pelas estruturas de dados 
-
 %O algoritmo se aplica a grafos planares arbitrários porém, por simplicidade, em nossa exposição, nos restringiremos a grafos planares conexos.
 
 \section{Planaridade}
@@ -215,54 +212,6 @@ Manteremos duas tabelas hash:
 
 
 \section{Tratando mudança de peso de arestas}
-
-Descreveremos~\MSFupdate{}.
-
-Construiremos~$T$ e~$T^\star$ na rotina \MSFCreate($G_0$), cuja implementação está detalhada no Algoritmo~\ref{Algo:MSFCreate}.
-Nessa rotina, primeiro usaremos a rotina auxiliar~\order{} para ordenar as arestas de~$G_0$ em ordem crescente de peso e retornar uma lista com essas arestas ordenadas.
-Lembramos que~$G_0$ mantém, para cada aresta~$uv$, sua aresta dual~$uv^\star$, dessa forma, para não perder essa informação, faremos com que cada entrada da lista retornada por~\order{}
-possua ponteiros para~$uv$, seu peso~$w$ e~$uv^\star$.
-
-
-\TODO{Figura de $T$ e $T^\star$ como Link-Cut Trees com nós representando vértices e arestas}
-
-Em seguida percorreremos essa lista sequencialmente e para cada aresta~$uv$ nela, faremos um teste de conexidade entre os vértices~$u$ e~$v$.
-Se~$u$ e~$v$ não estiverem conectados, então inserimos~$uv$ em~$F$ com peso~$w$, caso contrário inserimos $uv^\star$ em~$F^\star$ com o mesmo peso~$w$.
-
-Como inserimos as arestas em ordem crescente de peso, a floresta~$F$ é de pesos mínimos e logo, pelo Teorema~\ref{teo:MSFdual}, $F^\star$ é de pesos máximos.
-
-\begin{algorithm}[htb]
-\caption{\MSFCreate($n$, $G_0$)}
-\label{Algo:MSFCreate}
-\begin{algorithmic}[1]
-\State \varname{lista} $\gets$ \order($G_0$)
-\For{$uv$ em \varname{lista}}\label{Algo:MSFCreate:linhafor}
-\If \linkcutQuery($F$, $u$, $v$)\label{Algo:MSFCreate:query}
-\State \linkcutAddEdge($G$.$F^\star$, $e$, $f$, $w$)\label{Algo:MSFCreate:link1}
-\Else
-\State \linkcutAddEdge($G$.$F$, $u$, $v$, $w$)\label{Algo:MSFCreate:link2}
-\EndIf
-\EndFor
-\State \Return $G$
-\end{algorithmic}
-\end{algorithm}
-
-Existem diversos algoritmos conhecidos na literatura que podem implementar a rotina \order{}~\cite{CLRS} com consumo de tempo~$\O{m\lg m}$, onde $m$ é o tamanho da lista,
-que, no nosso caso, coincide com o número de arestas do grafo~$G_0$.
-O laço da linha~\ref{Algo:MSFCreate:linhafor} do Algoritmo~\ref{Algo:MSFCreate} itera~$m$ vezes e cada teste de conexidade da linha~\ref{Algo:MSFCreate:query} e cada chamada para a rotina  \linkcutAddEdge{} nas linhas~\ref{Algo:MSFCreate:link1} e~\ref{Algo:MSFCreate:link2} possuem consumo de tempo~$\O{\lg n}$, onde~$n$ é o número de vértices do grafo.
-Logo o consumo de tempo de \MSFCreate{} é $\O{m\lg n}$.
-
-Para implementar \MSFweight{} faremos com que cada nó das link-cut trees tenha um campo~$w$ que contabiliza o peso total da subárvore enraizada naquele nó.
-Dessa forma, para obter o peso da floresta maximal de peso mínimo~$F$ que estamos mantendo, basta retornar o campo $w$ da raiz de~$F$.
-Essa rotina consome tempo constante.
-
-\begin{algorithm}[htb]
-\caption{\MSFweight($G$)}
-\label{Algo:MSFweight}
-\begin{algorithmic}[1]
-\State \Return $G$.$F$.$w$
-\end{algorithmic}
-\end{algorithm}
 
 Quando atualizamos o peso de uma aresta~$uv$ com a rotina \MSFupdate{} para um novo peso~$w$, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFupdate}, precisamos garantir que a floresta~$F$ resultante continuará sendo  de peso mínimo.
 
