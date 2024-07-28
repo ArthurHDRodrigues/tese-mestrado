@@ -111,7 +111,7 @@ A Figura~\ref{fig:MSF-figura-2} mostra~$T$ e~$T^\star$ do grafo da Figura~\ref{f
 \centering
 \input{fig/MSF-basico-2}
 }
-\caption{A árvore geradora de peso mínimo do grafo da Figura~\ref{fig:MSF-basico-1} e seu dual.}
+\caption{Árvore geradora~$T$ de peso mínimo do grafo da Figura~\ref{fig:MSF-basico-1} e árvore correspondente~$T^\star$ do grafo.}
 \label{fig:MSF-figura-2}
 \end{figure}
 
@@ -133,15 +133,14 @@ forma um ciclo em $G^\star$.
 
 \section{Definição do problema}
 \label{sec:definition-MSF}
-
-Ele consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca:
+O problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca:
 
 \begin{itemize}
 \item \MSFCreate($n$): Cria e devolve um grafo plano ponderado~$G$ com $n$ vértices isolados.
-\item \MSFaddEdge($G$, $u$, $v$, $w$): Insere uma nova aresta com peso~$w$ ligando os vértices~$u$ e~$v$.
+\item \MSFaddEdge($G$, $u$, $v$, $e$, $w$): Insere uma nova aresta~$e$ com peso~$w$ ligando os vértices~$u$ e~$v$. Como o grafo~$G$ admite arestas paralelas, é necessário informar um identificador único~$e$ para a nova aresta inserida.
 \item \MSFdelEdge($G$, $e$): Recebe um grafo plano ponderado~$G$ e uma aresta~$e$ de~$G$ e a remove do grafo.
-\item \MSFupdate($G$, $u$, $v$, $w$): atribui o peso~$w$ à aresta~$uv$ do grafo dinâmico~$G$.
-\item \MSFweight($G$): devolve o peso de uma MSF de $G$.
+\item \MSFupdate($G$, $e$, $w$): Altera o peso da aresta~$e$ do grafo dinâmico~$G$ para o valor~$w$.
+\item \MSFweight($G$): Devolve o peso de uma MSF de $G$.
 \end{itemize}
 
 
@@ -161,12 +160,22 @@ Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{lin
 \end{itemize}
 \end{comment}
 
-\section{Representação de um grafo dinâmico ponderado}
-Nessa seção detalharemos como um grafo dinâmico ponderado conexo~$G$ é representado usando Link-Cut Trees com ordenação nas arestas.
+\section{Árvores planas de EITTWY}
+Para resolver o problema da floresta maximal de peso mínimo para um grado plano conexo dinâmico, Eppstein et al.~\cite{EPPSTEIN-planar} propõem o uso de uma estrutura de dados que armazena, interligadamente, uma árvore geradora~$T$ de peso mínimo de~$G$ e a árvore dual~$T^\star$, que, pelo Teorema~\ref{teo:MSFdual}, é uma árvore geradora de peso máximo de~$G^\star$.
 
+Na verdade, a estratégia dos autores aplica-se também a grafos desconexos, bastando usar a mesma estrutura para cada componente do grafo.
 
+A ideia é basicamente usar Link-Cut trees para armazenar~$T$ e~$T^\star$.
+Para manter a associação que há entre as arestas de~$G$ e~$G^\star$, as link cut Trees conterão também nós para representar as arestas de~$G$ e~$G^\star$.
 
-Para representar~$G$, serão mantidas versões modificadas de uma árvore geradora de pesos mínimos~$T$ e sua floresta dual~$T^\star$ como definida no Teorema~\ref{teo:MSFdual} usando Link-Cut Trees com ordenação nas arestas.
+Especificamente, cada aresta~$e$ de~$G$ corresponderá a quatro nós nas link-cut trees: dois da link-cut trees da link-cut tree de~$T$ e dois da link-cut tree de~$T^\star$.
+Esses nós são chamados de $e_0$, $e_1$, $e_2$ e $e_3$, sendo $e_0$ e $e_2$ os nós da link cut tree de~$T$ e~$e_1$ e~$e_3$ da link-cut tree de~$T^\star$.
+Se $e\in T$, então $e_0$ e $e_2$ estão conectados, senão $e_1$ e $e_3$ estão conectados na respectiva link-cut tree.
+
+Além das árvores, as link-cut trees vão armazenar também informação sobre a imersão de~$G$.
+Isso será feito da seguinte maneira.
+
+\TODO{Completar com node path e ordem ciclica de $e_i$}
 
 \begin{figure}[htb]
 %\scalebox{2}{
@@ -190,7 +199,7 @@ Se~$\alpha$ e~$\beta$ são respectivamente as listas ordenadas de arestas incide
 \item \LCOSplit($v$, $e$): Recebe um nó~$v$ e uma aresta~$e$ incidente a~$v$.
 Corta o nó~$v$ em dois nós~$v'$ e~$v''$. Se $\alpha e\beta$ é a lista ordenada de arestas incidentes a~$v$, então $\alpha e$ e~$\beta$ são as listas ordenadas de arestas incidentes a~$v'$ e~$v''$, respectivamente.
 \item \LCOLink($v$, $w$): Adiciona uma aresta de~$v$ a~$w$, tornando~$v$ um filho de~$w$. Essa operação assume que~$v$ é a raiz de uma árvore~$T$ e que $w$ não é um nó de~$T$.
-\item \LCOCycle($v$, $e$):
+\item \LCOCycle($v$, $e$): Permuta ciclicamente a ordem das arestas incidentes ao vértice~$v$ de forma que a aresta $e$ é a última na ordem. Se a ordem inicial tem forma $\alpha e \beta$, então a ordem resultante é $\beta\alpha e$.
 \item \LCOLoop($v$): Recebe um identificador único de um nó e adiciona um laço a ele.
 \item \LCOAddCost($v$, $w$): Recebe o identificador único de um nó e um novo peso~$w$ e atribui o peso~$w$ ao nó~$v$.
 \end{itemize}
@@ -342,19 +351,19 @@ $v$, $u$, $e$, $d$ são identificadores
 \begin{algorithmic}[1]
 \State $s_v$ $\gets$ \LCOFindSubNode($v$, $e$)
 \State $s_u$ $\gets$ \LCOFindSubNode($u$, $d$)
-\If {$v$ e $u$ em componentes conexas distintas}
-\State \LCOCycle($u$, $s_u$)
-\State \LCOCycle($v$, $s_v$)
-\State \LCOMerge($u$, $v$)
-\State $s_E$ $\gets$ $s_v$.$rot$
-\State $s_D$ $\gets$ $s_u$.$rot$
-\State $E$ $\gets$ \LCOFindNode($s_E$)
-\State $F$ $\gets$ \LCOFindNode($s_D$)
-\State \LCOCycle($E$, $s_E$)
-\State \LCOCycle($F$, $s_D$)
-\State \LCOMerge($E$, $F$)
-\State \Return
-\EndIf
+%\If {$v$ e $u$ em componentes conexas distintas}
+%\State \LCOCycle($u$, $s_u$)
+%\State \LCOCycle($v$, $s_v$)
+%\State \LCOMerge($u$, $v$)
+%\State $s_E$ $\gets$ $s_v$.$rot$
+%\State $s_D$ $\gets$ $s_u$.$rot$
+%\State $E$ $\gets$ \LCOFindNode($s_E$)
+%\State $F$ $\gets$ \LCOFindNode($s_D$)
+%\State \LCOCycle($E$, $s_E$)
+%\State \LCOCycle($F$, $s_D$)
+%\State \LCOMerge($E$, $F$)
+%\State \Return
+%\EndIf
 
 \If {$v$ $=$ $u$}
 \State \LCOCycle($v$, $s_v$)
@@ -366,17 +375,17 @@ $v$, $u$, $e$, $d$ são identificadores
 \State \LCOCycle($E$, $s_E$)
 \State \LCOCycle($F$, $s_D$)
 \State \LCOMerge($E$, $F$)
-\Else
-\If{$e_v$ e $d_u$ não tem a mesma face esquerda}
-\State \Return
-\EndIf
-\State \LCOCycle($u$, $s_u$)
-\State \LCOCycle($v$, $s_v$)
-\State \LCOMerge($u$, $v$)
+%\Else
+%\If{$e_v$ e $d_u$ não tem a mesma face esquerda}
+%\State \Return
+%\EndIf
+%\State \LCOCycle($u$, $s_u$)
+%\State \LCOCycle($v$, $s_v$)
+%\State \LCOMerge($u$, $v$)
 
-\State $F$ $\gets$ \LCOFindNode($s_u$.$rot$)
-\State \LCOCycle($F$, \LCOFindNode($s_u$.$rot$)
-\State \LCOSplit($F$, \LCOFindNode($s_v$.$rot$  )
+%\State $F$ $\gets$ \LCOFindNode($s_u$.$rot$)
+%\State \LCOCycle($F$, \LCOFindNode($s_u$.$rot$)
+%\State \LCOSplit($F$, \LCOFindNode($s_v$.$rot$  )
 \EndIf
 \end{algorithmic}
 \end{algorithm}
