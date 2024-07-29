@@ -317,6 +317,28 @@ Manteremos duas tabelas hash:
 \State \linkcutAddEdge($x$, $y$)
 \end{algorithmic}
 \end{algorithm}
+
+
+\begin{algorithm}[htb]
+\caption{\LCOLoop($\hat u$)}
+\label{Algo:LCOLoop}
+\begin{algorithmic}[1]
+\State $x$ $\gets$ \linkcutCreate()
+\State $y$ $\gets$ \linkcutCreate()
+\State $l$ $\gets$ \linkcutCreate()
+\State $l_1$ $\gets$ \linkcutCreate()
+\State \linkcutAddEdge($x$, $y$)
+\State \linkcutAddEdge($l$, $x$)
+\State \linkcutAddEdge($l_1$, $y$)
+\State $T$ $\gets$ \treapJoin($x$, $y$)
+\State $T$.$\node$ $\gets$ $\hat u$
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+
 \section{Tratando mudança de peso de arestas}
 
 Quando atualizamos o peso de uma aresta~$uv$ com a rotina \MSFupdate{} para um novo peso~$w$, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFupdate}, precisamos garantir que a floresta~$F$ resultante continuará sendo  de peso mínimo.
@@ -413,17 +435,18 @@ Como cada rotina de link-cut trees utilizada consome tempo~$\O{\lg n}$ amortizad
 \LCOMakeEdge(): Cria e retorna duas link cut trees tradicionais. A primeira representa uma aresta e a segunda o seu dual, como ilustrado na Figura~\TODO{bla}. Cada uma possui~$4$ nós.A aresta representada possui peso~$\infty$.
 
 
-\LCOSplice{}
 
 
 \begin{algorithm}[htb]
 \caption{\LCOMakeEdge()}
 \label{Algo:LCOMakeEdge}
 \begin{algorithmic}[1]
-\State $u$ $\gets$ \LCOMakeNode()
-\State $v$ $\gets$ \LCOMakeNode()
+\State $\hat u$ $\gets$ \LCOMakeNode()
+\State $\hat v$ $\gets$ \LCOMakeNode()
+\State $\hat e$ $\gets$ \LCOMakeNode()
 \State $f$ $\gets$ \LCOMakeNode()
-\State $e$ $\gets$ \LCOLink($u$, $v$)
+\State \LCOLink($\hat u$, $\hat e$)
+\State \LCOLink($\hat e$, $\hat v$)
 \State \LCOLoop($f$)
 \State \Return $u$, $e$, $v$ 
 \end{algorithmic}
