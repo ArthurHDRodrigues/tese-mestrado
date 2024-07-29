@@ -192,14 +192,14 @@ Isso será feito da seguinte maneira.
 
 
 \begin{itemize}
-\item \LCOMakeNode(): Retorna o identificador único de um novo nó~$v$.
-\item \LCOFindNode($s$): Recebe um sub-nó $s$ e retorna o identificador desse nó.
-\item \LCOMerge($u$, $v$): Recebe dois nós $u$ e $v$ de mesmo peso e retorna um único nó~$w$ que é a união desses nós.
-Se~$\alpha$ e~$\beta$ são respectivamente as listas ordenadas de arestas incidentes a~$u$ e a~$v$ seguindo a descrição combinatória plana, então $\alpha\beta$ é a lista de arestas incidentes a~$w$.
-\item \LCOSplit($v$, $e$): Recebe um nó~$v$ e uma aresta~$e$ incidente a~$v$.
-Corta o nó~$v$ em dois nós~$v'$ e~$v''$. Se $\alpha e\beta$ é a lista ordenada de arestas incidentes a~$v$, então $\alpha e$ e~$\beta$ são as listas ordenadas de arestas incidentes a~$v'$ e~$v''$, respectivamente.
-\item \LCOLink($v$, $w$): Adiciona uma aresta de~$v$ a~$w$, tornando~$v$ um filho de~$w$. Essa operação assume que~$v$ é a raiz de uma árvore~$T$ e que $w$ não é um nó de~$T$.
-\item \LCOCycle($v$, $e$): Permuta ciclicamente a ordem das arestas incidentes ao vértice~$v$ de forma que a aresta $e$ é a última na ordem. Se a ordem inicial tem forma $\alpha e \beta$, então a ordem resultante é $\beta\alpha e$.
+\item \LCOMakeNode(): Retorna um novo nó.
+\item \LCOFindNode($s$): Recebe um sub-nó $s$ e retorna o nó que contêm $s$ em seu \textit{node path}.
+\item \LCOMerge($\hat u$, $\hat v$): Recebe dois nós~$\hat u$ e~$\hat v$ de mesmo peso e retorna um único nó~$\hat w$ que é a união desses nós.
+Se~$\alpha$ e~$\beta$ são respectivamente as listas ordenadas de arestas incidentes a~$\hat u$ e a~$\hat v$ seguindo a descrição combinatória plana, então $\alpha\beta$ é a lista de arestas incidentes a~$\hat w$.
+\item \LCOSplit($\hat u$, $s_e$): Recebe um nó~$\hat u$ e um subnó~$s_e$ que pertence ao \textit{node path} de $\hat u$.
+Corta o nó~$\hat u$ em dois nós~$\hat v$ e~$\hat w$. Se $\alpha e\beta$ é a lista ordenada de arestas incidentes a~$\hat u$, então $\alpha e$ e~$\beta$ são as listas ordenadas de arestas incidentes a~$\hat v$ e~$\hat w$, respectivamente.
+\item \LCOLink($\hat v$, $\hat w$): Adiciona uma aresta de~$v$ a~$w$, tornando~$v$ um filho de~$w$. Essa operação assume que~$v$ é a raiz de uma árvore~$T$ e que $w$ não é um nó de~$T$.
+\item \LCOCycle($\hat v$, $s_e$): Permuta ciclicamente a ordem das arestas incidentes ao vértice~$\hat v$ de forma que a aresta $e$ é a última na ordem. Se a ordem inicial tem forma $\alpha e \beta$, então a ordem resultante é $\beta\alpha e$.
 \item \LCOLoop($v$): Recebe um identificador único de um nó e adiciona um laço a ele.
 \item \LCOAddCost($v$, $w$): Recebe o identificador único de um nó e um novo peso~$w$ e atribui o peso~$w$ ao nó~$v$.
 \end{itemize}
@@ -218,6 +218,71 @@ Manteremos duas tabelas hash:
 \caption{As árvores geradoras modificadas que representam o grafo da Figura~\ref{fig:MSF-basico-1}.}
 \label{fig:MSF-figura-4}
 \end{figure}
+
+
+\begin{algorithm}[htb]
+\caption{\LCOFindNode($s$)}
+\label{Algo:LCOFindNode}
+\begin{algorithmic}[1]
+\State $r$ $\gets$ \treapGetRoot($s$)
+\State \Return $r$.$\node$
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}[htb]
+\caption{\LCOMerge($\hat u$, $\hat v$)}
+\label{Algo:LCOMerge}
+\begin{algorithmic}[1]
+\State $\hat w$ $\gets$ \LCOMakeNode()
+\State \linkcutEvert($\hat u$.$last$)
+\State \linkcutAddEdge($\hat u$.$last$, $\hat v$.$first$)
+\State $\hat w$.$first$  $\gets$ $\hat u$.$first$
+\State $\hat w$.$last$  $\gets$ $\hat v$.$last$
+\State $T$ $\gets$ \treapJoin(\treapGetRoot($\hat u$.$first$), \treapGetRoot($\hat v$.$last$))
+\State $T$.$\node$ $\gets$ $\hat w$
+\State \Return $\hat w$
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}[htb]
+\caption{\LCOSplit($\hat u$, $s_e$)}
+\label{Algo:LCOSplit}
+\begin{algorithmic}[1]
+\State $\hat v$ $\gets$ \LCOMakeNode()
+\State $\hat w$ $\gets$ \LCOMakeNode()
+\State \linkcutEvert($\hat u$.$last$)
+\State $y$ $\gets$ \linkcutParent($s_e$)
+\State \linkcutDelEdge($s_e$)
+\State $T$, $u_{last}$, $T'$ $\gets$ \treapSplit($\hat u$.$last$)
+\State $T$ $\gets$ \treapJoin($T$, $u_{last}$)
+\State $T$.$\node$ $\hat w$
+\State $T'$.$\node$ $\hat v$
+\State $\hat v$.$first$ $\gets$ $\hat u$.$first$; $\hat v$.$last$ $\gets$ $s_e$
+\State $\hat w$.$first$ $\gets$ $y$; $\hat w$.$last$ $\gets$ $u_{last}$
+\State \Return $\hat v$, $\hat w$
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}[htb]
+\caption{\LCOCycle($\hat v$, $s_e$)}
+\label{Algo:LCOCycle}
+\begin{algorithmic}[1]
+\State \linkcutEvert($\hat v$.$last$)
+\If{$\hat v$.$last$ $=$ $s_e$}
+\State\Return
+\EndIf
+\State $x$ $\gets$ \linkcutParent($s_e$)
+\State \linkcutDelEdge($s_e$)
+\State \linkcutAddEdge($\hat v$.$last$, $\hat v$.$first$)
+\State $\hat v$.$first$ $\gets$ $x$; $\hat v$.$last$ $\gets$ $s_e$
+\State $T$, $u_{last}$, $T'$ $\gets$ \treapSplit($\hat u$.$last$)
+\State $T$ $\gets$ \treapJoin($T'$, $T$, $u_{last}$)
+\State $T$.$\node$ $\hat v$
+\end{algorithmic}
+\end{algorithm}
 
 
 \section{Tratando mudança de peso de arestas}
