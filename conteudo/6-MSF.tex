@@ -285,6 +285,38 @@ Manteremos duas tabelas hash:
 \end{algorithm}
 
 
+\begin{algorithm}[htb]
+\caption{\LCOLink($\hat v$, $\hat w$)}
+\label{Algo:LCOLink}
+\begin{algorithmic}[1]
+\State $x$ $\gets$ \linkcutCreate()
+\State $y$ $\gets$ \linkcutCreate()
+\If {$\hat v$.$last$ $=$ $\Nil$}
+  \State $T$ $\gets$ \treapCreate()
+  \State $T$.$\node$ $\gets$ $\hat v$
+  \State $\hat v$.$first$ $\gets$ $x$; $\hat v$.$last$ $\gets$ $x$ 
+\Else
+  \State \linkcutEvert($\hat v$.$last$)
+  \State \linkcutAddEdge($\hat v$.$last$, $x$)
+  \State $T$ $\gets$ \treapGetRoot($\hat v$.$last$)
+  \State $T$ $\gets$ \treapJoin($T$, $x$)
+  \State $T$.$\node$ $\gets$ $\hat v$
+  \State $\hat v$.$last$ $\gets$ $x$
+\EndIf
+\If {$\hat w$.$last$ $=$ $\Nil$}
+  \State $T$ $\gets$ \treapCreate()
+  \State $T$.$\node$ $\gets$ $\hat w$
+  \State $\hat w$.$first$ $\gets$ $y$; $\hat w$.$last$ $\gets$ $y$ 
+\Else
+  \State \linkcutAddEdge($y$, $\hat w$.$first$)
+  \State $T$ $\gets$ \treapGetRoot($\hat w$.$last$)
+  \State $T$ $\gets$ \treapJoin($y$, $T$)
+  \State $T$.$\node$ $\gets$ $\hat w$
+  \State $\hat w$.$first$ $\gets$ $y$
+\EndIf
+\State \linkcutAddEdge($x$, $y$)
+\end{algorithmic}
+\end{algorithm}
 \section{Tratando mudança de peso de arestas}
 
 Quando atualizamos o peso de uma aresta~$uv$ com a rotina \MSFupdate{} para um novo peso~$w$, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFupdate}, precisamos garantir que a floresta~$F$ resultante continuará sendo  de peso mínimo.
