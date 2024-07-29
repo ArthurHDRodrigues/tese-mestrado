@@ -444,10 +444,10 @@ Como cada rotina de link-cut trees utilizada consome tempo~$\O{\lg n}$ amortizad
 \State $\hat u$ $\gets$ \LCOMakeNode()
 \State $\hat v$ $\gets$ \LCOMakeNode()
 \State $\hat e$ $\gets$ \LCOMakeNode()
-\State $f$ $\gets$ \LCOMakeNode()
+\State $\hat f$ $\gets$ \LCOMakeNode()
 \State \LCOLink($\hat u$, $\hat e$)
 \State \LCOLink($\hat e$, $\hat v$)
-\State \LCOLoop($f$)
+\State \LCOLoop($\hat f$)
 \State \Return $u$, $e$, $v$ 
 \end{algorithmic}
 \end{algorithm}
