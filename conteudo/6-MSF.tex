@@ -249,53 +249,63 @@ Como cada rotina de link-cut trees utilizada consome tempo~$\O{\lg n}$ amortizad
 
 
 
+\newpage
 \MSFupdate($H$, $e$, $w$) recebe a hash $H$, uma aresta~$e$ e um peso~$w$ e atualiza o peso de $e$ para ser~$w$ e atualiza $T$ e~$T^\star$.
 
 \begin{algorithm}[htb]
 \caption{\MSFupdate($H$, $e$, $w$)}
 \label{Algo:MSFupdate}
 \begin{algorithmic}[1]
-\State $\hat e$, $e_0$, $e_1$, $e_2$, $e_3$ $\gets$ $H$($e$)
-\State $\hat e.w$ $\gets$ $w$
-\If {$e$ $\in$ $T$}\label{Algo:MSFupdate:linhauvinF}
+\State primal, $e_0$, $e_1$, $e_2$, $e_3$ $\gets$ $H$($e$)
+\For {$i\in \{0,1,2,3\}$}
+\State $e_i.w$ $\gets$ $w$
+\EndFor
+\If {primal}\label{Algo:MSFupdate:linhauvinF}
+\State $\hat e_1$ $\gets$ \LCOFindNode($e_1$)
+\State \LCOEvert($\hat e_1$)
+\State $d$ $\gets$ \LCOMin($e_3$)\Comment{$d$ é identificador}
 
-\State \linkcutEvert($e_1$)
-\State $\hat d$ $\gets$ \linkcutMin($e_3$)
+\State primal, $d_0$, $d_1$, $d_2$, $d_3$ $\gets$ $H$($d$)
+\If {$d_0$.$w$ < $w$}
+\State $\hat d$ $\gets$ \LCOFindNode($d_1$)
+\State $\hat d_1$, $\hat d_3$ $\gets$ \LCOSplit($\hat d$, $\hat d$.first)\Comment{Remove $d$ de $T^\star$}
+\State $\hat e$ $\gets$ \LCOFindNode($e_0$)
+\State $\hat e_0$, $\hat e_2$ $\gets$ \LCOSplit($\hat e$, $\hat e$.first)\Comment{Remove $e$ de $T$}
 
-\If {$\hat d$.$w$ $=$ $\infty$}
-\Comment {A aresta $e^\star$ é um laço.}
-\State \Return
-\EndIf
-\State $d$ $\gets$ $\hat d.\varname{id}$
-\State $\hat d$, $d_0$, $d_1$, $d_2$, $d_3$ $\gets$ $H$($d$)
-\If {$\hat d$.$w$ > $w$}
-\State \linkcutEvert($e_0$); \linkcutDelEdge($\hat e$); \linkcutDelEdge($e_2$)
 
-\State \linkcutEvert($d_1$); \linkcutDelEdge($\hat d$); \linkcutDelEdge($d_3$)
+\State $\hat d_0$ $\gets$ \LCOFindNode($d_0$)
+\State $\hat d_2$ $\gets$ \LCOFindNode($d_2$)
+\State $\hat d$ $\gets$ \LCOMerge( $\hat d_0$, $\hat d_2$)
 
-\State \linkcutEvert($e_3$); \linkcutAddEdge($e_3$, $\hat e$); \linkcutAddEdge($\hat e$, $e_1$)
+\State $\hat e_3$ $\gets$ \LCOFindNode($e_3$)
+\State $\hat e$ $\gets$ \LCOMerge( $\hat e_1$, $\hat e_3$)
 
-\State \linkcutEvert($d_0$); \linkcutAddEdge($d_0$, $\hat d$); \linkcutAddEdge($\hat d$, $d_2$)
 \EndIf
 
 \Else
 
-\State \linkcutEvert($e_0$)
-\State $\hat d$ $\gets$ \linkcutMax($e_2$)
+\State $\hat e_0$ $\gets$ \LCOFindNode($e_0$)
+\State \LCOEvert($\hat e_0$)
+\State $d$ $\gets$ \LCOMax($e_2$)\Comment{$d$ é identificador}
 
-\If {$\hat d$.$w$ $=$ $-\infty$}
-\State \Return
-\EndIf
-\State $d$ $\gets$ $\hat d.\varname{id}$
-\State $\hat d$, $d_0$, $d_1$, $d_2$, $d_3$ $\gets$ $H$($d$)
-\If {$\hat d$.$w$ < $w$}
+\State primal, $d_0$, $d_1$, $d_2$, $d_3$ $\gets$ $H$($d$)
+\If {$d_0$.$w$ > $w$}
+\State $\hat d$ $\gets$ \LCOFindNode($d_0$)
+\State $\hat d_0$, $\hat d_2$ $\gets$ \LCOSplit($\hat d$, $\hat d$.first)\Comment{Remove $d$ de $T$}
+\State $\hat e$ $\gets$ \LCOFindNode($e_1$)
+\State $\hat e_1$, $\hat e_3$ $\gets$ \LCOSplit($\hat e$, $\hat e$.first)\Comment{Remove $e$ de $T^\star$}
 
-\State \linkcutEvert($d_0$); \linkcutDelEdge($\hat d$); \linkcutDelEdge($d_2$)
-\State \linkcutEvert($e_1$); \linkcutDelEdge($\hat e$); \linkcutDelEdge($e_3$)
 
-\State \linkcutEvert($e_0$); \linkcutAddEdge($e_0$, $\hat e$); \linkcutAddEdge($\hat e$, $e_2$)
+\State $\hat d_1$ $\gets$ \LCOFindNode($d_1$)
+\State $\hat d_3$ $\gets$ \LCOFindNode($d_3$)
+\State $\hat d$ $\gets$ \LCOMerge( $\hat d_1$, $\hat d_3$)
 
-\State \linkcutEvert($d_1$); \linkcutAddEdge($d_1$, $\hat d$); \linkcutAddEdge($\hat d$, $d_3$)
+\State $\hat e_0$ $\gets$ \LCOFindNode($e_0$)
+\State $\hat e_2$ $\gets$ \LCOFindNode($e_2$)
+\State $\hat e$ $\gets$ \LCOMerge( $\hat e_0$, $\hat e_2$)
+
+
+
 
 \EndIf
 \EndIf
