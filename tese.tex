@@ -46,7 +46,6 @@
 }
 
 \usepackage{nolbreaks}
-
 % Vários pacotes e opções de configuração genéricos; para personalizar o
 % resultado, modifique estes arquivos.
 \input{extras/basics}
@@ -126,6 +125,7 @@
 \makeatother
 
 \newtheorem{theorem}{Teorema}
+\newtheorem{lemma}[theorem]{Lema}
 
 
 
@@ -252,21 +252,21 @@
 \newcommand{\hashEdges}{\AlgoName{hashEdges}} 
 
 \newcommand{\LCOMakeNode}{\AlgoName{Make node}}
-\newcommand{\LCOFindNode}{\AlgoName{Find node}}
-\newcommand{\LCOFindSubNode}{\AlgoName{Find subnode}}
-\newcommand{\LCOParent}{\AlgoName{\AlgoName{Find parent}}}    %(F, u, v)
-\newcommand{\LCORoot}{\AlgoName{Root}}
 \newcommand{\LCOLink}{\AlgoName{Link}}
 \newcommand{\LCOMerge}{\AlgoName{Merge}}
 \newcommand{\LCOSplit}{\AlgoName{Split}}
 \newcommand{\LCOCycle}{\AlgoName{Cycle}}
-\newcommand{\LCOAddCost}{\AlgoName{Set cost}}
+\newcommand{\LCOParent}{\AlgoName{\AlgoName{Parent}}}    %(F, u, v)
+\newcommand{\LCORoot}{\AlgoName{Root}}
+\newcommand{\LCOAddCost}{\AlgoName{Set weight}}
 \newcommand{\LCOMax}{\AlgoName{\AlgoName{Find max}}}    %(F, u, v)
 \newcommand{\LCOMin}{\AlgoName{\AlgoName{Find min}}}    %(F, u, v)
 \newcommand{\LCOEvert}{\AlgoName{\AlgoName{Evert}}}    %(F, u, v)
 \newcommand{\LCOPredecessor}{\AlgoName{\AlgoName{Pred}}}    %(F, u, v)
 \newcommand{\LCOLeftFace}{\AlgoName{\AlgoName{LeftFace}}}
 \newcommand{\LCONextRot}{\AlgoName{\AlgoName{NextRot}}}
+\newcommand{\LCOFindNode}{\AlgoName{Find node}}
+\newcommand{\LCOFindSubNode}{\AlgoName{Find subnode}}
 
 %\newcommand{\LCOMakeEdge}{\AlgoName{make edge}}
 %\newcommand{\LCOSplice}{\AlgoName{splice}}
