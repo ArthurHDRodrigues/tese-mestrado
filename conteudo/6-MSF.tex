@@ -1,13 +1,13 @@
 \chapter{Floresta maximal de peso mínimo em grafos planos}
 \label{sec:MSF}
 
-O problema da floresta maximal de peso mínimo em grafos dinâmicos foi inicialmente apresentado na Seção~\ref{sec:Motivação} e é o segundo problema que iremos discutir.
-O objetivo desse capítulo é apresentar o algoritmo de David Eppstein, Giuseppe Italiano, Roberto Tamassia, Robert Tarjan, Jeffery Westbrook e Moti Yung~\cite{EPPSTEIN-planar} que resolve esse problema para grafos que podem ter laços e arestas paralelas.
+O problema da floresta maximal de peso mínimo em grafos planos dinâmicos foi inicialmente apresentado na Seção~\ref{sec:Motivação} e é o segundo problema que iremos discutir.
+O objetivo desse capítulo é apresentar o algoritmo de David Eppstein, Giuseppe Italiano, Roberto Tamassia, Robert Tarjan, Jeffery Westbrook e Moti Yung~\cite{EPPSTEIN-planar} que resolve esse problema para grafos planos que podem ter laços e arestas paralelas.
 
 O estudo desse problema se inicia com uma revisão de conceitos de planaridade e dualidade apresentados nas Seções~\ref{sec:planaridade} e~\ref{sec:dualidade} respectivamente.
 Esses conceitos são bem estabelecidos na literatura e essas seções são baseadas na Seção~4.2 do livro \textit{Graph Theory} de Reinhard Diestel~\cite{Diestel}.
 
-Os conceitos apresentando nessas duas seções iniciais serão usados para definir formalmente o problema, que é feito na Seção~\ref{sec:definition-MSF}, e para fundamentar a estrutura de dados que resolve esse problema, que será apresentada na Seção~\ref{sec:definition-MSF}.
+Os conceitos apresentando nessas duas seções iniciais serão usados para definir formalmente o problema, o que é feito na Seção~\ref{sec:definition-MSF}, e para fundamentar a estrutura de dados que resolve esse problema, que será apresentada na Seção~\ref{sec:EODT}.
 
 \section{Planaridade}
 \label{sec:planaridade}
@@ -36,16 +36,14 @@ A Figura~\ref{fig:MSF-basico-0} mostra um grafo plano~$G$ e suas as faces.
 
 
 
-\begin{theorem}[Lemma 4.2.2~\cite{Diestel}]
+\begin{lemma}[Lemma 4.2.2~\cite{Diestel}]
 Seja $G$ um grafo plano e $e$ uma de suas arestas.
 \begin{enumerate}
 \item Se $X$ é a fronteira de uma face de~$G$, então ou $e\subseteq X$ ou a intersecção de $X$ com o interior de $e$ é vazia.
 \item Se $e$ pertence a um ciclo de $G$, então $e$ pertence à fronteira de exatamente duas faces distintas de $G$;
-\item Se não existe ciclo que contém $e$, então $e$ pertence a fronteira de uma única face de~$G$.
+\item Se não existe ciclo que contém $e$, então $e$ pertence à fronteira de uma única face de~$G$.
 \end{enumerate}
-\end{theorem}
-
-
+\end{lemma}
 
 \begin{theorem}[Fórmula de Euler, Teorema 4.2.9~\cite{Diestel}]
 \label{teo:MSFEuler}
@@ -61,22 +59,22 @@ Uma aresta é dita \defi{sucessora} de outra aresta se a primeira é sucessora d
 Uma lista de todas essas ordens cíclicas é chamada de~\defi{descrição combinatória plana} da imersão.
 Abaixo temos uma descrição combinatória plana do grafo da Figura~\ref{fig:MSF-basico-0}.
 \begin{align*}
-D(u)&=\langle a, b, c\rangle\\
-D(v)&=\langle a, e, b  \rangle\\
-D(z)&=\langle e, d, d, c\rangle
+D(u)&=\langle (a,u), (b,u), (c,u))\rangle\\
+D(v)&=\langle (a,v), (e,v), (b,v)  \rangle\\
+D(z)&=\langle (e,z), (d,z), (d,z), (c,z)\rangle
 \end{align*}
 
-%A descrição combinatória de um grafo plano é essencialmente uma lista de adjacências em que a ordem das células é relevante.
+A descrição combinatória de um grafo plano é essencialmente uma lista de adjacências em que a ordem das células é relevante.
 Como estamos admitindo arestas paralelas, o número de ocorrências de um vértice~$u$ na lista de um vértice~$v$ será exatamente o número de arestas paralelas entre~$u$ e~$v$.
 Um laço num vértice~$u$ corresponderá a duas ocorrências de~$u$ na sua lista de adjacências.
 
-%Para o algoritmo que vamos descrever nesse capítulo, cada aresta possui um identificador.
-%Observe que cada aresta corresponde a duas células nas listas de adjacência do grafo:
-%Se os extremos de uma aresta são~$u$ e~$v$, há uma célula com~$u$ na lista de~$v$ e uma célula com~$v$ na lista de~$u$, ambos representando essa aresta.
+Para o algoritmo que vamos descrever nesse capítulo, cada aresta possui um identificador.
+Observe que cada aresta corresponde a duas células nas listas de adjacência do grafo:
+Se os extremos de uma aresta são~$u$ e~$v$, há uma célula com~$u$ na lista de~$v$ e uma célula com~$v$ na lista de~$u$, ambos representando essa aresta.
 
-%Pensamos nessas células como representações das duas possíveis orientações da aresta: de~$u$ para~$v$ (algumas vezes denotada por~$uv$) e de~$v$ para~$u$ (algumas vezes denotada por $vu$).
-%Essas duas células armazenarão o identificador da aresta e terão um apontador $\varname{sym}$, referenciando a outra e vice-versa.
-%Ademais, cada uma dessas células possuirá também um campo $\varname{orig}$, que identificará o vértice a cuja lista pertence, ou seja, o vértice que é a origem da aresta orientada representada pela célula.
+Pensamos nessas células como representações das duas possíveis orientações da aresta: de~$u$ para~$v$ (algumas vezes denotada por~$uv$) e de~$v$ para~$u$ (algumas vezes denotada por $vu$).
+Essas duas células armazenarão o identificador da aresta e terão um apontador $\varname{sym}$, referenciando a outra e vice-versa.
+Ademais, cada uma dessas células possuirá também um campo $\varname{orig}$, que identificará o vértice a cuja lista pertence, ou seja, o vértice que é a origem da aresta orientada representada pela célula.
 
 \section{Dualidade}
 \label{sec:dualidade}
@@ -84,7 +82,7 @@ Um laço num vértice~$u$ corresponderá a duas ocorrências de~$u$ na sua lista
 
 Dado um grafo plano, o grafo \defi{dual} de~$G$~\cite{Diestel} é o grafo $G^\star = (F,E^\star)$ cujo conjunto de vértices é o conjunto~$F = F(G)$ de faces de~$G$ e o conjunto de arestas $E^\star$ é construído a partir das arestas de~$G$.
 Para cada aresta~$e\in E$, existe exatamente uma aresta~$e^\star$ no conjunto $E^\star$.
-A aresta~$e^\star$ é chamada de \defi{aresta dual} de~$e$ e os vértices incidentes a essa aresta são as duas faces (não necessariamente distintas) cujas fronteiras contém~$e$.
+A aresta~$e^\star$ é chamada de \defi[aresta!dual]{aresta dual} de~$e$ e os vértices incidentes a essa aresta são as duas faces (não necessariamente distintas) cujas fronteiras contém~$e$.
 Nesse contexto, chamamos~$G$ de grafo \defi{primal}.
 Para ilustrar a relação entre cada aresta e seu dual, geralmente desenhamos cada aresta do grafo dual cruzando a correspondente aresta do grafo primal, como mostra a Figura~\ref{fig:MSF-basico-1}.
 
@@ -139,11 +137,11 @@ forma um ciclo em $G^\star$.
 
 \section{Definição do problema}
 \label{sec:definition-MSF}
-O problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca:
+O problema da floresta maximal de peso mínimo (MSF) em grafos dinâmicos planos ponderados consiste na busca por uma implementação tão eficiente quanto possível para a seguinte biblioteca:
 
 \begin{itemize}
 \item \MSFCreate($n$): Cria e devolve um grafo plano ponderado~$G$ com $n$ vértices isolados.
-\item \MSFaddEdge($G$, $e$, $u$, $e_u$, $v$, $e_v$, $w$): Insere em~$G$ uma nova aresta~$e$ com peso~$w$ ligando os vértices~$u$ e~$v$. A nova aresta~$e$ é sucessora das arestas~$e_u$ e~$e_v$ nas descrições combinatoriais de $u$ e $v$, respectivamente.
+\item \MSFaddEdge($G$, $e$, $u$, $e_u$, $v$, $e_v$, $w$): Insere em~$G$ uma nova aresta~$e$ com peso~$w$ ligando os vértices~$u$ e~$v$. A nova aresta~$e$ é sucessora das arestas~$e_u$ e~$e_v$ nas ordenações cíclicas de~$u$ e~$v$, respectivamente.
 \item \MSFdelEdge($G$, $e$): Remove a aresta~$e$ de~$G$.
 \item \MSFupdate($G$, $e$, $w$): Altera o peso da aresta~$e$ do grafo dinâmico~$G$ para o valor~$w$.
 \item \MSFweight($G$): Devolve o peso de uma MSF de $G$.
@@ -153,38 +151,33 @@ O problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos c
 \section{Árvores dinâmicas planas}
 \label{sec:EODT}
 
+Para resolver o problema da floresta geradora de peso mínimo em grafos dinâmico planos ponderados, Eppstein et al.~\cite{EPPSTEIN-planar} propõem o uso de uma estrutura de dados que chamaremos de \defi[arvore@\'arvore!dinâmica plana]{Árvores dinâmicas planas} (ADP).
 
-Para resolver o problema da floresta geradora de peso mínimo para um grafo plano dinâmico, Eppstein et al.~\cite{EPPSTEIN-planar} propõem o uso de uma estrutura de dados que armazena, interligadamente, uma árvore geradora~$T$ de peso mínimo de cada componente conexa de~$G$ e sua correspondente dual~$T^\star$, que, pelo Teorema~\ref{teo:MSFdual}, é uma árvore geradora de peso máximo de~$G^\star$.
-
-
-Cada uma dessas árvores é implementada com \defi{Árvores dinâmicas planas}.
-Essas árvores são enraizadas e compostas por nós.
-Para distinguirmos com exatidão vértices e arestas do grafo com nós das árvores dinâmicas planas, denotaremos os nós com um circunflexo.
-Essas árvores são capazes de manter sua descrição combinatória plana.
-Como essas árvores não possuem arestas paralelas, a descrição combinatória plana mantida pela estrutura de dados é dada por uma sequências de nós e não pela sequência de arestas incidentes ao nó.
-
+Seguindo a descrição de Eppstein et al.~\cite[Seção 3]{EPPSTEIN-planar}, essa estrutura consiste de árvores em que cada nó possui um peso, juntamente com uma descrição combinatória plana das árvores.
+Como árvores não possuem arestas paralelas, consideraremos que a ordenação cíclica para cada nó~$u$ é uma sequência dos nós vizinhos de~$u$ no ordem anti-horária em vez de arestas.
 
 Árvores dinâmicas planas dão suporte à seguinte biblioteca:
 \begin{itemize}
 \item \LCOMakeNode(): Cria e retorna um novo nó.
-\item \LCOLink($\hat v$, $\hat w$): Adiciona uma aresta ligando os nós~$\hat v$ a~$\hat w$, tornando~$\hat v$ um filho de~$\hat w$.
-O nó $\hat w$ é inserido no final de~$D(\hat v)$ e~$\hat v$ no inicio de~$D(\hat w)$.
-Essa operação assume que~$\hat v$ é a raiz de sua árvore e que $\hat v$ e $\hat w$ estão em árvores distintas.
-\item \LCOMerge($\hat u$, $\hat v$): Recebe dois nós~$\hat u$ e~$\hat v$ de mesmo peso e retorna um único nó~$\hat w$ que é a união desses nós.
-Se~$\alpha$ e~$\beta$ são respectivamente as listas ordenadas de arestas incidentes a~$\hat u$ e a~$\hat v$ seguindo a descrição combinatória plana, então $\alpha\beta$ é a lista de arestas incidentes a~$\hat w$.
-\item \LCOSplit($\hat u$, $\hat e$): Recebe nós adjacentes~$\hat u$ e~$\hat e$.
-Substitui o nó~$\hat u$ por dois nós~$\hat v$ e~$\hat z$.
-Se a ordem cíclica $D(\hat u)$ tem forma $\alpha \hat e\beta$, então $\alpha \hat e$ e~$\beta$ são as ordens cíclicas de~$\hat v$ e~$\hat w$, respectivamente.
-\item \LCOCycle($\hat v$, $\hat e$): Permuta ciclicamente $D(\hat v)$ de forma que o nó $\hat e$ é o último na ordem. Se a ordem inicial tem forma $\alpha \hat e \beta$, então a ordem resultante é $\beta\alpha \hat e$.
-\item \LCORoot($\hat v$): Retorna a raiz da árvore do nó~$\hat v$.
-\item \LCOAddCost($\hat v$, $w$): Atribui o peso~$w$ ao nó~$\hat v$.
-\item \LCOPredecessor($\hat u$, $\hat e$): Retorna o predecessor do nó~$\hat e$ na ordem cíclica de $\hat u$.
-\item \LCOParent($\hat v$): Retorna o pai do nó $\hat v$.
-\item \LCOEvert($\hat v$): Torna $\hat v$ a raiz de sua árvore.
+\item \LCOLink($v$, $w$): Adiciona uma aresta ligando os nós~$v$ a~$w$, tornando~$v$ um filho de~$w$.
+O nó $w$ é inserido no final de~$D(v)$ e~$v$ no inicio de~$D(w)$.
+Essa operação assume que~$v$ é a raiz de sua árvore e que $v$ e $w$ estão em árvores distintas.
+\item \LCOMerge($u$, $v$): Recebe dois nós~$u$ e~$v$ de mesmo peso e retorna um único nó~$z$ que é a união desses nós.
+Se~$\alpha$ e~$\beta$ são respectivamente as ordenações cíclicas de arestas incidentes a~$u$ e a~$v$ seguindo a descrição combinatória plana, então $\alpha\beta$ é a lista de arestas incidentes a~$z$.
+\item \LCOSplit($u$, $e$): Recebe nós adjacentes~$u$ e~$e$.
+Substitui o nó~$u$ por dois nós~$v$ e~$z$.
+Se a ordem cíclica $D(u)$ tem forma $\alpha e\beta$, então $\alpha e$ e~$\beta$ são as ordens cíclicas de~$v$ e~$w$, respectivamente.
+\item \LCOCycle($v$, $e$): Permuta ciclicamente $D(v)$ de forma que o nó $e$ é o último na ordem. Se a ordem inicial tem forma $\alpha e \beta$, então a ordem resultante é $\beta\alpha e$.
+\item \LCORoot($v$): Retorna a raiz da árvore do nó~$v$.
+\item \LCOAddCost($v$, $w$): Atribui o peso~$w$ ao nó~$v$.
+\item \LCOMax($u$, $v$): Retorna o nó de peso máximo no percurso entre os nós~$u$ e~$v$.
+\item \LCOMin($u$, $v$): Retorna o nó de peso mínimo no percurso entre os nós~$u$ e~$v$.
+\item \LCOPredecessor($u$, $e$): Retorna o predecessor do nó~$e$ na ordem cíclica de $u$.
 \end{itemize}
 
-\section{Resolvendo MSF com árvores dinâmicas planas}
+A estrutura também se aplica a grafos planos desconexos, funcionando como a união independente das estruturas correspondentes para cada componente do grafo.
 
+\section{Resolvendo MSF com árvores dinâmicas planas}
 
 A ideia é basicamente usar Link-Cut trees para armazenar~$T$ e~$T^\star$.
 Para manter a associação que há entre as arestas de~$G$ e~$G^\star$, as link cut Trees conterão também nós para representar as arestas de~$G$ e~$G^\star$.
