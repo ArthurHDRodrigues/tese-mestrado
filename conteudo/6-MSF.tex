@@ -39,6 +39,7 @@ A Figura~\ref{fig:MSF-basico-0} mostra um grafo plano~$G$ e suas as faces.
 
 
 \begin{lemma}[Lemma 4.2.2~\cite{Diestel}]
+\label{lemma:diestel}
 Seja $G$ um grafo plano e $e$ uma de suas arestas.
 \begin{enumerate}
 \item Se $X$ é a fronteira de uma face de~$G$, então ou $e\subseteq X$ ou a intersecção de $X$ com o interior de $e$ é vazia.
@@ -153,7 +154,7 @@ O problema da floresta maximal de peso mínimo (MSF) em grafos dinâmicos planos
 \section{Árvores dinâmicas planas}
 \label{sec:EODT}
 
-Para resolver o problema da floresta geradora de peso mínimo em grafos dinâmico planos ponderados, Eppstein et al.~\cite{EPPSTEIN-planar} propõem o uso de uma estrutura de dados que chamaremos de \defi[arvore@\'arvore!dinâmica plana]{Árvores dinâmicas planas} (ADP).
+Para resolver o problema da floresta geradora de peso mínimo em grafos dinâmico planos ponderados, Eppstein et al.~\cite{EPPSTEIN-planar} propõem o uso de uma estrutura de dados que chamaremos de \defi[arvore@\'arvore!dinâmica plana]{Árvores dinâmicas planas} (ADP), originalmente os autores nomearam essa estrutura de \textit{edge ordered dynamic tree}.
 
 Seguindo a descrição de Eppstein et al.~\cite[Seção 3]{EPPSTEIN-planar}, essa estrutura consiste de árvores em que cada nó possui um peso, juntamente com uma descrição combinatória plana das árvores.
 Como árvores não possuem arestas paralelas, consideraremos que a ordenação cíclica para cada nó~$u$ é uma sequência dos nós vizinhos de~$u$ no ordem anti-horária em vez de arestas.
@@ -161,7 +162,7 @@ Como árvores não possuem arestas paralelas, consideraremos que a ordenação c
 Árvores dinâmicas planas dão suporte à seguinte biblioteca:
 \begin{itemize}
 \item \LCOMakeNode(): Cria e retorna um novo nó.
-\item \LCOLink($v$, $w$): Adiciona uma aresta ligando os nós~$v$ a~$w$, tornando~$v$ um filho de~$w$.
+\item \LCOLink($v$, $u$): Adiciona uma aresta ligando os nós~$v$ a~$u$, tornando~$v$ um filho de~$u$.
 O nó $w$ é inserido no final de~$D(v)$ e~$v$ no inicio de~$D(w)$.
 Essa operação assume que~$v$ é a raiz de sua árvore e que $v$ e $w$ estão em árvores distintas.
 \item \LCOMerge($u$, $v$): Recebe dois nós~$u$ e~$v$ de mesmo peso e retorna um único nó~$z$ que é a união desses nós.
@@ -174,150 +175,200 @@ Se a ordem cíclica $D(u)$ tem forma $\alpha e\beta$, então $\alpha e$ e~$\beta
 \item \LCOAddCost($v$, $w$): Atribui o peso~$w$ ao nó~$v$.
 \item \LCOMax($u$, $v$): Retorna o nó de peso máximo no percurso entre os nós~$u$ e~$v$.
 \item \LCOMin($u$, $v$): Retorna o nó de peso mínimo no percurso entre os nós~$u$ e~$v$.
-\item \LCOPredecessor($u$, $e$): Retorna o predecessor do nó~$e$ na ordem cíclica de $u$.
+\item \LCOConnected($u$, $v$): Retorna verdadeiro se os nós~$u$ e~$v$ estiverem na mesma componente conexa e falso caso contrário.
 \end{itemize}
 
 A estrutura também se aplica a grafos planos desconexos, funcionando como a união independente das estruturas correspondentes para cada componente do grafo.
 
 \section{Resolvendo MSF com árvores dinâmicas planas}
 
-A ideia é basicamente usar Link-Cut trees para armazenar~$T$ e~$T^\star$.
-Para manter a associação que há entre as arestas de~$G$ e~$G^\star$, as link cut Trees conterão também nós para representar as arestas de~$G$ e~$G^\star$.
+Representaremos cada componente conexa~$C$ do grafo dinâmico plano ponderado~$G$ em um plano distinto.
+Dessa forma, cada componente possui uma face exterior própria.
 
-Especificamente, cada aresta~$e$ de~$G$ corresponderá a quatro nós nas link-cut trees: dois da link-cut trees da link-cut tree de~$T$ e dois da link-cut tree de~$T^\star$.
-Esses nós são chamados de $e_0$, $e_1$, $e_2$ e $e_3$, sendo $e_0$ e $e_2$ os nós da link cut tree de~$T$ e~$e_1$ e~$e_3$ da link-cut tree de~$T^\star$.
-Se $e\in T$, então $e_0$ e $e_2$ estão conectados, senão $e_1$ e $e_3$ estão conectados na respectiva link-cut tree.
+Cada componente conexa~$C$ de $G$ é representada por duas ADPs.
+Uma delas representa uma árvore geradora de pesos mínimos~$T$ de $C$.
+Enquanto que a outra representa sua correspondente dual~$T^\star$.
 
-Além das árvores, as link-cut trees vão armazenar também informação sobre a imersão de~$G$.
-Isso será feito da seguinte maneira.
+A primeira árvore, que é denotada por~$\hat T$, é essencialmente a árvore~$T$ submetida a duas transformações: cada uma de suas aresta é subdivida; e é adicionado uma folha a cada vértice incidente a uma aresta de~$C$ que não esteja em~$T$.
 
-\TODO{Completar com node path e ordem ciclica de $e_i$}
+Mais precisamente, $\hat T$ possui um nó~$\hat v$ para cada vértice~$v$ de~$C$, um nó~$\hat e$ para cada aresta~$e$ de~$T$ e dois nós~$\hat d_1$ e~$\hat d_3$ para cada aresta~$d^\star$ de~$T^\star$.
+O peso do nó~$\hat v$ é $-\infty$, enquanto que os pesos de~$\hat e$, $\hat d_1$ e~$\hat d_3$ são os pesos das arestas representadas por esses nós. 
+Se uma aresta $e$ de $T$ é incidente aos vértices~$v$ e~$u$ de~$C$, então $\hat e$ é ligado aos nós~$\hat v$ e~$\hat u$.
+Se uma aresta~$d$ de~$C$ não está em $T$ e é incidente aos vértices~$v$ e~$u$ de~$C$, então $\hat d_0$ e $\hat d_2$ são ligado a~$\hat v$ e~$\hat u$, respectivamente.
+Note que $\hat d_0$ e $\hat d_2$ não estão ligados, logo são folhas da ADP.
 
+A segunda ADP, denotada por~$\hat T^\star$  possui construção análoga à primeira, mas é baseada em~$T^\star$ ao invés de~$T$.
+A ADP possui um nó $\hat F$ para cada vértice~$F$ de~$C^\star$ (isto é, cada face de~$C$), um nó~$\hat e^\star$ para cada aresta~$e^\star$ de $T^\star$ e dois nós $\hat d_1$ e~$\hat d_3$ para cada aresta~$d$ de $T$.
+O peso do nó~$\hat F$ é $\infty$, enquanto que os pesos de $\hat e^\star$, $\hat d_1$ e~$\hat d_3$ são os pesos das arestas representadas por esses nós.
+Se uma aresta $e^\star$ de $T^\star$ é incidente às faces~$F$ e~$G$ de~$C$, então $\hat e^\star$ é ligado ao nós~$\hat F$ e~$\hat G$.
+Se uma aresta $d^\star$ de~$C^\star$ não está em $T^\star$ e é incidente às faces~$F$ e~$G$ de~$C$, então $\hat d_1$ e $\hat d_3$ são ligado a~$\hat F$ e~$\hat G$ respectivamente.
+A Figura~\ref{fig:MSF-figura-3} ilustra $\hat T$ e $\hat T^\star$.
 
 \begin{figure}[htb]
 %\scalebox{2}{
 \centering
 \input{fig/MSF-basico-3}
 %}
-\caption{As árvores geradoras modificadas que representam o grafo da Figura~\ref{fig:MSF-basico-1}.}
+\caption{As árvores geradoras modificadas~$\hat T$ e~$\hat T^\star$ construídas a partir das árvores da Figura~\ref{fig:MSF-figura-2}.}
 \label{fig:MSF-figura-3}
 \end{figure}
+Manteremos essas duas ADPs e duas tabelas de símbolos, $H_v$ e $H_e$. $H_v$ guarda o conjunto de nós que representam vértices e usa como chave os identificadores dos vértices.
+$H_e$ guarda informações sobre as arestas de $G$, para cada aresta~$e$ retorna a quadrupla $(\varname{primal}$, $\hat e$, $\hat e_1$, $\hat e_3$), onde $\varname{primal}$ é um booleado que é igual a verdadeiro se~$e$ é uma aresta de $T$ e falso caso contrário. $\hat e$ é o nó que representa $e$ ou $e^\star$ e $\hat e_1$, $\hat e_3$ são as duas folhas associadas a~$e$. 
 
+A primeira rotina de MSF que vamos apresentar é \MSFupdate{}, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFupdate}.
 
-Quando atualizamos o peso de uma aresta~$uv$ com a rotina \MSFupdate{} para um novo peso~$w$, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFupdate}, precisamos garantir que a floresta~$F$ resultante continuará sendo  de peso mínimo.
+Quando atualizamos o peso de uma aresta~$e$ para um novo peso~$w$, precisamos atualizar a árvore geradora de pesos mínimos~$T$ que está sendo mantida de forma que ela continue sendo de peso mínimo.
 
-Notemos que ou $uv\in F$ ou $uv^\star\in F^\star$, iremos tratar cada um desses casos separadamente.
-A identificação de qual caso~$uv$ se encontra é feita na linha~\ref{Algo:MSFupdate:linhauvinF} do Algoritmo~\ref{Algo:MSFupdate}, para implementar essa consulta, não podemos fazer como foi feito linha~\ref{Algo:dymGraphReplace:linhayinTv} do \dymGraphReplace(Algoritmo~\ref{Algo:dymGraphReplace}), pois link-cut trees não possuem nós que representam arestas.
-Portanto precisamos recorrer a recursos mais elaborados.
-Manteremos um dicionário que guardará apontadores para os nós de~$F$ e usaremos como o conjunto de chaves os vértices de $G$. O apontador associado à chave~$u$ aponta para o nó que representa o vértice $u$.
-Após usar esse dicionário para obter os nós que representam os vértices~$u$ e~$v$ usamos a rotina \linkcutPath{} para fazer o caminho entre~$u$ e~$v$ ser preferido e verificamos se~$u$ é predecessor ou sucessor de~$v$.
+Se~$e$ for uma aresta de~$T$, é necessário verificar se não há alguma aresta no corte~$(T, e)$ com peso menor do que~$w$, pois se tal aresta existir, então~$T$ e~$T^\star$ não serão mais de peso mínimo e máximo, respectivamente.
+Para corrigir isso, seja~$d$ a aresta de menor peso no corte~$(T, e)$,
+então $e$ é removida de~$T$ e $e^\star$ adicionada a~$T^\star$ e~$d^\star$ é removida de~$T^\star$ e $d$ é adicionada a~$T$.
 
-Se~$uv$ for uma aresta de~$F$ e se existir alguma aresta no corte~$(F, uv)$ com peso menor do que~$w$, então~$F$ não será mais de peso mínimo.
-Para corrigir isso, precisamos tomar~$xy$ como a aresta de menor peso no corte~$(F, uv)$,
-então remover~$uv$ de~$F$ e adicionar~$xy$ a~$F$.
-Dessa forma, garantindo que~$F$ seja de peso mínimo.
+Pelo Teorema~\ref{teo:cutset}, o conjunto~$(T, e)^\star$ forma um ciclo em~$C^\star$.
+Como~$e^\star \in (T, e)^\star$ e~$e$ é a única aresta de~$T$ cujo dual está em~$(T, e)^\star$, então as demais arestas desse corte formam um caminho em~$T^\star$ ligando os vértices incidentes a~$e^\star$.
 
-Para obter a aresta~$xy$, vamos investigar o corte~$(F, uv)$.
-Pelo Teorema~\ref{teo:cutset}, o conjunto~$(F, uv)^\star$ forma um ciclo em~$G^\star$.
-Como~$uv^\star\in(F, uv)$ e~$uv$ é a única aresta de~$F$ cujo dual está em~$(F, uv)$, então as demais arestas desse corte formam um caminho em~$F^\star$ ligando os vértices incidentes a~$uv^\star$.
-Utilizando a rotina \linkcutMin{}  da biblioteca de link-cut trees podemos obter o nó de menor peso nesse percurso.
+Dessa forma, cada aresta $d\in (T, e)$ de menor peso é representada por exatamente um nó nesse percurso que possui peso mínimo nesse percurso em~$\hat T^\star$.
+Para obter o nó $\hat d$ de menor peso percorrer esse caminho, usaremos os nós $\hat e_1$ e $\hat e_3$ e a rotina \LCOMin{} da biblioteca de ADPs, isso é feito na linha~\ref{Algo:MSFupdate:linhamin} do Algoritmo~\ref{Algo:MSFupdate}.
 
-Note também que, se modificarmos~$F$, então precisaremos atualizar~$F^\star$, removendo $xy^\star$ de~$F^\star$ e adicionando $uv^\star$ com o novo peso~$w$.
+As remoções de~$e$ de~$T$ e $d^\star$ de~$T^\star$ são feitas nas linhas~\ref{Algo:MSFupdate:linhasplitd} e~\ref{Algo:MSFupdate:linhasplite} utilizando a rotina~\LCOSplit{}, que converte os nós~$\hat e$ e~$\hat d$ nos nós $\hat d_1$, $\hat d_3$, $\hat e_0$ e~$\hat e_2$, que se tornarão as novas folhas associadas às arestas~$e$ e~$d$.
+Para adicionar as arestas~$e^\star$ a~$T^\star$ e $d$ a~$T$ são usados as folhas~$\hat d_0$, $\hat d_2$, $\hat e_1$ e~$\hat e_3$ junto a rotina \LCOMerge{} nas linhas \ref{Algo:MSFupdate:linhas:Merged} e~\ref{Algo:MSFupdate:linhas:Mergee} do Algoritmo~\ref{Algo:MSFupdate}.
 
-Se~$uv$ não for uma aresta de~$F$, então teremos que~$uv^\star$ é uma aresta de~$F^\star$.
+Se~$e$ não for uma aresta de~$T$, então teremos que~$e^\star$ é uma aresta de~$T^\star$.
 O tratamento desse caso é análogo ao caso anterior e é feito entre as linhas~\ref{Algo:MSFupdate:dualinicio} e~\ref{Algo:MSFupdate:dualfim} do Algoritmo~\ref{Algo:MSFupdate}.
 
 \begin{algorithm}[htb]
 \caption{\MSFupdate($G$, $e$, $w$)}
 \label{Algo:MSFupdate}
 \begin{algorithmic}[1]
-\State primal, $\hat e$, $\hat e_1$, $\hat e_3$ $\gets$ $H$($e$)
+\State primal, $\hat e$, $\hat e_1$, $\hat e_3$, $\hat v$, $\hat u$ $\gets$ $H_e$($e$)
 \State \LCOAddCost($\hat e$, $w$); \LCOAddCost($\hat e_1$, $w$); \LCOAddCost($\hat e_2$, $w$)
-\State \LCOEvert($\hat e_1$)
 \If {primal}
-\State $d$ $\gets$ \LCOMin($\hat e_3$)
+\State $d$ $\gets$ \LCOMin($\hat e_1$, $\hat e_3$)\label{Algo:MSFupdate:linhamin}
 
-\State primal, $\hat d$, $\hat d_0$, $\hat d_2$ $\gets$ $H$($d$)
-\If {$\hat d_0$.$w$ < $w$}
-\State $\hat d_1$, $\hat d_3$ $\gets$ \LCOSplit($\hat d$, \LCOParent($\hat d$))\Comment{Remove $d$ de $T^\star$}
-\State $\hat e_0$, $\hat e_2$ $\gets$ \LCOSplit($\hat e$, \LCOParent($\hat e$))\Comment{Remove $e$ de $T$}
+\State primal, $\hat d$, $\hat d_0$, $\hat d_2$, $\hat x$, $\hat y$ $\gets$ $H_e$($d$)
+\If {$\hat d$.$w$ < $w$}
+\State $\hat d_1$, $\hat d_3$ $\gets$ \LCOSplit($\hat d$, $\hat x$)\label{Algo:MSFupdate:linhasplitd}
+\State $\hat e_0$, $\hat e_2$ $\gets$ \LCOSplit($\hat e$, $\hat v$)\label{Algo:MSFupdate:linhasplite}
 
 
-\State $\hat d$ $\gets$ \LCOMerge( $\hat d_0$, $\hat d_2$)
-
-\State $\hat e$ $\gets$ \LCOMerge( $\hat e_1$, $\hat e_3$)
-\State $H(e)$ $\gets$ falso, $\hat e$, $\hat e_0$, $\hat e_2$
-\State $H(d)$ $\gets$ verdadeiro, $\hat d$, $\hat d_1$, $\hat d_3$
+\State $\hat d$ $\gets$ \LCOMerge( $\hat d_0$, $\hat d_2$)\label{Algo:MSFupdate:linhas:Merged}
+\State $\hat e$ $\gets$ \LCOMerge( $\hat e_1$, $\hat e_3$)\label{Algo:MSFupdate:linhas:Mergee}
+\State $H(e)$ $\gets$ falso, $\hat e$, $\hat e_0$, $\hat e_2$, $\hat v$, $\hat u$
+\State $H(d)$ $\gets$ verdadeiro, $\hat d$, $\hat d_1$, $\hat d_3$, $\hat x$, $\hat y$
 
 \EndIf
 
 \Else
-\State $d$ $\gets$ \LCOMax($\hat e_3$)
+\State $d$ $\gets$ \LCOMax($\hat e_1$, $\hat e_3$)\label{Algo:MSFupdate:dualinicio}
 
-\State primal, $\hat d$, $\hat d_0$, $\hat d_2$ $\gets$ $H$($d$)
-\If {$\hat d_0$.$w$ > $w$}
-\State $\hat d_1$, $\hat d_3$ $\gets$ \LCOSplit($\hat d$, \LCOParent($\hat d$))\Comment{Remove $d$ de $T^\star$}
-\State $\hat e_0$, $\hat e_2$ $\gets$ \LCOSplit($\hat e$, \LCOParent($\hat e$))\Comment{Remove $e$ de $T$}
-
+\State primal, $\hat d$, $\hat d_0$, $\hat d_2$, $\hat x$, $\hat y$ $\gets$ $H$($d$)
+\If {$\hat d$.$w$ > $w$}
+\State $\hat d_1$, $\hat d_3$ $\gets$ \LCOSplit($\hat d$, $\hat x$)
+\State $\hat e_0$, $\hat e_2$ $\gets$ \LCOSplit($\hat e$, $\hat v$))
 
 \State $\hat d$ $\gets$ \LCOMerge( $\hat d_0$, $\hat d_2$)
-
 \State $\hat e$ $\gets$ \LCOMerge( $\hat e_1$, $\hat e_3$)
-\State $H(e)$ $\gets$ verdadeiro, $\hat e$, $\hat e_0$, $\hat e_2$
-\State $H(d)$ $\gets$ falso, $\hat d$, $\hat d_1$, $\hat d_3$
+
+\State $H(e)$ $\gets$ verdadeiro, $\hat e$, $\hat e_0$, $\hat e_2$, $\hat v$, $\hat u$
+\State $H(d)$ $\gets$ falso, $\hat d$, $\hat d_1$, $\hat d_3$, $\hat x$, $\hat y$
 
 \EndIf
-\EndIf
+\EndIf\label{Algo:MSFupdate:dualfim}
 \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}[htb]
-\caption{\MSFaddEdge($v$, $e_v$, $u$, $e_u$)}
-\label{Algo:MSFaddEdge}
-\begin{algorithmic}[1]
+
+A próxima rotina elaborada é \MSFdelEdge{}, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFdelEdge}.
+
+Pelo Lema~\ref{lemma:diestel}, ou uma aresta~$e$ não está em ciclos e as duas faces incidentes a ela são iguais, ou essas faces são distintas e a aresta está em pelo menos um ciclo.
+
+No primeiro caso, a remoção de~$e$ desconecta $C$.
+Logo não há trabalho de manutenção em $\hat T$ além de remover~$e$ de~$\hat T$.
+A face incidente a aresta~$e$ é a face exterior~$F$.
+Como cada componente conexa está imersa em um plano distinto, será necessário dividir $\hat F$ em dois nós, que representarão as duas faces exteriores das duas componentes conexas resultantes da remoção de~$e$.
 
 
-\For {$i \in \{0,1,2,3\}$}
-\State $\hat s_i$ $\gets$ \LCOMakeNode(); $\hat e_i$ $\gets$ \LCOMakeNode()
-\State \LCOLink($\hat e_i$, $\hat s_i$)
-\EndFor
-\State \LCOCycle($\hat v$, $\hat e_v$)
-\State \LCOMerge($\hat v$, $\hat s_v$)
-\State \LCOCycle($\hat u$, $\hat e_u$)
-\State \LCOMerge($\hat u$, $\hat s_u$)
-\State
-\State 
+No segundo caso, a remoção de~$e$ não desconecta $C$.
+Dessa forma, é necessário buscar uma substituta para $e$ caso essa aresta seja uma aresta de $T$.
+Para fazer essa busca eficientemente, na linha~\ref{Algo:MSFdelEdge:linha:mudaPeso} do Algoritmo~\ref{Algo:MSFdelEdge}, o peso de~$e$ é mudado para~$\infty$, fazendo com que essa aresta se torne uma aresta de~$T^\star$. 
+A remoção de $e$ implica na junção das duas faces distintas $F_0$ e $F_2$ incidentes a essa aresta.
+Essa mesclagem é feita de forma que a descrição combinatória resultante se mantenha plana, isto é, se $\alpha e^\star \beta$ e $\gamma e^\star \delta$ forem as ordenações de $F_0$ e $F_2$, respectivamente, então $\alpha \delta\gamma\beta$ é a ordenação ciclica da face resultante.
 
+Para implementar essa rotina será necessário incrementar a biblioteca de árvores dinâmicas planas com uma rotina que relacione $\hat T$ com $\hat T^\star$.
+A rotina adicional se chama \LCOLeftFace{} e associa os nós que são folhas com nós que representam vértices e faces.
 
+Dada uma orientação de uma aresta~$e$ de~$C$, é possível definir a \defi[face!esquerda]{face esquerda} de uma aresta.\TODO{consultar definição de face esquerda/direita na literatura}
 
+Cada folha pode ser visto como a orientação de uma aresta de $C$ ou $C^\star$.
+Assim possuindo uma face a esquerda bem definida.
 
-\State \MSFupdate($G$, $e$, $w$)
-\end{algorithmic}
-\end{algorithm}
+\begin{itemize}
+\item \LCOLeftFace($e$): Recebe um nó folha e retorna o nó que representa a face a esquerda dessa folha.
+\end{itemize}
+
+A primeira coisa feita é mudar o peso de $e$ para $\infty$, assim tornando-a uma aresta de~$\hat T^\star$.
+Dessa forma, as duas folhas~$\hat e_0$ e~$\hat e_2$ são nós de~$\hat T$.
+
+Em seguida, a nova rotina \LCOLeftFace{} é usada para obter os dois nós que representam as faces incidentes à aresta $e$.
 
 
 \begin{algorithm}[htb]
 \caption{\MSFdelEdge($G$, $e$)}
 \label{Algo:MSFdelEdge}
 \begin{algorithmic}[1]
-\State \MSFupdate($G$, $e$, $\infty$)
-\State primal, $\hat e$, $\hat e_F$, $\hat e_G$ $\gets$ $H(e)$
-\State $\hat v$ $\gets$ \LCOParent($\hat e_F$)
-\State $\hat u$ $\gets$ \LCOParent($\hat e_G$)
-\State \LCOCycle($\hat v$, $e_F$)
-\State \LCOSplit(\LCOPredecessor($\hat u$, $\hat e_F$))
-\State \LCOCycle($\hat v$, $e_G$)
-\State \LCOSplit(\LCOPredecessor($\hat v$, $\hat e_G$))
+\State \MSFupdate($G$, $e$, $\infty$)\label{Algo:MSFdelEdge:linha:mudaPeso}
+\State \varname{primal}, $\hat e$, $\hat e_0$, $\hat e_2$, $\hat u$, $\hat v$ $\gets$ $H_e(e)$
+\State $\hat F_0$ $\gets$ \LCOLeftFace($\hat e_0$)
+\State $\hat F_2$ $\gets$ \LCOLeftFace($\hat e_2$)
 \State
-\State $\hat F_f$ $\gets$ \LCOLeftFace($\hat e_F$)
-\State $\hat F_g$ $\gets$ \LCOLeftFace($\hat e_G$)
-\State \LCOCycle($\hat F_f$, $\hat e$)
-\State \LCOSplit(\LCOPredecessor($\hat F_f$, $\hat e$))
-\State \LCOCycle($\hat F_g$, $\hat e$)
+\State \LCOCycle($\hat u$, $\hat e_0$)
+\State \LCOSplit($\hat u$, \LCOPredecessor($\hat u$, $\hat e_0$))
+\State \LCOCycle($\hat v$, $\hat e_2$)
+\State \LCOSplit($\hat v$, \LCOPredecessor($\hat v$, $\hat e_2$))
 \State
-\State \LCOMerge($\hat F_f$, $\hat F_g$)
+\State \LCOCycle($\hat F_0$, $\hat e$)
+\State \LCOSplit($\hat F_0$, \LCOPredecessor($\hat F_0$, $\hat e$))
+\State \LCOCycle($\hat F_2$, $\hat e$)
+\State \LCOSplit($\hat F_2$, \LCOPredecessor($\hat F_2$, $\hat e$))
+\State
+\State \LCOMerge($\hat F_0$, $\hat F_2$)
 \end{algorithmic}
 \end{algorithm}
+
+\begin{algorithm}[htb]
+\caption{\MSFaddEdge($G$, $e$, $u$, $e_u$, $v$, $e_v$, $w$)}
+\label{Algo:MSFaddEdge}
+\begin{algorithmic}[1]
+
+\State $\hat u$ $\gets$ $H_v(u)$; $\hat v$ $\gets$ $H_v(v)$
+\State $\varname{primal}_u$, $\hat e_u$, $\hat e_{u0}$, $\hat e_{u2}$, $\hat u$, $\hat x$ $\gets$ $H_e(e_u)$
+\State $\varname{primal}_v$, $\hat e_v$, $\hat e_{v0}$, $\hat e_{v2}$, $\hat v$, $\hat y$ $\gets$ $H_e(e_v)$
+\For {$i \in \{0,1,2,3\}$}
+\State $\hat s_i$ $\gets$ \LCOMakeNode(); $\hat e_i$ $\gets$ \LCOMakeNode()
+\State  \LCOAddCost($\hat e_i$, $w$);
+\State \LCOLink($\hat e_i$, $\hat s_i$)
+\EndFor
+\State \LCOAddCost($\hat s_0$, $-\infty$); \LCOAddCost($\hat s_2$, $-\infty$);
+\State \LCOAddCost($\hat s_1$, $\infty$); \LCOAddCost($\hat s_3$, $\infty$);
+
+\If{\LCOConnected($\hat u$, $\hat v$)}
+
+
+
+\Else
+\If{$\varname{primal}_u$}
+\State \LCOCycle($\hat u$, $\hat e_u$)
+\Else
+\State \LCOCycle($\hat u$, $\hat e_{u0}$)
+\EndIf
+\State \LCOMerge($\hat u$, $\hat s_0$)
+\State \LCOMerge($\hat v$, $\hat s_v$)
+\State \LCOCycle($\hat u$, $\hat e_u$)
+\State \MSFupdate($G$, $e$, $w$)
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+
 
 \section{Estruturas auxiliares}
 \subsection{Árvores binárias de busca com chave implícita}
