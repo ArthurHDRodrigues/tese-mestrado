@@ -374,9 +374,9 @@ Em seguida, a nova rotina \LCOLeftFace{} é usada para obter os dois nós que re
 \subsection{Árvores binárias de busca com chave implícita}
 \subsection{Link-Cut Trees}
 \label{sec:linkcuttree}
-
-Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{linkcuttree}.
-
+Link-Cut Trees são uma estrutura de dados usada para representar e manipular florestas dinâmicas enraizadas.
+Elas foram originalmente introduzidas por Sleator e Tarjan~\cite{SleatroTarjanLinkCutTree1983,} em~1983.
+Elas permitem as seguintes operações
 \begin{itemize}
 \item \linkcutCreate(): Cria e retorna um novo nó de link-cut tree.
 \item \linkcutAddEdge($v$, $w$): Adiciona uma aresta de~$v$ a~$w$, tornando~$v$ um filho de~$w$. Essa operação assume que~$v$ é a raiz de uma árvore~$T$ e que $w$ não é um nó de~$T$.
@@ -385,6 +385,15 @@ Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{lin
 \item \linkcutMax($v$): Retorna o nó de peso máximo no caminho entre~$v$ e a raiz de sua árvore.
 \item \linkcutMin($v$): Retorna o nó de peso mínimo no caminho entre~$v$ e a raiz de sua árvore.
 \end{itemize}
+
+
+
+Cada nó em uma Link-Cut Tree é associado a um nó em uma árvore que está sendo representada. Esses nós mantêm informações sobre seus pais e filhos, além de possíveis conexões reversas devido à natureza dinâmica da estrutura. A estrutura interna das Link-Cut Trees é composta por árvores de busca binária, especificamente utilizando uma variante conhecida como Splay Tree. Essa organização permite que operações como acesso, corte, e união de árvores sejam realizadas de forma eficiente, aproveitando as propriedades de balanceamento e acesso rápido das Splay Trees.
+
+Link-Cut Trees são especialmente úteis em algoritmos que necessitam de operações dinâmicas sobre árvores, como em problemas de análise de conectividade em grafos dinâmicos, gerenciamento de redes, e em várias otimizações de algoritmos relacionados a árvores. A capacidade de realizar operações complexas de forma eficiente torna as Link-Cut Trees uma ferramenta poderosa em computação.
+
+Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{linkcuttree}.
+
 
 
 \section{Implementação de árvores dinâmicas planas}
@@ -479,7 +488,7 @@ Por fim, o algoritmo retorna o nó resultante~$\hat w$.
 \end{algorithmic}
 \end{algorithm}
 
-O implementação da rotina \LCOSplit($\hat u$, $\hat e$) pode ser visto no Algoritmo~\ref{Algo:LCOSplit}.
+A implementação da rotina \LCOSplit($\hat u$, $\hat e$) pode ser visto no Algoritmo~\ref{Algo:LCOSplit}.
 Essa rotina realiza a divisão de um nó $\hat u$ em dois novos nós, $\hat v$ e $\hat w$, de acordo com a ordem cíclica das arestas incidentes ao nó~$\hat u$.
 Primeiro, a rotina encontra o subnó correspondente à aresta~$\hat e$ em relação a~$\hat u$ usando a função \LCOFindSubNode.
 
@@ -513,22 +522,37 @@ Finalmente, os novos nós $\hat v$ e $\hat w$ são retornados, representando a d
 \end{algorithm}
 
 
+A implementação da rotina \LCOCycle($\hat u$, $\hat e$) pode ser visto no Algoritmo~\ref{Algo:LCOCycle}.
+O processo começa identificando o subnó correspondente a $\hat e$ na ordem cíclica de~$\hat v$ através da função \LCOFindSubNode.
+
+Se $\hat e$ já for a última aresta, a função termina imediatamente.
+Caso contrário, a função \linkcutEvert{} é aplicada a~$\hat v$.$last$ para reverter a ordem do caminho que vai até a raiz.
+Essa operação faz com que o pai de $s_e$ seja o sucessor desse subnó na ordem cíclica de $\hat v$.
+Então é usado a rotina \linkcutParent{} para obter esse sucessor~$x$ e remove a aresta que liga~$s_e$ a~$x$.
+Em seguida, a função \linkcutAddEdge adiciona uma nova aresta que conecta o último subnó de $\hat v$ ao primeiro subnó, efetivamente ajustando a ordem cíclica.
+
+Depois, os ponteiros~\varname{first} e~\varname{last} de~$\hat v$ são atualizados para refletir essa nova ordem, com \varname{first} apontando para o subnó~$x$ e \varname{last} apontando para~$s_e$.
+Finalmente, a árvore binária de busca associada é dividida em partes, reorganizadas, e depois unidas para representar a nova ordem cíclica, garantindo que~$\hat e$ seja, de fato, a última aresta na sequência cíclica.
+
+
+
+
 \begin{algorithm}[htb]
 \caption{\LCOCycle($\hat v$, $\hat e$)}
 \label{Algo:LCOCycle}
 \begin{algorithmic}[1]
 \State $s_e$ $\gets$ \LCOFindSubNode($\hat v$, $\hat e$)
-\State \linkcutEvert($\hat v$.$last$)
 \If{$\hat v$.$last$ $=$ $s_e$}
 \State\Return
 \EndIf
+\State \linkcutEvert($\hat v$.$last$)
 \State $x$ $\gets$ \linkcutParent($s_e$)
 \State \linkcutDelEdge($s_e$)
 \State \linkcutAddEdge($\hat v$.$last$, $\hat v$.$first$)
 \State $\hat v$.$first$ $\gets$ $x$; $\hat v$.$last$ $\gets$ $s_e$
 \State $T$, $u_{last}$, $T'$ $\gets$ \treapSplit($\hat u$.$last$)
 \State $T$ $\gets$ \treapJoin($T'$, $T$, $u_{last}$)
-\State $T$.$\node$ $\hat v$
+\State $T$.$\node$ $\gets$ $\hat v$
 \end{algorithmic}
 \end{algorithm}
 
