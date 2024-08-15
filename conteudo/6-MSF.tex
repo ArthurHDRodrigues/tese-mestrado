@@ -371,7 +371,58 @@ Em seguida, a nova rotina \LCOLeftFace{} é usada para obter os dois nós que re
 
 
 \section{Estruturas auxiliares}
+
+Na próxima seção, a implementação das árvores dinâmicas planas será detalhada. Para construir essa estrutura de dados, são necessárias duas estruturas fundamentais: a primeira é a árvore binária de busca com chave implícita, discutida em detalhes no Capítulo~\ref{sec:TreapDeChaveImplicita} e a segunda são as link cut trees, que serão introduzidas na Seção~\ref{sec:linkcuttree}.
+
+
+
 \subsection{Árvores binárias de busca com chave implícita}
+
+
+\begin{itemize}
+\item \treapSplitRight($\node$): corta a ABB que contém um nó~$\node$ em duas ABBs. A primeira ABB contém todos os nós com chave menor ou igual a chave de~$\node$ e a segunda contém todos os nós com chave estritamente maior do que a chave de~$\node$. Essa rotina retorna as raízes dessas duas ABBs.
+\end{itemize}
+
+A implementação de \treapSplitRight{}, que pode ser vista no Algoritmo~\ref{Algo:TREAPsplitRight} é quase identica a de \treapSplit{}.
+A única diferença entre essas rotinas é na linha~\ref{Algo:TREAPsplitRight:linha:atribuicao} em que atribuimos $\node$ a~$L$ ao invés de~$\node$.$esq$, como feito em \treapSplit{}.
+
+\begin{algorithm}
+\caption{\treapSplitRight($\node$)}
+\label{Algo:TREAPsplitRight}
+\begin{algorithmic}[1]
+\State $R$ $\gets $ $\node$.$dir$
+\State $L$ $\gets $ $\node$ \label{Algo:TREAPsplitRight:linha:atribuicao}
+\State $tmp$ $\gets$ $\node$
+\While { $tmp$.$pai$ $\neq \Nil$}
+  \If { $tmp$.$pai$.$esq$ = $tmp$}
+    \State $tmp$.$pai$.$esq$ $\gets$ $R$
+    \State $tmp$.$pai$.$tam$ $\gets$ $tmp$.$pai$.$tam$ $\mathit{-}$ \treapGetSize($L$)
+    \If { $R \neq \Nil$}
+    \State $R$.$pai$ $\gets$ $tmp$.$pai$
+    \EndIf
+    \State $R$ $\gets$ $tmp$.$pai$
+  \Else
+    \State $tmp$.$pai$.$dir$ $\gets$ $L$ 
+    \State $tmp$.$pai$.$tam$ $\gets$ $tmp$.$pai$.$tam$ $\mathit{-}$ \treapGetSize($R$)
+    \If { $L$ $\neq$ \Nil}
+    \State $L$.$pai$ $\gets$ $tmp$.$pai$
+    \EndIf
+    \State $L$ $\gets$ $tmp$.$pai$
+  \EndIf
+  \State $tmp$ $\gets$ $tmp$.$pai$
+\EndWhile
+\If { $L$ $\neq \Nil$} $L$.$pai$ $\gets\Nil$\EndIf
+\If { $R$ $\neq \Nil$} $R$.$pai$ $\gets\Nil$\EndIf
+\State $\node$.$dir$ $\gets $ $\node$.$esq$ $\gets$ $\node$.$pai$ $\gets$ $\Nil$
+\State\Return $L$, $R$
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+
+
 \subsection{Link-Cut Trees}
 \label{sec:linkcuttree}
 Link-Cut Trees são uma estrutura de dados usada para representar e manipular florestas dinâmicas enraizadas.
