@@ -390,8 +390,8 @@ Na próxima seção, a implementação das árvores dinâmicas planas será deta
 \item \treapSplitRight($\node$): corta a ABB que contém um nó~$\node$ em duas ABBs. A primeira ABB contém todos os nós com chave menor ou igual a chave de~$\node$ e a segunda contém todos os nós com chave estritamente maior do que a chave de~$\node$. Essa rotina retorna as raízes dessas duas ABBs.
 \end{itemize}
 
-A implementação de \treapSplitRight{}, que pode ser vista no Algoritmo~\ref{Algo:TREAPsplitRight} é quase identica a de \treapSplit{}.
-A única diferença entre essas rotinas é na linha~\ref{Algo:TREAPsplitRight:linha:atribuicao} em que atribuimos $\node$ a~$L$ ao invés de~$\node$.$esq$, como feito em \treapSplit{}.
+A implementação de \treapSplitRight{}, que pode ser vista no Algoritmo~\ref{Algo:TREAPsplitRight} é quase idêntica a de \treapSplit{}.
+A única diferença entre essas rotinas é na linha~\ref{Algo:TREAPsplitRight:linha:atribuicao} em que atribuímos $\node$ a~$L$ ao invés de~$\node$.$esq$, como feito em \treapSplit{}.
 
 \begin{algorithm}
 \caption{\treapSplitRight($\node$)}
@@ -443,7 +443,7 @@ Elas foram originalmente introduzidas por Sleator e Tarjan~\cite{SleatroTarjanLi
 \item \linkcutMin($v$): Retorna o nó de peso mínimo no caminho entre~$v$ e a raiz de sua árvore.
 \end{itemize}
 
-Cada nó em uma Link-Cut Tree mantem informações sobre seus pais e filhos, além de possíveis conexões reversas devido à natureza dinâmica da estrutura. A estrutura interna das Link-Cut Trees é composta por árvores de busca binária, especificamente utilizando uma variante conhecida como Splay Tree. Essa organização permite que operações como acesso, corte, e união de árvores sejam realizadas de forma eficiente, aproveitando as propriedades de balanceamento e acesso rápido das Splay Trees.
+Cada nó em uma Link-Cut Tree mantém informações sobre seus pais e filhos, além de possíveis conexões reversas devido à natureza dinâmica da estrutura. A estrutura interna das Link-Cut Trees é composta por árvores de busca binária, especificamente utilizando uma variante conhecida como Splay Tree. Essa organização permite que operações como acesso, corte, e união de árvores sejam realizadas de forma eficiente, aproveitando as propriedades de balanceamento e acesso rápido das Splay Trees.
 
 Link-Cut Trees são especialmente úteis em algoritmos que necessitam de operações dinâmicas sobre árvores, como em problemas de análise de conectividade em grafos dinâmicos, gerenciamento de redes, e em várias otimizações de algoritmos relacionados a árvores. A capacidade de realizar operações complexas de forma eficiente torna as Link-Cut Trees uma ferramenta poderosa em computação.
 
@@ -465,13 +465,13 @@ Além disso, se a aresta~$e_i$ liga os nós~$\hat v$ e~$\hat u$, então~$v_{e_i}
 
 Cada nó $\hat v$ possuirá dois ponteiros: $v_{first}$ e $v_{last}$.
 $v_{first}$ apontará para o primeiro subnó da ordem cíclica, isto é, $s_{e_1}$ e $v_{last}$ para o último, $s_{e_k}$.
-Essa estrutura tem a caracteristica de que se for feito \linkcutEvert($\hat u$.$last$), então o caminho de $\hat v$.$first$ até a raiz corresponde à sequência~$\langle s_{e_1}, s_{e_2}, \ldots, s_{e_k}\rangle$.
+Essa estrutura tem a característica de que se for feito \linkcutEvert($\hat u$.$last$), então o caminho de $\hat v$.$first$ até a raiz corresponde à sequência~$\langle s_{e_1}, s_{e_2}, \ldots, s_{e_k}\rangle$.
 
-Além disso, a sequência de subnós $\langle s_{e_1}, s_{e_2}, \ldots, s_{e_k}\rangle$ será mantida em uma árvore binária de busca com chaves ímplicitas e a raiz dessa ABB possui um campo $\node$ que aponta para o nó~$\hat v$.
+Além disso, a sequência de subnós $\langle s_{e_1}, s_{e_2}, \ldots, s_{e_k}\rangle$ será mantida em uma árvore binária de busca com chaves implícitas e a raiz dessa ABB possui um campo $\node$ que aponta para o nó~$\hat v$.
 
 A Figura~\TODO{bla} mostra.
 
-Para implementar árvores dinâmicas planas utilizando link-cut trees e árvores de busca binária de chave implicita, são necessárias duas rotinas auxiliares, chamadas \LCOFindNode{} e \LCOFindSubNode{}, que estabelecem a relação entre os nós da ADP e os subnós das link cut trees.
+Para implementar árvores dinâmicas planas utilizando link-cut trees e árvores de busca binária de chave implícita, são necessárias duas rotinas auxiliares, chamadas \LCOFindNode{} e \LCOFindSubNode{}, que estabelecem a relação entre os nós da ADP e os subnós das link cut trees.
 Essas rotinas são fundamentais para manter a coerência entre as operações nos subnós da link cut tree e a estrutura dos nós da ADP.
 
 \begin{itemize}
@@ -480,7 +480,7 @@ Essas rotinas são fundamentais para manter a coerência entre as operações no
 \end{itemize}
 
 
-A implementação de \LCOFindNode{} é simples e usa a estrutura de árvores binárias de busca com chave ímplicita.
+A implementação de \LCOFindNode{} é simples e usa a estrutura de árvores binárias de busca com chave implícita.
 Dado o subnós $s$, sabemos que ele está em alguma ABB e que a raiz dessa árvore aponta para o nó que contém~$s$ em sua ordem cíclica, logo usamos \treapGetRoot{} da biblioteca de ABBs para obter a raiz~$r$ da árvore e em seguida é retornado~$r$.$\node$.
 
 \begin{algorithm}[htb]
