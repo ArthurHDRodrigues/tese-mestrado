@@ -319,7 +319,7 @@ Dessa forma, as duas folhas~$\hat e_0$ e~$\hat e_2$ são nós de~$\hat T$.
 Em seguida, a nova rotina \LCOLeftFace{} é usada para obter os dois nós que representam as faces incidentes à aresta $e$.
 
 
-\begin{algorithm}[htb]
+\begin{algorithm}[hbt]
 \caption{\MSFdelEdge($G$, $e$)}
 \label{Algo:MSFdelEdge}
 \begin{algorithmic}[1]
@@ -433,8 +433,7 @@ A única diferença entre essas rotinas é na linha~\ref{Algo:TREAPsplitRight:li
 \subsection{Link-Cut Trees}
 \label{sec:linkcuttree}
 Link-Cut Trees são uma estrutura de dados usada para representar e manipular florestas dinâmicas enraizadas.
-Elas foram originalmente introduzidas por Sleator e Tarjan~\cite{SleatroTarjanLinkCutTree1983,} em~1983.
-Elas permitem as seguintes operações
+Elas foram originalmente introduzidas por Sleator e Tarjan~\cite{SleatroTarjanLinkCutTree1983,} em~1983 e dão suporte às seguintes operações
 \begin{itemize}
 \item \linkcutCreate(): Cria e retorna um novo nó de link-cut tree.
 \item \linkcutAddEdge($v$, $w$): Adiciona uma aresta de~$v$ a~$w$, tornando~$v$ um filho de~$w$. Essa operação assume que~$v$ é a raiz de uma árvore~$T$ e que $w$ não é um nó de~$T$.
@@ -444,9 +443,7 @@ Elas permitem as seguintes operações
 \item \linkcutMin($v$): Retorna o nó de peso mínimo no caminho entre~$v$ e a raiz de sua árvore.
 \end{itemize}
 
-
-
-Cada nó em uma Link-Cut Tree é associado a um nó em uma árvore que está sendo representada. Esses nós mantêm informações sobre seus pais e filhos, além de possíveis conexões reversas devido à natureza dinâmica da estrutura. A estrutura interna das Link-Cut Trees é composta por árvores de busca binária, especificamente utilizando uma variante conhecida como Splay Tree. Essa organização permite que operações como acesso, corte, e união de árvores sejam realizadas de forma eficiente, aproveitando as propriedades de balanceamento e acesso rápido das Splay Trees.
+Cada nó em uma Link-Cut Tree mantem informações sobre seus pais e filhos, além de possíveis conexões reversas devido à natureza dinâmica da estrutura. A estrutura interna das Link-Cut Trees é composta por árvores de busca binária, especificamente utilizando uma variante conhecida como Splay Tree. Essa organização permite que operações como acesso, corte, e união de árvores sejam realizadas de forma eficiente, aproveitando as propriedades de balanceamento e acesso rápido das Splay Trees.
 
 Link-Cut Trees são especialmente úteis em algoritmos que necessitam de operações dinâmicas sobre árvores, como em problemas de análise de conectividade em grafos dinâmicos, gerenciamento de redes, e em várias otimizações de algoritmos relacionados a árvores. A capacidade de realizar operações complexas de forma eficiente torna as Link-Cut Trees uma ferramenta poderosa em computação.
 
@@ -468,7 +465,7 @@ Além disso, se a aresta~$e_i$ liga os nós~$\hat v$ e~$\hat u$, então~$v_{e_i}
 
 Cada nó $\hat v$ possuirá dois ponteiros: $v_{first}$ e $v_{last}$.
 $v_{first}$ apontará para o primeiro subnó da ordem cíclica, isto é, $s_{e_1}$ e $v_{last}$ para o último, $s_{e_k}$.
-Essa estrutura tem a caracteristica de que se for feito \linkcutEvert($\hat u$.$last$), então o caminho de $\hat v$.$first$ até a raiz corresponde à sequência $\langle s_{e_1}, s_{e_2}, \ldots, s_{e_k}\rangle$.
+Essa estrutura tem a caracteristica de que se for feito \linkcutEvert($\hat u$.$last$), então o caminho de $\hat v$.$first$ até a raiz corresponde à sequência~$\langle s_{e_1}, s_{e_2}, \ldots, s_{e_k}\rangle$.
 
 Além disso, a sequência de subnós $\langle s_{e_1}, s_{e_2}, \ldots, s_{e_k}\rangle$ será mantida em uma árvore binária de busca com chaves ímplicitas e a raiz dessa ABB possui um campo $\node$ que aponta para o nó~$\hat v$.
 
