@@ -118,7 +118,7 @@ A Figura~\ref{fig:MSF-figura-2} mostra~$T$ e~$T^\star$ do grafo da Figura~\ref{f
 \centering
 \input{fig/MSF-basico-2}
 }
-\caption{Árvore geradora~$T$ de peso mínimo do grafo da Figura~\ref{fig:MSF-basico-1} e árvore correspondente~$T^\star$ do grafo.}
+\caption{Árvore geradora~$T$, em azul, de peso mínimo do grafo da Figura~\ref{fig:MSF-basico-1} e a árvore correspondente~$T^\star$ do grafo, em vermelho.}
 \label{fig:MSF-figura-2}
 \end{figure}
 
@@ -145,19 +145,19 @@ O problema da floresta maximal de peso mínimo (MSF) em grafos dinâmicos planos
 Para resolver o problema da floresta geradora de peso mínimo em grafos dinâmicos planos ponderados, Eppstein et al.~\cite{EPPSTEIN-planar} propuseram o uso de uma estrutura de dados que chamaremos de \defi[arvore@\'arvore!dinâmica plana]{árvores dinâmicas planas} (ADP). Originalmente os autores denominam essa estrutura de \textit{edge ordered dynamic tree}.
 
 Seguindo a descrição de Eppstein et al.~\cite[Seção 3]{EPPSTEIN-planar}, essa estrutura consiste de árvores em que cada nó possui um peso, juntamente com uma descrição combinatória plana das árvores.
-Como árvores não possuem arestas paralelas, consideraremos que a ordenação cíclica para cada nó~$u$ é simplesmente uma sequência dos nós vizinhos de~$u$ no sentido anti-horário.
+Como árvores não possuem arestas paralelas, consideraremos, nas descrições abaixo, que a ordenação cíclica para cada nó~$u$ é simplesmente uma sequência dos nós vizinhos de~$u$ no sentido anti-horário.
 
 Árvores dinâmicas planas dão suporte à seguinte biblioteca:
 \begin{itemize}
 \item \LCOMakeNode(): Cria e retorna um novo nó.
-\item \LCOLink($u$, $v$): Adiciona uma aresta ligando os nós~$u$ a~$v$, tornando~$u$ um filho de~$v$.
-O nó $u$ é inserido no final de~$D(u)$ e~$u$ no inicio de~$D(v)$.
-Essa operação assume que~$u$ é a raiz de sua árvore e que $u$ e $v$ estão em árvores distintas.
+\item \LCOLink($u$, $v$): Adiciona uma aresta ligando os nós~$u$ a~$v$.
+O nó $u$ é inserido no final de~$D(u)$ e~$u$ no início de~$D(v)$.
+Essa operação assume que $u$ e $v$ estão em árvores distintas.
 \item \LCOMerge($u$, $v$): Recebe dois nós~$u$ e~$v$ de mesmo peso e retorna um único nó~$z$ que é a união desses nós.
-Se~$\alpha$ e~$\beta$ são respectivamente as ordenações cíclicas de~$u$ e~$v$, então $\alpha\beta$ será a ordenação cíclica de~$z$.
+Se~$\alpha$ e~$\beta$ são respectivamente as ordenações cíclicas de~$u$ e~$v$, então $\alpha\beta$ será a ordenação cíclica de~$z$, e $z$ terá o peso de~$u$ e~$v$. 
 Essa operação assume que~$u$ e~$v$ estão em árvores distintas e na mesma face do grafo plano.
 \item \LCOSplit($u$, $p$): Substitui o nó~$u$ por dois nós~$v$ e~$z$.
-Se a ordem cíclica $D(u)$ tem forma $\alpha p\beta$, então $\alpha p$ e~$\beta$ serão as ordens cíclicas de~$v$ e~$z$, respectivamente.
+Considerando que a ordem cíclica $D(u)$ tem forma $\alpha p\beta$, então $\alpha p$ e~$\beta$ serão as ordens cíclicas de~$v$ e~$z$, respectivamente.
 Essa operação assume que $u$ e~$p$ são nós adjacentes.
 \item \LCOCycle($u$, $p$): Permuta ciclicamente $D(u)$ de forma que o nó~$p$ seja o último na ordem.
 Se a ordem inicial tem forma $\alpha p \beta$, então a ordem resultante é $\beta\alpha p$.
@@ -171,6 +171,7 @@ Essa operação assume que $u$ e~$v$ são nós da mesma árvore.
 \item \LCOConnected($u$, $v$): Retorna verdadeiro se os nós~$u$ e~$v$ estiverem na mesma árvore e falso caso contrário.
 \end{itemize}
 
+A implementação dessas rotinas será apresentada na Seção~\ref{sec:implementacao-ADP}.
 
 \section{Manutenção de MSF com árvores dinâmicas planas}
 
@@ -181,13 +182,11 @@ Cada componente conexa~$C$ de $G$ é representada por duas ADPs.
 Uma delas representa uma árvore geradora de peso mínimo~$T$ de $C$.
 Enquanto que a outra representa sua correspondente dual~$T^\star$.
 
-A primeira árvore, que é denotada por~$\hat T$, é essencialmente a árvore~$T$ submetida a duas transformações: cada uma de suas aresta é subdivida; e é adicionada uma folha a cada vértice incidente a uma aresta de~$C$ que não esteja em~$T$.
-
-Mais precisamente, $\hat T$ possui um nó~$\hat v$ para cada vértice~$v$ de~$C$, um nó~$\hat e$ para cada aresta~$e$ de~$T$ e dois nós~$\hat d_1$ e~$\hat d_3$ para cada aresta~$d^\star$ de~$T^\star$.
-O peso do nó~$\hat v$ é $-\infty$, enquanto que os pesos de~$\hat e$, $\hat d_1$ e~$\hat d_3$ são o peso da aresta representada por esses nós. 
-Se uma aresta $e$ de $T$ é incidente aos vértices~$v$ e~$u$ de~$C$, então $\hat e$ é ligado aos nós~$\hat v$ e~$\hat u$.
+A primeira ADP, que é denotada por~$\hat T$, é essencialmente a árvore~$T$ submetida a duas transformações: cada uma de suas aresta é subdivida; e é adicionada uma folha a cada vértice incidente a uma aresta de~$C$ que não esteja em~$T$.
+Mais precisamente, $\hat T$ possui um nó~$\hat v$, de peso~$-\infty$, para cada vértice~$v$ de~$C$, um nó~$\hat e$, com o peso de $e$, para cada aresta~$e$ de~$T$ e dois nós~$\hat d_0$ e~$\hat d_2$, ambos com o peso de~$d$, para cada aresta~$d$ tal que $d^\star$ está em~$T^\star$.
+Se uma aresta~$e$ de~$T$ é incidente aos vértices~$v$ e~$u$ de~$C$, então o nó~$\hat e$ é ligado aos nós~$\hat v$ e~$\hat u$.
 Se uma aresta~$d$ de~$C$ não está em $T$ e é incidente aos vértices~$v$ e~$u$ de~$C$, então $\hat d_0$ e $\hat d_2$ são ligados a~$\hat v$ e~$\hat u$, respectivamente.
-Note que $\hat d_0$ e $\hat d_2$ não estão ligados, logo são folhas da ADP.
+Note que~$\hat d_0$ e~$\hat d_2$ são folhas da ADP.
 
 A segunda ADP, denotada por~$\hat T^\star$, possui construção análoga à primeira, mas é baseada em~$T^\star$ em vez de~$T$.
 A ADP possui um nó $\hat F$ para cada vértice~$F$ de~$C^\star$ (isto é, cada face de~$C$), um nó~$\hat e^\star$ para cada aresta~$e^\star$ de $T^\star$ e dois nós $\hat d_1$ e~$\hat d_3$ para cada aresta~$d$ de $T$.
@@ -452,6 +451,7 @@ Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{lin
 
 
 \section{Implementação de árvores dinâmicas planas}
+\label{sec:implementacao-ADP}
 
 
 Seja $\hat v$ um nó de ADP com ordem cíclica $\langle e_1, e_2, \ldots, e_k\rangle$.
