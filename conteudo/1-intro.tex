@@ -39,16 +39,17 @@ para em seguida usar as estruturas de dados desenvolvidas nesse problema para so
 
 O segundo problema estudado também será restrito a uma classe específica de grafos.
 Estudaremos o \defi[problema!da floresta maximal de peso mínimo em grafos ponderados dinâmicos]{problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos} restrito a grafos planos.
-Esse problema visa manter uma \defi{floresta maximal de peso mínimo} (MSF) de um grafo dinâmico ponderado plano ao longo da sequência de modificações nos pesos das arestas.
+Esse problema visa manter uma \defi{floresta maximal de peso mínimo} (MSF) de um grafo dinâmico plano ponderado ao longo da sequência de modificações nos pesos das arestas.
 
 Começaremos esse estudo na próxima seção, em que faremos uma revisão histórica dos resultados relacionados aos problemas que serão abordados nos próximos capítulos.
 No Capítulo~\ref{sec:connDF}, estudaremos o problema de conexidade em florestas dinâmicas e uma de suas soluções, proposta por Holm, de Lichtenberg e Thorup~\cite{poly_log}, que envolve Euler tour trees.
 Essa estrutura de dados utiliza árvores binárias de busca de chave implícita, cuja implementação será elaborada no Capítulo~\ref{sec:TreapDeChaveImplicita}.
 No Capítulo~\ref{sec:connDG}, expandiremos nosso estudo sobre conexidade estudando o problema de conexidade em grafos dinâmicos.
 
-No Capítulo~\ref{sec:MSF}, apresentaremos um algoritmo proposto por Eppstein et al.~\cite{EPPSTEIN-planar} para solucionar o problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos planos sujeitos a alteração no peso das arestas.
+No Capítulo~\ref{sec:MSF}, apresentaremos um algoritmo proposto por Eppstein et al.~\cite{EPPSTEIN-planar} para solucionar o problema da floresta maximal de peso mínimo em grafos dinâmicos planos ponderados sujeitos a alteração no peso das arestas.
 
-No Capítulo~\ref{sec:lim}, demonstraremos um limitante inferior de~$\Omega(\lg n)$ por operação para todos os problemas estudados. Esse limitante mostra que os algoritmos apresentados para o problema de conexidade em florestas dinâmicas e para o problema da floresta maximal de peso mínimo em grafos ponderados dinâmicos planos são ótimos.
+No Capítulo~\ref{sec:lim}, mostraremos a demonstração de um limitante inferior de~$\Omega(\lg n)$ por operação para todos os problemas estudados.
+Esse limitante, obtido por Patrascu e Demaine~\cite{lowerBoundPatrascu}, mostra que os algoritmos apresentados para o problema de conexidade em florestas dinâmicas e para o problema da floresta maximal de peso mínimo em grafos dinâmicos planos ponderados são ótimos.
 No Capítulo~\ref{sec:conclusao} faremos considerações finais sobre nossos estudos.
 
 \newpage
