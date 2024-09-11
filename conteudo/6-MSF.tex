@@ -150,7 +150,7 @@ Antes de descrever a biblioteca fornecida por ADPs, essa estrutura será detalha
 
 Cada componente conexa do grafo plano dinâmico ponderado~$G$ é representada em um plano distinto.
 Consequentemente, a face exterior de cada componente conexa é considerada distinta das faces exteriores das outras componentes.
-Cada componente~$C$ de~$G$ é representada por duas árvores com pesos em seus vértices, sendo a primeira construida a partir de uma árvore geradora de peso mínimo~$T$ de~$C$ e a segunda a partir da correspondente dual~$T^\star$.
+Cada componente~$C$ de~$G$ é representada por duas árvores com pesos em seus vértices, sendo a primeira construída a partir de uma árvore geradora de peso mínimo~$T$ de~$C$ e a segunda a partir da correspondente dual~$T^\star$.
 A Figura~\ref{fig:MSF-figura-3} ilustra essas duas árvores cuja construção será detalhada no próximo parágrafo.
 
 A primeira dessas árvores, que é denotada por~$\hat T$, é essencialmente a árvore~$T$ submetida a duas transformações:
@@ -167,7 +167,7 @@ Se uma aresta $e^\star$ de $T^\star$ é incidente às faces~$F_1$ e~$F_2$ de~$C$
 Se uma aresta $d^\star$ de~$C^\star$ não está em $T^\star$ e é incidente às faces~$F_1$ e~$F_2$ de~$C$, então $\hat d_1$ e $\hat d_3$ são ligados a~$\hat F_1$ e~$\hat F_2$ respectivamente.
 A Figura~\ref{fig:MSF-figura-3} ilustra~$\hat T$ e~$\hat T^\star$.
 
-Note que há uma correspondencia entre as arestas incidentes a um vértice~$v$ de~$G$ e os vértices vizinhos de~$\hat v$ em~$\hat T$.
+Note que há uma correspondência entre as arestas incidentes a um vértice~$v$ de~$G$ e os vértices vizinhos de~$\hat v$ em~$\hat T$.
 Cada aresta~$e$ de $G$ corresponde a $\hat e$, $\hat d_0$ ou~$\hat d_2$. 
 A descrição combinatória plana dessas duas árvores é herdada de~$C$ (ou seja, de~$G$) e de~$C^\star$.
 
@@ -219,11 +219,11 @@ A Figura~\ref{fig:MSF-figura-4} ilustra essas link cut trees.
 \end{figure}
 
 Nessa construção há oito nós de link cut tree para cada aresta~$e$ de~$G$.
-Os quatro primeiros, denotados por~$e_0$, $e_1$, $e_2$ e~$e_3$, representa $e$.
+Os quatro primeiros, denotados por~$e_0$, $e_1$, $e_2$ e~$e_3$, representam~$e$.
 Os nós $e_0$, $e_2$ são nós de~$\hat T$, enquanto que $e_1$, $e_3$ são nós de~$\hat T^\star$
 Além disso, o nó $e_{i+1\mod 4}$ pertence à face a esquerda do nó $e_i$.
-Os quatro últimos, denotados por~$v_0$, $v_1$, $v_2$ e~$v_3$, mantém a posição de~$e$ e~$e^\star$ nas ordens cíclicas.
-O nó~$v_i$ é ligado ao nó~$e_i$.
+Os quatro últimos nós, denotados por~$v_0$, $v_1$, $v_2$ e~$v_3$, mantém a posição de~$e$ e~$e^\star$ nas ordens cíclicas.
+Cada nó~$v_i$ é ligado ao nó~$e_i$.
 
 Caso~$e$ seja uma aresta de~$T$, então o vértice~$\hat e$ de $\hat T$ é composto pelos nós~$e_0$ e~$e_2$.
 Já os nós $e_1$, $e_3$ individualmente formam as duas folhas $\hat e_1$, $\hat e_3$ de $\hat T^\star$.
@@ -235,7 +235,7 @@ A sequência~$D(\hat v) = \langle e_1, e_2, \ldots, e_k\rangle$ também é armaz
 A ABB é utilizada para obter o primeiro e o último nó da ordem cíclica, o predecessor de um dado nó e identificar se dois nós estão na mesma ordem cíclica.
 A raiz dessa ABB possui um campo $\node$ que armazena o identificador $v$.
 
-Manteremos essas duas ADPs e uma tabela de símbolos $H$, que guarda o conjunto de octuplas de nós $e_0$, $e_1$, $e_2$, $e_3$, $v_0$, $v_1$, $v_2$ e~$v_3$ e usa como chaves as arestas de~$G$.
+Manteremos essas duas ADPs e uma tabela de símbolos $H$, que guarda o conjunto de óctuplas de nós $e_0$, $e_1$, $e_2$, $e_3$, $v_0$, $v_1$, $v_2$ e~$v_3$ e usa como chaves as arestas de~$G$.
 
 Dessa forma, $G$ e uma floresta geradora maximal~$F$ de~$G$ de peso mínimo é representada por dois conjuntos de ADPs: o conjunto~$\hat F$ das ADPs das componentes de~$F$ e o conjunto~$\hat F^\star$ das ADPs do dual de cada componente de~$F$.
 
@@ -337,31 +337,22 @@ Elas foram originalmente introduzidas por Sleator e Tarjan~\cite{SleatroTarjanLi
 \item \linkcutEvert($v$): Torna~$v$ a raiz de sua árvore revertendo o caminho de~$v$ para a raiz original.
 \item \linkcutMax($v$): Retorna o nó de peso máximo no caminho entre~$v$ e a raiz de sua árvore.
 \item \linkcutMin($v$): Retorna o nó de peso mínimo no caminho entre~$v$ e a raiz de sua árvore.
+\item \linkcutMin($v$): Retorna o nó de peso mínimo no caminho entre~$v$ e a raiz de sua árvore.
 \end{itemize}
 
-Cada nó em uma link-cut tree mantém informações sobre seus pais e filhos, além de possíveis conexões reversas devido à natureza dinâmica da estrutura.
-A estrutura interna das link-cut trees é composta por árvores de busca binária, especificamente utilizando uma variante conhecida como Splay Tree.
-Essa organização permite que operações como acesso, corte, e união de árvores sejam realizadas de forma eficiente, aproveitando as propriedades de balanceamento e acesso rápido das Splay Trees.
-
-Link-cut trees são especialmente úteis em algoritmos que necessitam de operações dinâmicas sobre árvores, como em problemas de análise de conectividade em grafos dinâmicos.
 
 Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{linkcuttree}.
 
 \section{Biblioteca de árvores dinâmicas planas}
 \label{sec:EODT}
 
-Árvores dinâmicas planas dão suporte à seguinte biblioteca:
-
-$u$ e $v$ vértices
-$p$ nó na ordem cíclica $D(u)$.
-$q$ nó de link cut tree de $D(v)$
+Árvores dinâmicas planas dão suporte à biblioteca listada a seguir.
+Para as descrições que se seguem, considere~$u$ e~$v$ vértices da árvore representada,
+$p$ um nó da ordem cíclica~$D(u)$ e~$q$ um nó de~$D(v)$.
 
 \begin{itemize}
 \item \LCOMakeNode(): Cria e retorna um novo nó.
-\item \LCOLink($u$, $v$): Adiciona uma aresta ligando os nós~$u$ a~$v$.
-O nó $u$ é inserido no final de~$D(u)$ e~$u$ no início de~$D(v)$.
-Essa operação assume que $u$ e $v$ estão em árvores distintas.
-\item \LCOAddCost($v$, $w$): Atribui o peso~$w$ ao vértice~$v$.
+\item \LCOAddCost($p$, $w$): Atribui o peso~$w$ ao vértice que contém $p$ em sua ordem cíclica.
 \item \LCOMax($p$, $q$): Retorna o vértice de peso máximo no percurso entre os nós~$p$ e~$q$.
 Essa operação assume que $p$ e~$q$ são nós da mesma árvore.
 \item \LCOMin($p$, $q$): Retorna o nó de peso mínimo no percurso entre os nós~$p$ e~$q$.
@@ -379,7 +370,7 @@ Se~$\alpha$ e~$\beta$ são respectivamente as ordens cíclicas de~$u$ e~$v$, ent
 Essa operação assume que~$u$ e~$v$ estão em árvores distintas e na mesma face do grafo plano.
 \item \LCOSplit($p$): Substitui o vértice~$u$ por dois vértices~$v$ e~$z$.
 Considerando que a ordem cíclica $D(u)$ tem forma $\alpha p\beta$, então $\alpha p$ e~$\beta$ serão as ordens cíclicas de~$v$ e~$z$, respectivamente.
-\item \LCOFindNode($s$): Recebe um sub-nó $s$ e retorna o nó que contêm $s$ em sua ordem cíclica.
+\item \LCOFindNode($p$): Recebe um nó $p$ e retorna o vértice que contêm $p$ em sua ordem cíclica.
 \end{itemize}
 
 
@@ -469,12 +460,11 @@ A próxima rotina elaborada é \MSFdelEdge{}, cuja implementação pode ser vist
 
 Pelo Lema~\ref{lemma:diestel}, ou uma aresta~$e$ não está em ciclos em~$G$ e as duas faces incidentes a ela são a mesma, ou essas faces são distintas e a aresta está em pelo menos um ciclo em~$G$.
 
-\TODO{PAREI AQUI}
-No primeiro caso, a remoção de~$e$ desconecta a componente~$C$ em que~$e$ se encontra.
-Logo não há trabalho de manutenção em $\hat T$ além de remover~$e$ de~$\hat T$.
-A face incidente a aresta~$e$ é a face exterior~$F$.
-Como cada componente conexa está imersa em um plano distinto, será necessário dividir $\hat F$ em dois nós, que representarão as duas faces exteriores das duas componentes conexas resultantes da remoção de~$e$.
-
+No primeiro caso, tratado entre as linhas~\ref{Algo:MSFdelEdge:linha3} e~\ref{Algo:MSFdelEdge:linha12} do Algoritmo~\ref{Algo:MSFdelEdge}, a remoção de~$e$ desconecta a componente~$C$ em que~$e$ se encontra.
+Logo não há trabalho de manutenção em $\hat T$ além de remover~$\hat e$ de~$\hat T$, para fazer isso, é realizado 
+duas chamadas de \LCOCycle{} seguidas de chamadas de \LCOSplit{}.
+A face incidente a aresta~$e$ é a face exterior~$F$ de~$C$.
+Como cada componente conexa está imersa em um plano distinto, a remoção de $e$ torna necessário dividir $\hat F$ em dois vértices, que representarão as duas faces exteriores das duas componentes conexas resultantes da remoção de~$e$.
 
 No segundo caso, a remoção de~$e$ não desconecta sua componente~$C$.
 Dessa forma, é necessário buscar uma substituta para $e$ caso essa aresta seja uma aresta de $T$.
@@ -486,17 +476,33 @@ Essa mesclagem é feita de forma que a descrição combinatória resultante se m
 \caption{\MSFdelEdge($G$, $e$)}
 \label{Algo:MSFdelEdge}
 \begin{algorithmic}[1]
-\State \MSFupdate($G$, $e$, $\infty$)\label{Algo:MSFdelEdge:linha:mudaPeso}
 \State $e_0$, $e_1$, $e_2$, $e_3$, $v_0$, $v_1$, $v_2$, $v_3$ $\gets$ $H_e(e)$
-\State \LCOCycle($e_0$)
-\State \LCOSplit(\LCOPredecessor($e_0$))
-\State \LCOCycle($e_2$)
+\If {\LCOFindNode($v_1$) $=$ \LCOFindNode($v_3$) }
+
+\State \LCOCycle($v_0$) \label{Algo:MSFdelEdge:linha3}
+\State \LCOSplit(\LCOPredecessor($v_0$))
+\State \LCOCycle($v_2$)
+\State \LCOSplit(\LCOPredecessor($v_2$))
+
+\State \LCOCycle($v_1$)
+\State $p_1$ $\gets$ \LCOPredecessor($v_1$)
+\State \LCOSplit($p_1$)
+\State \LCOCycle($v_3$)
+\State \LCOSplit(\LCOPredecessor($v_3$))
+
+\State \LCOSplit($p_1$) \label{Algo:MSFdelEdge:linha12}
+\Else
+\State \MSFupdate($G$, $e$, $\infty$)\label{Algo:MSFdelEdge:linha:mudaPeso}
+\State \LCOCycle($v_0$)
+\State \LCOSplit(\LCOPredecessor($v_0$))
+\State \LCOCycle($v_2$)
 \State \LCOSplit(\LCOPredecessor($e_2$))
-\State \LCOCycle($e_1$)
-\State \LCOSplit(\LCOPredecessor($e_1$))
-\State \LCOCycle($e_3$)
-\State \LCOSplit(\LCOPredecessor($e_3$))
+\State \LCOCycle($v_1$)
+\State \LCOSplit(\LCOPredecessor($v_1$))
+\State \LCOCycle($v_3$)
+\State \LCOSplit(\LCOPredecessor($v_3$))
 \State \LCOMerge($v_1$, $v_3$)
+\EndIf
 \end{algorithmic}
 \end{algorithm}
 
@@ -520,7 +526,7 @@ Essa mesclagem é feita de forma que a descrição combinatória resultante se m
 \EndIf
 
 \If{\LCOConnected($u$, $v$) e \LCOFindNode($v_{i+1}$) $\neq$ \LCOFindNode($u_{i+1}$)}
-\State \Return
+\State \Return Erro
 \EndIf
 
 
@@ -528,7 +534,7 @@ Essa mesclagem é feita de forma que a descrição combinatória resultante se m
 \For {$i \in \{0,1,2,3\}$}
 \State $s_i$ $\gets$ \LCOMakeNode(); $e_i$ $\gets$ \LCOMakeNode()
 \State  \LCOAddCost($e_i$, $-\infty$);
-\State \LCOLink($e_i$, $s_i$)
+\State \linkcutAddEdge($e_i$, $s_i$)
 \EndFor
 \State \LCOAddCost($s_0$, $-\infty$); \LCOAddCost($s_2$, $-\infty$);
 \State \LCOAddCost($s_1$, $\infty$); \LCOAddCost($s_3$, $\infty$);
@@ -559,10 +565,64 @@ Essa mesclagem é feita de forma que a descrição combinatória resultante se m
 \section{Implementação de árvores dinâmicas planas}
 \label{sec:implementacao-ADP}
 
+As implementações de \LCOMakeNode{}, \LCOAddCost{}, \LCOMax{}, \LCOMin, \LCOFindNode{} são imediatas e são descritas nos Algoritmos~\ref{Algo:LCOMakeNode}, \ref{Algo:LCOAddCost}, \ref{Algo:LCOMax}, \ref{Algo:LCOMin} e~\ref{Algo:LCOFindNode}, respectivamente.
 
+Na rotina \LCOMakeNode{} são criados um novo nó de link cut tree com a rotina \linkcutCreate{} e um novo nó~$T$ de ABB de chave implícita.
+Então o campo~$\node$ de~$T$ é atribuído o novo nó de link cut tree, que é retornado em seguida.
+
+\begin{algorithm}[htb]
+\caption{\LCOMakeNode($p$, $q$)}
+\label{Algo:LCOMakeNode}
+\begin{algorithmic}[1]
+\State $\node$ $\gets$ \linkcutCreate()
+\State $T$ $\gets$ \treapCreate()
+\State $T$.$\node$ $\gets$ $\node$
+\State \Return $\node$
+\end{algorithmic}
+\end{algorithm}
+
+Na rotina \LCOAddCost{} primeiro realiza um \linkcutEvert{} no último nó da ordem ciclica que contém~$p$.
+Dessa forma, o caminho entre os nós \treapFirst($p$) e \treapLast($p$) coincide com a ordenação ciclica que contém esse nó.
+Em seguida, a rotina \linkcutWeight{} que atribui o peso~$w$ para todos os nós entre \treapFirst($p$) e a raiz da sua árvore, isto é, \treapLast($p$).
+Logo todos os nós da ordem cíclica que contém $p$ possuem seus pesos atualizados para o novo valor~$w$.
+
+\begin{algorithm}[htb]
+\caption{\LCOAddCost($p$, $w$)}
+\label{Algo:LCOAddCost}
+\begin{algorithmic}[1]
+\State \linkcutEvert(\treapLast($p$))
+\State \linkcutWeight(\treapFirst($p$), $w$)
+\end{algorithmic}
+\end{algorithm}
+
+A implementação das rotinas \LCOMax{} e~\LCOMin{} são análogas.
+Em ambas, é chamado \linkcutEvert($p$).
+Em seguida, é atribui à variável~$m$ o valor de \linkcutMax($q$) (resp. \linkcutMin($q$)), que corresponde ao nó com maior (resp. menor) peso entre $q$ e a raiz da link cut tree, isto é, $p$.
+Então é retornado o valor \LCOFindNode($m$).
+
+\begin{algorithm}[htb]
+\caption{\LCOMax($p$, $q$)}
+\label{Algo:LCOMax}
+\begin{algorithmic}[1]
+\State \linkcutEvert($p$)
+\State $m$ $\gets$ \linkcutMax($q$)
+\State \Return \LCOFindNode($m$)
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[htb]
+\caption{\LCOMin($p$, $q$)}
+\label{Algo:LCOMin}
+\begin{algorithmic}[1]
+\State \linkcutEvert($p$)
+\State $m$ $\gets$ \linkcutMin($q$)
+\State \Return \LCOFindNode($m$)
+\end{algorithmic}
+\end{algorithm}
 
 A implementação de \LCOFindNode{} é simples e usa a estrutura de árvores binárias de busca com chave implícita.
-Dado o subnós $s$, sabemos que ele está em alguma ABB e que a raiz dessa árvore aponta para o nó que contém~$s$ em sua ordem cíclica, logo usamos \treapGetRoot{} da biblioteca de ABBs para obter a raiz~$r$ da árvore e em seguida é retornado~$r$.$\node$.
+Dado o nó~$s$, sabemos que ele está em alguma ABB e que a raiz dessa árvore aponta para o nó que contém~$s$ em sua ordem cíclica,
+logo usamos \treapGetRoot{} da biblioteca de ABBs para obter a raiz~$r$ da árvore e em seguida é retornado~$r$.$\node$.
 
 \begin{algorithm}[htb]
 \caption{\LCOFindNode($s$)}
@@ -574,132 +634,70 @@ Dado o subnós $s$, sabemos que ele está em alguma ABB e que a raiz dessa árvo
 \end{algorithm}
 
 
-
-
 A implementação da rotina \LCOMerge{} pode ser vista no Algoritmo~\ref{Algo:LCOMerge}.
-O processo de \LCOMerge{} começa com a criação de um novo nó $\hat w$ utilizando a função \LCOMakeNode, que representará o nó resultante da operação.
-
-A função \linkcutEvert{} é então chamada invertendo a árvore de modo que o nó~$\hat u$.$last$ se torne a nova raiz.
-Isso é necessário para que a operação \linkcutAddEdge de adição de aresta subsequente assume que $\hat u$.$last$ é a raiz de sua árvore.
-A função \linkcutAddEdge é usada para adicionar uma aresta entre~$\hat u$.$last$ e~$\hat v$.$first$, conectando a última posição de $\hat u$ à primeira de $\hat v$.
-
-Os campos \varname{first} e \varname{last} do nó $\hat w$ são atualizados para refletir a nova estrutura: $\hat w$.$first$ recebe o valor de $\hat u$.$first$, e $\hat w$.$last$ recebe o valor de $\hat v$.$last$. Para garantir que a ordem cíclica das arestas seja mantida corretamente, a função \treapJoin{} é chamada para unir as raízes das ABBs associadas aos nós~$\hat u$ e~$\hat v$. A raiz da nova ABB resultante é associada ao novo nó~$\hat w$.
-Por fim, o algoritmo retorna o nó resultante~$\hat w$.
+O processo de \LCOMerge{} começa chamando a função \linkcutEvert{} invertendo a árvore de modo que o nó~\treapLast($p$) se torne a nova raiz.
+Isso é necessário, pois a operação \linkcutAddEdge{} de adição de aresta subsequente assume que \treapLast($p$) é a raiz de sua árvore.
+A função \linkcutAddEdge{} é usada para adicionar uma aresta entre~\treapLast($p$) e~\treapFirst($q$), conectando o último nó da ordem cíclica do vértice que contém~$p$ ao primeiro nó da ordem cíclica do nó que contém~$q$.
+Para garantir que a ordem cíclica das arestas seja mantida corretamente, a função \treapJoin{} é chamada para unir as raízes das ABBs associadas aos vértices.
 
 \begin{algorithm}[htb]
-\caption{\LCOMerge($\hat u$, $\hat v$)}
+\caption{\LCOMerge($p$, $q$)}
 \label{Algo:LCOMerge}
 \begin{algorithmic}[1]
-\State $\hat w$ $\gets$ \LCOMakeNode()
-\State \linkcutEvert($\hat u$.$last$)
-\State \linkcutAddEdge($\hat u$.$last$, $\hat v$.$first$)
-\State $\hat w$.$first$  $\gets$ $\hat u$.$first$
-\State $\hat w$.$last$  $\gets$ $\hat v$.$last$
-\State $T$ $\gets$ \treapJoin(\treapGetRoot($\hat u$.$first$), \treapGetRoot($\hat v$.$last$))
-\State $T$.$\node$ $\gets$ $\hat w$
-\State \Return $\hat w$
+\State $l$ $\gets$ \treapLast($p$)
+\State \linkcutEvert($l$)
+\State \linkcutAddEdge($l$, \treapFirst($q$))
+\State $T$ $\gets$ \treapJoin(\treapGetRoot($p$), \treapGetRoot($q$))
+\State $T$.$\node$ $\gets$ $w$ \TODO{???}
 \end{algorithmic}
 \end{algorithm}
 
-A implementação da rotina \LCOSplit($\hat u$, $\hat e$) pode ser visto no Algoritmo~\ref{Algo:LCOSplit}.
-Essa rotina realiza a divisão de um nó $\hat u$ em dois novos nós, $\hat v$ e $\hat w$, de acordo com a ordem cíclica das arestas incidentes ao nó~$\hat u$.
-Primeiro, a rotina encontra o subnó correspondente à aresta~$\hat e$ em relação a~$\hat u$ usando a função \LCOFindSubNode.
+A implementação da rotina \LCOSplit($p$) pode ser visto no Algoritmo~\ref{Algo:LCOSplit}.
+Essa rotina realiza a divisão do vértice~$v$ cuja ordem cíclica contém~$p$ em dois novo vértices, de acordo com a ordem cíclica das arestas incidentes ao vértice~$v$.
 
-Em seguida, dois novos nós, $\hat v$ e $\hat w$, são criados com a rotina \LCOMakeNode.
-A função \linkcutEvert{} é aplicada para fazer uma inversão em $\hat u$.$last$, assim o caminho entre $\hat u$.$first$ e a raiz corresponde a ordem cíclica de $\hat u$.
-Dessa forma, ao aplicar \linkcutDelEdge($s_e$) a ordem cíclica de~$\hat u$ é dividida em duas sequências, a primeira de $\hat u$.\varname{first} até $s_e$ e a segunda de \linkcutParent($s_e$) até~$\hat u$.\varname{last}.
-Essa sequências correspondem às ordens cíclicas dos nós resultantes~$\hat v$ e~$\hat w$, respectivamente.
-
-A árvore binária de busca é dividida em duas partes: uma que mantém a ordem das arestas até $s_e$, e outra que contém o restante.
-Depois, essas duas partes são associadas aos novos nós~$\hat v$ e~$\hat w$, ajustando os ponteiros \varname{first} e \varname{last} de cada nó para refletir a nova estrutura.
-Finalmente, os novos nós $\hat v$ e $\hat w$ são retornados, representando a divisão de $\hat u$.
+Primeiro, a função \linkcutEvert{} é aplicada para fazer uma inversão em \treapLast($p$), assim o caminho entre \treapFirst($p$) e a raiz corresponde a ordem cíclica de $v$.
+Dessa forma \linkcutParent($p$) retorna o sucesso do nó $p$ na ordem cíclica, que é armazenado na variável~$y$ e ao aplicar \linkcutDelEdge($p$) a ordem cíclica de~$v$ é dividida em duas sequências, a primeira de \treapFirst($p$) até $p$ e a segunda de~$y$ até~\treapLast($p$).
+Essa sequências correspondem às ordens cíclicas dos vértices resultantes desejados.
+Finalmente, a árvore binária de busca que contém o nó~$p$ é então dividida em duas partes: uma que mantém a ordem das arestas até $p$, e outra que contém o restante.
 
 \begin{algorithm}[htb]
-\caption{\LCOSplit($\hat u$, $\hat e$)}
+\caption{\LCOSplit($p$)}
 \label{Algo:LCOSplit}
 \begin{algorithmic}[1]
-\State $s_e$ $\gets$ \LCOFindSubNode($\hat u$, $\hat e$)
-\State $\hat v$ $\gets$ \LCOMakeNode()
-\State $\hat w$ $\gets$ \LCOMakeNode()
-\State \linkcutEvert($\hat u$.$last$)
-\State $y$ $\gets$ \linkcutParent($s_e$)
-\State \linkcutDelEdge($s_e$)
-\State $T$, $u_{last}$, $T'$ $\gets$ \treapSplit($s_e$)
-\State $T$ $\gets$ \treapJoin($T$, $s_e$  )
-\State $T$.$\node$ $\gets$ $\hat w$
-\State $T'$.$\node$ $\gets$ $\hat v$
-\State $\hat v$.$first$ $\gets$ $\hat u$.$first$; $\hat v$.$last$ $\gets$ $s_e$
-\State $\hat w$.$first$ $\gets$ $y$; $\hat w$.$last$ $\gets$ $u_{last}$
-\State \Return $\hat v$, $\hat w$
+\State \linkcutEvert(\treapLast($p$))
+\State $y$ $\gets$ \linkcutParent($p$)
+\State \linkcutDelEdge($p$)
+\State $T$, $T'$ $\gets$ \treapSplitRight($p$)
+\State $T$.$\node$ $\gets$ $w$\TODO{???}
+\State $T'$.$\node$ $\gets$ $v$\TODO{???}
 \end{algorithmic}
 \end{algorithm}
 
 
 A implementação da rotina \LCOCycle($\hat u$, $\hat e$) pode ser visto no Algoritmo~\ref{Algo:LCOCycle}.
-O processo começa identificando o subnó correspondente a $\hat e$ na ordem cíclica de~$\hat v$ através da função \LCOFindSubNode.
 
-Se $\hat e$ já for a última aresta, a função termina imediatamente.
-Caso contrário, a função \linkcutEvert{} é aplicada a~$\hat v$.$last$ para reverter a ordem do caminho que vai até a raiz.
-Essa operação faz com que o pai de $s_e$ seja o sucessor desse subnó na ordem cíclica de $\hat v$.
-Então é usado a rotina \linkcutParent{} para obter esse sucessor~$x$ e remove a aresta que liga~$s_e$ a~$x$.
-Em seguida, a função \linkcutAddEdge adiciona uma nova aresta que conecta o último subnó de $\hat v$ ao primeiro subnó, efetivamente ajustando a ordem cíclica.
-
-Depois, os ponteiros~\varname{first} e~\varname{last} de~$\hat v$ são atualizados para refletir essa nova ordem, com \varname{first} apontando para o subnó~$x$ e \varname{last} apontando para~$s_e$.
-Finalmente, a árvore binária de busca associada é dividida em partes, reorganizadas, e depois unidas para representar a nova ordem cíclica, garantindo que~$\hat e$ seja, de fato, a última aresta na sequência cíclica.
-
-
+O processo começa comparando~$p$ com o último nó da ordem cíclica, caso esses nós sejam iguais, então a função termina imediatamente.
+Caso contrário, a função \linkcutEvert{} é aplicada a \treapLast($p$) para reverter a ordem do caminho que vai até a raiz.
+Essa operação faz com que o pai de $p$ seja o sucessor desse nó na ordem cíclica.
+Então é usado a rotina \linkcutParent{} para obter esse sucessor~$x$ e remove a aresta que liga~$p$ a~$x$.
+Em seguida, a função \linkcutAddEdge adiciona uma nova aresta que conecta o último nó da ordem cíclica ao primeiro nó dessa ordem, efetivamente ajustando a ordem cíclica.
+Finalmente, a árvore binária de busca associada é dividida em partes, reorganizadas, e depois unidas para representar a nova ordem cíclica, garantindo que~$p$ seja, de fato, o último nó na sequência cíclica.
 
 
 \begin{algorithm}[htb]
-\caption{\LCOCycle($\hat v$, $\hat e$)}
+\caption{\LCOCycle($p$)}
 \label{Algo:LCOCycle}
 \begin{algorithmic}[1]
-\State $s_e$ $\gets$ \LCOFindSubNode($\hat v$, $\hat e$)
-\If{$\hat v$.$last$ $=$ $s_e$}
+\State $l$ $\gets$ \treapLast($p$)
+\If{$l$ $=$ $p$}
 \State\Return
 \EndIf
-\State \linkcutEvert($\hat v$.$last$)
-\State $x$ $\gets$ \linkcutParent($s_e$)
-\State \linkcutDelEdge($s_e$)
-\State \linkcutAddEdge($\hat v$.$last$, $\hat v$.$first$)
-\State $\hat v$.$first$ $\gets$ $x$; $\hat v$.$last$ $\gets$ $s_e$
-\State $T$, $u_{last}$, $T'$ $\gets$ \treapSplit($\hat u$.$last$)
-\State $T$ $\gets$ \treapJoin($T'$, $T$, $u_{last}$)
-\State $T$.$\node$ $\gets$ $\hat v$
+\State \linkcutEvert($l$)
+\State $x$ $\gets$ \linkcutParent($p$)
+\State \linkcutDelEdge($p$)
+\State \linkcutAddEdge($l$, \treapFirst($p$))
+\State $T$, $T'$ $\gets$ \treapSplitRight($p$)
+\State $T$ $\gets$ \treapJoin($T'$, $T$)
+\State $T$.$\node$ $\gets$ $p$
 \end{algorithmic}
 \end{algorithm}
-
-
-\begin{algorithm}[htb]
-\caption{\LCOLink($\hat v$, $\hat w$)}
-\label{Algo:LCOLink}
-\begin{algorithmic}[1]
-\State $x$ $\gets$ \linkcutCreate()
-\State $y$ $\gets$ \linkcutCreate()
-\If {$\hat v$.$last$ $=$ $\Nil$}
-  \State $T$ $\gets$ \treapCreate()
-  \State $T$.$\node$ $\gets$ $\hat v$
-  \State $\hat v$.$first$ $\gets$ $x$; $\hat v$.$last$ $\gets$ $x$ 
-\Else
-  \State \linkcutEvert($\hat v$.$last$)
-  \State \linkcutAddEdge($\hat v$.$last$, $x$)
-  \State $T$ $\gets$ \treapGetRoot($\hat v$.$last$)
-  \State $T$ $\gets$ \treapJoin($T$, $x$)
-  \State $T$.$\node$ $\gets$ $\hat v$
-  \State $\hat v$.$last$ $\gets$ $x$
-\EndIf
-\If {$\hat w$.$last$ $=$ $\Nil$}
-  \State $T$ $\gets$ \treapCreate()
-  \State $T$.$\node$ $\gets$ $\hat w$
-  \State $\hat w$.$first$ $\gets$ $y$; $\hat w$.$last$ $\gets$ $y$ 
-\Else
-  \State \linkcutAddEdge($y$, $\hat w$.$first$)
-  \State $T$ $\gets$ \treapGetRoot($\hat w$.$last$)
-  \State $T$ $\gets$ \treapJoin($y$, $T$)
-  \State $T$.$\node$ $\gets$ $\hat w$
-  \State $\hat w$.$first$ $\gets$ $y$
-\EndIf
-\State \linkcutAddEdge($x$, $y$)
-\end{algorithmic}
-\end{algorithm}
-
