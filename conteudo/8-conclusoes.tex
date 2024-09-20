@@ -9,9 +9,9 @@ Em $1997$, Alberts, Cattaneo e Italiano~\cite{EmpiricalStudy1997} fizeram um est
 
 O algoritmo de Henzinger e King, assim como Holm, de Lichtenberg e Thorup~\cite{poly_log} estudado no Capítulo~\ref{sec:connDG}, associa um nível entre $0$ e $\ceil{\lg n}$ à cada aresta.
 Nesse experimento os autores propuseram heuristicamente truncar essa estrutura de níveis, mantendo assim somente os níveis entre~$k$ e~$\ceil{\lg n}$, onde $k$ é um parâmetro pré-definido.
-Nessa simplificação, no nível~$k$, ao invés de fazer a busca por aresta substitura proposta por Henzinger e King, o algoritmo faz uma busca exaustiva. Dessa forma, essa simplificação possui consumo de tempo assintótico pior do que o algoritmo original de Henzinger e King, porém ainda assim ela se saiu bem nos experimentos com grafos aleatórios.
+Nessa simplificação, no nível~$k$, ao invés de fazer a busca por aresta substituíra proposta por Henzinger e King, o algoritmo faz uma busca exaustiva. Dessa forma, essa simplificação possui consumo de tempo assintótico pior do que o algoritmo original de Henzinger e King, porém ainda assim ela se saiu bem nos experimentos com grafos aleatórios.
 
-Para grafos não aleatórios, o algoritmo baseado em espasificação se saiu melhor para instâncias com poucas operações de atualização, enquanto que o algoritmo original de Henzinger e King se saiu melhor com mais operações de atualização.
+Para grafos não aleatórios, o algoritmo baseado em esparsificação se saiu melhor para instâncias com poucas operações de atualização, enquanto que o algoritmo original de Henzinger e King se saiu melhor com mais operações de atualização.
 As implementações desenvolvidas para estes experimentos foram feitas em C++, usando a plataforma Leda~\cite{LEDA}.
 
 Em $2002$, Raj Iyer, David Karger, Hariharan Rahul e Mikkel Thorup~\cite{EmpiricalStudy2002} usaram como base o estudo de Alberts et al. para comparar o então recente algoritmo de Holm, de Lichtenberg e Thorup~\cite{poly_log} com o algoritmo de Henzinger e King, considerando algumas variantes destes dois algoritmos no seu estudo.
