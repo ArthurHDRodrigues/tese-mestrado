@@ -4,7 +4,7 @@
 \chapter{Árvore binária de busca com chave implícita}
 \label{sec:TreapDeChaveImplicita}
 
-Com uma implementação tradicional de ABB, em que o campo \varname{chave} $\mathit{chave}$ ddos nós de uma ABB~$T$ com $t$ nós armazena explicitamente os números de $1$ a $t$, é necessário, na operação \treapJoin($T$, $R$), atualizar todas as chaves de~$R$ para que possuam os valores $1+t,2+t, \ldots, r+t$, onde $r$ é o número de nós em~$R$.
+Com uma implementação tradicional de ABB, em que o campo \varname{chave} $\mathit{chave}$ dos nós de uma ABB~$T$ com $t$ nós armazena explicitamente os números de $1$ a $t$, é necessário, na operação \treapJoin($T$, $R$), atualizar todas as chaves de~$R$ para que possuam os valores $1+t,2+t, \ldots, r+t$, onde $r$ é o número de nós em~$R$.
 
 Analogamente, com essa implementação tradicional, ao realizar \treapSplit($T$, \varname{nó}) é necessário atualizar todos os nós com chave maior do que a chave de \varname{nó}.
 No pior dos casos, essas atualizações de chaves podem custar tempo $\OTheta{n}$, onde $n$ é o tamanho das árvores envolvidas.
