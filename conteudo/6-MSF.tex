@@ -171,11 +171,10 @@ Note que há uma correspondência entre as arestas incidentes a um vértice~$v$ 
 Cada aresta~$e$ de $G$ corresponde a $\hat e$, $\hat d_0$ ou~$\hat d_2$. 
 A descrição combinatória plana dessas duas árvores é herdada de~$C$ (ou seja, de~$G$) e de~$C^\star$.
 
-\begin{figure}[htb]
-%\scalebox{2}{
+
+
+\begin{minipage}[b]{0.4\textwidth}
 \centering
-\input{fig/MSF-basico-3}
-%}
 \begin{tabular}{| c  c |} 
  \hline
  nós & pesos\\
@@ -195,9 +194,15 @@ A descrição combinatória plana dessas duas árvores é herdada de~$C$ (ou sej
  $\hat F_0$, $\hat F_1$, $\hat F_2$, $\hat F_3$ & $\infty$ \\
  \hline
 \end{tabular}
-\caption{As árvores geradoras modificadas~$\hat T$ e~$\hat T^\star$ construídas a partir das árvores da Figura~\ref{fig:MSF-figura-2}.}
+\captionof{table}{Tabela de pesos}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.5\textwidth}
+    \centering
+\input{fig/MSF-basico-3}
 \label{fig:MSF-figura-3}
-\end{figure}
+	\captionof{figure}{As árvores~$\hat T$ e~$\hat T^\star$ construídas a partir das árvores da Figura~\ref{fig:MSF-figura-2}.}
+    \end{minipage}
 
 A implementação de árvores dinâmicas planas utiliza link cut trees e árvores binárias de busca com chave implícita.
 
