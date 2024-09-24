@@ -48,14 +48,6 @@ Seja $G$ um grafo plano e $e$ uma de suas arestas.
 \end{enumerate}
 \end{lemma}
 
-\begin{theorem}[Fórmula de Euler, Teorema 4.2.9~\cite{Diestel}]
-\label{teo:MSFEuler}
-Seja $G=(V,E)$ um grafo planar conexo com~$n$ vértices e~$m$ arestas. Toda imersão de~$G$ no plano possui o mesmo número $f$ de faces e
-$$
-n-m+f = 2.
-$$
-\end{theorem}
-
 Para cada vértice $v$ de um grafo plano, é possível construir uma ordenação cíclica~$D(v)$ das aresta incidentes a~$v$~\cite{noma2003}.
 Para obter essa ordenação, percorremos as arestas incidentes a~$v$ em sentido anti-horário até retornar à aresta inicial do percurso.
 Uma aresta é dita \defi{sucessora} de outra aresta se a primeira é sucessora da segunda nesse percurso.
@@ -98,8 +90,16 @@ Para ilustrar a relação entre cada aresta e seu dual, geralmente desenhamos ca
 \label{fig:MSF-basico-1}
 \end{figure}
 
+\begin{theorem}[Fórmula de Euler, Teorema 4.2.9~\cite{Diestel}]
+\label{teo:MSFEuler}
+Seja $G=(V,E)$ um grafo planar conexo com~$n$ vértices e~$m$ arestas. Toda imersão de~$G$ no plano possui o mesmo número $f$ de faces e
+$$
+n-m+f = 2.
+$$
+\end{theorem}
 
-Se~$G$ tem $n$ vértices e~$m$ arestas, o Teorema~\ref{teo:MSFEuler} mostra que o número de vértices do grafo dual é $\OTheta{n+m}$.
+
+Se~$G$ é um grafo plano com~$n$ vértices e~$m$ arestas, o Teorema~\ref{teo:MSFEuler} mostra que o número de vértices do seu grafo dual é $\OTheta{n+m}$.
 
 \begin{theorem}[\cite{EPPSTEIN-planar}]
 \label{teo:MSFdual}
@@ -108,17 +108,17 @@ $$
 T^\star = \{e^\star:e\notin T\}
 $$
 é uma árvore geradora de~$G^\star$.
-Além disso, se~$G$ for ponderado e adotarmos $w(e^\star) = w(e)$, então~$T$ será de peso mínimo se e somente se~$T^\star$ for de peso máximo e vice versa.
+Além disso, se~$G$ for ponderado e adotarmos $w(e^\star) = w(e)$, então~$T$ será de peso mínimo em~$G$ se e somente se~$T^\star$ for de peso máximo em~$G^\star$ e vice versa.
 \end{theorem}
 
-A Figura~\ref{fig:MSF-figura-2} mostra~$T$ e~$T^\star$ do grafo da Figura~\ref{fig:MSF-basico-1}.
+A Figura~\ref{fig:MSF-figura-2} mostra~$T$ e~$T^\star$ dos grafos da Figura~\ref{fig:MSF-basico-1}.
 
 \begin{figure}[htb]
 \scalebox{1.5}{
 \centering
 \input{fig/MSF-basico-2}
 }
-\caption{Árvore geradora~$T$, em azul, de peso mínimo do grafo da Figura~\ref{fig:MSF-basico-1} e a árvore correspondente~$T^\star$ do grafo, em vermelho.}
+\caption{Árvore geradora~$T$, em azul, de peso mínimo do grafo ponderado da Figura~\ref{fig:MSF-basico-1} e a árvore correspondente~$T^\star$ do seu grafo dual, em vermelho.}
 \label{fig:MSF-figura-2}
 \end{figure}
 
@@ -139,7 +139,8 @@ O problema da floresta maximal de peso mínimo (MSF) em grafos dinâmicos planos
 \end{itemize}
 
 
-\section{Manutenção de MSF com árvores dinâmicas planas}
+\section{Árvores dinâmicas planas}
+\label{sec:MSFcomADP}
 
 Para resolver o problema da floresta geradora de peso mínimo em grafos dinâmicos planos ponderados, Eppstein et al.~\cite{EPPSTEIN-planar} propuseram o uso de uma estrutura de dados que chamaremos de \defi[arvore@\'arvore!dinâmica plana]{árvores dinâmicas planas} (ADP). Originalmente os autores denominaram essa estrutura de \textit{edge ordered dynamic tree}.
 
@@ -150,7 +151,7 @@ Antes de descrever a biblioteca fornecida por ADPs, essa estrutura será detalha
 
 Cada componente conexa do grafo plano dinâmico ponderado~$G$ é representada em um plano distinto.
 Consequentemente, a face exterior de cada componente conexa é considerada distinta das faces exteriores das outras componentes.
-Cada componente~$C$ de~$G$ é representada por duas árvores com pesos em seus vértices, sendo a primeira construída a partir de uma árvore geradora de peso mínimo~$T$ de~$C$ e a segunda a partir da correspondente dual~$T^\star$.
+Cada componente~$C$ de~$G$ é representada por duas árvores com pesos em seus \textit{vértices}, sendo a primeira construída a partir de uma árvore geradora de peso mínimo~$T$ de~$C$ e a segunda a partir da correspondente dual~$T^\star$.
 A Figura~\ref{fig:MSF-figura-3} ilustra essas duas árvores cuja construção será detalhada no próximo parágrafo.
 
 A primeira dessas árvores, que é denotada por~$\hat T$, é essencialmente a árvore~$T$ submetida a duas transformações:
@@ -158,17 +159,18 @@ cada uma de suas arestas é subdivida; e é adicionada uma folha a cada vértice
 Mais precisamente, $\hat T$ possui um vértice~$\hat v$, de peso~$-\infty$, para cada vértice~$v$ de~$C$, um vértice~$\hat e$, com o peso de $e$, para cada aresta~$e$ de~$T$ e dois vértices~$\hat d_0$ e~$\hat d_2$, ambos com o peso de~$d$, para cada aresta~$d$ tal que $d^\star$ está em~$T^\star$.
 Se uma aresta~$e$ de~$T$ é incidente aos vértices~$v$ e~$u$ de~$C$, então o vértice~$\hat e$ é ligado aos vértices~$\hat v$ e~$\hat u$.
 Se uma aresta~$d$ de~$C$ não está em~$T$ e é incidente aos vértices~$v$ e~$u$ de~$C$, então~$\hat d_0$ e~$\hat d_2$ são ligados a~$\hat v$ e~$\hat u$, respectivamente.
-Note que~$\hat d_0$ e~$\hat d_2$ são folhas da árvore.
+Note que~$\hat d_0$ e~$\hat d_2$ são folhas da árvore~$\hat T$.
+Veja a árvore azul da Figura~\ref{fig:MSF-figura-3} 
 
 A segunda árvore, denotada por~$\hat T^\star$, possui construção análoga à primeira, mas é baseada em~$T^\star$ em vez de~$T$.
-Ela possui um vértice~$\hat F$ para cada vértice~$F$ de~$C^\star$ (isto é, cada face de~$C$), um vértice~$\hat e^\star$ para cada aresta~$e^\star$ de $T^\star$ e dois vértices $\hat d_1$ e~$\hat d_3$ para cada aresta~$d$ de $T$.
+Ela possui um vértice~$\hat F$ para cada vértice~$F$ de~$C^\star$ (isto é, para cada face de~$C$), um vértice~$\hat e^\star$ para cada aresta~$e^\star$ de $T^\star$ e dois vértices $\hat d_1$ e~$\hat d_3$ para cada aresta~$d$ de $T$.
 O peso do vértice~$\hat F$ é $\infty$, enquanto que o peso de~$\hat e^\star$ é o peso de~$e$ e o peso de~$\hat d_1$ e~$\hat d_3$ é o peso de~$d$.
 Se uma aresta $e^\star$ de $T^\star$ é incidente às faces~$F_1$ e~$F_2$ de~$C$, então o vértice~$\hat e^\star$ é ligado aos vértices~$\hat F_1$ e~$\hat F_2$.
 Se uma aresta $d^\star$ de~$C^\star$ não está em $T^\star$ e é incidente às faces~$F_1$ e~$F_2$ de~$C$, então $\hat d_1$ e $\hat d_3$ são ligados a~$\hat F_1$ e~$\hat F_2$ respectivamente.
-A Figura~\ref{fig:MSF-figura-3} ilustra~$\hat T$ e~$\hat T^\star$.
+Veja a árvore vermelhana Figura~\ref{fig:MSF-figura-3}.
 
 Note que há uma correspondência entre as arestas incidentes a um vértice~$v$ de~$G$ e os vértices vizinhos de~$\hat v$ em~$\hat T$.
-Cada aresta~$e$ de $G$ corresponde a $\hat e$, $\hat d_0$ ou~$\hat d_2$. 
+Cada aresta~$e$ de $G$ corresponde a $\hat e$, $\hat e_0$ ou~$\hat e_2$. 
 A descrição combinatória plana dessas duas árvores é herdada de~$C$ (ou seja, de~$G$) e de~$C^\star$.
 
 
@@ -177,7 +179,7 @@ A descrição combinatória plana dessas duas árvores é herdada de~$C$ (ou sej
 \centering
 \begin{tabular}{| c  c |} 
  \hline
- nós & pesos\\
+ vértices & pesos\\
  \hline
  $\hat a$, $\hat a_1$, $\hat a_3$ & 2 \\ 
  \hline
@@ -207,12 +209,11 @@ A descrição combinatória plana dessas duas árvores é herdada de~$C$ (ou sej
 A implementação de árvores dinâmicas planas utiliza link cut trees e árvores binárias de busca com chave implícita.
 
 Cada vértice~$\hat v$ de~$\hat T$ e~$\hat T^\star$ é implementado por um conjunto de nós de link cut trees.
-Esse conjunto possui um nó~$e_v$ para cada aresta~$e$ na ordem cíclica~$\langle e_1, e_2, \ldots, e_k\rangle$ de~$\hat v$.
-Cada nó $e_v$ é ligado aos nós que representam a aresta sucessora e predecessora de~$e$ na ordem cíclica de~$\hat v$.
-Com exceção de~$e_1$ e~$e_k$, que são ligados somente ao seu sucessor e predecessor, respectivamente.
-Dessa forma, a ordem cíclica é representada por um percurso de nós de link cut tree.
+Esse conjunto possui um nó~$e_v$ para cada aresta~$e$ na ordem cíclica de~$\hat v$.
+Cada nó $e_v$ é ligado aos nós que representam a aresta sucessora e predecessora de~$e$ na ordem cíclica de~$\hat v$,
+com exceção de~$e_1$ e~$e_k$, que são ligados somente ao seu sucessor e predecessor, respectivamente.
+Dessa forma, a ordem cíclica é representada por um caminho na link cut tree.
 Além disso, se a aresta~$e$ liga os nós~$\hat v$ e~$\hat u$, então~$e_v$ é ligado ao nó~$e_u$ que representa~$e$ na ordem cíclica de~$\hat u$.
-A Figura~\ref{fig:MSF-figura-4} ilustra essas link cut trees.
 
 \begin{figure}[htb]
 \scalebox{1.5}{
@@ -223,130 +224,33 @@ A Figura~\ref{fig:MSF-figura-4} ilustra essas link cut trees.
 \label{fig:MSF-figura-4}
 \end{figure}
 
-Nessa construção há oito nós de link cut tree para cada aresta~$e$ de~$G$.
+Cada aresta~$e$ de~$G$, que liga vértices~$u$ e~$v$ e cuja dual $e^\star$ liga vértices~$F_1$ e $F_2$ de~$G^\star$, é implementada por oito nós de link cut tree.
 Os quatro primeiros, denotados por~$e_0$, $e_1$, $e_2$ e~$e_3$, representam~$e$.
-Os nós $e_0$, $e_2$ são nós de~$\hat T$, enquanto que $e_1$, $e_3$ são nós de~$\hat T^\star$
-Além disso, o nó $e_{i+1\mod 4}$ pertence à face a esquerda do nó $e_i$.
-Os quatro últimos nós, denotados por~$v_0$, $v_1$, $v_2$ e~$v_3$, mantém a posição de~$e$ e~$e^\star$ nas ordens cíclicas.
-Cada nó~$v_i$ é ligado ao nó~$e_i$.
+Os nós $e_0$, $e_2$ são nós de~$\hat T$, enquanto que $e_1$, $e_3$ são nós de~$\hat T^\star$.
+Os nós $e_0$ e $e_2$ representam as orientações~$uv$ e~$vu$ de~$e$.
+Nesse caso se $F_1$ é a face à esquerda de~$e$ quando vamos de~$u$ para~$v$, o nó $e_1$ representa a orientação $F_1F_2$ de~$e^\star$ enquanto que $e_3$ representa a orientação $F_2F_1$ de~$e^\star$.
+Como pode ser visto na Figura~\ref{fig:MSF-figura-4}.
 
-Caso~$e$ seja uma aresta de~$T$, então o vértice~$\hat e$ de $\hat T$ é composto pelos nós~$e_0$ e~$e_2$.
+Os quatro últimos nós que representam~$e$ na link cut tree são~$e_u$, $e_v$, ${e^\star}_{F_1}$ e~${e^\star}_{F_2}$, que mantém a posição de~$e$ e~$e^\star$ nas ordens cíclicas $u$, $v$, $F_1$ e $F_2$, respectivamente.
+À frente, nos referiremos à octupla $( e_0, e_1, e_2, e_3, e_u, e_v, {e^\star}_{F_1}, {e^\star}_{F_2})$ como a \defi[octupla]{óctupla} de~$e$.
+
+Caso~$e$ seja uma aresta de~$T$, então o vértice~$\hat e$ de $\hat T$ é implementado pelos nós~$e_0$,~$e_2$ e a aresta entre eles.
 Já os nós $e_1$, $e_3$ individualmente formam as duas folhas $\hat e_1$, $\hat e_3$ de $\hat T^\star$.
-
-Caso~$d$ seja uma aresta de~$T^\star$, então o vértice~$\hat d$ de $\hat T^\star$ é composto pelos nós~$d_1$ e~$d_3$.
+Caso~$d$ seja uma aresta de~$T^\star$, então o vértice~$\hat d$ de $\hat T^\star$ é implementado pelos nós~$d_1$,~$d_3$ e a aresta entre eles.
 Já os nós $d_0$, $d_2$ individualmente formam as duas folhas $\hat d_0$, $\hat d_2$ de $\hat T$.
 
-A sequência~$D(\hat v) = \langle e_1, e_2, \ldots, e_k\rangle$ também é armazenada em uma árvore binária de busca com chave implícita.
+Ademais, a sequência~$D(\hat v)$ dos nós de link cut tree que representam as arestas de~$G$ incidentes a~$v$ é armazenada em uma árvore binária de busca com chave implícita.
 A ABB é utilizada para obter o primeiro e o último nó da ordem cíclica, o predecessor de um dado nó e identificar se dois nós estão na mesma ordem cíclica.
 A raiz dessa ABB possui um campo $\node$ que armazena o identificador $v$.
 
-Manteremos essas duas ADPs e uma tabela de símbolos $H$, que guarda o conjunto de óctuplas de nós $e_0$, $e_1$, $e_2$, $e_3$, $v_0$, $v_1$, $v_2$ e~$v_3$ e usa como chaves as arestas de~$G$.
+Manteremos as duas ADPs de $T$ e~$T^\star$ e uma tabela de símbolos~$H$, que guarda óctuplas de cada aresta e usa como chave o identificador da aresta de~$G$.
+
+Cada nó~$v_i$ é ligado ao nó~$e_i$.
 
 Dessa forma, $G$ e uma floresta geradora maximal~$F$ de~$G$ de peso mínimo é representada por dois conjuntos de ADPs: o conjunto~$\hat F$ das ADPs das componentes de~$F$ e o conjunto~$\hat F^\star$ das ADPs do dual de cada componente de~$F$.
 
-Antes de apresentar a biblioteca de ADPs, na próxima seção, vamos expandir a biblioteca de árvores binárias de busca com chave implícita, que foi inicialmente discutida no Capítulo~\ref{sec:TreapDeChaveImplicita} e introduzir link cut trees.
+Antes de apresentar a biblioteca de ADPs, na próxima seção, vamos expandir a biblioteca de árvores binárias de busca com chave implícita, que foi inicialmente discutida no Capítulo~\ref{sec:TreapDeChaveImplicita} e apresentar a biblioteca das link cut trees.
 
-
-\section{Estruturas auxiliares}
-
-Na próxima seção, a implementação das árvores dinâmicas planas será detalhada. Para construir essa estrutura de dados, são necessárias duas estruturas fundamentais: a primeira é a árvore binária de busca com chave implícita, discutida em detalhes no Capítulo~\ref{sec:TreapDeChaveImplicita} e a segunda são as link cut trees, que serão introduzidas na Seção~\ref{sec:linkcuttree}.
-
-
-
-\subsection{Árvores binárias de busca com chave implícita}
-
-\begin{itemize}
-\item \treapSplitRight($\node$): corta a ABB que contém um nó~$\node$ em duas ABBs. A primeira ABB contém todos os nós com chave menor ou igual a chave de~$\node$ e a segunda contém todos os nós com chave estritamente maior do que a chave de~$\node$. Essa rotina retorna as raízes dessas duas ABBs.
-\item \treapFirst($\node$): Retorna o nó de menor chave da ABB que contém $\node$.
-\item \treapLast($\node$): Retorna o nó de maior chave da ABB que contém $\node$.
-\end{itemize}
-
-A implementação de \treapSplitRight{}, que pode ser vista no Algoritmo~\ref{Algo:TREAPsplitRight} é quase idêntica a de \treapSplit{}.
-A única diferença entre essas rotinas é na linha~\ref{Algo:TREAPsplitRight:linha:atribuicao} em que atribuímos $\node$ a~$L$ ao invés de~$\node$.$esq$, como feito em \treapSplit{}.
-
-\begin{algorithm}
-\caption{\treapSplitRight($\node$)}
-\label{Algo:TREAPsplitRight}
-\begin{algorithmic}[1]
-\State $R$ $\gets $ $\node$.$dir$
-\State $L$ $\gets $ $\node$ \label{Algo:TREAPsplitRight:linha:atribuicao}
-\State $tmp$ $\gets$ $\node$
-\While { $tmp$.$pai$ $\neq \Nil$}
-  \If { $tmp$.$pai$.$esq$ = $tmp$}
-    \State $tmp$.$pai$.$esq$ $\gets$ $R$
-    \State $tmp$.$pai$.$tam$ $\gets$ $tmp$.$pai$.$tam$ $\mathit{-}$ \treapGetSize($L$)
-    \If { $R \neq \Nil$}
-    \State $R$.$pai$ $\gets$ $tmp$.$pai$
-    \EndIf
-    \State $R$ $\gets$ $tmp$.$pai$
-  \Else
-    \State $tmp$.$pai$.$dir$ $\gets$ $L$ 
-    \State $tmp$.$pai$.$tam$ $\gets$ $tmp$.$pai$.$tam$ $\mathit{-}$ \treapGetSize($R$)
-    \If { $L$ $\neq$ \Nil}
-    \State $L$.$pai$ $\gets$ $tmp$.$pai$
-    \EndIf
-    \State $L$ $\gets$ $tmp$.$pai$
-  \EndIf
-  \State $tmp$ $\gets$ $tmp$.$pai$
-\EndWhile
-\If { $L$ $\neq \Nil$} $L$.$pai$ $\gets\Nil$\EndIf
-\If { $R$ $\neq \Nil$} $R$.$pai$ $\gets\Nil$\EndIf
-\State $\node$.$dir$ $\gets $ $\node$.$esq$ $\gets$ $\node$.$pai$ $\gets$ $\Nil$
-\State\Return $L$, $R$
-\end{algorithmic}
-\end{algorithm}
-
-
-\begin{algorithm}
-\caption{\treapFirst($\node$)}
-\label{Algo:TREAPfirst}
-\begin{algorithmic}[1]
-\State $tmp$ $\gets$ $\node$
-\While { $tmp$.$pai$ $\neq \Nil$}
-  \State $tmp$ $\gets$ $tmp$.$pai$
-\EndWhile
-
-\While { $tmp$.$esq$ $\neq \Nil$}
-  \State $tmp$ $\gets$ $tmp$.$esq$
-\EndWhile
-
-\State\Return $tmp$
-\end{algorithmic}
-\end{algorithm}
-
-
-\begin{algorithm}
-\caption{\treapLast($\node$)}
-\label{Algo:TREAPfirst}
-\begin{algorithmic}[1]
-\State $tmp$ $\gets$ $\node$
-\While { $tmp$.$pai$ $\neq \Nil$}
-  \State $tmp$ $\gets$ $tmp$.$pai$
-\EndWhile
-
-\While { $tmp$.$dir$ $\neq \Nil$}
-  \State $tmp$ $\gets$ $tmp$.$dir$
-\EndWhile
-
-\State\Return $tmp$
-\end{algorithmic}
-\end{algorithm}
-\subsection{Link-Cut Trees}
-\label{sec:linkcuttree}
-Link-cut trees são uma estrutura de dados usada para representar e manipular florestas dinâmicas enraizadas.
-Elas foram originalmente introduzidas por Sleator e Tarjan~\cite{SleatroTarjanLinkCutTree1983,} em~1983 e dão suporte às seguintes operações
-\begin{itemize}
-\item \linkcutCreate(): Cria e retorna um novo nó de link-cut tree.
-\item \linkcutAddEdge($v$, $w$): Adiciona uma aresta de~$v$ a~$w$, tornando~$v$ um filho de~$w$. Essa operação assume que~$v$ é a raiz de uma árvore~$T$ e que $w$ não é um nó de~$T$.
-\item \linkcutDelEdge($v$): Remove a aresta de~$v$ para seu pai.
-\item \linkcutEvert($v$): Torna~$v$ a raiz de sua árvore revertendo o caminho de~$v$ para a raiz original.
-\item \linkcutMax($v$): Retorna o nó de peso máximo no caminho entre~$v$ e a raiz de sua árvore.
-\item \linkcutMin($v$): Retorna o nó de peso mínimo no caminho entre~$v$ e a raiz de sua árvore.
-\item \linkcutMin($v$): Retorna o nó de peso mínimo no caminho entre~$v$ e a raiz de sua árvore.
-\end{itemize}
-
-
-Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{linkcuttree}.
 
 \section{Biblioteca de árvores dinâmicas planas}
 \label{sec:EODT}
@@ -356,26 +260,26 @@ Para as descrições que se seguem, considere~$u$ e~$v$ vértices da árvore rep
 $p$ um nó da ordem cíclica~$D(u)$ e~$q$ um nó de~$D(v)$.
 
 \begin{itemize}
-\item \LCOMakeNode(): Cria e retorna um novo nó.
+\item \LCOMakeNode(): Cria e retorna um novo nó de ADP.
+\item \LCOConnected($p$, $q$): Retorna verdadeiro se os nós~$p$ e~$q$ estiverem na mesma árvore e falso caso contrário.
+\item \LCOFindNode($p$): Recebe um nó $p$ e retorna o vértice que contêm $p$ em sua ordem cíclica.
 \item \LCOAddCost($p$, $w$): Atribui o peso~$w$ ao vértice que contém $p$ em sua ordem cíclica.
-\item \LCOMax($p$, $q$): Retorna o vértice de peso máximo no percurso entre os nós~$p$ e~$q$.
+\item \LCOMax($p$, $q$): Retorna o nó de peso máximo no percurso entre os nós~$p$ e~$q$.
 Essa operação assume que $p$ e~$q$ são nós da mesma árvore.
 \item \LCOMin($p$, $q$): Retorna o nó de peso mínimo no percurso entre os nós~$p$ e~$q$.
 Essa operação assume que~$p$ e~$q$ são nós da mesma árvore.
-\item \LCOConnected($p$, $q$): Retorna verdadeiro se os nós~$p$ e~$q$ estiverem na mesma árvore e falso caso contrário.
 \item \LCOCycle($p$): Permuta ciclicamente $D(u)$ de forma que o nó~$p$ seja o último na ordem.
 Se a ordem inicial tem forma $\alpha p \beta$, então a ordem resultante é $\beta\alpha p$.
 \end{itemize}
 
-É possível unir e separar nós dos ADPs com as rotinas \LCOMerge{} e \LCOSplit{}.
+É possível unir e separar nós das ADPs com as rotinas \LCOMerge{} e \LCOSplit{}.
 
 \begin{itemize}
 \item \LCOMerge($p$, $q$): Recebe dois nós~$p$ e~$q$ de mesmo peso e une os vértices $u$ e $v$ que possuem $p$ e $q$ em suas ordens cíclicas.
 Se~$\alpha$ e~$\beta$ são respectivamente as ordens cíclicas de~$u$ e~$v$, então $\alpha\beta$ será a ordem cíclica do vértice resultante. 
-Essa operação assume que~$u$ e~$v$ estão em árvores distintas e na mesma face do grafo plano.
+Essa operação assume que~$u$ e~$v$ estão em árvores distintas.
 \item \LCOSplit($p$): Substitui o vértice~$u$ por dois vértices~$v$ e~$z$.
 Considerando que a ordem cíclica $D(u)$ tem forma $\alpha p\beta$, então $\alpha p$ e~$\beta$ serão as ordens cíclicas de~$v$ e~$z$, respectivamente.
-\item \LCOFindNode($p$): Recebe um nó $p$ e retorna o vértice que contêm $p$ em sua ordem cíclica.
 \end{itemize}
 
 
@@ -388,9 +292,9 @@ A implementação dessas rotinas será apresentada na Seção~\ref{sec:implement
 A primeira rotina de MSF que vamos apresentar é \MSFupdate{}, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFupdate}.
 Para explicar seu funcionamento, utilizaremos a seguinte definição e resultado.
 
-Dado um grafo~$G$, um \defi{corte} é um conjunto de arestas cuja remoção aumenta o conjunto de componentes conexas de~$G$.
+Dado um grafo~$G$, um \defi{corte} é um conjunto de arestas cuja remoção aumenta o número de componentes conexas de~$G$.
 Seja~$F$ uma floresta maximal de~$G$ e~$uv$ uma aresta de~$F$.
-Então existe um corte associado ao par $(F, uv)$ dado pela união de $uv$ com as arestas que reconectam as duas árvores geradas pela remoção de $uv$.
+Então existe um corte associado ao par $(F, uv)$ dado pela união de $uv$ com as arestas de~$G$ que reconectam as duas árvores de~$F$ geradas pela remoção de $uv$.
 
 \begin{theorem}
 \label{teo:cutset}
@@ -402,21 +306,21 @@ $$
 forma um ciclo em $G^\star$.
 \end{theorem}
 
-Quando atualizamos o peso de uma aresta~$e$ para um novo peso~$w$, precisamos eventualmente atualizar a floresta~$F$ de peso mínimo que está sendo mantida de forma que ela continue sendo maximal e de peso mínimo.
+Quando atualizamos o peso de uma aresta~$e$ de~$G$ para um novo peso~$w$, precisamos eventualmente atualizar a floresta~$F$ de peso mínimo que está sendo mantida de forma que ela continue sendo maximal e de peso mínimo.
 
 Se~$e$ for uma aresta de~$F$, é necessário verificar se não há alguma aresta no corte~$(F, e)$ com peso menor do que~$w$, pois se tal aresta existir, então~$F$ e~$F^\star$ não serão mais de peso mínimo em~$G$ e máximo em~$G^\star$, respectivamente.
 Nesse caso, para corrigir isso, seja~$d$ uma aresta de menor peso no corte~$(F, e)$.
-Então~$e$ é removida de~$F$ e $e^\star$ adicionada a~$F^\star$, e~$d^\star$ é removida de~$F^\star$ e $d$ é adicionada a~$F$.
+Então~$e$ é removida de~$F$ e $e^\star$ é adicionada a~$F^\star$, e~$d^\star$ é removida de~$F^\star$ e $d$ é adicionada a~$F$.
 
 Pelo Teorema~\ref{teo:cutset}, o conjunto~$(F, e)^\star$ forma um ciclo em~$G^\star$.
-Como~$e^\star \in (F, e)^\star$ e~$e$ é a única aresta de~$F$ cuja aresta dual~$e^\star$ está em~$(F, e)^\star$, então as demais arestas desse corte formam um caminho em~$F^\star$ ligando os vértices~$F_1$ e~$F_2$ incidentes a~$e^\star$.
+Como~$e^\star \in (F, e)^\star$ e~$e$ é a única aresta de~$F$ cuja aresta dual~$e^\star$ está em~$(F, e)^\star$, então as demais arestas desse corte formam um caminho~$P$ em~$F^\star$ ligando os vértices~$F_1$ e~$F_2$ incidentes a~$e^\star$.
 
-Dessa forma, na ADP~$T^\star$ de~$\hat F^\star$ que corresponde ao dual da componente de~$F$ que contém~$e$, cada aresta $d$ de menor peso em $(F, e)$ é representada por exatamente um nó que possui peso mínimo em~$\hat T^\star$.
-Na verdade, para obter um nó $\hat d$ de menor peso nesse caminho, usaremos o caminho entre os nós $\hat e_1$ e $\hat e_3$ e a rotina \LCOMin{} da biblioteca de ADPs.
+Dessa forma, na ADP~$T^\star$ de~$\hat F^\star$ que corresponde ao dual da componente de~$F$ que contém~$e$, cada aresta $d$ de menor peso em $(F, e)$ é representada por exatamente um nó que possui peso mínimo no caminho~$P$.
+Para obter um nó $d$ de menor peso em~$P$, usaremos o caminho entre os nós $e_1$ e $e_3$ e a rotina \LCOMin{} da biblioteca de ADPs.
 Isso é feito na linha~\ref{Algo:MSFupdate:linhamin} do Algoritmo~\ref{Algo:MSFupdate}.
 
 As remoções de~$e$ de~$F$ e de~$d^\star$ de~$F^\star$ são feitas nas linhas~\ref{Algo:MSFupdate:linhasplitd} e~\ref{Algo:MSFupdate:linhasplite} do Algoritmo~\ref{Algo:MSFupdate} utilizando a rotina~\LCOSplit{}, que converte os nós~$\hat e$ e~$\hat d$ nos nós $\hat d_1$, $\hat d_3$, $\hat e_0$ e~$\hat e_2$, que se tornarão as novas folhas associadas às arestas~$e$ e~$d$.
-Para adicionar as arestas~$e^\star$ a~$T^\star$ e $d$ a~$T$ são usadas as folhas~$\hat d_0$, $\hat d_2$, $\hat e_1$ e~$\hat e_3$ junto à rotina \LCOMerge{} nas linhas \ref{Algo:MSFupdate:linhas:Merged} e~\ref{Algo:MSFupdate:linhas:Mergee} do Algoritmo~\ref{Algo:MSFupdate}.
+Para adicionar as arestas~$e^\star$ a~$F^\star$ e $d$ a~$F$ são usadas as folhas~$\hat d_0$, $\hat d_2$, $\hat e_1$ e~$\hat e_3$ junto à rotina \LCOMerge{} nas linhas \ref{Algo:MSFupdate:linhas:Merged} e~\ref{Algo:MSFupdate:linhas:Mergee} do Algoritmo~\ref{Algo:MSFupdate}.
 
 Se~$e$ não for uma aresta de~$F$, então~$e^\star$ é uma aresta de~$F^\star$.
 O tratamento desse caso é análogo ao caso anterior e é feito entre as linhas~\ref{Algo:MSFupdate:dualinicio} e~\ref{Algo:MSFupdate:dualfim} do Algoritmo~\ref{Algo:MSFupdate}.
@@ -427,10 +331,10 @@ O tratamento desse caso é análogo ao caso anterior e é feito entre as linhas~
 \begin{algorithmic}[1]
 \State $e_0$, $e_1$, $e_2$, $e_3$, $v_0$, $v_1$, $v_2$, $v_3$ $\gets$ $H(e)$
 \For {$i \in \{0,1,2,3\}$}
-\State  \LCOAddCost($e_i$, $w$);
+\State  \LCOAddCost($e_i$, $w$)
 \EndFor
 
-\If {\LCOFindNode($e_0$) $=$ \LCOFindNode($e_2$)}
+\If {\LCOFindNode($e_0$) $=$ \LCOFindNode($e_2$)}\Comment{$e\in F$}
 \State $d$ $\gets$ \LCOMin($e_1$, $e_3$)\label{Algo:MSFupdate:linhamin}
 
 \State $d_0$, $d_1$, $d_2$, $d_3$, $y_0$, $y_1$, $y_2$, $y_3$ $\gets$ $H(d)$
@@ -444,7 +348,7 @@ O tratamento desse caso é análogo ao caso anterior e é feito entre as linhas~
 
 \EndIf
 
-\Else
+\Else\Comment{$e^\star\in F^\star$}
 \State $d$ $\gets$ \LCOMax($e_0$, $e_2$)\label{Algo:MSFupdate:dualinicio}
 
 \State $d_0$, $d_1$, $d_2$, $d_3$, $y_0$, $y_1$, $y_2$, $y_3$ $\gets$ $H(d)$
@@ -464,16 +368,17 @@ O tratamento desse caso é análogo ao caso anterior e é feito entre as linhas~
 A próxima rotina elaborada é \MSFdelEdge{}, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFdelEdge}.
 
 Pelo Lema~\ref{lemma:diestel}, ou uma aresta~$e$ não está em ciclos em~$G$ e as duas faces incidentes a ela são a mesma, ou essas faces são distintas e a aresta está em pelo menos um ciclo em~$G$.
+Note que, no primeiro caso, a aresta $e^\star$ é um laço em~$G^\star$, esse é o teste feito na linha~\ref{Algo:MSFdelEdge:linha3} do Algoritmo~\ref{Algo:MSFdelEdge}.
 
 No primeiro caso, tratado entre as linhas~\ref{Algo:MSFdelEdge:linha3} e~\ref{Algo:MSFdelEdge:linha12} do Algoritmo~\ref{Algo:MSFdelEdge}, a remoção de~$e$ desconecta a componente~$C$ em que~$e$ se encontra.
 Logo não há trabalho de manutenção em $\hat T$ além de remover~$\hat e$ de~$\hat T$, para fazer isso, é realizado 
 duas chamadas de \LCOCycle{} seguidas de chamadas de \LCOSplit{}.
-A face incidente a aresta~$e$ é a face exterior~$F$ de~$C$.
-Como cada componente conexa está imersa em um plano distinto, a remoção de $e$ torna necessário dividir $\hat F$ em dois vértices, que representarão as duas faces exteriores das duas componentes conexas resultantes da remoção de~$e$.
+A face incidente à aresta~$e$ é a face exterior~$F_0$ de~$C$.
+Como cada componente conexa está imersa em um plano distinto, a remoção de $e$ torna necessário dividir $\hat F_0$ em dois vértices, que representarão as faces exteriores das duas componentes conexas resultantes da remoção de~$e$.
 
 No segundo caso, a remoção de~$e$ não desconecta sua componente~$C$.
-Dessa forma, é necessário buscar uma substituta para $e$ caso essa aresta seja uma aresta de $T$.
-Para fazer essa busca eficientemente, na linha~\ref{Algo:MSFdelEdge:linha:mudaPeso} do Algoritmo~\ref{Algo:MSFdelEdge}, o peso de~$e$ é mudado para~$\infty$, fazendo com que essa aresta se torne uma aresta de~$T^\star$. 
+Dessa forma, é necessário buscar uma substituta para $e$ caso essa aresta seja uma aresta de $F$.
+Para fazer essa busca eficientemente, na linha~\ref{Algo:MSFdelEdge:linha:mudaPeso} do Algoritmo~\ref{Algo:MSFdelEdge}, o peso de~$e$ é mudado para~$\infty$, fazendo com que $e^\star$ se torne uma aresta de~$F^\star$. 
 A remoção de $e$ implica na junção das duas faces distintas $F_0$ e $F_2$ incidentes a essa aresta.
 Essa mesclagem é feita de forma que a descrição combinatória resultante se mantenha plana, isto é, se $\alpha e^\star \beta$ e $\gamma e^\star \delta$ forem as ordenações cíclicas de~$F_0$ e~$F_2$, respectivamente, então $\alpha \delta\gamma\beta$ é a ordenação cíclica da face resultante.
 
@@ -482,34 +387,44 @@ Essa mesclagem é feita de forma que a descrição combinatória resultante se m
 \label{Algo:MSFdelEdge}
 \begin{algorithmic}[1]
 \State $e_0$, $e_1$, $e_2$, $e_3$, $v_0$, $v_1$, $v_2$, $v_3$ $\gets$ $H_e(e)$
-\If {\LCOFindNode($v_1$) $=$ \LCOFindNode($v_3$) }
+	\If {\LCOFindNode($v_1$) $=$ \LCOFindNode($v_3$) }\label{Algo:MSFdelEdge:linha2}\Comment{$e^\star$ é um laço de $G^\star$}
 
-\State \LCOCycle($v_0$) \label{Algo:MSFdelEdge:linha3}
-\State \LCOSplit(\LCOPredecessor($v_0$))
-\State \LCOCycle($v_2$)
-\State \LCOSplit(\LCOPredecessor($v_2$))
+\State \LCOCycle($v_0$); \LCOSplit(\treapPredecessor($v_0$))\label{Algo:MSFdelEdge:linha3}
+\State \LCOCycle($v_2$); \LCOSplit(\treapPredecessor($v_2$))
 
 \State \LCOCycle($v_1$)
-\State $p_1$ $\gets$ \LCOPredecessor($v_1$)
+\State $p_1$ $\gets$ \treapPredecessor($v_1$)
 \State \LCOSplit($p_1$)
-\State \LCOCycle($v_3$)
-\State \LCOSplit(\LCOPredecessor($v_3$))
+\State \LCOCycle($v_3$); \LCOSplit(\treapPredecessor($v_3$))
 
 \State \LCOSplit($p_1$) \label{Algo:MSFdelEdge:linha12}
-\Else
+\Else\Comment{$e$ está em um ciclo em $G$}
 \State \MSFupdate($G$, $e$, $\infty$)\label{Algo:MSFdelEdge:linha:mudaPeso}
-\State \LCOCycle($v_0$)
-\State \LCOSplit(\LCOPredecessor($v_0$))
-\State \LCOCycle($v_2$)
-\State \LCOSplit(\LCOPredecessor($e_2$))
-\State \LCOCycle($v_1$)
-\State \LCOSplit(\LCOPredecessor($v_1$))
-\State \LCOCycle($v_3$)
-\State \LCOSplit(\LCOPredecessor($v_3$))
+\State \LCOCycle($v_0$); \LCOSplit(\treapPredecessor($v_0$))
+\State \LCOCycle($v_2$); \LCOSplit(\treapPredecessor($v_2$))
+\State \LCOCycle($v_1$); \LCOSplit(\treapPredecessor($v_1$))
+\State \LCOCycle($v_3$); \LCOSplit(\treapPredecessor($v_3$))
 \State \LCOMerge($v_1$, $v_3$)
 \EndIf
 \end{algorithmic}
 \end{algorithm}
+
+
+Só é possível adicionar uma nova aresta entre dois vértices $u$ e $v$ se esses vértices estiverem em componentes distintas ou se existir uma face cuja fronteira contém ambos~$u$ e~$v$.
+A adição de uma aresta fora dessas condições quebraria a planaridade do grafo. 
+O processamento da rotina \MSFaddEdge{}, cuja implementação é descrita no Algoritmo~\ref{Algo:MSFaddEdge}, começa com a verificação dessas condições.
+Para isso, primeiro é obtido os valores da tabela de símbolos~$f_i$, $u_i$, $g_i$ e $v_i$, para $0\leq i \leq 3$, associados às arestas~$f$ e $g$.
+Em seguida, é utilizado a função \LCOFindNode{} para identificar qual nó de link cut tree, $u_0$ ou $u_2$ e $v_0$ ou $v_2$, está na ordem cíclica de~$u$ e~$v$, respectivamente.
+Na linha \ref{Algo:MSFaddEdge:linhaSe}, é verificado se~$u$ e~$v$ estão na mesma componente e se há face cuja fronteira contém $u$ e $v$.
+Note que como a nova aresta será sucessora de $f$ e $g$ em suas ordens cíclicas, então essa face em comum deve ser a face obtida por \LCOFindNode($u_{i-1}$) e \LCOFindNode($v_{i-1}$), onde a subtração no indice é feito em módulo~$4$.
+
+Se a verificação falhar, o algoritmo retorna um erro. Caso contrário, para cada índice $i \in \{0, 1, 2, 3\}$, novos nós de link cut trees~$s_i$ e~$e_i$ são criados com \LCOMakeNode(), seus custos são atribuídos utilizando \LCOAddCost{} e $e_i$ é ligado a $s_i$ com a função \linkcutAddEdge{}.
+Depois, são atribuídos valores infinitos e menos infinitos como pesos para os nós $s_i$ e a tabela de símbolos~$H$ é atualizado com esses valores.
+
+O bloco de linhas~\ref{Algo:MSFaddEdge:começo} até~\ref{Algo:MSFaddEdge:fim} executa um conjunto de \LCOCycle{} e~\LCOMerge{} para juntar os nós~$s_i$ às ordens cíclicas dos vértices apropriados.  
+Em seguida, o algoritmo acerta a estrutura da face.
+Se os dois vértices estiverem conectados, então é necessário aplicar \LCOSplit{} para dividir a face \LCOFindNode($u_{i-1}$) em duas.
+Caso contrário, é necessário aplicar um \LCOMerge para juntar as faces exteriores das duas componentes conexas.
 
 \begin{algorithm}[htb]
 \caption{\MSFaddEdge($G$, $e$, $u$, $f$, $v$, $g$, $w$)}
@@ -519,47 +434,35 @@ Essa mesclagem é feita de forma que a descrição combinatória resultante se m
 \State $f_0$, $f_1$, $f_2$, $f_3$, $u_0$, $u_1$, $u_2$, $u_3$ $\gets$ $H(f)$
 \State $g_0$, $g_1$, $g_2$, $g_3$, $v_0$, $v_1$, $v_2$, $v_3$ $\gets$ $H(g)$
 
-\If {\LCOFindNode($u_0$) $=$ $u$}
-  \State $i$ $\gets$ $0$
-\Else
-  \State $i$ $\gets$ $2$
+\If {\LCOFindNode($u_0$) $=$ $u$} $i$ $\gets$ $0$
+\Else {~$i$ $\gets$ $2$}
 \EndIf
-\If {\LCOFindNode($v_0$) $=$ $v$}
-  \State $j$ $\gets$ $0$
-\Else
-  \State $j$ $\gets$ $2$
+\If {\LCOFindNode($v_0$) $=$ $v$} $j$ $\gets$ $0$
+\Else {~$j$ $\gets$ $2$}
 \EndIf
 
-\If{\LCOConnected($u$, $v$) e \LCOFindNode($v_{i+1}$) $\neq$ \LCOFindNode($u_{i+1}$)}
+\If{\LCOConnected($u$, $v$) e \LCOFindNode($v_{i-1}$) $\neq$ \LCOFindNode($u_{i-1}$)}\label{Algo:MSFaddEdge:linhaSe}
 \State \Return Erro
 \EndIf
 
-
-
 \For {$i \in \{0,1,2,3\}$}
 \State $s_i$ $\gets$ \LCOMakeNode(); $e_i$ $\gets$ \LCOMakeNode()
-\State  \LCOAddCost($e_i$, $-\infty$);
 \State \linkcutAddEdge($e_i$, $s_i$)
 \EndFor
 \State \LCOAddCost($s_0$, $-\infty$); \LCOAddCost($s_2$, $-\infty$);
 \State \LCOAddCost($s_1$, $\infty$); \LCOAddCost($s_3$, $\infty$);
 \State $H(e)$ $\gets$ $e_0$, $e_1$, $e_2$, $e_3$, $s_0$, $s_1$, $s_2$, $s_3$
 
-\State \LCOCycle($u_i$)
-\State \LCOMerge($u_i$, $s_0$)
-\State \LCOCycle($v_j$)
-\State \LCOMerge($v_j$, $s_2$)
+\State \LCOCycle($u_i$); \LCOMerge($u_i$, $s_0$)\label{Algo:MSFaddEdge:começo}
+\State \LCOCycle($v_j$); \LCOMerge($v_j$, $s_2$)
 
 
-\State \LCOCycle($u_{i+1}$)
-\State \LCOMerge($u_{i+1}$, $s_1$)
-\State \LCOCycle($v_{j+1}$)
-\State \LCOMerge($v_{j+1}$, $s_3$)
+\State \LCOCycle(\treapPredecessor($u_{i-1}$)); \LCOMerge($u_{i-1}$, $s_1$)
+\State \LCOCycle(\treapPredecessor($v_{j-1}$)); \LCOMerge($v_{j-1}$, $s_3$)\label{Algo:MSFaddEdge:fim}
 
-\State \LCOMerge($e_0$, $e_2$)
 \If{\LCOConnected($u$, $v$)}
 
-\State \LCOSplit($u_{j+1}$)
+\State \LCOSplit($u_{j-1}$)
 \Else
 \State \LCOMerge($u_{i+1}$, $v_{j+1}$)
 \EndIf
@@ -567,16 +470,126 @@ Essa mesclagem é feita de forma que a descrição combinatória resultante se m
 \end{algorithmic}
 \end{algorithm}
 
+\section{Estruturas auxiliares}
+
+A implementação das árvores dinâmicas planas será detalhada na próxima seção.
+Para construir essa estrutura de dados, são necessárias duas estruturas fundamentais: a primeira é a árvore binária de busca com chave implícita, discutida inicialmente em detalhes no Capítulo~\ref{sec:TreapDeChaveImplicita} e a segunda são as link cut trees, que serão abordadas brevemente na Seção~\ref{sec:linkcuttree}.
+
+\subsection{Árvores binárias de busca com chave implícita}
+
+Árvores binárias de busca com chave implícita são particularmente úteis para armazenar sequências de objetos, no Capítulo~\ref{sec:TreapDeChaveImplicita} elas foram utilizadas para armazenar um sequência de arestas que representa uma árvore.
+No presente capítulo, elas serão usadas para armazenar a sequência de nós de link cut tree que representa a ordem cíclica de cada vértice.
+Para implementar as rotinas presentes na biblioteca de ADPs, é necessário complementar a biblioteca de ABBs de chave ímplicita com as seguintes rotinas:
+\begin{itemize}
+\item \treapFirst($\node$): Retorna o nó de menor chave da ABB que contém $\node$.
+\item \treapLast($\node$): Retorna o nó de maior chave da ABB que contém $\node$.
+\item \treapSplitRight($\node$): Corta a ABB que contém um nó~$\node$ em duas ABBs. A primeira ABB contém todos os nós com chave menor ou igual a chave de~$\node$ e a segunda contém todos os nós com chave estritamente maior do que a chave de~$\node$. Essa rotina retorna as raízes dessas duas ABBs.
+\item \treapPredecessor($\node$): Retorna o predecessor de $\node$.\TODO{Adicionar implementação dessa rotina}
+\end{itemize}
+
+A implementação dessas rotinas estão descritas nos Algoritmos~\ref{Algo:TREAPfirst},~\ref{Algo:TREAPlast} e~\ref{Algo:TREAPsplitRight}.
+Seu consumo de tempo será $\O{\lg t}$ esperado, onde $t$ é o número de nós da árvore.
+Como descrito no final da Seção~\ref{sec:MSFcomADP}, essas ABBs são usadas para armazenar a ordem cíclica de cada vértice, como o tamanho dessa ordem é linearmente proporcional ao número~$m$ de arestas no grafo dinâmico, concluímos que essas rotinas consumem $\O{\lg m}$ esperado.  
+
+A rotina \treapFirst{}, descrita no Algoritmo~\ref{Algo:TREAPfirst}, começa seu processamento inicializando uma variável temporária, $p$, com o nó passado como argumento.
+Em seguida, é usado a rotina $\treapGetRoot$, descrita no Algoritmo~\ref{Algo:treapGetRoot}, para obter a raiz da ABB que contém $\node$.
+Depois de obter a raiz, o algoritmo desce pela árvore, movendo-se sempre para o filho esquerdo, até alcançar o nó mais à esquerda, que representa o nó com menor chave.
+Finalmente, o nó encontrado é retornado.
+
+\begin{algorithm}
+\caption{\treapFirst($\node$)}
+\label{Algo:TREAPfirst}
+\begin{algorithmic}[1]
+\State $p$ $\gets$ $\treapGetRoot(\node)$
+
+\While { $p$.$esq$ $\neq \Nil$}
+  \State $p$ $\gets$ $p$.$esq$
+\EndWhile
+
+\State\Return $p$
+\end{algorithmic}
+\end{algorithm}
+
+A rotina \treapLast{}, descrita no Algoritmo~\ref{Algo:TREAPlast}, é análoga à rotina \treapFirst{}.
+Ele também começa inicializando uma variável temporária, $u$, com o nó passado como argumento e em seguida, usando $\treapGetRoot$, obtem a raiz da ABB que contém $\node$.
+Mas diferentemente de \treapFirst{}, após obter a raiz, $\treapLast$ desce pela árvore, movendo-se sempre para o filho direito, até alcançar o nó mais à direita, que representa o nó com maior chave, que é retornado.
+
+\begin{algorithm}
+\caption{\treapLast($\node$)}
+\label{Algo:TREAPlast}
+\begin{algorithmic}[1]
+\State $u$ $\gets$ $\treapGetRoot(\node)$
+
+\While { $u$.\varname{dir} $\neq \Nil$}
+  \State $u$ $\gets$ $u$.\varname{dir}
+\EndWhile
+
+\State\Return $u$
+\end{algorithmic}
+\end{algorithm}
+
+A implementação de \treapSplitRight{}, que pode ser vista no Algoritmo~\ref{Algo:TREAPsplitRight}, é quase idêntica a de \treapSplit{}, que foi descrito no Algoritmo~\ref{Algo:TREAPsplit}.
+A única diferença entre essas rotinas é na linha~\ref{Algo:TREAPsplitRight:linha:atribuicao}, em que atribuímos~$\node$ a~$L$ em vez de~$\node$.\varname{esq}, como feito em \treapSplit{}.
+
+\begin{algorithm}
+\caption{\treapSplitRight($\node$)}
+\label{Algo:TREAPsplitRight}
+\begin{algorithmic}[1]
+\State $R$ $\gets $ $\node$.\varname{dir}
+\State $L$ $\gets $ $\node$ \label{Algo:TREAPsplitRight:linha:atribuicao}
+\State \varname{tmp} $\gets$ $\node$
+\While { \varname{tmp}.\varname{pai} $\neq \Nil$}
+  \If { \varname{tmp}.\varname{pai}.\varname{esq} = \varname{tmp}}
+    \State \varname{tmp}.\varname{pai}.\varname{esq} $\gets$ $R$
+    \State \varname{tmp}.\varname{pai}.$tam$ $\gets$ \varname{tmp}.\varname{pai}.$tam$ $\mathit{-}$ \treapGetSize($L$)
+    \If { $R \neq \Nil$}
+    \State $R$.\varname{pai} $\gets$ \varname{tmp}.\varname{pai}
+    \EndIf
+    \State $R$ $\gets$ \varname{tmp}.\varname{pai}
+  \Else
+    \State \varname{tmp}.\varname{pai}.\varname{dir} $\gets$ $L$ 
+    \State \varname{tmp}.\varname{pai}.$tam$ $\gets$ \varname{tmp}.\varname{pai}.$tam$ $\mathit{-}$ \treapGetSize($R$)
+    \If { $L$ $\neq$ \Nil}
+    \State $L$.\varname{pai} $\gets$ \varname{tmp}.\varname{pai}
+    \EndIf
+    \State $L$ $\gets$ \varname{tmp}.\varname{pai}
+  \EndIf
+  \State \varname{tmp} $\gets$ \varname{tmp}.\varname{pai}
+\EndWhile
+\If { $L$ $\neq \Nil$} $L$.\varname{pai} $\gets\Nil$\EndIf
+\If { $R$ $\neq \Nil$} $R$.\varname{pai} $\gets\Nil$\EndIf
+\State $\node$.\varname{dir} $\gets $ $\node$.\varname{esq} $\gets$ $\node$.\varname{pai} $\gets$ $\Nil$
+\State\Return $L$, $R$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Link-Cut Trees}
+\label{sec:linkcuttree}
+Link-cut trees são uma estrutura de dados usada para representar e manipular florestas dinâmicas enraizadas.
+Elas foram originalmente introduzidas por Sleator e Tarjan~\cite{SleatroTarjanLinkCutTree1983,} em~1983 e dão suporte às seguintes operações:
+\begin{itemize}
+\item \linkcutCreate(): Cria e retorna um novo nó de link-cut tree.
+\item \linkcutAddEdge($v$, $w$): Adiciona uma aresta de~$v$ a~$w$, tornando~$v$ um filho de~$w$. Essa operação assume que~$v$ é a raiz de sua árvore e que $w$ não é um nó da árvore de~$v$.
+\item \linkcutDelEdge($v$): Remove a aresta de~$v$ para seu pai.
+	Essa operação assume que~$v$ não é a raiz de sua árvore.
+\item \linkcutEvert($v$): Torna~$v$ a raiz de sua árvore revertendo o caminho de~$v$ para a raiz original.
+\item \linkcutMax($v$): Retorna o nó de peso máximo no caminho entre~$v$ e a raiz de sua árvore.
+\item \linkcutMin($v$): Retorna o nó de peso mínimo no caminho entre~$v$ e a raiz de sua árvore.
+\end{itemize}
+
+
+Para uma introdução sobre link-cut trees, recomendamos o trabalho de~\cite{linkcuttree}.
+
 \section{Implementação de árvores dinâmicas planas}
 \label{sec:implementacao-ADP}
 
-As implementações de \LCOMakeNode{}, \LCOAddCost{}, \LCOMax{}, \LCOMin, \LCOFindNode{} são imediatas e são descritas nos Algoritmos~\ref{Algo:LCOMakeNode}, \ref{Algo:LCOAddCost}, \ref{Algo:LCOMax}, \ref{Algo:LCOMin} e~\ref{Algo:LCOFindNode}, respectivamente.
+Nessa seção, vamos mostrar como usar link cut trees para implementar árvores dinâmicas planas. As implementações de \LCOMakeNode{}, \LCOAddCost{}, \LCOMax{}, \LCOMin, \LCOFindNode{} são imediatas.
 
 Na rotina \LCOMakeNode{} são criados um novo nó de link cut tree com a rotina \linkcutCreate{} e um novo nó~$T$ de ABB de chave implícita.
-Então o campo~$\node$ de~$T$ é atribuído o novo nó de link cut tree, que é retornado em seguida.
+Então o campo~$\node$ de~$T$ é atribuído o novo nó de link cut tree, que é retornado em seguida. Veja o Algoritmo~\ref{Algo:LCOMakeNode}.
 
 \begin{algorithm}[htb]
-\caption{\LCOMakeNode($p$, $q$)}
+\caption{\LCOMakeNode()}
 \label{Algo:LCOMakeNode}
 \begin{algorithmic}[1]
 \State $\node$ $\gets$ \linkcutCreate()
@@ -586,10 +599,10 @@ Então o campo~$\node$ de~$T$ é atribuído o novo nó de link cut tree, que é 
 \end{algorithmic}
 \end{algorithm}
 
-Na rotina \LCOAddCost{} primeiro realiza um \linkcutEvert{} no último nó da ordem ciclica que contém~$p$.
-Dessa forma, o caminho entre os nós \treapFirst($p$) e \treapLast($p$) coincide com a ordenação ciclica que contém esse nó.
-Em seguida, a rotina \linkcutWeight{} que atribui o peso~$w$ para todos os nós entre \treapFirst($p$) e a raiz da sua árvore, isto é, \treapLast($p$).
-Logo todos os nós da ordem cíclica que contém $p$ possuem seus pesos atualizados para o novo valor~$w$.
+A rotina \LCOAddCost{}, descrita no Algoritmo~\ref{Algo:LCOAddCost}, primeiro realiza um \linkcutEvert{} no último nó da ordem ciclica que contém~$p$.
+Dessa forma, o caminho entre os nós \treapFirst($p$) e \treapLast($p$) coincide com a ordem ciclica que contém~$p$.
+Em seguida, a rotina \linkcutWeight{} atribui o peso~$w$ para todos os nós entre \treapFirst($p$) e a raiz da sua árvore, isto é, \treapLast($p$).
+Logo todos os nós da ordem cíclica que contém $p$ têm seus pesos atualizados para o novo valor~$w$.
 
 \begin{algorithm}[htb]
 \caption{\LCOAddCost($p$, $w$)}
@@ -600,10 +613,11 @@ Logo todos os nós da ordem cíclica que contém $p$ possuem seus pesos atualiza
 \end{algorithmic}
 \end{algorithm}
 
-A implementação das rotinas \LCOMax{} e~\LCOMin{} são análogas.
+As implementações das rotinas \LCOMax{} e~\LCOMin{} são análogas.
 Em ambas, é chamado \linkcutEvert($p$).
-Em seguida, é atribui à variável~$m$ o valor de \linkcutMax($q$) (resp. \linkcutMin($q$)), que corresponde ao nó com maior (resp. menor) peso entre $q$ e a raiz da link cut tree, isto é, $p$.
+Em seguida, é atribuído à variável~$m$ o valor de \linkcutMax($q$) (resp. \linkcutMin($q$)), que corresponde ao nó com maior (resp. menor) peso entre $q$ e a raiz da link cut tree, isto é, $p$.
 Então é retornado o valor \LCOFindNode($m$).
+Veja os Algoritmos~\ref{Algo:LCOMax} e~\ref{Algo:LCOMin}.
 
 \begin{algorithm}[htb]
 \caption{\LCOMax($p$, $q$)}
@@ -642,7 +656,7 @@ logo usamos \treapGetRoot{} da biblioteca de ABBs para obter a raiz~$r$ da árvo
 A implementação da rotina \LCOMerge{} pode ser vista no Algoritmo~\ref{Algo:LCOMerge}.
 O processo de \LCOMerge{} começa chamando a função \linkcutEvert{} invertendo a árvore de modo que o nó~\treapLast($p$) se torne a nova raiz.
 Isso é necessário, pois a operação \linkcutAddEdge{} de adição de aresta subsequente assume que \treapLast($p$) é a raiz de sua árvore.
-A função \linkcutAddEdge{} é usada para adicionar uma aresta entre~\treapLast($p$) e~\treapFirst($q$), conectando o último nó da ordem cíclica do vértice que contém~$p$ ao primeiro nó da ordem cíclica do nó que contém~$q$.
+A função \linkcutAddEdge{} é usada para adicionar uma aresta entre~\treapLast($p$) e~\treapFirst($q$), conectando o último nó da ordem cíclica do vértice que contém~$p$ ao primeiro nó da ordem cíclica do vértice que contém~$q$.
 Para garantir que a ordem cíclica das arestas seja mantida corretamente, a função \treapJoin{} é chamada para unir as raízes das ABBs associadas aos vértices.
 
 \begin{algorithm}[htb]
@@ -657,12 +671,10 @@ Para garantir que a ordem cíclica das arestas seja mantida corretamente, a fun�
 \end{algorithmic}
 \end{algorithm}
 
-A implementação da rotina \LCOSplit($p$) pode ser visto no Algoritmo~\ref{Algo:LCOSplit}.
-Essa rotina realiza a divisão do vértice~$v$ cuja ordem cíclica contém~$p$ em dois novo vértices, de acordo com a ordem cíclica das arestas incidentes ao vértice~$v$.
-
-Primeiro, a função \linkcutEvert{} é aplicada para fazer uma inversão em \treapLast($p$), assim o caminho entre \treapFirst($p$) e a raiz corresponde a ordem cíclica de $v$.
-Dessa forma \linkcutParent($p$) retorna o sucesso do nó $p$ na ordem cíclica, que é armazenado na variável~$y$ e ao aplicar \linkcutDelEdge($p$) a ordem cíclica de~$v$ é dividida em duas sequências, a primeira de \treapFirst($p$) até $p$ e a segunda de~$y$ até~\treapLast($p$).
-Essa sequências correspondem às ordens cíclicas dos vértices resultantes desejados.
+A implementação da rotina \LCOSplit($p$) pode ser vista no Algoritmo~\ref{Algo:LCOSplit}.
+Nessa implementação, primeiro, a função \linkcutEvert{} é torna \treapLast($p$) a raiz da sua link cut tree, assim o caminho entre \treapFirst($p$) e a raiz corresponde à ordem cíclica de $v$.
+Dessa forma \linkcutParent($p$) retorna o sucessor do nó $p$ na ordem cíclica, que é armazenado na variável~$y$ e ao aplicar \linkcutDelEdge($p$) a ordem cíclica de~$v$ é dividida em duas sequências, a primeira de \treapFirst($p$) até $p$ e a segunda de~$y$ até~\treapLast($p$).
+Essas sequências correspondem às ordens cíclicas dos vértices resultantes desejados.
 Finalmente, a árvore binária de busca que contém o nó~$p$ é então dividida em duas partes: uma que mantém a ordem das arestas até $p$, e outra que contém o restante.
 
 \begin{algorithm}[htb]
@@ -680,13 +692,13 @@ Finalmente, a árvore binária de busca que contém o nó~$p$ é então dividida
 
 
 A implementação da rotina \LCOCycle($\hat u$, $\hat e$) pode ser visto no Algoritmo~\ref{Algo:LCOCycle}.
-
-O processo começa comparando~$p$ com o último nó da ordem cíclica, caso esses nós sejam iguais, então a função termina imediatamente.
-Caso contrário, a função \linkcutEvert{} é aplicada a \treapLast($p$) para reverter a ordem do caminho que vai até a raiz.
-Essa operação faz com que o pai de $p$ seja o sucessor desse nó na ordem cíclica.
-Então é usado a rotina \linkcutParent{} para obter esse sucessor~$x$ e remove a aresta que liga~$p$ a~$x$.
-Em seguida, a função \linkcutAddEdge adiciona uma nova aresta que conecta o último nó da ordem cíclica ao primeiro nó dessa ordem, efetivamente ajustando a ordem cíclica.
-Finalmente, a árvore binária de busca associada é dividida em partes, reorganizadas, e depois unidas para representar a nova ordem cíclica, garantindo que~$p$ seja, de fato, o último nó na sequência cíclica.
+O processo começa comparando~$p$ com o último nó da ordem cíclica que o contém.
+Caso esses nós sejam iguais, então a função termina imediatamente.
+Caso contrário, a função $\linkcutEvert$ é aplicada a \treapLast($p$).
+Essa operação faz com que o pai de~$p$ seja o sucessor dele na ordem cíclica.
+Então é usada a rotina $\linkcutParent$ para obter esse sucessor~$x$ e remove-se a aresta que liga~$p$ a~$x$.
+Em seguida, a função $\linkcutAddEdge$ adiciona uma nova aresta que conecta o último nó da ordem cíclica que contém~$p$ ao primeiro nó dessa ordem, efetivamente ajustando a ordem cíclica.
+Finalmente, a árvore binária de busca associada é dividida em partes, reorganizadas, e depois unidas para representar a nova ordem cíclica, garantindo que~$p$ seja, de fato, o último nó na ordem cíclica.
 
 
 \begin{algorithm}[htb]
