@@ -97,32 +97,31 @@ Em $2016$, Wulff-Nilsen~\cite{Wulff-Nilsen2016} apresentou um novo algoritmo par
 
 Em $2022$, Chen et al. \cite{QC22} propuseram uma heurística baseada no diâmetro do grafo dinâmico e com ela desenvolveram um algoritmo que possui bom desempenho prático quando aplicado a grafos dinâmicos extraídos de situações reais.
 O consumo de tempo dessa heurística é linear em função do diâmetro do grafo, portanto as operações de atualização e de consulta possuem consumo de tempo assintótico de~$\O{n}$.
-
 \begin{table}[h!]
 \centering
 \begin{tabular}{||c | c | c | c | c | c||} 
  \hline
- ano & inserção & remoção & consulta & tipo & referência \\ [0.5ex] 
+ ano & inserção & remoção & consulta & tipo & ref. \\ [0.5ex] 
  \hline\hline
-  $1985$ & $\O{\!\sqrt{m}}$ & $\O{\!\sqrt{m}}$ & $\O{1}$  & determinístico; pior caso& \cite{frederickson1983data} \\ 
+	$1985$ & $\O{\!\sqrt{m}}$ & $\O{\!\sqrt{m}}$ & $\O{1}$  & {\small determinístico; pior caso} & \cite{frederickson1983data} \\ 
  \hline
-  $1992$ & $\O{\!\sqrt{n}}$ & $\O{\!\sqrt{n}}$ & $\O{1}$  & determinístico; pior caso& \cite{Eppstein1992SparsificationaTF} \\ 
+	$1992$ & $\O{\!\sqrt{n}}$ & $\O{\!\sqrt{n}}$ & $\O{1}$  & {\small determinístico; pior caso} & \cite{Eppstein1992SparsificationaTF} \\ 
  \hline
-  $1995$ & $\O{\lg^3 n}$ & $\O{\lg^3 n}$   & $\O{\lg n}$  & aleatorizado; amortizado & \cite{HenzingerKing} \\ 
+	$1995$ & $\O{\lg^3 n}$ & $\O{\lg^3 n}$   & $\O{\lg n}$  & {\small aleatorizado; amortizado} & \cite{HenzingerKing} \\ 
  \hline
-  $1997$ & $\O{\lg^2 n}$ & $\O{\lg^2 n}$   & $\O{\lg n}$  & aleatorizado; amortizado & \cite{HenzingerThorup} \\ 
+	$1997$ & $\O{\lg^2 n}$ & $\O{\lg^2 n}$   & $\O{\lg n}$  & {\small aleatorizado; amortizado} & \cite{HenzingerThorup} \\ 
  \hline
-  $1998$ & $\O{\lg^2 n}$ & $\O{\lg^2 n}$   & $\O{\lg n}$  & determinístico; amortizado & \cite{poly_log} \\ 
+	$1998$ & $\O{\lg^2 n}$ & $\O{\lg^2 n}$   & $\O{\lg n}$  & {\small determinístico; amortizado} & \cite{poly_log} \\ 
  \hline
-  $2000$ & $\O{\lg n(\lg  \lg n)^3}$ &  $\O{\lg n(\lg \lg n)^3}$      & $\O{\frac{\lg n}{\lg\lg\lg n}}$  & aleatorizado; amortizado & \cite{Thorup2000} \\ 
+	$2000$ & $\O{{\scriptstyle \lg n(\lg  \lg n)^3}}$ &  $\O{{\scriptstyle \lg n(\lg \lg n)^3}}$      & $\O{\frac{\lg n}{\lg\lg\lg n}}$  & {\small aleatorizado; amortizado }& \cite{Thorup2000} \\ 
  \hline
-  $2013$ & $\O{\lg^4 n}$ & $\O{\lg^5 n}$ & $\O{\lg n / \lg(\lg n)}$ & determinístico; pior caso& \cite{bruceM} \\
+	$2013$ & $\O{\lg^4 n}$ & $\O{\lg^5 n}$ & $\O{{\scriptstyle \lg n / \lg(\lg n)}}$ & {\small determinístico; pior caso} & \cite{bruceM} \\
  \hline
-  $2015$ & $ \mathrm{O}\!\left(\sqrt{\frac{n\left(\lg \lg n\right)^2}{\lg n}}\right)  $ & $\mathrm{O}\!\left(\sqrt{\frac{n\left(\lg \lg n\right)^2}{\lg n}}\right)$ & $\O{1}$ & determinístico; pior caso& \cite{kejlbergrasmussen_et_al} \\
+	$2015$ & $ \mathrm{O}\!\left(\sqrt{\frac{n\left(\lg \lg n\right)^2}{\lg n}}\right)  $ & $\mathrm{O}\!\left(\sqrt{\frac{n\left(\lg \lg n\right)^2}{\lg n}}\right)$ & $\O{1}$ & {\small determinístico; pior caso} & \cite{kejlbergrasmussen_et_al} \\
  \hline
-  $2016$ & $\O{  \frac{\lg^2 n}{\lg \lg n}}$ & $\O{ \frac{\lg^2 n}{\lg \lg n}} $   & $\O{ \frac{\lg n}{\lg \lg n}} $  & determinístico; amortizado & \cite{Wulff-Nilsen2016} \\ 
+	$2016$ & $\O{  \frac{\lg^2 n}{\lg \lg n}}$ & $\O{ \frac{\lg^2 n}{\lg \lg n}} $   & $\O{ \frac{\lg n}{\lg \lg n}} $  & {\small determinístico; amortizado} & \cite{Wulff-Nilsen2016} \\ 
  \hline
-  $2022$ & $\O{n}$ & $\O{n} $   & $\O{n} $  & determinístico; pior caso  & \cite{QC22} \\ 
+	$2022$ & $\O{n}$ & $\O{n} $   & $\O{n} $  & {\small determinístico; pior caso } & \cite{QC22} \\ 
  \hline
 \end{tabular}
 \caption{Consumo de tempo de estruturas de dados para o problema de conexidade em grafos dinâmicos}
