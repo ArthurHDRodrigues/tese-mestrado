@@ -48,18 +48,17 @@ Seja $G$ um grafo plano e $e$ uma de suas arestas.
 \end{enumerate}
 \end{lemma}
 
-Para cada vértice $v$ de um grafo plano, é possível construir uma ordenação cíclica~$D(v)$ das aresta incidentes a~$v$~\cite{noma2003}.
+Para cada vértice $v$ de um grafo plano~$G$, é possível construir uma ordenação cíclica~$D(v)$ das aresta incidentes a~$v$~\cite{noma2003}.
 Para obter essa ordenação, percorremos as arestas incidentes a~$v$ em sentido anti-horário até retornar à aresta inicial do percurso.
 Uma aresta é dita \defi{sucessora} de outra aresta se a primeira é sucessora da segunda nesse percurso.
-Uma lista de todas essas ordens cíclicas é chamada de~\defi{descrição combinatória plana} da imersão.
+Uma lista de todas essas ordens cíclicas é chamada de~\defi{descrição combinatória plana} de~$G$.
 
 A descrição combinatória plana é essencialmente uma lista de adjacências do grafo plano em que a ordem das células é relevante.
-Como estamos admitindo arestas paralelas, o número de ocorrências de um vértice~$u$ na lista de um vértice~$v$ será exatamente o número de arestas paralelas entre~$u$ e~$v$.
-Um laço num vértice~$u$ corresponderá a duas ocorrências de~$u$ na sua lista de adjacências.
-
 Para o algoritmo que vamos descrever nesse capítulo, cada aresta possui um identificador e armazenamos também nas células das listas o identificador das arestas.
 Observe que cada aresta corresponde a duas células nas listas de adjacência do grafo:
 Se os extremos de uma aresta são~$u$ e~$v$, há uma célula com~$u$ na lista de~$v$ e uma célula com~$v$ na lista de~$u$, ambos representando essa aresta.
+Como estamos admitindo arestas paralelas, o número de ocorrências de um vértice~$u$ na lista de um vértice~$v$ será exatamente o número de arestas paralelas entre~$u$ e~$v$.
+Um laço num vértice~$u$ corresponderá a duas ocorrências de~$u$ na sua lista de adjacências.
 Abaixo temos uma descrição combinatória plana do grafo da Figura~\ref{fig:MSF-basico-0}.
 \begin{align*}
 D(u)&=\langle (a,v), (b,v), (c,z))\rangle\\
@@ -68,7 +67,7 @@ D(z)&=\langle (e,v), (d,z), (d,z), (c,u)\rangle
 \end{align*}
 
 Pensamos nessas células como representações das duas possíveis orientações da aresta: de~$u$ para~$v$ (algumas vezes denotada por~$uv$) e de~$v$ para~$u$ (algumas vezes denotada por $vu$).
-Essas duas células terão também um apontador~$\varname{sym}$, referenciando a outra e vice-versa.
+Essas duas células terão também um apontador~$\varname{sym}$, referenciando à outra e vice-versa.
 %Ademais, cada uma dessas células possuirá também um campo $\varname{orig}$, que identificará o vértice a cuja lista pertence, ou seja, o vértice que é a origem da aresta orientada representada pela célula.
 
 \section{Dualidade}
@@ -79,6 +78,7 @@ Dado um grafo plano~$G$, o grafo \defi{dual} de~$G$~\cite{Diestel} é o grafo $G
 Para cada aresta~$e\in E$, existe exatamente uma aresta~$e^\star$ no conjunto $E^\star$.
 A aresta~$e^\star$ é chamada de \defi[aresta!dual]{aresta dual} de~$e$ e os vértices incidentes a essa aresta são as duas faces (não necessariamente distintas) cujas fronteiras contém~$e$.
 Nesse contexto, chamamos~$G$ de grafo \defi{primal}.
+O grafo dual também é um grafo plano.
 Para ilustrar a relação entre cada aresta e seu dual, geralmente desenhamos cada aresta do grafo dual cruzando a correspondente aresta do grafo primal, como mostra a Figura~\ref{fig:MSF-basico-1}.
 
 \begin{figure}[htb]
@@ -97,7 +97,6 @@ $$
 n-m+f = 2.
 $$
 \end{theorem}
-
 
 Se~$G$ é um grafo plano com~$n$ vértices e~$m$ arestas, o Teorema~\ref{teo:MSFEuler} mostra que o número de vértices do seu grafo dual é $\OTheta{n+m}$.
 
@@ -167,7 +166,7 @@ Ela possui um vértice~$\hat F$ para cada vértice~$F$ de~$C^\star$ (isto é, pa
 O peso do vértice~$\hat F$ é $\infty$, enquanto que o peso de~$\hat e^\star$ é o peso de~$e$ e o peso de~$\hat d_1$ e~$\hat d_3$ é o peso de~$d$.
 Se uma aresta $e^\star$ de $T^\star$ é incidente às faces~$F_1$ e~$F_2$ de~$C$, então o vértice~$\hat e^\star$ é ligado aos vértices~$\hat F_1$ e~$\hat F_2$.
 Se uma aresta $d^\star$ de~$C^\star$ não está em $T^\star$ e é incidente às faces~$F_1$ e~$F_2$ de~$C$, então $\hat d_1$ e $\hat d_3$ são ligados a~$\hat F_1$ e~$\hat F_2$ respectivamente.
-Veja a árvore vermelhana Figura~\ref{fig:MSF-figura-3}.
+Veja a árvore vermelha na Figura~\ref{fig:MSF-figura-3}.
 
 Note que há uma correspondência entre as arestas incidentes a um vértice~$v$ de~$G$ e os vértices vizinhos de~$\hat v$ em~$\hat T$.
 Cada aresta~$e$ de $G$ corresponde a $\hat e$, $\hat e_0$ ou~$\hat e_2$. 
@@ -232,7 +231,7 @@ Nesse caso se $F_1$ é a face à esquerda de~$e$ quando vamos de~$u$ para~$v$, o
 Como pode ser visto na Figura~\ref{fig:MSF-figura-4}.
 
 Os quatro últimos nós que representam~$e$ na link cut tree são~$e_u$, $e_v$, ${e^\star}_{F_1}$ e~${e^\star}_{F_2}$, que mantém a posição de~$e$ e~$e^\star$ nas ordens cíclicas $u$, $v$, $F_1$ e $F_2$, respectivamente.
-À frente, nos referiremos à octupla $( e_0, e_1, e_2, e_3, e_u, e_v, {e^\star}_{F_1}, {e^\star}_{F_2})$ como a \defi[octupla]{óctupla} de~$e$.
+À frente, nos referiremos à óctupla $( e_0, e_1, e_2, e_3, e_u, e_v, {e^\star}_{F_1}, {e^\star}_{F_2})$ como a \defi[octupla]{óctupla} de~$e$.
 
 Caso~$e$ seja uma aresta de~$T$, então o vértice~$\hat e$ de $\hat T$ é implementado pelos nós~$e_0$,~$e_2$ e a aresta entre eles.
 Já os nós $e_1$, $e_3$ individualmente formam as duas folhas $\hat e_1$, $\hat e_3$ de $\hat T^\star$.
@@ -245,7 +244,7 @@ A raiz dessa ABB possui um campo $\node$ que armazena o identificador $v$.
 
 Manteremos as duas ADPs de $T$ e~$T^\star$ e uma tabela de símbolos~$H$, que guarda óctuplas de cada aresta e usa como chave o identificador da aresta de~$G$.
 
-Cada nó~$v_i$ é ligado ao nó~$e_i$.
+%Cada nó~$v_i$ é ligado ao nó~$e_i$.
 
 Dessa forma, $G$ e uma floresta geradora maximal~$F$ de~$G$ de peso mínimo é representada por dois conjuntos de ADPs: o conjunto~$\hat F$ das ADPs das componentes de~$F$ e o conjunto~$\hat F^\star$ das ADPs do dual de cada componente de~$F$.
 
@@ -416,7 +415,7 @@ O processamento da rotina \MSFaddEdge{}, cuja implementação é descrita no Alg
 Para isso, primeiro é obtido os valores da tabela de símbolos~$f_i$, $u_i$, $g_i$ e $v_i$, para $0\leq i \leq 3$, associados às arestas~$f$ e $g$.
 Em seguida, é utilizado a função \LCOFindNode{} para identificar qual nó de link cut tree, $u_0$ ou $u_2$ e $v_0$ ou $v_2$, está na ordem cíclica de~$u$ e~$v$, respectivamente.
 Na linha \ref{Algo:MSFaddEdge:linhaSe}, é verificado se~$u$ e~$v$ estão na mesma componente e se há face cuja fronteira contém $u$ e $v$.
-Note que como a nova aresta será sucessora de $f$ e $g$ em suas ordens cíclicas, então essa face em comum deve ser a face obtida por \LCOFindNode($u_{i-1}$) e \LCOFindNode($v_{i-1}$), onde a subtração no indice é feito em módulo~$4$.
+Note que como a nova aresta será sucessora de $f$ e $g$ em suas ordens cíclicas, então essa face em comum deve ser a face obtida por \LCOFindNode($u_{i-1}$) e \LCOFindNode($v_{i-1}$), onde a subtração no índice é feito em módulo~$4$.
 
 Se a verificação falhar, o algoritmo retorna um erro. Caso contrário, para cada índice $i \in \{0, 1, 2, 3\}$, novos nós de link cut trees~$s_i$ e~$e_i$ são criados com \LCOMakeNode(), seus custos são atribuídos utilizando \LCOAddCost{} e $e_i$ é ligado a $s_i$ com a função \linkcutAddEdge{}.
 Depois, são atribuídos valores infinitos e menos infinitos como pesos para os nós $s_i$ e a tabela de símbolos~$H$ é atualizado com esses valores.
@@ -479,7 +478,7 @@ Para construir essa estrutura de dados, são necessárias duas estruturas fundam
 
 Árvores binárias de busca com chave implícita são particularmente úteis para armazenar sequências de objetos, no Capítulo~\ref{sec:TreapDeChaveImplicita} elas foram utilizadas para armazenar um sequência de arestas que representa uma árvore.
 No presente capítulo, elas serão usadas para armazenar a sequência de nós de link cut tree que representa a ordem cíclica de cada vértice.
-Para implementar as rotinas presentes na biblioteca de ADPs, é necessário complementar a biblioteca de ABBs de chave ímplicita com as seguintes rotinas:
+Para implementar as rotinas presentes na biblioteca de ADPs, é necessário complementar a biblioteca de ABBs de chave implícita com as seguintes rotinas:
 \begin{itemize}
 \item \treapFirst($\node$): Retorna o nó de menor chave da ABB que contém $\node$.
 \item \treapLast($\node$): Retorna o nó de maior chave da ABB que contém $\node$.
@@ -511,7 +510,7 @@ Finalmente, o nó encontrado é retornado.
 \end{algorithm}
 
 A rotina \treapLast{}, descrita no Algoritmo~\ref{Algo:TREAPlast}, é análoga à rotina \treapFirst{}.
-Ele também começa inicializando uma variável temporária, $u$, com o nó passado como argumento e em seguida, usando $\treapGetRoot$, obtem a raiz da ABB que contém $\node$.
+Ele também começa inicializando uma variável temporária, $u$, com o nó passado como argumento e em seguida, usando $\treapGetRoot$, obtém a raiz da ABB que contém $\node$.
 Mas diferentemente de \treapFirst{}, após obter a raiz, $\treapLast$ desce pela árvore, movendo-se sempre para o filho direito, até alcançar o nó mais à direita, que representa o nó com maior chave, que é retornado.
 
 \begin{algorithm}
@@ -563,7 +562,7 @@ A única diferença entre essas rotinas é na linha~\ref{Algo:TREAPsplitRight:li
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Link-Cut Trees}
+\subsection{Link cut trees}
 \label{sec:linkcuttree}
 Link-cut trees são uma estrutura de dados usada para representar e manipular florestas dinâmicas enraizadas.
 Elas foram originalmente introduzidas por Sleator e Tarjan~\cite{SleatroTarjanLinkCutTree1983,} em~1983 e dão suporte às seguintes operações:
