@@ -192,12 +192,13 @@
 \newcommand{\treapOrder}{\AlgoName{ordem}}
 \newcommand{\treapJoin}{\AlgoName{junta}}
 \newcommand{\treapSplit}{\AlgoName{corta}}
-\newcommand{\treapSplitRight}{\AlgoName{corta Direita}}
+\newcommand{\treapSplitRight}{\AlgoName{cortaDireita}}
 \newcommand{\treapGetSize}{\AlgoName{tamanho}}
 \newcommand{\treapGetEdgesLevel}{\AlgoName{arestasDeNível}}
 
-\newcommand{\treapFirst}{\AlgoName{first}}
-\newcommand{\treapLast}{\AlgoName{last}}
+\newcommand{\treapFirst}{\AlgoName{primeiro}}
+\newcommand{\treapLast}{\AlgoName{último}}
+\newcommand{\treapPredecessor}{\AlgoName{\AlgoName{Pred}}}    %(F, u, v)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Euler Tour Tree %
@@ -238,13 +239,13 @@
 % Métodos de Link/Cut Tree   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\linkcutCreate}{\AlgoName{make node}}
+\newcommand{\linkcutCreate}{\AlgoName{newLCT}}
 \newcommand{\linkcutAddEdge}{\AlgoName{link}}    %(F, u, v)
 \newcommand{\linkcutDelEdge}{\AlgoName{cut}}    %(F, u, v)
 \newcommand{\linkcutEvert}{\AlgoName{\AlgoName{evert}}}    %(v)
-\newcommand{\linkcutMax}{\AlgoName{\AlgoName{find max}}}    %(F, u, v)
-\newcommand{\linkcutMin}{\AlgoName{\AlgoName{find min}}}    %(F, u, v)
-\newcommand{\linkcutParent}{\AlgoName{\AlgoName{find parent}}}    %(F, u, v)
+\newcommand{\linkcutMax}{\AlgoName{\AlgoName{max}}}    %(F, u, v)
+\newcommand{\linkcutMin}{\AlgoName{\AlgoName{min}}}    %(F, u, v)
+\newcommand{\linkcutParent}{\AlgoName{\AlgoName{parent}}}    %(F, u, v)
 \newcommand{\linkcutQuery}{\AlgoName{\AlgoName{conectadoLC}}}    %(F, u, v)
 \newcommand{\linkcutPath}{\AlgoName{\AlgoName{caminho}}}    %(F, u, v)
 \newcommand{\linkcutWeight}{\AlgoName{\AlgoName{set weight}}}    %(F, u, v)
@@ -267,12 +268,8 @@
 \newcommand{\LCOMax}{\AlgoName{\AlgoName{Find max}}}    %(F, u, v)
 \newcommand{\LCOMin}{\AlgoName{\AlgoName{Find min}}}    %(F, u, v)
 \newcommand{\LCOEvert}{\AlgoName{\AlgoName{Evert}}}    %(F, u, v)
-\newcommand{\LCOPredecessor}{\AlgoName{\AlgoName{Pred}}}    %(F, u, v)
 \newcommand{\LCOConnected}{\AlgoName{\AlgoName{Connected}}}    %(F, u, v)
-\newcommand{\LCOLeftFace}{\AlgoName{\AlgoName{LeftFace}}}
-\newcommand{\LCONextRot}{\AlgoName{\AlgoName{NextRot}}}
 \newcommand{\LCOFindNode}{\AlgoName{Find node}}
-\newcommand{\LCOFindSubNode}{\AlgoName{Find subnode}}
 
 %\newcommand{\LCOMakeEdge}{\AlgoName{make edge}}
 %\newcommand{\LCOSplice}{\AlgoName{splice}}
