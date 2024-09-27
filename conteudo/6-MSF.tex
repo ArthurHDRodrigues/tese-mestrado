@@ -27,16 +27,36 @@ Uma dessas faces é ilimitada.
 Essa face é chamada de \defi{face exterior}.
 A Figura~\ref{fig:MSF-basico-0} mostra um grafo plano~$G$ e suas as faces.
 
-\begin{figure}[htb]
-\scalebox{1.5}{
+\begin{minipage}[b]{0.4\textwidth}
 \centering
-\input{fig/MSF-basico-0.tex}
-}
-\caption{Um grafo ponderado plano e suas faces.}
-\label{fig:MSF-basico-0}
-\end{figure}
-
-
+\begin{tabular}{| c  c |} 
+ \hline
+ aresta & peso\\
+ \hline
+ $a$ & 2 \\ 
+ \hline
+$b$ & 7 \\
+ \hline
+$c$ & 3 \\
+ \hline
+$d$ & 1 \\
+ \hline
+$e$ & 4 \\
+ \hline
+$f$ & 2 \\
+ \hline
+\end{tabular}
+\captionof{table}{Tabela de pesos}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.6\textwidth}
+\scalebox{1.5}{
+  \centering
+  \input{fig/MSF-basico-0.tex}
+  }
+  \captionof{figure}{Um grafo ponderado plano e suas faces.}
+ \label{fig:MSF-basico-0}
+\end{minipage}
 
 \begin{lemma}[Lemma 4.2.2~\cite{Diestel}]
 \label{lemma:diestel}
@@ -62,8 +82,8 @@ Um laço num vértice~$u$ corresponderá a duas ocorrências de~$u$ na sua lista
 Abaixo temos uma descrição combinatória plana do grafo da Figura~\ref{fig:MSF-basico-0}.
 \begin{align*}
 D(u)&=\langle (a,v), (b,v), (c,z))\rangle\\
-D(v)&=\langle (a,u), (e,z), (b,u)  \rangle\\
-D(z)&=\langle (e,v), (d,z), (d,z), (c,u)\rangle
+D(v)&=\langle (a,u), (d,z), (b,u)  \rangle\\
+D(y)&=\langle (e,z), (f,y), (f,y) \rangle
 \end{align*}
 
 Pensamos nessas células como representações das duas possíveis orientações da aresta: de~$u$ para~$v$ (algumas vezes denotada por~$uv$) e de~$v$ para~$u$ (algumas vezes denotada por $vu$).
