@@ -33,12 +33,12 @@ Essa representação é obtida de uma árvore~$T$ substituindo-se cada aresta po
 \label{fig:exemploSeqEuler}
 \end{figure}
 
-A representação da árvore~$T$ é essencialmente uma sequência de arcos que forma uma trilha Euleriana de~$T$.
+A representação da árvore~$T$ é essencialmente uma sequência de arcos que forma uma trilha Euleriana do digrafo correspondente a~$T$.
 Denotamos cada arco pelo par de vértices que o compõe.
 Isto é, o arco com origem no vértice~$u$ e destino no vértice~$v$ é escrito como $uv$.
 Dessa forma, um laço em~$v$ é escrito como~$vv$.
 Utilizaremos esses laços como representantes dos vértices na sequência. 
-Por exemplo, a sequência~\eqref{eq:eulerSeq} é uma trilha Euleriana da árvore da Figura~\ref{fig:exemploSeqEuler}.
+Por exemplo, a sequência~\eqref{eq:eulerSeq} é uma trilha Euleriana do digrafo correspondente a árvore da Figura~\ref{fig:exemploSeqEuler}.
 \begin{equation}
 30~00~04~41~12~22~21~11~14~44~45~55~54~40~03~33.\label{eq:eulerSeq}  
 \end{equation}
@@ -47,7 +47,7 @@ Note que a sequência depende do vértice inicial e da ordem em que cada vizinho
 
 Henzinger e King \cite{HenzingerKing} propuseram armazenar uma sequência Euleriana em uma \defi[arvore@\'arvore!binária de busca]{árvore binária de busca} (ABB), que é uma árvore binária composta por nós que possuem  quatro campos: chave, pai, filho esquerdo e filho direito~\cite{CLRS}.
 
-Os campos pai e filhos descrevem a estrutura de árvore binária à ABB. Isto é, cada nó~$N$ possui até dois filhos (esquerdo e direito), o campo \defi{pai} de cada um dos filhos aponta para~$N$. Nenhum nó é filho de dois outros nós. Pode ocorrer de um nó não possuir algum dos filhos; nesse caso, os campos correspondentes a filhos inexistentes contêm~$\Nil$. Somente um nó não possui pai: este é chamado de \defi{raiz} da ABB.
+Os campos pai e filhos descrevem a estrutura de árvore binária à ABB. Cada nó~$N$ possui até dois filhos (esquerdo e direito), o campo \defi{pai} de cada um dos filhos aponta para~$N$. Nenhum nó é filho de dois outros nós. Pode ocorrer de um nó não possuir algum dos filhos; nesse caso, os campos correspondentes a filhos inexistentes contêm~$\Nil$. Somente um nó não possui pai: este é chamado de \defi{raiz} da ABB.
 
 Para uma árvore binária ser considerada de busca, é necessário que, para todo nó $N$, todas as chaves da subárvore esquerda sejam menores do que a chave de $N$ e, simetricamente, todas as chaves da subárvore direita sejam maiores do que a chave de $N$.
 
@@ -86,7 +86,7 @@ Para simplificar os pseudocódigos, usaremos uma representação matricial para 
     \item $F \gets \hashCreate(n)$: cria e retorna um dicionário~$F$ para uma floresta dinâmica com~$n$ vértices;
     \item $F[u,v] \gets uv$: insere o nó que contém $uv$, com chave $(u,v)$ e valor associado~$uv$ na tabela~$F$.
     Se o par~$(u,v)$ já estiver presente no dicionário, então seu valor associado é substituído por~$uv$;
-    \item $F[u,v] \gets \Nil{}$: remove o nó associado ao~$(u,v)$ e seu valor associado do dicionário~$F$;
+    \item $F[u,v] \gets \Nil{}$: remove o nó associado a~$(u,v)$ e seu valor associado do dicionário~$F$;
     \item $\var \gets F[u,v]$: atribui o valor associado à chave~$(u,v)$ à variável~$\var$; Caso a chave~$(u,v)$ não esteja presente em~$F$, atribui~$\Nil$ a~$\var$.
 \end{itemize}
 Existem implementações bem conhecidas de dicionários em que a primeira rotina consome~$\O{n}$ e as demais consomem tempo esperado~$\O{1}$~\cite{CLRS}.
@@ -135,7 +135,7 @@ Em seguida, aplicaremos~\treapSplit($uv$) dividindo essa sequência em duas part
 \begin{figure}[htb]
 \centering
 \input{fig/algorit-cut-seqxy.tex}
-\caption{Sequências $A$ e $B$ após a chamada de \treapSplit($uv$).}
+\caption{Sequências $A$ e $B$ após a chamada de \treapSplit($uv$) em \dymForestDelEdge($F$, $u$, $v$).}
 \label{fig:algorit-cut-seqxy}
 \end{figure}
 
@@ -147,6 +147,7 @@ chamando \treapJoin($B$, $A$), obtendo uma trilha de~$v$ até~$u$ que passa pelo
 
 Por fim, para concluir esse algoritmo, basta chamar~\treapSplit($vu$) para dividir essa sequência em duas.
 A primeira sendo a sequência Euleriana que representa a árvore que contém o vértice~$v$ e a segunda sendo a sequência Euleriana que contém o vértice~$u$.
+Omitimos desse pseudocódigo a liberação dos nós da estrutura que não são mais usados.
 
 \begin{algorithm}[htb]
 \caption{\dymForestDelEdge($F$, $u$, $v$)}
@@ -165,7 +166,7 @@ A primeira sendo a sequência Euleriana que representa a árvore que contém o v
 Notemos que as linhas~\ref{Algo:dymForestDelEdge:1},~\ref{Algo:dymForestDelEdge:2},~\ref{Algo:dymForestDelEdge:6} e~\ref{Algo:dymForestDelEdge:7} do Algoritmo~\ref{Algo:dymForestDelEdge} consumem tempo esperado constante, enquanto que as linhas~\ref{Algo:dymForestDelEdge:3},~\ref{Algo:dymForestDelEdge:4} e~\ref{Algo:dymForestDelEdge:5}, e consequentemente \dymForestDelEdge{}, possuem consumo de tempo~$\O{\lg n}$, onde~$n$ é o número de vértices de~$F$.
 
 Como exemplo, veremos o que ocorre com a sequência~\eqref{eq:eulerSeq} durante a execução da chamada \dymForestDelEdge($F$, $1$, $4$).
-Primeiro, após a chamada de \treapSplit($14$), obtemos árvores correspondentes às seguinte duas sequências:
+Primeiro, após a chamada de \treapSplit($14$), obtemos árvores correspondentes às seguintes duas sequências:
 \begin{equation}
 A = 30~00~04~41~12~22~21~11~~~~~~~~~~~~B = 44~45~55~54~40~03~33.\nonumber
 \end{equation}
@@ -226,7 +227,7 @@ Com a rotina \ETmovetofront{} implementada, podemos elaborar~\dymForestAddEdge{}
 \end{algorithm}
 
 Primeiro, usamos \ETmovetofront{} para mover~\varname{uu} e~$vv$ para o início de suas sequências.
-Em seguida, criamos novos nós~$uv$ e~$vu$; os adicionamos à tabela de símbolos e usamos \treapJoin{} pra unir todas as sequências de tal forma que a sequência resultante seja a sequência Euleriana correspondente a árvore resultante da adição da aresta~$uv$.
+Em seguida, criamos novos nós~$uv$ e~$vu$; os adicionamos à tabela de símbolos e usamos \treapJoin{} pra unir todas as sequências de tal forma que a sequência resultante seja a sequência Euleriana correspondente à árvore resultante da adição da aresta~$uv$.
 
 Dessa forma, se quisermos adicionar uma aresta ligando os vértices~$2$ e~$5$ na floresta da Figura~\ref{fig:algorit-del-pos}, obtendo assim a floresta da Figura~\ref{fig:algorit-add-pos}, primeiro temos que mover $22$ e $55$ para o início de suas sequências, como fizemos com as sequências \eqref{eq:apos-moveToFront}. Em seguida criamos os nós contendo $25$ e $52$ e unimos essas sequências, obtendo assim a sequência:
 \begin{equation}
@@ -237,6 +238,6 @@ Logo, o consumo esperado de \dymForestAddEdge{} também será~$\O{\lg n}$.
 \begin{figure}[htb]
 \centering
 \input{fig/exemploArvoreComAresta.tex}
-\caption{Floresta resultante de~\dymForestAddEdge($F$, $2$, $5$), representada pelas sequências~\eqref{eq:add}.}
+\caption{Floresta resultante de~\dymForestAddEdge($F$, $2$, $5$), representada pela sequência~\eqref{eq:add}.}
 \label{fig:algorit-add-pos}
 \end{figure}
