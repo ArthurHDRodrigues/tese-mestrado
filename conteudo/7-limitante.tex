@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{O limitante inferior de~$\Omega(\lg n)$}
 \label{sec:lim}
-Nessa capítulo explicaremos o limitante inferior de consumo de tempo amortizado de~$\Omega(\lg n)$ para o problema de conexidade em grafos dinâmicos~\cite{lowerBoundPatrascu}. Esse limitante é incondicional e é válido mesmo para os algoritmos que usam técnicas de aleatorização, no estilo Las Vegas ou Monte Carlo. Além disso, esse limitante é válido mesmo para o problema de conexidade em grafos dinâmicos restrito a florestas ou caminhos. 
+Nesse capítulo explicaremos o limitante inferior de consumo de tempo amortizado de~$\Omega(\lg n)$ para o problema de conexidade em grafos dinâmicos com~$n$ vértices~\cite{lowerBoundPatrascu}. Esse limitante é incondicional e é válido mesmo para os algoritmos que usam técnicas de aleatorização, no estilo Las Vegas ou Monte Carlo. Além disso, esse limitante é válido mesmo para o problema de conexidade em grafos dinâmicos restrito a florestas ou coleção de caminhos. 
 
 Esse resultado é consequência de um limitante inferior para o problema de verificação de soma parcial em $S_k$ (VSP$S_k$), 
 que será elaborado na Seção~\ref{sec:lim-verificacao-Sk}.
@@ -72,7 +72,7 @@ Logo a amortização do custo da sequência por operação significa que pelo me
 Na Seção 5.5 do artigo, os autores explicitam essa nuance desenvolvendo um método que converte limitantes amortizados em limitantes que relacionam $t_u$ a $t_q$ e, ao aplicar esse método ao limitante~\eqref{eq:lim}, concluem o Teorema~\ref{theo:lim}. Pontuamos que esse método se apoia em uma análise mais fina da sequência modelada pela árvore binária usada pelo lema citado anteriormente, logo discorrer detalhadamente sobre ele também foge do escopo desse trabalho.
 
 
-\section[Redução do VSP$S_k$ para conexidade em grafos dinâmicos]{Redução do problema de VSP$S_k$ para o de conexidade em grafos dinâmicos}
+\section[Redução do VSP$S_k$ para conexidade em grafos dinâmicos]{Redução do problema VSP$S_k$ para conexidade em grafos dinâmicos}
 
 Para fazer a redução de VSP$S_k$ ao problema de conexidade em grafos dinâmicos, seguiremos o processo descrito na Seção~6.1 de Patrascu e Demaine~\cite{lowerBoundPatrascu} para  converter uma instância de VSP$S_k$ em uma instância do problema de conexidade em grafos dinâmicos. 
 
