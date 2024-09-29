@@ -23,17 +23,17 @@ Já no caso em que $u$ e $v$ estiverem conectados em~$G$, então a aresta sobres
     \item \graphDel($R$, $u$, $v$): remove $u$ da lista de adjacências de $v$ em $R$ e vice-versa.
 \end{itemize}
 
-É possível implementar as listas de adjacências de modo que o~\graphCreate{} tenha custo~$\O{n}$, \graphAdd tenha custo~$\O{1}$
+É possível implementar as listas de adjacências de modo que o~\graphCreate{} tenha custo~$\O{n}$, \graphAdd{} tenha custo~$\O{1}$
 e o \graphDel{}, desde que de posse da ocorrência de~$v$ na lista de~$u$, tenha custo~$\O{1}$.
-Na nossa implementação, que é um Python~$3$, usamos um dicionário para cada lista, que garante tempo esperado~$\O{1}$ para essas operações.
+Na nossa implementação~\cite{github}, que é em Python~$3$, usamos um dicionário para cada lista, que garante tempo esperado~$\O{1}$ para essas operações mesmo sem ter em mãos uma ocorrência de~$v$ na lista de~$u$.
 
-Vimos, na Seção~\ref{sec:connDF}, que a inserção de arestas em uma floresta dinâmica custa tempo esperado~$\O{\lg n}$.
+Vimos, na Seção~\ref{sec:connDF}, que a inserção de arestas em uma floresta dinâmica com~$n$ vértices custa tempo esperado~$\O{\lg n}$.
 Assim o consumo esperado de~\dymGraphAddEdge{} será~$\O{\lg n}$.
 
 Para remover uma aresta reserva, basta removê-la das listas de adjacências.
-Já remover uma aresta~$uv$ da floresta~$F$ é bem mais complexo, pois sua remoção de uma componente~$T$ de~$F$ gera duas árvores~$T_u$ e~$T_v$, que contêm os vértices~$u$ e~$v$, respectivamente. Esse cenário pode ser visto na Figura~\ref{fig:DG-exemploTu-Tv}. Para manter a propriedade de~$F$ ser maximal em~$G$, é necessário verificar se existe alguma aresta reserva em~$R$ que liga~$T_u$ a~$T_v$. Tal aresta é chamada de \defi[aresta!substituta]{aresta substituta}.
+Já remover de~$G$ uma aresta~$uv$ da floresta~$F$ é bem mais complexo, pois sua remoção de uma componente~$T$ de~$F$ gera duas árvores~$T_u$ e~$T_v$, que contêm os vértices~$u$ e~$v$, respectivamente. Esse cenário pode ser visto na Figura~\ref{fig:DG-exemploTu-Tv}. Para manter a propriedade de~$F$ ser maximal em~$G$, é necessário verificar se existe alguma aresta reserva em~$R$ que liga~$T_u$ a~$T_v$. Tal aresta é chamada de \defi[aresta!substituta]{aresta substituta}.
 
-Sem perda de generalidade, podemos supor que o número de vértices em~$T_u$ é menor ou igual ao o número de vértices de $T_v$.
+Sem perda de generalidade, podemos supor que o número de vértices em~$T_u$ é menor ou igual ao número de vértices de $T_v$.
 Então, para encontrar uma aresta substituta caso tal aresta exista, podemos percorrer cada vértice $t$ de $T_u$ verificando se existe algum vértice $w$ na lista de adjacências de $t$ que não seja vértice de $T_u$. Caso $w$ não seja vértice de $T_u$, como $F$ era maximal, teremos que $w$ necessariamente é um vértice de $T_v$ e assim a aresta $tw$ é uma substituta para a aresta $uv$ que foi removida.
 
 \begin{figure}[htb]
@@ -44,7 +44,7 @@ Então, para encontrar uma aresta substituta caso tal aresta exista, podemos per
 \label{fig:DG-exemploTu-Tv}
 \end{figure}
 
-Para testar rapidamente se~$t$ e~$w$ estão na mesma árvore em~$F$ depois da remoção de~$uv$, basta acionar a rotina \dymForestQuery($F$, $t$, $w$), que vimos que consome tempo esperado~$\O{\lg n}$. A rotina~\dymForestQuery{}, no pior dos casos, em que não há aresta substituta, será chamada~$\Theta(n^2)$ vezes, o que implica em um consumo esperado de tempo de~$\O{n^2\lg n}$ para o algoritmo implementado dessa forma.
+Para testar rapidamente se~$t$ e~$w$ estão na mesma árvore em~$F$ depois da remoção de~$uv$, basta acionar a rotina \dymForestQuery($F$, $t$, $w$), que vimos que consome tempo esperado~$\O{\lg n}$. A rotina~\dymForestQuery{}, no pior dos casos, em que não há aresta substituta e~$T_u$ tem $\Theta(n)$ vértices, será chamada~$\Theta(n^2)$ vezes, o que implica em um consumo esperado de pior caso de~$\O{n^2\lg n}$ para \dymGraphDelEdge{} implementado dessa forma.
 
 Notemos que somente a remoção de arestas de~$F$ é lenta e isso se deve à necessidade de busca por uma aresta substituta. Para obter uma implementação melhor, é necessário reduzir o número de arestas testadas para encontrar uma substituta. A técnica que apresentaremos no restante desse capítulo deve-se a Jacob Holm, Kristian de Lichtenberg e Mikkel Thorup~\cite{poly_log} e tem como objetivo a redução deste número de forma amortizada. Após uma rápida introdução de notação, poderemos implementar \dymGraphCreate{}, \dymGraphAddEdge{} e~\dymGraphQuery{} como descrito anteriormente, sendo necessários mais artifícios para obtermos uma implementação eficiente de~\dymGraphDelEdge{}.
 
@@ -73,14 +73,14 @@ Na próxima seção iremos, para cada rotina da biblioteca de grafos dinâmicos,
 A implementação de \dymGraphCreate{} pode ser vista no Algoritmo~\ref{Algo:dymGraphCreate}. Nessa implementação, simplesmente inicializamos cada $F_{\leqslant i}$ e~$R_i$ de~$G$ usando \dymForestCreate{} e~\graphCreate{}, respectivamente. Notemos que essas rotinas retornam a floresta e o grafo dados por~$n$ vértices isolados. Dessa forma~$F_{\leqslant \lceil \lg n \rceil}$ e~$R_{\lceil \lg n \rceil}$ juntos representam um grafo dinâmico vazio, que é exatamente o grafo que queremos construir com \dymGraphCreate{}.
 
 Será útil obter o nível de uma aresta $uv$ em tempo esperado constante.
-Assim manteremos um dicionário $G$.\nivel, cujas chaves são pares de vértices~$(u,v)$ e o valor correspondente a uma tal chave será o nível da aresta~$uv$. 
+Assim manteremos um dicionário $G$.\nivel, com as arestas de~$G$, usando como chave para a aresta $uv$ o par $\{u, v\}$ e como valor o nível da aresta~$uv$.
 Para manusear esse dicionário, usaremos uma biblioteca análoga à usada na Seção~\ref{sec:impleDF-ETT}, que relembramos a seguir.
 
 \begin{itemize}
-    \item $\nivel \gets \hashCreate($n$)$: cria e retorna um dicionário~\nivel{} para arestas de um grafo com~$n$ vértices;
-    \item $\nivel[u,v] \gets i$: insere o par $(u,v)$ com valor associado~$i$. Se o par~$(u,v)$ já estiver presente no dicionário, então seu valor associado é substituído por~$i$;
-    \item $\nivel[u,v] \gets \Nil$: remove o par~$(u,v)$ e seu valor associado do dicionário;
-    \item $var \gets \nivel[u,v]$: atribui o valor associado ao par~$(u,v)$ à variável~$var$.
+    \item $\nivel \gets$ \hashCreate($n$): cria e retorna um dicionário~\nivel{} para arestas de um grafo com~$n$ vértices;
+    \item $\nivel[u,v] \gets i$: insere a aresta $uv$ com valor associado~$i$. Se a aresta~$uv$ já estiver presente no dicionário, então seu valor associado é substituído por~$i$;
+    \item $\nivel[u,v] \gets \Nil$: remove a aresta~$uv$ e seu valor associado do dicionário;
+    \item $var \gets \nivel[u,v]$: atribui o valor associado à aresta~$uv$ à variável~$var$.
 \end{itemize}
 
 Quando for claro, nos referenciaremos a esse dicionário no pseudocódigo somente por~\nivel.
@@ -146,7 +146,7 @@ A complexidade da remoção de uma aresta em um grafo dinâmico vem da busca por
 Podemos encapsular essa busca em uma rotina própria chamada \dymGraphReplace($G$, $u$, $v$, $niv$),
 que recebe como parâmetros um grafo dinâmico~$G$, dois vértices $u$ e $v$ e um inteiro $niv$ com $1 \leq niv \leq \ceil{\lg n}$.
 
-Essa rotina é chamada assim que a aresta~$uv$, que possui nível~$niv$, foi removida de $G$ e das florestas~$F_{\leqslant j}$ para~$j \geq niv$ e 
+Essa rotina é chamada assim que a aresta~$uv$, que possui nível~$niv$, foi removida de~$G$ e das florestas~$F_{\leqslant j}$ para~$j \geqslant niv$ e 
 encontra, caso exista, uma aresta substituta em~$G$ com nível mínimo, e a insere na floresta deste nível e nas de nível acima.
 Dessa forma, a implementação de \dymGraphDelEdge{}, descrita no Algoritmo~\ref{Algo:dymGraphDelEdge}, pode ser feita em poucas linhas.
 
@@ -167,7 +167,7 @@ Dessa forma, a implementação de \dymGraphDelEdge{}, descrita no Algoritmo~\ref
 \end{algorithmic}
 \end{algorithm}
 
-Para remover uma aresta~$uv$ de nível~$i$ de~$G$, primeiro precisamos determinar se ela pertence à floresta $F_{\leqslant\lceil \lg n \rceil}$ ou não, o que é feito na linha~\ref{Algo:dymGraphDelEdge:linha:if}.
+Para remover uma aresta~$uv$ de nível~$i$ de~$G$, primeiro precisamos determinar se ela pertence à floresta $F_{\leqslant\lceil \lg n \rceil}$ ou não, o que é feito na linha~\ref{Algo:dymGraphDelEdge:linha:if} do Algoritmo~\ref{Algo:dymGraphDelEdge}.
 Para realizar esse teste, é feita uma consulta no dicionário~$F_{\leqslant\lceil \lg n \rceil}$ verificando se há alguma entrada associada à chave~$(u,v)$.
 
 Caso a aresta $uv$ não seja titular, ela é uma aresta de~$R_i$ e somente a removemos de~$R_i$, o que é feito na linha~\ref{Algo:dymGraphDelEdge:linha:removeLA}.
@@ -247,7 +247,7 @@ Como~$x$ e~$y$ passam a estar em componentes distintas de~$G$ quando removemos $
 Percorremos as arestas reservas de nível~$i$ incidentes a~$T_u$ procurando uma aresta substituta. Essas arestas estão pintadas de preto na Figura~\ref{fig:DG-depois-de-rebaixar}. Cada aresta percorrida desta forma e que não seja uma substituta de~$uv$ tem seus dois extremos em $T_u$ e também será rebaixada.
 Rebaixamos tais arestas de nível, pois elas deixam de ser candidatas a substitutas de arestas de nível~$i$, uma vez que rebaixamos as arestas de~$T_u$ de nível $i$ para o nível $i-1$. 
 Ademais esse rebaixamento não infringe a invariante~\ref{invar:SF}.
-Caso encontremos uma substituta no nível~$i$, então a inserimos nas florestas dos níveis~$i$ até~$\lceil \lg n \rceil$. Caso não encontremos uma substituta no nível~$i$, teremos rebaixado para o nível $i-1$ todas as arestas incidentes a $T_u$, e repetimos a busca no nível~$i+1$, eventualmente rebaixando arestas de nível $i+1$ para o nível $i$, até encontrarmos uma aresta substituta ou terminarmos a busca no nível~$\lceil \lg n \rceil$. Podemos ver o resultado desses rebaixamentos na Figura~\ref{fig:DG-depois-achou-sub}.
+Caso encontremos uma substituta no nível~$i$, então a inserimos nas florestas dos níveis~$i$ até~$\lceil \lg n \rceil$. Caso não encontremos uma substituta no nível~$i$, teremos rebaixado para o nível $i-1$ todas as arestas incidentes a $T_u$, e repetimos a busca no nível~$i+1$, eventualmente rebaixando arestas de nível $i+1$ incidentes a~$T_u$ para o nível $i$, até encontrarmos uma aresta substituta ou terminarmos a busca no nível~$\lceil \lg n \rceil$. Podemos ver o resultado desses rebaixamentos na Figura~\ref{fig:DG-depois-achou-sub}.
 \begin{figure}[htb]
 %\scalebox{.6}{
 \centering
@@ -280,32 +280,28 @@ Com esses dois campos, podemos adicionar uma nova rotina, chamada \treapGetEdges
 \caption{\treapGetEdgesLevel($\node$)}
 \label{Algo:treapGetEdgesLevel}
 \begin{algorithmic}[1]
-\If {$\node$.$cniv$ $=0$}
+\If {$\node$ = $\Nil$ ou $\node$.$cniv$ $=0$}
 \State \Return $\emptyset$
 \EndIf
 \State $L$ $\gets$ $\emptyset$
-\If {$\node.esq$ $\neq$ \Nil{}}
 \State  $L$ $\gets$ $L$ $\cup$ \treapGetEdgesLevel($\node.esq$)
-\EndIf
 \If {$\node$.$niv$ $=1$}
 \State $L$ $\gets$ $L$ $\cup$ $\{\node\}$
 \EndIf
-\If {$\node.dir$ $\neq$ \Nil{}}
 \State  $L$ $\gets$ $L$ $\cup$ \treapGetEdgesLevel($\node.dir$)
-\EndIf
 \State \Return $L$
 \end{algorithmic}
 \end{algorithm}
 
 Notemos que \treapGetEdgesLevel{} não altera o grafo nem as florestas ou nível das arestas, logo preserva as invariantes. Seu consumo de tempo esperado é $\O{k \lg n}$, onde $k$ é o número de arestas de nível~$i$ na árvore de $F_{\leqslant i}$ que contém o $\node$, que corresponde aos $k$ percursos da raiz da Euler tour tree até cada nó com campo $niv$ igual a~$1$. Como a Euler tour tree é balanceada, o consumo esperado de tempo de cada percurso é~$\O{\lg n}$.
 
-Com essa nova rotina em mãos, realizar o laço da linha~\ref{Algo:dymGraphReplace:linha:moveTu} se torna fácil. Primeiro construímos esse conjunto de arestas titulares de nível~$i$ e então o percorremos, rebaixando cada aresta para o nível~$i-1$.
+Com essa nova rotina em mãos, realizar o laço da linha~\ref{Algo:dymGraphReplace:linha:moveTu} do Algoritmo~\ref{Algo:dymGraphReplace} se torna fácil. Primeiro construímos esse conjunto de arestas titulares de nível~$i$ e então o percorremos, rebaixando cada aresta para o nível~$i-1$.
 
 A técnica utilizada para o laço da linha~\ref{Algo:dymGraphReplace:linha:achaSub} é análoga,
 só que agora a informação que queremos extrair das Euler tour trees é o conjunto de vértices incidentes a alguma aresta reserva de nível~$i$.
 Logo, adicionaremos dois outros novos campos aos nós das nossas Euler tour trees.
 O primeiro, chamado $res$, que é igual a~$1$ se~$v$ é incidente a alguma aresta reserva de nível~$i$, caso contrário, valerá~$0$.
-O segundo será um contador, chamado de~$cres$, que armazena o número de nós que satisfazem~$res$~$=$~$1$ na subárvore enraizada pelo nó.
+O segundo será um contador, chamado de~\varname{cres}, que armazena o número de nós que satisfazem~$res$~$=$~$1$ na subárvore enraizada pelo nó.
 Podemos ver, na Figura~\ref{fig:DG-TREAP-res}, o valor desses campos para o grafo dinâmico de nível~$i$ da Figura~\ref{fig:DG-depois-achou-sub}.
 A manutenção desses campos é análoga à manutenção feita nos campos~$niv$ e~$cniv$.
 
@@ -313,27 +309,27 @@ A manutenção desses campos é análoga à manutenção feita nos campos~$niv$ 
 \scalebox{.61}{
 \centering
 \input{fig/DG-TREAP-res}}
-\caption{Euler tour tree que armazena o grafo de nível~$i$ da Figura~\ref{fig:DG-depois-achou-sub}. Os nós que representam vértices incidentes a arestas reservas de nível~$i$ estão pintados de azul e o valor do campo~$cres$ está denotado abaixo de cada nó, quando esse campo não for nulo.}
+\caption{Euler tour tree que armazena o grafo de nível~$i$ da Figura~\ref{fig:DG-depois-achou-sub}. Os nós que representam vértices incidentes a arestas reservas de nível~$i$ estão pintados de azul e o valor do campo~\varname{cres} está denotado abaixo de cada nó, quando esse campo não for nulo.}
 \label{fig:DG-TREAP-res}
 \end{figure}
 
 Podemos fazer a manutenção desses novos campos sem onerar o custo das outras rotinas.
 Toda nova aresta inserida em algum nível possui o campo~$niv$ igual a~$1$.
 Esse campo se torna~$0$ somente quando rebaixamos essa aresta de nível,
-que ocorre somente no laço da linha~\ref{Algo:dymGraphReplace:linha:moveTu} do Algoritmo~\ref{Algo:dymGraphReplace}.
-Nessa ocasião, precisamos percorrer o caminho do nó que representa a aresta rebaixada até sua raiz decrementando~$cniv$, o que consome tempo esperado~$\O{\lg n}$. Como cada iteração desse laço já consome tempo esperado~$\O{\lg n}$, manter esse campo não prejudica o consumo de tempo da rotina.
+o que ocorre somente no laço da linha~\ref{Algo:dymGraphReplace:linha:moveTu} do Algoritmo~\ref{Algo:dymGraphReplace}.
+Nessa ocasião, precisamos percorrer o caminho do nó que representa a aresta rebaixada até sua raiz decrementando~$cniv$, o que consome tempo esperado~$\O{\lg n}$. Como cada iteração desse laço já consome tempo esperado~$\O{\lg n}$, manter esse campo não prejudica o consumo de assintótico tempo da rotina.
 
-Além disso, precisamos manter~$cniv$ e~$cres$ atualizado nas operações~\treapSplit{} e~\treapJoin{} da biblioteca de treaps, pois essas rotinas modificam a estrutura das treaps.
+Além disso, precisamos manter~$cniv$ e~\varname{cres} atualizados nas operações~\treapSplit{} e~\treapJoin{} da biblioteca de treaps, pois essas rotinas modificam a estrutura das treaps.
 A atualização desses campos consome tempo constante para cada nó da treap afetado pela modificação.
 Assim não onera o consumo de tempo dessas rotinas. 
 
 
-Além dessas ocasiões, o contador~$cres$ exige atualizações em situações adicionais.
-Toda vez que adicionamos ou removemos uma aresta reserva, devemos percorrer o caminho desse nó até a raiz atualizando o campo~$cres$, o que consome tempo esperado~$\O{\lg n}$.
+Além dessas ocasiões, o contador~\varname{cres} exige atualizações em situações adicionais.
+Toda vez que adicionamos ou removemos uma aresta reserva, devemos percorrer o caminho desse nó até a raiz atualizando o campo~\varname{cres}, o que consome tempo esperado~$\O{\lg n}$.
 
 Para concluir essa seção, argumentaremos como ocorre a amortização de custo de \dymGraphDelEdge{}. 
 A amortização ocorre em uma sequência arbitrária válida de $m$ inserções e $t$~remoções de arestas.
-Mostraremos que o custo esperado total desta $m+t$ operações é~$\O{(m+t)\lg^2 n}$,
+Mostraremos que o custo esperado total destas $m+t$ operações é~$\O{(m+t)\lg^2 n}$,
 o que resulta num custo esperado amortizado por operação de~$\O{\lg^2 n}$.
 Atribuiremos o custo de todos os rebaixamentos sofridos por uma aresta à operação de inserção dessa aresta.
 Precisamente, os custos das linhas~\ref{Algo:dymGraphReplace:linha:moveTu},~\ref{Algo:dymGraphReplace:linha:moveTu2},~\ref{Algo:dymGraphReplace:linha:moveTu3},~\ref{Algo:dymGraphReplace:linha:rebaixar} e~\ref{Algo:dymGraphReplace:linha:rebaixar2} do Algoritmo~\dymGraphReplace{} são pagos pela operação \dymGraphAddEdge{} correspondente.
