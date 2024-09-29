@@ -4,12 +4,29 @@
 \chapter{Árvore binária de busca com chave implícita}
 \label{sec:TreapDeChaveImplicita}
 
-Com uma implementação tradicional de ABB, em que o campo \varname{chave} $\mathit{chave}$ dos nós de uma ABB~$T$ com $t$ nós armazena explicitamente os números de $1$ a $t$, é necessário, na operação \treapJoin($T$, $R$), atualizar todas as chaves de~$R$ para que possuam os valores $1+t,2+t, \ldots, r+t$, onde $r$ é o número de nós em~$R$.
+O objetivo desse capítulo é mostrar uma implementação eficiente para a biblioteca das Euler tour trees:
+\begin{itemize}
+\item  \treapCreate($u$, $v$): cria e retorna uma ABB com somente um nó que armazena o par de vértices $uv$;
+\item \treapGetRoot($\node$): retorna a raiz da ABB que contém $\node$;
+\item \treapSplit($\node$): corta a ABB que contém um nó~$\node$ em três ABBs. A primeira ABB contém todos os nós com chave estritamente menor do que a chave de~$\node$, a segunda contém somente~$\node$ e a última contém todos os nós com chave estritamente maior do que a chave de~$\node$. Essa rotina retorna as raízes dessas três ABBs; e
+\item \treapJoin($T, R$): junta as ABBs~$T$ e~$R$ de modo que a sequência armazenada na árvore resultante é a concatenação das sequências armazenada em~$T$ e~$R$ e retorna a raiz dessa árvore resultante.
+\end{itemize}
 
-Analogamente, com essa implementação tradicional, ao realizar \treapSplit($T$, \varname{nó}) é necessário atualizar todos os nós com chave maior do que a chave de \varname{nó}.
-No pior dos casos, essas atualizações de chaves podem custar tempo $\OTheta{n}$, onde $n$ é o tamanho das árvores envolvidas.
+Note que cada uma das ABBs envolvidas nas Euler tour trees representa uma sequência Euleriana e os nós de cada ABB têm como chaves os inteiros de~$1$ a~$t$, onde~$t$ é o número de nós da ABB.
 
-Para reduzir o número de atualizações desse campo, na biblioteca de Euler tour trees, as ABBs utilizadas possuirão \defi{chave implícita}, ou seja, substituímos o campo $chave$ de cada nó pelo campo \defi{tam} que armazena o tamanho da subárvore enraizada naquele nó, isto é, o número de nós nessa subárvore.
+A operação \treapJoin{} terá o efeito de alterar a chave dos nós da árvore~$R$ para os inteiros de~$t+1,\ldots,t+r$, onde~$t$ e~$r$ são, respectivamente, o número de nós nas árvores~$T$ e~$R$.
+Já a operação \treapSplit{} terá o efeito de alterar as chaves da segunda e da terceira ABBs devilvidas, para que fiquem entre~$1$ e~$t$, onde~$t$ é o número de nós da ABB.
+
+Se as chaves forem armazenadas explicitamente nos nós das ABBs, não há como garantir uma implementação muito eficiente.
+Aqui apresentaremos uma implementação uma implementação que omite as chaves dos nós, e assim admite implementações para \treapJoin{} e \treapSplit{} que consomem tempo esperado~$\O{\lg n}$, onde~$n$ é o número de nós nas ABBs envolvidas nas operações.
+
+%Com uma implementação tradicional de ABB, em que o campo \varname{chave} $\mathit{chave}$ dos nós de uma ABB~$T$ com $t$ nós armazena explicitamente os números de $1$ a $t$, é necessário, na operação \treapJoin($T$, $R$), atualizar todas as chaves de~$R$ para que possuam os valores $1+t,2+t, \ldots, r+t$, onde $r$ é o número de nós em~$R$.
+
+%Analogamente, com essa implementação tradicional, ao realizar \treapSplit($T$, \varname{nó}) é necessário atualizar todos os nós com chave maior do que a chave de \varname{nó}.
+%No pior dos casos, essas atualizações de chaves podem custar tempo $\OTheta{n}$, onde $n$ é o tamanho das árvores envolvidas.
+
+Para reduzir o consumo de tempo de \treapJoin{} e \treapSplit{}, na biblioteca de Euler tour trees, as ABBs utilizadas possuirão \defi{chave implícita}.
+Especificamente, substituímos o campo $chave$ de cada nó pelo campo \defi{tam} que armazena o tamanho da subárvore enraizada naquele nó, isto é, o número de nós nessa subárvore.
 Com esse novo campo, a chave de cada nó pode ser determinada em tempo proporcional à profundidade do nó na ABB.
 
 \begin{figure}[htb]
@@ -19,10 +36,9 @@ Com esse novo campo, a chave de cada nó pode ser determinada em tempo proporcio
 \label{fig:seq-treap-size}
 \end{figure}
 
-\newpage
 Com essa mudança, em \treapJoin{} e \treapSplit{}, será necessário ajustar apenas o campo $tam$ de um número bem mais reduzido de nós, o que resultará em uma implementação com o consumo de tempo desejado.
 
-Como manipularemos muitos ponteiros a ABBs que podem conter $\Nil$, é conveniente a adição da rotina interna \treapGetSize($T$), descrita no Algoritmo~\ref{Algo:treapGetSize}, que retorna $0$ caso $T$ contenha~$\Nil$ e, no caso em que $T$ aponte para uma ABB não vazia, retorna seu tamanho. Essa rotina consome tempos~$\O{1}$.
+Como manipularemos muitos ponteiros a ABBs que podem conter $\Nil$, é conveniente a adição da rotina interna \treapGetSize($T$), descrita no Algoritmo~\ref{Algo:treapGetSize}, que retorna $0$ caso $T$ seja~$\Nil$ e, no caso em que $T$ aponte para uma ABB não vazia, retorna seu tamanho. Essa rotina consome tempos~$\O{1}$.
 
 \begin{algorithm}[!htb]
 \caption{\treapGetSize($T$)}
@@ -35,7 +51,7 @@ Como manipularemos muitos ponteiros a ABBs que podem conter $\Nil$, é convenien
 \end{algorithmic}
 \end{algorithm}
 
-Com chaves implícitas, a alteração de um nó $x$ torna necessário somente a atualização do campo $tam$ dos nós contidos no caminho entre o nó $x$ e a raiz da ABB que o contém, ou seja, o consumo de tempo dessas atualizações será assintoticamente proporcional à altura da ABB. Resta então o desafio de manter a ABB balanceada. Na próxima seção apresentaremos a estrutura de dados treap, que resolve esse desafio sem onerar o custo assintótico das operações ou adicionar demasiada complexidade aos algoritmos.
+Com chaves implícitas, a alteração de uma subárvore enraizada num nó $x$ torna necessário somente a atualização do campo $tam$ dos nós do caminho entre o nó $x$ e a raiz da ABB que contém~$x$, ou seja, o consumo de tempo dessas atualizações será assintoticamente proporcional à altura da ABB. Resta então o desafio de manter a ABB balanceada. Na próxima seção apresentaremos a estrutura de dados treap, que resolve esse desafio sem onerar o custo assintótico das operações ou adicionar demasiada complexidade aos algoritmos.
 
 \section{Treaps}
 
@@ -43,7 +59,7 @@ Com chaves implícitas, a alteração de um nó $x$ torna necessário somente a 
 Os campos referentes aos pais e filhos dão a estrutura de árvore binária ao heap e a \defi{prioridade} de um nó é um número real não negativo.
 Não apresentaremos a definição de árvore binária quase completa, pois ela é desnecessária para a definição de treaps. Para que uma árvore binária quase completa seja considerada um heap é necessário que a prioridade de cada nó seja maior do que a de seus filhos.
 
-\defi{Treaps} são uma mescla entre árvores binária de busca e heaps. Seus nós possuem cinco campos: \varname{pai}, \varname{esq}, \varname{dir}, $chave$ e $prio$. Os campos \varname{esq} e \varname{dir} representam os filhos esquerdo e direito de cada nó, respectivamente, e junto ao campo \varname{pai} descrevem a estrutura de uma árvore binária. O campo $chave$ satisfaz a propriedade de uma ABB enquanto o campo $prio$ armazena a prioridade do nó e satisfaz a propriedade de um heap. Diferentemente de heaps, treaps não precisam ser quase completas.
+\defi{Treaps} são uma mescla entre árvores binárias de busca e heaps. Seus nós possuem cinco campos: \varname{pai}, \varname{esq}, \varname{dir}, $chave$ e $prio$. Os campos \varname{esq} e \varname{dir} representam os filhos esquerdo e direito de cada nó, respectivamente, e junto ao campo \varname{pai} descrevem a estrutura de uma árvore binária. O campo $chave$ satisfaz a propriedade de uma ABB enquanto o campo $prio$ armazena a prioridade do nó e satisfaz a propriedade de um heap. Diferentemente de heaps, treaps não precisam ser quase completas.
 
 
 Tais árvores foram inicialmente nomeadas \defi[arvore@\'arvore!cartesiana]{árvores cartesianas} \cite{Vuillemin1980AUL}, pois podemos representar cada nó como um par ordenado em que a primeira coordenada é a chave do nó e a segunda coordenada é sua prioridade. Ao visualizar esses pares imersos no plano cartesiano, como feito na Figura \ref{fig:TREAP}, ambas as estruturas de ABB e heap são bem representadas. Isto é, nós com maior prioridade ficam ilustrados acima de nós com menor prioridade e os nós ficam ordenados de forma crescente, da esquerda para a direita, em função de suas chaves.
@@ -55,8 +71,11 @@ Tais árvores foram inicialmente nomeadas \defi[arvore@\'arvore!cartesiana]{árv
 \label{fig:TREAP}
 \end{figure}
 
-\section{Implementação de árvore binária de busca de chave implícita com treaps}
+\section{Treaps implícitas}
 \label{sec:imple-treap}
+
+\defi{Treaps implícitas} são treaps com chaves implícitas~\cite{treap}.
+
 A implementação da rotina \treapGetRoot{}, apresentada no Algoritmo~\ref{Algo:treapGetRoot}, independe da técnica que usaremos para balancear a treap,
 pois é uma consulta e somente usa a estrutura da ABB sem fazer modificações.
 Seu consumo de tempo é~$\O{h}$ onde~$h$ é a altura da árvore.
@@ -76,7 +95,8 @@ Seu consumo de tempo é~$\O{h}$ onde~$h$ é a altura da árvore.
 Para balancear uma treap e assim garantir consumo de tempo logarítmico, Aragon e Seidel~\cite{AragonSeidel1989, AragonSeidel1996} propuseram escolher a prioridade de cada nó de forma aleatória com distribuição de probabilidade uniforme em um universo suficientemente grande para que a probabilidade de haver nós com a mesma prioridade seja próxima de~$0$.
 
 
-Para representar essa escolha aleatória, usaremos uma função auxiliar \random() que retorna um número real entre $0$ e~$1$ escolhido com probabilidade uniforme. Esse tipo de função está presente nativamente em diversas linguagens de programação e a elaboração de sua implementação foge do escopo desse texto. Consideraremos que seu consumo de tempo é~$\O{1}$.
+Para representar essa escolha aleatória, usaremos uma função auxiliar \random() que retorna um número real entre $0$ e~$1$ escolhido com probabilidade uniforme.
+Aproximações para esse tipo de função está presente nativamente em diversas linguagens de programação e a elaboração de sua implementação foge do escopo desse texto. Consideraremos que seu consumo de tempo é~$\O{1}$.
 
 Com essa técnica de balanceamento de treaps em mãos, podemos apresentar a implementação dos demais algoritmos que compõem essa biblioteca.
 O primeiro desses é \treapCreate($u$, $v$), que recebe vértices~$u$ e~$v$, cria um nó de treap chamado \varname{nó}, inicializa seus campos apropriadamente e o retorna.
@@ -91,14 +111,13 @@ Essa rotina consome tempo~$\O{1}$.
 \State $\node$.\varname{info} $\gets$ ($u$, $v$)
 \State $\node$.\varname{esq} $\gets$ $\node$.\varname{dir} $\gets$ $\node$.\varname{pai} $\gets$ \Nil
 \State \Return $\node$
-\State $uu$, $vv$, \varname{dir}, \varname{esq}, \varname{pai}, \varname{tmp}
 \end{algorithmic}
 \end{algorithm}
 
-No capítulo anterior, definimos o protótipo da rotina \treapJoin{} como sendo \treapJoin($T_1, T_2, \ldots, T_k$).
-Essa rotina junta as ABBs $T_1, T_2, \ldots, T_{k-1}$ e $T_k$ de modo que a sequência armazenada na árvore resultante é a concatenação das sequências armazenada em~$T_1, T_2, \ldots, T_k$ e retorna a raiz dessa árvore resultante.
-Aqui elaboraremos o caso em que $k=2$ e assim adotaremos o cabeçalho~\treapJoin($T$, $R$) para esse algoritmo, cuja implementação pode ser vista no Algoritmo~\ref{Algo:TREAPjoin}.
-A generalização a partir desse caso particular é imediata.
+\NEW{
+A implementação da rotina $\treapJoin$ pode ser vista no Algoritmo~\ref{Algo:TREAPjoin}.
+Essa rotina junta as ABBs $T$ e~$R$ de modo que a sequência armazenada na árvore resultante seja a concatenação das sequências armazenada em~$T_1, T_2, \ldots, T_k$ e retorna a raiz dessa árvore resultante.
+}
 
 \begin{algorithm}
 \caption{\treapJoin($T$, $R$)}
@@ -127,7 +146,8 @@ Para compreender o funcionamento de~\treapJoin{} podemos utilizar a ideia da ime
 Na Figura~\ref{fig:treap-join}, podemos ver um exemplo de treaps~$T$ e~$R$.
 
 Após tratar os casos em que~$T$ ou~$R$ podem ser~$\Nil$, precisamos definir o nó que será a raiz da junção das duas árvores.
-Este nó será aquele com maior prioridade, assim mantendo a propriedade de heap, essa comparação é feita na linha~\ref{algo:TREAPjoin:if}.
+Este nó será aquele com maior prioridade, assim mantendo a propriedade de heap.
+Essa comparação é feita na linha~\ref{algo:TREAPjoin:if}.
 
 Se a prioridade da raiz de~$T$ for maior do que a de~$R$, como ilustrado na Figura~\ref{fig:treap-join}, então devemos juntar~$R$ a alguma subárvore de~$T$.
 Como usamos chaves implícitas e a sequência contida em~$R$ ficará após a sequência contida em~$T$ depois da junção dessas árvores,
@@ -136,31 +156,42 @@ Em seguida, corrigimos o campo \varname{pai} de $T$.\varname{dir} e o campo~$tam
 
 
 \begin{figure}[htb]
-\centering
+\begin{subfigure}{0.4\textwidth}
+\scalebox{0.55}{
 \input{fig/TREAP-join.tex}
+}
 \caption{Exemplo de duas treaps imersas no plano cartesiano.}
 \label{fig:treap-join}
+\end{subfigure}
+\hspace{1cm}
+\begin{subfigure}{0.4\textwidth}
+\scalebox{0.55}{
+\input{fig/TREAP-join-depois.tex}
+}
+\caption{Resultado da junção das treaps~$T$ e~$R$. Ponteiros modificados estão destacados em vermelho.}
+\label{fig:treap-join-depois}
+\end{subfigure}
+\caption{Antes e depois da junção das treaps~$T$ e~$R$.}
 \end{figure}
 
 
-Caso a prioridade de~$R$ seja maior do que a de~$T$, então temos juntar recursivamente $T$ com a subárvore enraizada em~$R$.\varname{esq}. Esse caso é simétrico ao anterior.
+Caso a prioridade de~$R$ seja maior do que a de~$T$, então temos que juntar recursivamente $T$ com a subárvore enraizada em~$R$.\varname{esq}. Esse caso é simétrico ao anterior.
 Podemos ver o resultado da junção das treaps~$T$ e~$R$ da Figura~\ref{fig:treap-join} na Figura~\ref{fig:treap-join-depois}.
 
 
+%\begin{figure}[htb]
+%\centering
+%\input{fig/TREAP-join-depois.tex}
+%\caption{Resultado da junção das treaps~$T$ e~$R$ da Figura~\ref{fig:treap-join}. Ponteiros modificados estão destacados em vermelho.}
+%\label{fig:treap-join-depois}
+%%\end{figure}
 
-
-\begin{figure}[htb]
-\centering
-\input{fig/TREAP-join-depois.tex}
-\caption{Resultado da junção das treaps~$T$ e~$R$ da Figura~\ref{fig:treap-join}. Ponteiros modificados estão destacados em vermelho.}
-\label{fig:treap-join-depois}
-\end{figure}
 Notemos que \treapJoin{} consome $\O{h}$ onde~$h$ é a soma das alturas das duas árvores que são unidas.
-Como a altura esperada dessas árvores é $\O{\lg n}$, temos que o consumo esperado de tempo dessas duas rotinas também será logarítmico.
+Como a altura esperada dessas árvores é $\O{\lg n}$, temos que o consumo esperado de tempo dessa rotina também será logarítmico.
 
 
 A implementação da rotina~\treapSplit($\node$) pode ser vista no Algoritmo~\ref{Algo:TREAPsplit}.
-Nesse algoritmo percorremos o caminho de~$\node$ até sua raiz reatribuindo a relação de parentesco entre os nós percorridos de forma a cortar a treap em duas:
+Nesse algoritmo percorremos o caminho de~$\node$ até a raiz de sua árvore reatribuindo a relação de parentesco entre os nós percorridos de forma a cortar a treap em duas:
 a primeira contendo todos os nós com chave menor do que a chave de~$\node$ e a segunda com todos os nós com chave maior do que~$\node$.
 Para fazer isso mantemos três ponteiros: $L$, $R$ e~\varname{tmp}. 
 Os dois primeiros apontam para as raízes das árvores resultantes desse corte e o terceiro aponta para o nó cuja relação de parentesco será modificada.
@@ -169,9 +200,7 @@ Os dois primeiros apontam para as raízes das árvores resultantes desse corte e
 \caption{\treapSplit($\node$)}
 \label{Algo:TREAPsplit}
 \begin{algorithmic}[1]
-\State $R$ $\gets $ $\node$.\varname{dir}
-\State $L$ $\gets $ $\node$.\varname{esq}
-\State \varname{tmp} $\gets$ $\node$
+\State $R$ $\gets $ $\node$.\varname{dir}; $L$ $\gets $ $\node$.\varname{esq}; \varname{tmp} $\gets$ $\node$
 \While { \varname{tmp}.\varname{pai} $\neq \Nil$}
   \If { \varname{tmp}.\varname{pai}.\varname{esq} = \varname{tmp}}
     \State \varname{tmp}.\varname{pai}.\varname{esq} $\gets$ $R$
@@ -193,43 +222,50 @@ Os dois primeiros apontam para as raízes das árvores resultantes desse corte e
 \If { $L$ $\neq \Nil$} $L$.\varname{pai} $\gets\Nil$\EndIf
 \If { $R$ $\neq \Nil$} $R$.\varname{pai} $\gets\Nil$\EndIf
 \State $\node$.\varname{dir} $\gets $ $\node$.\varname{esq} $\gets$ $\node$.\varname{pai} $\gets$ $\Nil$
-\State\Return $L$, $R$
+\State\Return $L$, $\node$, $R$
 \end{algorithmic}
 \end{algorithm}
 
 Simularemos a execução de $\treapSplit(X)$, onde $X$ é o nó de coordenadas $(6,3)$ da Figura~\ref{fig:treap-join-depois}.
 O estado inicial dos ponteiros~$L$ e~$R$ são os filhos de~$X$ e~\varname{tmp} aponta para~$X$, como mostra a Figura~\ref{fig:treap-split-1}.
 
-Se~\varname{tmp} for filho esquerdo de seu pai, isto é \varname{tmp}.\varname{pai}.\varname{esq} $=$ \varname{tmp}, então a chave de \varname{tmp}.\varname{pai} é maior do que a chave de~$X$ e ele logo deve ser um nó de~$R$.
-Além disso, sabemos que a prioridade e chave de \varname{tmp}.\varname{pai} são maiores do que a prioridade e chave de~$R$,
-logo~$R$ é o filho esquerdo de~\varname{tmp}.\varname{pai} e~\varname{tmp}.\varname{pai} deve ser a nova raiz de~$R$. 
-Após atualizar os campos de parentesco entre~$R$, \varname{tmp} e \varname{tmp}.\varname{pai}, atualizamos o valor de~\varname{tmp} para \varname{tmp}.\varname{pai}, obtemos o estado mostrado na Figura~\ref{fig:treap-split-2}.
-Então repetimos esse processo. 
-
 \begin{figure}[htb]
-\begin{subfigure}{0.3\textwidth}
+\begin{subfigure}{0.35\textwidth}
+\scalebox{.76}{
 \input{fig/TREAP-split-1.tex}
+	}
 \caption{Estado inicial dos ponteiros $L$, $R$ e \varname{tmp}.}
 \label{fig:treap-split-1}
 \end{subfigure}
-\hspace{3cm}
-\begin{subfigure}{0.3\textwidth}
+\hspace{1cm}
+\begin{subfigure}{0.35\textwidth}
+\scalebox{.76}{
 \input{fig/TREAP-split-2.tex}
-\caption{Estado após atualização dos ponteiros de parentesco.}
+	}
+\caption{Estado após atualização dos ponteiros de parentesco e \varname{tmp}.}
 \label{fig:treap-split-2}
 \end{subfigure}
 \caption{Dois estados da simulação de~\treapSplit(X).}
 \end{figure}
+Se~\varname{tmp} for filho esquerdo de seu pai, isto é, \varname{tmp}.\varname{pai}.\varname{esq} $=$ \varname{tmp}, então a chave de \varname{tmp}.\varname{pai} é maior do que a chave de~$X$ e ele logo deve ser um nó de~$R$.
+Além disso, sabemos que a prioridade e chave de \varname{tmp}.\varname{pai} são maiores do que a prioridade e chave de~$R$,
+logo~$R$ torna-se o filho esquerdo de~\varname{tmp}.\varname{pai} e~\varname{tmp}.\varname{pai} deve ser a nova raiz de~$R$. 
+Após atualizar os campos de parentesco entre~$R$, \varname{tmp} e \varname{tmp}.\varname{pai}, atualizamos o valor de~\varname{tmp} para \varname{tmp}.\varname{pai}, obtendo o estado mostrado na Figura~\ref{fig:treap-split-2}.
+Então repetimos esse processo. 
+
 
 Na próxima iteração desse laço, repetimos o processo descrito no parágrafo anterior, pois temos que o nó apontado por~\varname{tmp} é filho esquerdo de seu pai.
 Já na próxima iteração, fazemos as operações simétricas, pois teremos que o nó apontado por \varname{tmp} é filho direito de seu pai.
 Ao término dessa iteração, obtemos as treaps da Figura~\ref{fig:treap-split-final}.
 
-Notemos que \treapSplit{} consiste em um laço que percorre os nós de uma treap até sua raiz e em cada nó realiza operações de custo constante, logo seu consumo de tempo é proporcional a altura da treap e, como essa é balanceada, temos que seu consome esperado é $\O{\lg n}$.
-
 \begin{figure}[htb]
 \centering
+\scalebox{.7}{
 \input{fig/TREAP-split-final.tex}
+}
 \caption{Resultado de~\treapSplit(X).}
 \label{fig:treap-split-final}
 \end{figure}
+
+Notemos que \treapSplit{} consiste em um laço que percorre os nós de uma treap até sua raiz e em cada nó realiza operações de custo constante, logo seu consumo de tempo é proporcional à altura da treap e, como essa é balanceada, temos que seu consumo esperado é $\O{\lg n}$.
+
