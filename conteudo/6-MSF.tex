@@ -235,7 +235,7 @@ Dessa forma, a ordem cíclica é representada por um caminho na link cut tree.
 Além disso, se a aresta~$e$ liga os nós~$\hat v$ e~$\hat u$, então~$e_v$ é ligado ao nó~$e_u$ que representa~$e$ na ordem cíclica de~$\hat u$.
 
 \begin{figure}[htb]
-\scalebox{1.5}{
+\scalebox{1.3}{
 \centering
 \input{fig/MSF-basico-4}
 }
@@ -307,13 +307,50 @@ A implementação dessas rotinas será apresentada na Seção~\ref{sec:implement
 
 \section{Resolvendo MSF com ADPs}
 
-
+\subsection{Mudança de peso}
 A primeira rotina de MSF que vamos apresentar é \MSFupdate{}, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFupdate}.
-Para explicar seu funcionamento, utilizaremos a seguinte definição e resultado.
+Encorajamos a leitora ou o leitor a acompanhar a explicação do funcionamento dessa rotina antes de ler o pseudocódigo linha-a-linha.
+Essa explicação é feita logo após o pseudocódigo e detalha o embasamento teórico utilizado pelo algoritmo, seu funcionamento e ilustra a execução de \MSFupdate($G$, $a$, $5$) como exemplo, onde $G$ é o grafo da Figura~\ref{fig:MSF-figura-4}.
+
+
+\begin{algorithm}[htb]
+\caption{\MSFupdate($G$, $e$, $w$)}
+\label{Algo:MSFupdate}
+\begin{algorithmic}[1]
+\State $e_0$, $e_1$, $e_2$, $e_3$, $v_0$, $v_1$, $v_2$, $v_3$ $\gets$ $H(e)$
+\For {$i \in \{0,1,2,3\}$}
+\State  \LCOAddCost($e_i$, $w$)
+\EndFor
+
+\If {\LCOFindNode($e_0$) $=$ \LCOFindNode($e_2$)}\label{Algo:MSFupdate:linha:if} \Comment{$e\in F$}
+\State $d$ $\gets$ \LCOMin($e_1$, $e_3$)\label{Algo:MSFupdate:linhamin}
+
+\State $d_0$, $d_1$, $d_2$, $d_3$, $y_0$, $y_1$, $y_2$, $y_3$ $\gets$ $H(d)$
+\If {$d_0$.$w$ < $w$}\label{Algo:MSFupdate:linha:compara}
+\State \LCOSplit($d_1$); \LCOSplit($e_0$)\label{Algo:MSFupdate:linhasplit}
+
+\State \LCOMerge($d_0$, $d_2$); \LCOMerge($e_1$, $e_3$)\label{Algo:MSFupdate:linhas:Merge}
+
+\EndIf
+
+\Else\Comment{$e^\star\in F^\star$}
+\State $d$ $\gets$ \LCOMax($e_0$, $e_2$)\label{Algo:MSFupdate:dualinicio}
+
+\State $d_0$, $d_1$, $d_2$, $d_3$, $y_0$, $y_1$, $y_2$, $y_3$ $\gets$ $H(d)$
+\If {$d$.$w$ > $w$}
+\State \LCOSplit($d_0$); \LCOSplit($e_1$)
+
+\State \LCOMerge($d_1$, $d_3$); \LCOMerge($e_0$, $e_2$)
+
+\EndIf
+\EndIf\label{Algo:MSFupdate:dualfim}
+\end{algorithmic}
+\end{algorithm}
 
 Dado um grafo~$G$, um \defi{corte} é um conjunto de arestas cuja remoção aumenta o número de componentes conexas de~$G$.
 Seja~$F$ uma floresta maximal de~$G$ e~$uv$ uma aresta de~$F$.
 Então existe um corte associado ao par $(F, uv)$ dado pela união de $uv$ com as arestas de~$G$ que reconectam as duas árvores de~$F$ geradas pela remoção de $uv$.
+Por exemplo, o corte~$(F, a)$ é o conjunto de arestas~$\{a,~b,~c\}$.
 
 \begin{theorem}
 \label{teo:cutset}
@@ -326,63 +363,71 @@ forma um ciclo em $G^\star$.
 \end{theorem}
 
 Quando atualizamos o peso de uma aresta~$e$ de~$G$ para um novo peso~$w$, precisamos eventualmente atualizar a floresta~$F$ de peso mínimo que está sendo mantida de forma que ela continue sendo maximal e de peso mínimo.
+Existem dois casos a serem tratados: Quando $e$ é uma aresta de $F$; e quando $e^\star$ é uma aresta de~$F^\star$.
 
-Se~$e$ for uma aresta de~$F$, é necessário verificar se não há alguma aresta no corte~$(F, e)$ com peso menor do que~$w$, pois se tal aresta existir, então~$F$ e~$F^\star$ não serão mais de peso mínimo em~$G$ e máximo em~$G^\star$, respectivamente.
-Nesse caso, para corrigir isso, seja~$d$ uma aresta de menor peso no corte~$(F, e)$.
-Então~$e$ é removida de~$F$ e $e^\star$ é adicionada a~$F^\star$, e~$d^\star$ é removida de~$F^\star$ e $d$ é adicionada a~$F$.
+No Algoritmo~\ref{Algo:MSFupdate}, essa distinção de casos é feita na linha~\ref{Algo:MSFupdate:linha:if}.
+Se \LCOFindNode($e_0$) e \LCOFindNode($e_2$) retornarem o mesmo identificador~$\hat e$, então deduzimos que $e$ é uma aresta de~$F$.
+Caso contrário, temos que $e^\star$ é uma aresta de $F^\star$.
+Por exemplo, observando a Figura~\ref{fig:MSF-figura-3}, notamos que~\LCOFindNode($a_0$) e \LCOFindNode($a_2$) retornam o mesmo identificador~$\hat a$.
+Enquanto que \LCOFindNode($c_0$) e \LCOFindNode($c_2$) retornam os identificadores distintos~$\hat c_0$ e~$\hat c_2$.
+
+O primeiro caso é tratado entre as linhas~\ref{Algo:MSFupdate:linhamin} e~\ref{Algo:MSFupdate:linhas:Merge} do Algoritmo~\ref{Algo:MSFupdate}.
+Nele~$e$ é uma aresta de~$F$ e é necessário verificar se não há alguma aresta no corte~$(F, e)$ com peso menor do que novo peso~$w$, pois se tal aresta existir, então~$F$ e~$F^\star$ não serão mais de peso mínimo em~$G$ e máximo em~$G^\star$, respectivamente.
+Nesse caso, para corrigir isso, é necessário remover a aresta $e$ de~$F$ e adicionar em~$F$ uma aresta~$d$ de menor peso do corte~$(F, e)$.
+Simetricamente, também é necessário remover $d^\star$ de~$F^\star$ e adicionar~$e^\star$ nessa floresta.
 
 Pelo Teorema~\ref{teo:cutset}, o conjunto~$(F, e)^\star$ forma um ciclo em~$G^\star$.
-Como~$e^\star \in (F, e)^\star$ e~$e$ é a única aresta de~$F$ cuja aresta dual~$e^\star$ está em~$(F, e)^\star$, então as demais arestas desse corte formam um caminho~$P$ em~$F^\star$ ligando os vértices~$F_1$ e~$F_2$ incidentes a~$e^\star$.
+Como~$e$ é a única aresta de~$F$ cuja aresta dual~$e^\star$ está em~$(F, e)^\star$, então as demais arestas desse corte formam um caminho~$P$ em~$F^\star$ ligando as faces incidentes a~$e^\star$.
+Dessa forma, para obter~$d$, basta obter o mínimo no caminho~$P$.
 
-Dessa forma, na ADP~$T^\star$ de~$\hat F^\star$ que corresponde ao dual da componente de~$F$ que contém~$e$, cada aresta $d$ de menor peso em $(F, e)$ é representada por exatamente um nó que possui peso mínimo no caminho~$P$.
-Para obter um nó $d$ de menor peso em~$P$, usaremos o caminho entre os nós $e_1$ e $e_3$ e a rotina \LCOMin{} da biblioteca de ADPs.
-Isso é feito na linha~\ref{Algo:MSFupdate:linhamin} do Algoritmo~\ref{Algo:MSFupdate}.
-
-As remoções de~$e$ de~$F$ e de~$d^\star$ de~$F^\star$ são feitas nas linhas~\ref{Algo:MSFupdate:linhasplitd} e~\ref{Algo:MSFupdate:linhasplite} do Algoritmo~\ref{Algo:MSFupdate} utilizando a rotina~\LCOSplit{}, que converte os nós~$\hat e$ e~$\hat d$ nos nós $\hat d_1$, $\hat d_3$, $\hat e_0$ e~$\hat e_2$, que se tornarão as novas folhas associadas às arestas~$e$ e~$d$.
-Para adicionar as arestas~$e^\star$ a~$F^\star$ e $d$ a~$F$ são usadas as folhas~$\hat d_0$, $\hat d_2$, $\hat e_1$ e~$\hat e_3$ junto à rotina \LCOMerge{} nas linhas \ref{Algo:MSFupdate:linhas:Merged} e~\ref{Algo:MSFupdate:linhas:Mergee} do Algoritmo~\ref{Algo:MSFupdate}.
-
-Se~$e$ não for uma aresta de~$F$, então~$e^\star$ é uma aresta de~$F^\star$.
-O tratamento desse caso é análogo ao caso anterior e é feito entre as linhas~\ref{Algo:MSFupdate:dualinicio} e~\ref{Algo:MSFupdate:dualfim} do Algoritmo~\ref{Algo:MSFupdate}.
-
-\begin{algorithm}[htb]
-\caption{\MSFupdate($G$, $e$, $w$)}
-\label{Algo:MSFupdate}
-\begin{algorithmic}[1]
-\State $e_0$, $e_1$, $e_2$, $e_3$, $v_0$, $v_1$, $v_2$, $v_3$ $\gets$ $H(e)$
-\For {$i \in \{0,1,2,3\}$}
-\State  \LCOAddCost($e_i$, $w$)
-\EndFor
-
-\If {\LCOFindNode($e_0$) $=$ \LCOFindNode($e_2$)}\Comment{$e\in F$}
-\State $d$ $\gets$ \LCOMin($e_1$, $e_3$)\label{Algo:MSFupdate:linhamin}
-
-\State $d_0$, $d_1$, $d_2$, $d_3$, $y_0$, $y_1$, $y_2$, $y_3$ $\gets$ $H(d)$
-\If {$d_0$.$w$ < $w$}
-\State \LCOSplit($d_1$)\label{Algo:MSFupdate:linhasplitd}
-\State \LCOSplit($e_0$)\label{Algo:MSFupdate:linhasplite}
+As faces incidentes a~$e^\star$ são acessiveis nas ADPs pelos nós~$e_1$ e~$e_3$.
+Assim, para obter~$d$, é executado \LCOMin($e_1$, $e_3$), que é feito na linha~\ref{Algo:MSFupdate:linhamin} do Algoritmo~\ref{Algo:MSFupdate}.
+A Figura~\ref{fig:MSF-figura-5} ilustra o caminho~$P$ para o corte $(F,~a)$.
+No exemplo, \LCOMin($a_1$, $a_3$) retorna o identificado $\hat c$.
 
 
-\State \LCOMerge($d_0$, $d_2$)\label{Algo:MSFupdate:linhas:Merged}
-\State \LCOMerge($e_1$, $e_3$)\label{Algo:MSFupdate:linhas:Mergee}
+\begin{figure}[htb]
+\scalebox{1.2}{
+\centering
+\input{fig/MSF-basico-5}
+}
+\caption{Caminho entre nós $a_1$ e~$a_3$ em~$\hat T^\star$.}
+\label{fig:MSF-figura-5}
+\end{figure}
 
-\EndIf
+Em seguida, na linha~\ref{Algo:MSFupdate:linha:compara} do Algoritmo~\ref{Algo:MSFupdate}, o novo peso~$w$ é comparado com o peso do vértice~$d$.
+Caso $w$ seja menor do que o peso de~$d$, nada precisa ser feito.
+Caso contrário, na linha~\ref{Algo:MSFupdate:linhasplit} do Algoritmo~\ref{Algo:MSFupdate}, as aretas~$e$ e~$d^\star$ são removidos de~$F$ e de~$F^\star$ utilizando a rotina~\LCOSplit{}, que converte os nós~$\hat e$ e~$\hat d$ nos nós $\hat e_0$,~$\hat e_2$, $\hat d_1$ e~$\hat d_3$, que se são as novas folhas associadas às arestas~$e$ e~$d$.
+Para adicionar as arestas~$e^\star$ a~$F^\star$ e $d$ a~$F$ são usadas as folhas~$\hat d_0$, $\hat d_2$, $\hat e_1$ e~$\hat e_3$ junto à rotina \LCOMerge{} na linha~\ref{Algo:MSFupdate:linhas:Merge} do Algoritmo~\ref{Algo:MSFupdate}.
 
-\Else\Comment{$e^\star\in F^\star$}
-\State $d$ $\gets$ \LCOMax($e_0$, $e_2$)\label{Algo:MSFupdate:dualinicio}
+\begin{figure}[htb]
+\scalebox{1}{
+\centering
+\input{fig/MSF-basico-6}
+}
+\caption{Link cut trees que implementam $\hat T$ e $\hat T^\star$ ilustradas na Figura~\ref{fig:MSF-figura-3}.}
+\label{fig:MSF-figura-6}
+\end{figure}
 
-\State $d_0$, $d_1$, $d_2$, $d_3$, $y_0$, $y_1$, $y_2$, $y_3$ $\gets$ $H(d)$
-\If {$d$.$w$ > $w$}
-\State \LCOSplit($d_0$)
-\State \LCOSplit($e_1$)
+Concluindo o exemplo, o peso de $\hat c$ é $3$ que é menor do que o novo peso~$5$ de~$\hat a$.
+A Figura~\TODO{bla} ilustra esse exemplo logo após a linha~\ref{Algo:MSFupdate:linhasplit} e antes da linha~\ref{Algo:MSFupdate:linhas:Merge} do Algoritmo~\ref{Algo:MSFupdate}.
+Note que há duas árvores azuis e duas vermelhas.
+A Figura~\TODO{ble} ilustra esse exemplo após a conclusão da chamada \MSFupdate($G$, $a$, $5$).
 
-\State \LCOMerge($d_1$, $d_3$)
-\State \LCOMerge($e_0$, $e_2$)
+\begin{figure}[htb]
+\scalebox{1}{
+\centering
+\input{fig/MSF-basico-7}
+}
+\caption{Link cut trees que implementam $\hat T$ e $\hat T^\star$ ilustradas na Figura~\ref{fig:MSF-figura-3}.}
+\label{fig:MSF-figura-7}
+\end{figure}
 
-\EndIf
-\EndIf\label{Algo:MSFupdate:dualfim}
-\end{algorithmic}
-\end{algorithm}
+O segundo caso, quando~$e$ não for uma aresta de~$F$, então~$e^\star$ é uma aresta de~$F^\star$.
+O tratamento desse caso é simétrico ao primeiro caso e é feito entre as linhas~\ref{Algo:MSFupdate:dualinicio} e~\ref{Algo:MSFupdate:dualfim} do Algoritmo~\ref{Algo:MSFupdate}.
 
+
+\subsection{Remoção de aresta}
 
 A próxima rotina elaborada é \MSFdelEdge{}, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFdelEdge}.
 
@@ -428,6 +473,7 @@ Essa mesclagem é feita de forma que a descrição combinatória resultante se m
 \end{algorithmic}
 \end{algorithm}
 
+\subsection{Adição de aresta}
 
 Só é possível adicionar uma nova aresta entre dois vértices $u$ e $v$ se esses vértices estiverem em componentes distintas ou se existir uma face cuja fronteira contém ambos~$u$ e~$v$.
 A adição de uma aresta fora dessas condições quebraria a planaridade do grafo. 
