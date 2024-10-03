@@ -129,7 +129,7 @@ Para implementar \dymForestAddEdge{} e \dymForestDelEdge{}, precisaremos adicion
 Na Seção~\ref{sec:imple-treap}, mostraremos a implementação dessas rotinas e que~\treapJoin{} consome~$\O{h}$, onde~$h$ é a soma das alturas de~$T$ e~$R$ e \treapSplit{} consome~$\O{\lg n}$, onde~$n$ é número de nós da árvore que contém~$\node$.
 \NEW{
 Nos pseudocódigos que se seguem, usaremos \treapJoin{} em sequências $T_1,\ldots, T_k$ de ABBs.
-Para manter os códigos mais legivéis, vamos abreviar chamadas repetidas de \treapJoin{}, isto é, ao invés de escrever~$\treapJoin(\treapJoin(\ldots(\treapJoin(T_1,T_2),T_3)\ldots),T_k)$ escreveremos simplesmente \treapJoin($T_1,\ldots, T_k$).
+Para manter os códigos mais legíveis, vamos abreviar chamadas repetidas de \treapJoin{}, isto é, ao invés de escrever~$\treapJoin(\treapJoin(\ldots(\treapJoin(T_1,T_2),T_3)\ldots),T_k)$ escreveremos simplesmente \treapJoin($T_1,\ldots, T_k$).
 }
 
 Para implementar a operação \dymForestDelEdge($F$, $u$, $v$), descrita no Algoritmo~\ref{Algo:dymForestDelEdge}, 

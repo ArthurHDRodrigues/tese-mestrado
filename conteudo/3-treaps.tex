@@ -15,7 +15,7 @@ O objetivo desse capítulo é mostrar uma implementação eficiente para a bibli
 Note que cada uma das ABBs envolvidas nas Euler tour trees representa uma sequência Euleriana e os nós de cada ABB têm como chaves os inteiros de~$1$ a~$t$, onde~$t$ é o número de nós da ABB.
 
 A operação \treapJoin{} terá o efeito de alterar a chave dos nós da árvore~$R$ para os inteiros de~$t+1,\ldots,t+r$, onde~$t$ e~$r$ são, respectivamente, o número de nós nas árvores~$T$ e~$R$.
-Já a operação \treapSplit{} terá o efeito de alterar as chaves da segunda e da terceira ABBs devilvidas, para que fiquem entre~$1$ e~$t$, onde~$t$ é o número de nós da ABB.
+Já a operação \treapSplit{} terá o efeito de alterar as chaves da segunda e da terceira ABBs devolvidas, para que fiquem entre~$1$ e~$t$, onde~$t$ é o número de nós da ABB.
 
 Se as chaves forem armazenadas explicitamente nos nós das ABBs, não há como garantir uma implementação muito eficiente.
 Aqui apresentaremos uma implementação uma implementação que omite as chaves dos nós, e assim admite implementações para \treapJoin{} e \treapSplit{} que consomem tempo esperado~$\O{\lg n}$, onde~$n$ é o número de nós nas ABBs envolvidas nas operações.
@@ -116,7 +116,7 @@ Essa rotina consome tempo~$\O{1}$.
 
 \NEW{
 A implementação da rotina $\treapJoin$ pode ser vista no Algoritmo~\ref{Algo:TREAPjoin}.
-Essa rotina junta as ABBs $T$ e~$R$ de modo que a sequência armazenada na árvore resultante seja a concatenação das sequências armazenada em~$T_1, T_2, \ldots, T_k$ e retorna a raiz dessa árvore resultante.
+Essa rotina junta as ABBs $T$ e~$R$ de modo que a sequência armazenada na árvore resultante seja a concatenação das sequências armazenada em~$T$ e~$R$ e retorna a raiz dessa árvore resultante.
 }
 
 \begin{algorithm}
