@@ -18,7 +18,7 @@ A operação \treapJoin{} terá o efeito de alterar a chave dos nós da árvore~
 Já a operação \treapSplit{} terá o efeito de alterar as chaves da segunda e da terceira ABBs devolvidas, para que fiquem entre~$1$ e~$t$, onde~$t$ é o número de nós da ABB.
 
 Se as chaves forem armazenadas explicitamente nos nós das ABBs, não há como garantir uma implementação muito eficiente.
-Aqui apresentaremos uma implementação uma implementação que omite as chaves dos nós, e assim admite implementações para \treapJoin{} e \treapSplit{} que consomem tempo esperado~$\O{\lg n}$, onde~$n$ é o número de nós nas ABBs envolvidas nas operações.
+Aqui apresentaremos uma implementação que omite as chaves dos nós, e assim admite implementações para \treapJoin{} e \treapSplit{} que consomem tempo esperado~$\O{\lg n}$, onde~$n$ é o número de nós nas ABBs envolvidas nas operações.
 
 %Com uma implementação tradicional de ABB, em que o campo \varname{chave} $\mathit{chave}$ dos nós de uma ABB~$T$ com $t$ nós armazena explicitamente os números de $1$ a $t$, é necessário, na operação \treapJoin($T$, $R$), atualizar todas as chaves de~$R$ para que possuam os valores $1+t,2+t, \ldots, r+t$, onde $r$ é o número de nós em~$R$.
 

@@ -317,7 +317,7 @@ Podemos fazer a manutenção desses novos campos sem onerar o custo das outras r
 Toda nova aresta inserida em algum nível possui o campo~$niv$ igual a~$1$.
 Esse campo se torna~$0$ somente quando rebaixamos essa aresta de nível,
 o que ocorre somente no laço da linha~\ref{Algo:dymGraphReplace:linha:moveTu} do Algoritmo~\ref{Algo:dymGraphReplace}.
-Nessa ocasião, precisamos percorrer o caminho do nó que representa a aresta rebaixada até sua raiz decrementando~$cniv$, o que consome tempo esperado~$\O{\lg n}$. Como cada iteração desse laço já consome tempo esperado~$\O{\lg n}$, manter esse campo não prejudica o consumo de assintótico tempo da rotina.
+Nessa ocasião, precisamos percorrer o caminho do nó que representa a aresta rebaixada até sua raiz decrementando~$cniv$, o que consome tempo esperado~$\O{\lg n}$. Como cada iteração desse laço já consome tempo esperado~$\O{\lg n}$, manter esse campo não prejudica o consumo assintótico de tempo da rotina.
 
 Além disso, precisamos manter~$cniv$ e~\varname{cres} atualizados nas operações~\treapSplit{} e~\treapJoin{} da biblioteca de treaps, pois essas rotinas modificam a estrutura das treaps.
 A atualização desses campos consome tempo constante para cada nó da treap afetado pela modificação.

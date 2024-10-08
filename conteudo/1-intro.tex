@@ -24,7 +24,7 @@ Nesse caso, o grafo resultante é chamado de \defi[grafo!ponderado]{ponderado}.
 Em um problema com grafos dinâmicos ponderados também é considerada a operação
 de mudança de peso de uma determinada aresta como uma operação de atualização válida.
 
-Um problema em grafos dinâmicos envolve verificar se o corrente~$G_t$ satisfaz alguma determinada propriedade.
+Um problema em grafos dinâmicos envolve verificar se o grafo corrente~$G_t$ satisfaz alguma determinada propriedade.
 A operação de verificação dessa propriedade é chamada de \defi{consulta}.
 Solucionar um tal problema envolve desenvolver um algoritmo ou estrutura de dados capaz de dar suporte às modificações e consultas de forma \nolbreaks{eficiente}.
 
@@ -45,10 +45,8 @@ Começaremos esse estudo na próxima seção, em que faremos uma revisão histó
 No Capítulo~\ref{sec:connDF}, estudaremos o problema de conexidade em florestas dinâmicas e uma de suas soluções, proposta por Holm, de Lichtenberg e Thorup~\cite{poly_log}, que envolve Euler tour trees.
 Essa estrutura de dados utiliza árvores binárias de busca de chave implícita, cuja implementação será elaborada no Capítulo~\ref{sec:TreapDeChaveImplicita}.
 No Capítulo~\ref{sec:connDG}, expandiremos nosso estudo sobre conexidade estudando o problema de conexidade em grafos dinâmicos.
-\NEW{
 A solução estuda também foi proposta por Holm, de Lichtenberg e Thorup~\cite{poly_log}.
-Em nossos estudos, implementamos essa solução em Python3 e disponibilizamos o código no repósitorio~\cite{github}.
-}
+Em nossos estudos, implementamos essa solução em Python3 e disponibilizamos o código no repósitorio git~\cite{github}.
 
 No Capítulo~\ref{sec:MSF}, apresentaremos um algoritmo proposto por Eppstein et al.~\cite{EPPSTEIN-planar} para solucionar o problema da floresta maximal de peso mínimo em grafos dinâmicos planos ponderados.
 
@@ -102,7 +100,7 @@ Em $2016$, Wulff-Nilsen~\cite{Wulff-Nilsen2016} apresentou um novo algoritmo par
 
 Em $2022$, Chen et al. \cite{QC22} propuseram uma heurística baseada no diâmetro do grafo dinâmico e com ela desenvolveram um algoritmo que possui bom desempenho prático quando aplicado a grafos dinâmicos extraídos de situações reais.
 O consumo de tempo dessa heurística é linear em função do diâmetro do grafo, portanto as operações de atualização e de consulta possuem consumo de tempo de~$\O{n}$ no pior dos casos.
-Veja um resumo dos resultados mencionados nesta Seção na Tabela~\ref{tab:historiografia}
+Veja um resumo dos resultados mencionados nesta seção na Tabela~\ref{tab:historiografia}
 \begin{table}[h!]
 \centering
 \begin{tabular}{||c | c | c | c | c | c||} 
