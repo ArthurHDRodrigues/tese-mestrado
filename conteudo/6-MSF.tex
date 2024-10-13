@@ -88,7 +88,6 @@ D(y)&=\langle (e,z), (f,y), (f,y) \rangle
 
 Pensamos nessas células como representações das duas possíveis orientações da aresta: de~$u$ para~$v$ (algumas vezes denotada por~$uv$) e de~$v$ para~$u$ (algumas vezes denotada por $vu$).
 Essas duas células terão também um apontador~$\varname{sym}$, referenciando à outra e vice-versa.
-%Ademais, cada uma dessas células possuirá também um campo $\varname{orig}$, que identificará o vértice a cuja lista pertence, ou seja, o vértice que é a origem da aresta orientada representada pela célula.
 
 \section{Dualidade}
 \label{sec:dualidade}
@@ -161,7 +160,7 @@ O problema da floresta maximal de peso mínimo (MSF) em grafos dinâmicos planos
 \section{Árvores dinâmicas planas}
 \label{sec:MSFcomADP}
 
-Para resolver o problema da floresta geradora de peso mínimo em grafos dinâmicos planos ponderados, Eppstein et al.~\cite{EPPSTEIN-planar} propuseram o uso de uma estrutura de dados que chamaremos de \defi[arvore@\'arvore!dinâmica plana]{árvores dinâmicas planas} (ADP). Originalmente os autores denominaram essa estrutura de \textit{edge ordered dynamic tree}.
+Para resolver o problema da floresta geradora de peso mínimo em grafos planos ponderados dinâmicos, Eppstein et al.~\cite{EPPSTEIN-planar} propuseram o uso de uma estrutura de dados que chamaremos de \defi[arvore@\'arvore!dinâmica plana]{árvores dinâmicas planas} (ADP). Originalmente os autores denominaram essa estrutura de \textit{edge ordered dynamic tree}.
 Com essa estrutura, eles obtém implementações de \MSFCreate{} e \MSFweight{} que consomem tempo constante e \MSFaddEdge{}, \MSFdelEdge{} e \MSFupdate{} que consomem tempo~$\O{\lg m}$ esperado amortizado, onde~$m$ é o número de arestas no grafo corrente. 
 
 
@@ -171,25 +170,25 @@ Consequentemente, a face exterior de cada componente conexa é considerada disti
 Cada componente~$C$ de~$G$ é representada por duas árvores com pesos em seus \textit{vértices}, sendo a primeira construída a partir de uma árvore geradora de peso mínimo~$T$ de~$C$ e a segunda a partir da correspondente dual~$T^\star$.
 A Figura~\ref{fig:MSF-figura-3} ilustra essas duas árvores cuja construção será detalhada no próximo parágrafo.
 
-A primeira dessas árvores, que é denotada por~$\hat T$, é essencialmente a árvore~$T$ submetida a duas transformações:
+A primeira dessas árvores, denotada por~$\hat T$, é essencialmente a árvore~$T$ submetida a duas transformações:
 cada uma de suas arestas é subdivida; e é adicionada uma folha a cada vértice incidente a uma aresta de~$C$ que não esteja em~$T$.
-Mais precisamente, $\hat T$ possui um vértice~$\hat v$, de peso~$-\infty$, para cada vértice~$v$ de~$C$, um vértice~$\hat e$, com o peso de $e$, para cada aresta~$e$ de~$T$ e dois vértices~$\hat d_0$ e~$\hat d_2$, ambos com o peso de~$d$, para cada aresta~$d$ tal que $d^\star$ está em~$T^\star$.
+Mais precisamente, $\hat T$ possui um vértice~$\hat v$, de peso~$-\infty$, para cada vértice~$v$ de~$C$, um vértice~$\hat e$, com o peso de $e$, para cada aresta~$e$ de~$T$ e dois vértices~$\hat d_0$ e~$\hat d_2$, ambos com o peso de~$d$, para cada aresta~$d$ de~$C$ que não é uma aresta de~$T$.
 Se uma aresta~$e$ de~$T$ é incidente aos vértices~$v$ e~$u$ de~$C$, então o vértice~$\hat e$ é ligado aos vértices~$\hat v$ e~$\hat u$.
 Se uma aresta~$d$ de~$C$ não está em~$T$ e é incidente aos vértices~$v$ e~$u$ de~$C$, então~$\hat d_0$ e~$\hat d_2$ são ligados a~$\hat v$ e~$\hat u$, respectivamente.
 Note que~$\hat d_0$ e~$\hat d_2$ são folhas da árvore~$\hat T$.
-Veja a árvore azul da Figura~\ref{fig:MSF-figura-3} 
+Na Figura~\ref{fig:MSF-figura-3}, a árvore $\hat T$ está colorida em azul.
 
 A segunda árvore, denotada por~$\hat T^\star$, possui construção análoga à primeira, mas é baseada em~$T^\star$ em vez de~$T$.
-Ela possui um vértice~$\hat F$ para cada vértice~$F$ de~$C^\star$ (isto é, para cada face de~$C$), um vértice~$\hat e^\star$ para cada aresta~$e^\star$ de $T^\star$ e dois vértices $\hat d_1$ e~$\hat d_3$ para cada aresta~$d$ de $T$.
+Ela possui um vértice~$\hat F$ para cada vértice~$F$ de~$C^\star$ (isto é, para cada face de~$C$), um vértice~$\hat e^\star$ para cada aresta~$e^\star$ de $T^\star$ e dois vértices $\hat d_1$ e~$\hat d_3$ para cada aresta~$d$ de $C$ que não está em $T^\star$.
 O peso do vértice~$\hat F$ é $\infty$, enquanto que o peso de~$\hat e^\star$ é o peso de~$e$ e o peso de~$\hat d_1$ e~$\hat d_3$ é o peso de~$d$.
 Se uma aresta $e^\star$ de $T^\star$ é incidente às faces~$F_1$ e~$F_2$ de~$C$, então o vértice~$\hat e^\star$ é ligado aos vértices~$\hat F_1$ e~$\hat F_2$.
 Se uma aresta $d^\star$ de~$C^\star$ não está em $T^\star$ e é incidente às faces~$F_1$ e~$F_2$ de~$C$, então $\hat d_1$ e $\hat d_3$ são ligados a~$\hat F_1$ e~$\hat F_2$ respectivamente.
-Veja a árvore vermelha na Figura~\ref{fig:MSF-figura-3}.
+Na Figura~\ref{fig:MSF-figura-3}, a árvore $\hat T^\star$ está colorida em vermelho.
 
 Note que há uma correspondência entre as arestas incidentes a um vértice~$v$ de~$G$ e os vértices vizinhos de~$\hat v$ em~$\hat T$.
-Cada aresta~$e$ de $G$ corresponde a $\hat e$, $\hat e_0$ ou~$\hat e_2$. 
-A descrição combinatória plana dessas duas árvores é herdada de~$C$ (ou seja, de~$G$) e de~$C^\star$.
-
+Cada aresta~$e$ na vizinhança de um vértice~$v$ de~$G$ corresponde ou a $\hat e$, $\hat e_0$ ou~$\hat e_2$. 
+Logo é possível construir, para cada vértice $v$ de~$G$, uma ordem cíclica dos vizinhos de~$\hat v$ a partir da descrição combinatória plana de~$G$.
+Por exemplo, se temos \nolbreaks{$D(u) =\langle (a,v), (b,v), (c,z))\rangle$}, então a respectiva ordem cíclica de~$\hat u$ é~$\langle \hat a, \hat b_0, \hat c_2 \rangle$.
 
 
 \begin{minipage}[b]{0.4\textwidth}
@@ -210,7 +209,7 @@ A descrição combinatória plana dessas duas árvores é herdada de~$C$ (ou sej
  \hline
  $\hat g$, $\hat g_1$, $\hat g_3$ & 4 \\
  \hline
- $\hat u$, $\hat v$, $\hat z$ & $-\infty$ \\
+ $\hat u$, $\hat v$, $\hat y$, $\hat z$ & $-\infty$ \\
  \hline
  $\hat F_0$, $\hat F_1$, $\hat F_2$, $\hat F_3$ & $\infty$ \\
  \hline
@@ -226,6 +225,8 @@ A descrição combinatória plana dessas duas árvores é herdada de~$C$ (ou sej
     \end{minipage}
 
 A implementação de árvores dinâmicas planas utiliza link cut trees e árvores binárias de busca com chave implícita.
+Árvores binárias de busca com chave implícita foram tratadas em detalhes no Capitulo~\ref{sec:TreapDeChaveImplicita} e sua biblioteca será expandida na Seção~\ref{sec:extrastructABB} para poder ser usada para implementar árvores dinâmicas planas.
+Já link cut trees serão brevemente abordadas na Seção~\ref{sec:linkcuttree}.
 
 Cada vértice~$\hat v$ de~$\hat T$ e~$\hat T^\star$ é implementado por um conjunto de nós de link cut trees.
 Esse conjunto possui um nó~$e_v$ para cada aresta~$e$ na ordem cíclica de~$\hat v$.
@@ -233,6 +234,7 @@ Cada nó $e_v$ é ligado aos nós que representam a aresta sucessora e predecess
 com exceção do primeiro e do último na ordem, que são ligados somente ao seu sucessor e predecessor, respectivamente.
 Dessa forma, a ordem cíclica é representada por um caminho na link cut tree.
 Além disso, se a aresta~$e$ liga os nós~$\hat v$ e~$\hat u$, então~$e_v$ é ligado ao nó~$e_u$ que representa~$e$ na ordem cíclica de~$\hat u$.
+A Figura~\ref{fig:MSF-figura-4} ilustra as duas link cut trees que representam as árvores~$\hat T$ e~$\hat T^\star$ ilustradas na Figura~\ref{fig:MSF-figura-3}.
 
 \begin{figure}[htb]
 \scalebox{1.3}{
@@ -250,7 +252,14 @@ Os nós $e_0$ e $e_2$ representam as orientações~$uv$ e~$vu$ de~$e$.
 Nesse caso se $F_1$ é a face à esquerda de~$e$ quando vamos de~$u$ para~$v$, o nó $e_1$ representa a orientação $F_1F_2$ de~$e^\star$ enquanto que $e_3$ representa a orientação $F_2F_1$ de~$e^\star$.
 Isso pode ser visto na Figura~\ref{fig:MSF-figura-4}.
 
-Os quatro últimos nós que representam~$e$ na link cut tree são~$e_u$, $e_v$, ${e^\star}_{F_1}$ e~${e^\star}_{F_2}$, que mantém a posição de~$e$ e~$e^\star$ nas ordens cíclicas $u$, $v$, $F_1$ e $F_2$, respectivamente.
+Caso~$e$ seja uma aresta de~$T$, então o vértice~$\hat e$ de $\hat T$ é implementado pelos nós~$e_0$,~$e_2$ e a aresta entre eles.
+Já os nós $e_1$, $e_3$ individualmente formam as duas folhas $\hat e_1$, $\hat e_3$ de $\hat T^\star$.
+Caso~$d$ seja uma aresta de~$T^\star$, então o vértice~$\hat d$ de $\hat T^\star$ é implementado pelos nós~$d_1$,~$d_3$ e a aresta entre eles.
+Já os nós $d_0$, $d_2$ individualmente formam as duas folhas $\hat d_0$, $\hat d_2$ de $\hat T$.
+
+Os quatro últimos nós que representam~$e$ na link cut tree são~$e_u$, $e_v$, $e^\star_{F_1}$ e~$e^\star_{F_2}$, que mantém a posição de~$e$ e~$e^\star$ nas ordens cíclicas de~$u$, $v$, $F_1$ e $F_2$, respectivamente.
+Por exemplo, a ordem cíclica $D(u)$ é representada pela sequência de nós~$\langle a_u, b_u, c_u\rangle$.
+No restante desse capítulo, será usado~$D(u)$ para referenciar a sequência de nós de link cut tree que representam essa ordem cíclica.
 À frente, nos referiremos à óctupla $( e_0, e_1, e_2, e_3, e_u, e_v, {e^\star}_{F_1}, {e^\star}_{F_2})$ como a \defi[octupla]{óctupla} de~$e$.
 A Figura~\ref{fig:MSF-octo} ilustra a óctupla das arestas~$b$ e $g$.
 
@@ -262,22 +271,18 @@ A Figura~\ref{fig:MSF-octo} ilustra a óctupla das arestas~$b$ e $g$.
 \label{fig:MSF-octo}
 \end{figure}
 
-Caso~$e$ seja uma aresta de~$T$, então o vértice~$\hat e$ de $\hat T$ é implementado pelos nós~$e_0$,~$e_2$ e a aresta entre eles.
-Já os nós $e_1$, $e_3$ individualmente formam as duas folhas $\hat e_1$, $\hat e_3$ de $\hat T^\star$.
-Caso~$d$ seja uma aresta de~$T^\star$, então o vértice~$\hat d$ de $\hat T^\star$ é implementado pelos nós~$d_1$,~$d_3$ e a aresta entre eles.
-Já os nós $d_0$, $d_2$ individualmente formam as duas folhas $\hat d_0$, $\hat d_2$ de $\hat T$.
 
-Ademais, a sequência~$D(\hat v)$ dos nós de link cut tree que representam as arestas de~$G$ incidentes a~$v$ é armazenada em uma árvore binária de busca com chave implícita.
+Ademais, a sequência dos nós de link cut tree que representam as arestas de~$G$ incidentes a~$v$ é armazenada em uma árvore binária de busca com chave implícita.
 A ABB é utilizada para obter o primeiro e o último nó da ordem cíclica, o predecessor de um dado nó e identificar se dois nós estão na mesma ordem cíclica.
 A raiz dessa ABB possui um campo $\node$ que armazena o identificador $v$.
 
-Manteremos as duas ADPs de $T$ e~$T^\star$ e uma tabela de símbolos~$H$, que guarda óctuplas de cada aresta e usa como chave o identificador da aresta de~$G$.
+Uma árvore dinâmica plana é uma link cut tree (como as ilustradas na Figura~\ref{fig:MSF-figura-4}) que representa uma dada árvore em junção às ABBs que armazenam as sequências de nós que representam as ordens cíclicas de cada vértice dessa árvore.
+Para solucionar o problema da floresta maximal de peso mínimo em grafos dinâmicos planos, serão mantidas as duas ADPs~$\hat T$ e~$\hat T^\star$ e uma tabela de símbolos~$H$, que guarda as óctuplas de cada aresta de~$G$ e usa como chave o identificador dessas arestas.
 
 
 Dessa forma, $G$ e uma floresta geradora maximal~$F$ de~$G$ de peso mínimo é representada por dois conjuntos de ADPs: o conjunto~$\hat F$ das ADPs das componentes de~$F$ e o conjunto~$\hat F^\star$ das ADPs do dual de cada componente de~$F$.
 
-Antes de apresentar a biblioteca de ADPs, na próxima seção, vamos expandir a biblioteca de árvores binárias de busca com chave implícita, que foi inicialmente discutida no Capítulo~\ref{sec:TreapDeChaveImplicita} e apresentar a biblioteca das link cut trees.
-
+Agora que a estrutura de ADPs foi apresentada, podemos introduzir na próxima seção a biblioteca dessa estrutura de dados.
 
 \section{Biblioteca de árvores dinâmicas planas}
 \label{sec:EODT}
@@ -293,7 +298,7 @@ $p$ um nó da ordem cíclica~$D(u)$ e~$q$ um nó de~$D(v)$.
 \item \LCOConnected($p$, $q$): Retorna verdadeiro se os nós~$p$ e~$q$ estiverem na mesma ADP e falso caso contrário.
 \item \LCOFindNode($p$): Recebe um nó $p$ e retorna o vértice da~$\hat F$ que contêm $p$ em sua ordem cíclica.
 
-Por exemplo: Na Figura~\ref{fig:MSF-figura-4}, \LCOFindNode($a_u$) retorna $\hat u$, enquanto que \LCOFindNode($b_{F_1}$) retorna $\hat b_{F_1}$.
+Por exemplo: Na Figura~\ref{fig:MSF-figura-4}, \LCOFindNode($a_u$) retorna $\hat u$, \LCOFindNode($b_{F_1}$) retorna $\hat F_1$, \LCOFindNode($a_0$) e \LCOFindNode($a_2$) retornam~$\hat a$, enquanto que \LCOFindNode($a_1$) e \LCOFindNode($a_3$) retornam $\hat a_1$ e~$\hat a_3$, respectivamente.
 \item \LCOAddCost($p$, $w$): Atribui o peso~$w$ ao vértice que contém $p$ em sua ordem cíclica.
 \item \LCOMax($p$, $q$): Retorna o nó de peso máximo no percurso entre os nós~$p$ e~$q$.
 Essa operação assume que $p$ e~$q$ são nós da mesma ADP.
@@ -301,6 +306,7 @@ Essa operação assume que $p$ e~$q$ são nós da mesma ADP.
 Essa operação assume que~$p$ e~$q$ são nós da mesma ADP.
 \item \LCOCycle($p$): Permuta ciclicamente $D(u)$ de forma que o nó~$p$ seja o último na ordem.
 Se a ordem inicial tem forma $\alpha p \beta$, então a ordem resultante é $\beta\alpha p$.
+\item \treapPredecessor($p$): Retorna o predecessor do nó~$p$ na ordem cíclica.
 \end{itemize}
 
 É possível unir e separar nós das ADPs com as rotinas \LCOMerge{} e \LCOSplit{}.
@@ -310,8 +316,8 @@ Se a ordem inicial tem forma $\alpha p \beta$, então a ordem resultante é $\be
 Se~$\alpha$ e~$\beta$ são respectivamente as ordens cíclicas de~$u$ e~$v$, então $\alpha\beta$ será a ordem cíclica do vértice resultante~$z$. 
 Essa operação assume que~$u$ e~$v$ estão em ADPs distintas.
 
-\item \LCOSplit($p$, $v$, $z$): Substitui o vértice~$u$ por dois vértices~$v$ e~$z$.
-Considerando que a ordem cíclica $D(u)$ tem forma $\alpha p\beta$, então $\alpha$ e~$p\beta$ serão as ordens cíclicas de~$v$ e~$z$, respectivamente.
+\item \LCOSplit($p$, $v$, $z$): Substitui o vértice~$u$ que contém~$p$ em sua ordem cíclica por dois vértices~$v$ e~$z$.
+Se a ordem cíclica $D(u)$ tem forma $\alpha p\beta$, então $\alpha$ e~$p\beta$ serão as ordens cíclicas de~$v$ e~$z$, respectivamente.
 
 \end{itemize}
 \begin{figure}[htb]
@@ -362,7 +368,7 @@ Seu consumo é~$\O{1}$.
 A primeira rotina de MSF que vamos apresentar é \MSFupdate{}, cuja implementação pode ser vista no Algoritmo~\ref{Algo:MSFupdate}.
 Essa é a primeira rotina apresentada, pois não modifica a estrutura do grafo.
 Encorajamos a leitora ou o leitor a acompanhar a explicação do funcionamento dessa rotina antes de ler o pseudocódigo linha-a-linha.
-Essa explicação é feita logo após o pseudocódigo e detalha o embasamento teórico utilizado pelo algoritmo, seu funcionamento e ilustra a execução de \MSFupdate($G$, $a$, $5$) como exemplo, onde $G$ é o grafo da Figura~\ref{fig:MSF-figura-4}.
+Essa explicação é feita nos próximos parágrafos e detalha o embasamento teórico utilizado pelo algoritmo, seu funcionamento e ilustra a execução de \MSFupdate($G$, $a$, $5$) como exemplo, onde $G$ é o grafo da Figura~\ref{fig:MSF-figura-4}.
 
 
 \begin{algorithm}[htb]
@@ -408,7 +414,7 @@ Seja~$F$ uma floresta maximal de~$G$ e~$uv$ uma aresta de~$F$.
 Então existe um corte associado ao par $(F, uv)$ dado pela união de $uv$ com as arestas de~$G$ que reconectam as duas árvores de~$F$ geradas pela remoção de $uv$.
 Por exemplo, o corte~$(F, a)$ é o conjunto de arestas~$\{a,~b,~c\}$.
 
-\begin{theorem}
+\begin{theorem}[Proposição 4.6.1~\cite{Diestel}]
 \label{teo:cutset}
 Seja~$G$ um grafo plano, $F$ uma floresta maximal de~$G$ e~$uv$ uma aresta de~$F$.
 Então o conjunto
@@ -484,10 +490,9 @@ A Figura~\ref{fig:MSF-figura-7} ilustra esse exemplo após a conclusão da chama
 O segundo caso, quando~$e$ não for uma aresta de~$F$, então~$e^\star$ é uma aresta de~$F^\star$.
 O tratamento desse caso é simétrico ao primeiro caso e é feito entre as linhas~\ref{Algo:MSFupdate:dualinicio} e~\ref{Algo:MSFupdate:dualfim} do Algoritmo~\ref{Algo:MSFupdate}.
 
-O custo de tempo assintótico de $\MSFupdate$ é $\O{\lg m}$, onde $m$ é o número de arestas do grafo $G$ corrente.
-As linhas~\ref{Algo:MSFupdate:linha:const1}, \ref{Algo:MSFupdate:linha:const2}, \ref{Algo:MSFupdate:linha:atualizaPeso}, \ref{Algo:MSFupdate:linha:const3} e~\ref{Algo:MSFupdate:linha:const4} do Algoritmo~\ref{Algo:MSFupdate} possuem consumo de tempo constante, pois são consultas a tabela de símbolos ou operações aritméticas básicas.
-O consumo de tempo do laço da linha~\ref{Algo:MSFupdate:linha:laçosetpeso} do Algoritmo~\ref{Algo:MSFupdate} também é~$\O{1}$, pois como~$\LCOAddCost(p, w)$ possui custo $\O{t}$, onde $t$ é o número de nós na ordem cíclica que contém o nó~$p$ e esse número nas ordens cíclicas de $e_i$ é limitado a~$2$, então o consumo dessas chamadas é constantes.
-As linhas remanescentes são formadas por um número constante de chamadas de \LCOFindNode, \LCOMerge{} e~\LCOSplit{} e cada uma dessas chamadas possui consumo de tempo assintótico~$\O{\lg m}$ esperado, concluindo que $\MSFupdate$ possui consumo de tempo assintótico~$\O{\lg m}$.
+O custo de tempo assintótico de $\MSFupdate$ é $\O{\lg m}$ esperado amortizado, onde $m$ é o número de arestas do grafo $G$ corrente.
+As linhas~\ref{Algo:MSFupdate:linha:const1}, \ref{Algo:MSFupdate:linha:const2}, \ref{Algo:MSFupdate:linha:atualizaPeso}, \ref{Algo:MSFupdate:linha:const3} e~\ref{Algo:MSFupdate:linha:const4} do Algoritmo~\ref{Algo:MSFupdate} possuem consumo de tempo constante amortizado, pois são consultas a tabela de símbolos ou operações aritméticas básicas.
+As linhas remanescentes são formadas por um número constante de chamadas de \LCOAddCost, \LCOFindNode, \LCOMerge{} e~\LCOSplit{} e cada uma dessas chamadas possui consumo de tempo assintótico~$\O{\lg m}$ esperado amortizado, concluindo que $\MSFupdate$ possui consumo de tempo assintótico~$\O{\lg m}$ esperado amortizado.
 
 \subsection{Remoção de aresta}
 
@@ -530,23 +535,28 @@ No exemplo, a remoção da aresta~$b$ do grafo ilustrado na Figura~\ref{fig:MSF-
 
 
 A implementação de \MSFdelEdge{} pode ser vista no Algoritmo~\ref{Algo:MSFdelEdge}.
-Junto com a explicação do pseudocódigo, detalharemos o processamento das chamadas \MSFdelEdge($G$, $e$) e \MSFdelEdge($G$, $b$) para exemplificar os dois casos de remoção de aresta.
+Junto com a explicação do pseudocódigo, detalharemos o processamento das chamadas \MSFdelEdge($G$, $g$) e \MSFdelEdge($G$, $b$) para exemplificar os dois casos de remoção de aresta.
+
+Antes de identificar em qual caso a aresta~$e$ está, sua óctupla é obtida da tabela de símbolos e o identificado de cada nó dessa óctupla é obtido usando a rotina \LCOFindNode{} no laço da linha~\ref{Algo:MSFdelEdge:linha:laco} do Algoritmo~\ref{Algo:MSFdelEdge}.
 
 A identificação de qual caso uma aresta $e$ se encontra é feita na linha~\ref{Algo:MSFdelEdge:linha2} do Algoritmos~\ref{Algo:MSFdelEdge}.
 Nessa linha são comparados os valores de \LCOFindNode($v_1$) e \LCOFindNode($v_3$).
 Esses valores são os identificadores das faces adjacentes a~$e$.
 Caso esses identificadores sejam iguais, então as faces incidentes a~$e$ são iguais e logo~$e$ não está em ciclos de~$G$.
 Caso contrário, então~$e$ está em pelo menos um ciclo.
-A aresta $e$ se encontra no primeiro caso, pois ambas as chamadas de~\LCOFindNode($e_{F_0}$) retornam o identificador $\hat F_0$.
+A aresta~$g$ se encontra no primeiro caso, pois ambas as chamadas de~\LCOFindNode($g_{F_0}$) retornam o identificador $\hat F_0$.
 Enquanto que~$b$ se encontra no segundo caso, já que~\LCOFindNode($b_u$) retorna $\hat u$, enquanto que~\LCOFindNode($b_v$) retorna~$\hat v$.
 
 O primeiro caso é tratado entre as linhas~\ref{Algo:MSFdelEdge:linha3} e~\ref{Algo:MSFdelEdge:linha12} do Algoritmo~\ref{Algo:MSFdelEdge}.
 Remover uma aresta~$e$ das ADPs consiste em desconectar a óctupla de~$e$ do restante da ADP. 
-Para desconectar um nó~$v_i$ de sua ordem cíclica são chamadas as rotinas \LCOCycle($v_i$) e \LCOSplit($v_i$) em sucessão.
-A rotina \LCOCycle($v_i$) garante que a ordem cíclica que contém~$v_i$ tenha forma $\alpha v_i$, enquanto que a rotina \LCOSplit($v_i$) separa essa ordem em duas: a primeira contendo todos os nós anteriores a~$v_i$ e a segunda com~$v_i$ e todos os nós sucessores, mas como a ordem tem forma $\alpha v_i$, então as duas ordens resultantes são~$\alpha$ e~$v_i$.
+Para desconectar um nó~$v_i$ de sua ordem cíclica são chamadas as rotinas \LCOCycle($v_i$) e \LCOSplit($v_i$, $\hat v_1$, \Nil) em sucessão.
+A rotina \LCOCycle($v_i$) garante que a ordem cíclica que contém~$v_i$ tenha forma $\alpha v_i$, enquanto que a rotina \LCOSplit($v_i$, $\hat v_i$, \Nil) separa essa ordem em duas: a primeira contendo todos os nós anteriores a~$v_i$ e a segunda com~$v_i$ e todos os nós sucessores, mas como a ordem tem forma $\alpha v_i$, então as duas ordens resultantes são~$\alpha$ e~$v_i$.
 Ou seja, o nó~$v_i$ foi desconectado do restante da ordem cíclica.
-Esse processo é feito para $v_0$, $v_1$ e~$v_2$ nas linhas~\ref{Algo:MSFdelEdge:linha3} e~\ref{Algo:MSFdelEdge:c1:v2}.
-Relembramos que a óctupla de~$e$ e~$b$ estão ilustradas na Figura~\ref{fig:MSF-octo}.
+Essa rotina também atribui o identificador $\hat v_i$ à primeira ordem, isto é, o antigo identificador do vértice que continha~$v_i$ em sua ordem cíclica.
+O terceiro parametro da rotina \LCOSplit{} é o identificador da segunda ordem cíclica obtida por essa rotina, nesse caso a ordem é composta somente pelo nó~$v_i$.
+Como essa ordem será apagada da memória, esse novo identificador atribuído por \LCOSplit{} não é relevante para a operação da rotina \MSFdelEdge{} e para simbolizar isso no pseudocódigo, optamos por passar $\Nil$ como parâmetro nesse caso.
+Esse processo é feito para $v_0$, $v_1$ e~$v_2$ nas linhas~\ref{Algo:MSFdelEdge:linha3} a~\ref{Algo:MSFdelEdge:c1:v2}.
+Relembramos que a óctupla de~$g$ e~$b$ estão ilustradas na Figura~\ref{fig:MSF-octo}.
 
 Antes de desconectar $v_3$ de sua ordem cíclica, a face exterior~$F_e$ que contém~$v_1$ e~$v_3$ em sua ordem cíclica é dividida nas duas faces exteriores das duas componentes conexas~$G_1$ e~$G_2$ obtidas pela remoção de~$e$ de~$G$.
 As duas pontas do laço~$e^\star$, representadas por~$v_1$ e~$v_3$ nas ADPs, dividem a ordem cíclica de~$F_e$ em duas partes.
@@ -554,9 +564,10 @@ A primeira contendo todos os nós entre~$v_1$ e~$v_3$ e a segunda possuindo todo
 Isto é, se a ordem de~$F_e$ tem forma $\alpha v_1\beta v_3\gamma$, então essas duas partes têm forma~$\gamma\alpha$ e~$\beta$.
 Essas duas partes são as ordens cíclicas das futuras faces exteriores de~$G_1$ e~$G_2$, como ilustra a Figura~\ref{fig:MSF-ordem-ciclica-ponte}.
 
-Após a desconexão de $v_1$ com as chamadas \LCOCycle($v_1$) e \LCOSplit($v_1$), feitas na linha~\ref{Algo:MSFdelEdge:c1:v1}, a ordem cíclica da face~$\hat F_e$ resultante dessas operações tem forma $\beta v_3\gamma\alpha$.
-Então, para separar $\beta$ de~$\gamma\alpha$, é executado um $\LCOSplit$ em $v_3$ na linha~\ref{Algo:MSFdelEdge:c1:split}, obtendo dois vértices com ordens cíclicas~$\beta$ e~$v_3\gamma\alpha$.
-Em seguinda, $v_3$ é desconectado da segunda ordem cíclica na linha~\ref{Algo:MSFdelEdge:linha12}.
+Após a desconexão de $v_1$ com as chamadas \LCOCycle($v_1$) e \LCOSplit($v_1$, $\hat v_1$, \Nil), feitas na linha~\ref{Algo:MSFdelEdge:c1:v1}, a ordem cíclica da face~$\hat F_e$ resultante dessas operações tem forma $\beta v_3\gamma\alpha$.
+Então, para separar $\beta$ de~$\gamma\alpha$, é executado um $\LCOSplit$ em $v_3$ na linha~\ref{Algo:MSFdelEdge:c1:split}, obtendo dois vértices $F_0$ e~$F_1$ com ordens cíclicas~$\beta$ e~$v_3\gamma\alpha$.
+É importante que $F_0$ e~$F_1$ sejam identificadores únicos para as novas faces criadas, pois esses identificadores são usados na linha~\ref{Algo:MSFdelEdge:linha2} do Algoritmos~\ref{Algo:MSFdelEdge}.
+Em seguida, $v_3$ é desconectado da segunda ordem cíclica na linha~\ref{Algo:MSFdelEdge:linha12}.
 Por fim, na linha~\ref{Algo:MSFdelEdge:linha:desaloca} a óctupla de~$e$ é desalocada da memória.
 
 Na Figura~\ref{fig:MSF-ordem-ciclica-ponte-e}, podemos ver as ADPs logo antes da linha~\ref{Algo:MSFdelEdge:c1:split} do Algoritmo~\ref{Algo:MSFdelEdge}.
@@ -586,26 +597,26 @@ Essas são as duas ordens cíclicas das faces exteriores~$F_5$ e $F_4$ ilustrada
 \label{Algo:MSFdelEdge}
 \begin{algorithmic}[1]
 \State $e_0$, $e_1$, $e_2$, $e_3$, $v_0$, $v_1$, $v_2$, $v_3$ $\gets$ $G.H(e)$ \label{Algo:MSFdelEdge:linha:1}
-\For {$i\in \{0, 1, 2, 3\}$}
+\For {$i\in \{0, 1, 2, 3\}$}\label{Algo:MSFdelEdge:linha:laco}
 \State $\hat e_i$ $\gets$ \LCOFindNode($e_i$)
 \State $\hat v_i$ $\gets$ \LCOFindNode($v_i$)
 \EndFor
 
 \If {$\hat v_1$ $=$ $\hat v_3$ }\label{Algo:MSFdelEdge:linha2}\Comment{$e^\star$ é um laço de $G^\star$}
 
-\State \LCOCycle($v_0$); \LCOSplit($v_0$, $\hat v_0$, \_)\label{Algo:MSFdelEdge:linha3}
-\State \LCOCycle($v_1$); \LCOSplit($v_1$, $\hat v_1$, \_)\label{Algo:MSFdelEdge:c1:v1}
-\State \LCOCycle($v_2$); \LCOSplit($v_2$, $\hat v_2$, \_)\label{Algo:MSFdelEdge:c1:v2}
+\State \LCOCycle($v_0$); \LCOSplit($v_0$, $\hat v_0$, \Nil)\label{Algo:MSFdelEdge:linha3}
+\State \LCOCycle($v_1$); \LCOSplit($v_1$, $\hat v_1$, \Nil)\label{Algo:MSFdelEdge:c1:v1}
+\State \LCOCycle($v_2$); \LCOSplit($v_2$, $\hat v_2$, \Nil)\label{Algo:MSFdelEdge:c1:v2}
 \State \LCOSplit($v_3$, $F_0$, $F_1$) \label{Algo:MSFdelEdge:c1:split}
-\State \LCOCycle($v_3$); \LCOSplit($v_3$, $\hat v_3$, \_)\label{Algo:MSFdelEdge:linha12}
+\State \LCOCycle($v_3$); \LCOSplit($v_3$, $\hat v_3$, \Nil)\label{Algo:MSFdelEdge:linha12}
 \Else\Comment{$e$ está em um ciclo em $G$}
 \State \MSFupdate($G$, $e$, $\infty$)\label{Algo:MSFdelEdge:linha:mudaPeso}
 \State \LCOCycle($e_1$); \LCOSplit($e_1$, $\hat e_3$, $\hat e_1$) \label{Algo:MSFdelEdge:linha:split}
 \State \LCOCycle($v_1$); \LCOCycle($v_3$); \LCOMerge($v_1$, $v_3$, $F_0$) \label{Algo:MSFdelEdge:linha:merge}
-\State \LCOCycle($v_0$); \LCOSplit($v_0$, $\hat v_0$, \_) \label{Algo:MSFdelEdge:linha:1cs}
-\State \LCOCycle($v_1$); \LCOSplit($v_1$, $\hat v_1$, \_ )
-\State \LCOCycle($v_2$); \LCOSplit($v_2$, $\hat v_2$, \_)
-\State \LCOCycle($v_3$); \LCOSplit($v_3$, $\hat v_3$, \_)
+\State \LCOCycle($v_0$); \LCOSplit($v_0$, $\hat v_0$, \Nil) \label{Algo:MSFdelEdge:linha:1cs}
+\State \LCOCycle($v_1$); \LCOSplit($v_1$, $F_0$, \Nil )
+\State \LCOCycle($v_2$); \LCOSplit($v_2$, $\hat v_2$, \Nil)
+\State \LCOCycle($v_3$); \LCOSplit($v_3$, $F_0$, \Nil)
 	\label{Algo:MSFdelEdge:linha:ucs}
 	\label{Algo:MSFdelEdge:linha:fim}
 \EndIf
@@ -621,11 +632,11 @@ Em nosso exemplo, note que \MSFupdate($G$, $b$, $\infty$) não altera as estrutu
 
 Em seguida, na linha~\ref{Algo:MSFdelEdge:linha:split} do Algoritmo~\ref{Algo:MSFdelEdge}, o vértice~$\hat e^\star$ é dividido em dois vértices~$\hat e_1$ e~$\hat e_3$. 
 Essa operação quebra a ADP~$\hat T^\star$ em duas, assim tornando possível juntar as faces~$F_e$ e~$F'_e$ incidentes a~$e$ sem criar ciclos em~$\hat T^\star$.
-A junção dessas faces ocorre na linha~\ref{Algo:MSFdelEdge:linha:merge} do Algoritmo~\ref{Algo:MSFdelEdge} e é feita de forma que a descrição combinatória resultante se mantenha plana, isto é, se $\alpha v_1 \beta$ e $\gamma v_3 \delta$ são as ordens cíclicas de~$\hat F_e$ e~$\hat F'_e$, respectivamente, então $\alpha \delta\gamma\beta$ é a ordenação cíclica da face resultante.
+A junção dessas faces ocorre na linha~\ref{Algo:MSFdelEdge:linha:merge} do Algoritmo~\ref{Algo:MSFdelEdge} e é feita de forma que a descrição combinatória resultante se mantenha plana, isto é, se $\alpha v_1 \beta$ e $\gamma v_3 \delta$ são as ordens cíclicas de~$\hat F_e$ e~$\hat F'_e$, respectivamente, então $\alpha \delta\gamma\beta$ é a ordem cíclica da face resultante.
 Como ilustra a Figura~\ref{fig:MSF-ordem-ciclica-nao-ponte}.
 Em mais detalhes, as chamadas \LCOCycle($v_1$) e \LCOCycle($v_3$) garantem que as ordens cíclicas de~$F'_e$ e~$F_e$ tenham forma~$\delta\gamma v_1$ e~$\beta\alpha v_3$.
-Em seguida, a chamada \LCOMerge($v_1$, $v_3$) junta essas as faces~$F'_e$ e~$F_e$ criando uma nova face com ordem cíclica $\delta\gamma v_1\beta\alpha v_3$.
-Entre as linhas~\ref{Algo:MSFdelEdge:linha:1cs} e~\ref{Algo:MSFdelEdge:linha:ucs}, cada nó~$v_i$ é desconectado de sua ordem cíclica com um par de chamadas \LCOCycle($v_i$) e \LCOSplit($v_i$) como feito no caso anterior.
+Em seguida, a chamada \LCOMerge($v_1$, $v_3$, $F_0$) junta as faces~$F'_e$ e~$F_e$ criando uma nova face~$F_0$ com ordem cíclica $\delta\gamma v_1\beta\alpha v_3$.
+Entre as linhas~\ref{Algo:MSFdelEdge:linha:1cs} e~\ref{Algo:MSFdelEdge:linha:ucs}, cada nó~$v_i$ é desconectado de sua ordem cíclica com um par de chamadas \LCOCycle($v_i$) e \LCOSplit($v_i$, $\hat v_i$, $\Nil$) como feito no caso anterior.
 Em particular, os nós~$v_1$ e $v_3$ são desconectado da ordem cíclica $\delta\gamma v_1\beta\alpha v_3$ obtendo a ordem cíclica $\delta\gamma\beta\alpha$ como desejado.
 Por fim, a óctupla é desalocada da memória.
 
@@ -634,6 +645,7 @@ Por fim, a óctupla é desalocada da memória.
 \begin{subfigure}{.4\textwidth}
 \input{fig/MSF-ordem-ciclica-nao-ponte}
 \caption{Antes de remover $e$.}
+\label{fig:MSF-ordem-ciclica-nao-ponte}
 \end{subfigure}
 \hfill
 \begin{subfigure}{.4\textwidth}
@@ -642,7 +654,6 @@ Por fim, a óctupla é desalocada da memória.
 \label{fig:MSF-ordem-ciclica-nao-ponte-depois}
 \end{subfigure}
 \caption{Ordens cíclicas das faces incidentes à aresta~$e$ antes e depois de sua remoção.}
-\label{fig:MSF-ordem-ciclica-nao-ponte}
 \end{figure}
 
 Na simulação de \MSFdelEdge($G$, $b$), após cortar o vértice~$\hat b$ em dois, obtém-se duas ADPs, uma contendo somente o vértice~$\hat F_2$ e as duas folhas $\hat b_1$ e~$\hat a_1$, como pode ser visto na Figura~\ref{fig:MSF-remove-aresta-ex-1}.
@@ -742,8 +753,8 @@ Então é criado uma nova óctupla com \LCOMakeOcto{}, que é guardada na tabela
 
 \State $G.H(e)$ $\gets$ $e_0$, $e_1$, $e_2$, $e_3$, $s_0$, $s_1$, $s_2$, $s_3$ $\gets$ \LCOMakeOcto($e$, $w$) \label{Algo:MSFaddEdge:linha:const3}
 
-\State \LCOCycle($u_i$); \LCOMerge($u_i$, $s_0$, \LCOFindNode($u_i$))\label{Algo:MSFaddEdge:merges0}
-\State \LCOCycle($v_j$); \LCOMerge($v_j$, $s_2$, \LCOFindNode($v_j$))\label{Algo:MSFaddEdge:merges2}
+\State \LCOCycle($u_i$); \LCOMerge($u_i$, $s_0$, $u$)\label{Algo:MSFaddEdge:merges0}
+\State \LCOCycle($v_j$); \LCOMerge($v_j$, $s_2$, $v$)\label{Algo:MSFaddEdge:merges2}
 
 
 \State \LCOCycle(\treapPredecessor($u_{i-1}$)); \LCOMerge($u_{i-1}$, $s_3$, \LCOFindNode($u_{i-1}$))\label{Algo:MSFaddEdge:merges1}
@@ -760,11 +771,11 @@ Então é criado uma nova óctupla com \LCOMakeOcto{}, que é guardada na tabela
 \end{algorithm}
 
 As linhas~\ref{Algo:MSFaddEdge:merges0} e~\ref{Algo:MSFaddEdge:merges2} executam \LCOCycle{} e~\LCOMerge{} para juntar os nós~$s_0$ e~$s_2$ às ordens cíclicas dos vértices~$u$ e~$v$ de~$\hat T$.  
-Ao executar \LCOCycle($u_i$), a ordem cíclica de $u$ obtém forma~$\alpha u_i$, assim a operação \LCOMerge($u_i$, $s_0$) resulta na ordem cíclica $\alpha u_is_0$.
-Analogamente, \LCOCycle($v_j$) seguido de \LCOMerge($v_j$, $s_2$) resulta a ordem cíclica $\beta v_j s_2$ para o vértice~$v$.
+Ao executar \LCOCycle($u_i$), a ordem cíclica de $u$ obtém forma~$\alpha u_i$, assim a operação \LCOMerge($u_i$, $s_0$, $u$) resulta na ordem cíclica $\alpha u_is_0$.
+Analogamente, \LCOCycle($v_j$) seguido de \LCOMerge($v_j$, $s_2$, $v$) resulta a ordem cíclica $\beta v_j s_2$ para o vértice~$v$.
 Isto é, a nova aresta é inserida após $f$ e $g$ nas ordens cíclicas.
 
-As linhas~\ref{Algo:MSFaddEdge:merges1} e~\ref{Algo:MSFaddEdge:merges3} fazem o mesmo para os nós~$s_1$ e~$s_3$ nas ordens cíclicas dos vértices de $\hat T^\star$.
+As linhas~\ref{Algo:MSFaddEdge:merges1} e~\ref{Algo:MSFaddEdge:merges3} fazem o mesmo para os nós~$s_1$ e~$s_3$ nas ordens cíclicas dos vértices de~$\hat T^\star$.
 Note que, como a nova aresta~$e$ é inserida após $f$ e $g$ em suas ordens cíclicas, então~$e^\star$ é inserida nas faces obtidas por \LCOFindNode($u_{i-1}$) e \LCOFindNode($v_{j-1}$).
 A única diferença é que esses nós são inseridos como predecessores de $u_{i-1}$ e $v_{j-1}$.
 Para tal, a rotina \LCOCycle{} é chamada para o predecessor de $u_{i-1}$ obtido com a rotina \treapPredecessor.
@@ -772,7 +783,7 @@ Para tal, a rotina \LCOCycle{} é chamada para o predecessor de $u_{i-1}$ obtido
 Em seguida, o algoritmo acerta a estrutura da face com base nos dois casos comentados anteriormente.
 A detecção de qual a aresta~$e$ se encontra é feita na linha~\ref{Algo:MSFaddEdge:linha:deteccao-caso} com um teste de conexidade entre os vértices~$u$ e~$v$.
 Se os dois vértices estiverem conectados, então é necessário aplicar \LCOSplit{} para dividir a face \LCOFindNode($u_{i-1}$) em duas e o peso de~$e$ é atualizado com \MSFupdate($G$, $e$, $w$), que também determina se a nova aresta~$e$ será uma aresta de $\hat T$ ou de~$\hat T^\star$.
-Caso contrário, é necessário aplicar um \LCOMerge{} para juntar as faces exteriores das duas componentes conexas e como a aresta é uma ponte, então necessariamente $\hat e$ é um vértice de $\hat T$, logo é feito um \LCOMerge($e_0$, $e_2$).
+Caso contrário, é necessário aplicar um \LCOMerge{} para juntar as faces exteriores das duas componentes conexas e como a aresta é uma ponte, então necessariamente $\hat e$ é um vértice de $\hat T$, logo é feito um \LCOMerge($e_0$, $e_2$, $\hat e$).
 
 Simularemos primeiro a inserção da aresta~$h$ no caso em que ela é uma ponte, isto é, a chamada \MSFaddEdge($G$, $h$, $v$, $a$, $y$, $f$, $7$) comentada anteriormente.
 A Figura~\ref{fig:MSF-adiciona-ponte-1} ilustra as ADPs das duas componentes conexas do grafo da Figura~\ref{fig:MSF-remove-ponte}.
@@ -789,23 +800,23 @@ Após obter as óctuplas de~$a$ e~$f$, o algoritmo compara~$v$ com o identificad
 O algoritmo faz o mesmo processo com $y$ e atribui $0$ à~$j$.
 Em seguida é criado uma nova óctupla associada a~$h$ e os nós $s_i$ são adicionados nas respectivas ordens cíclicas.
 
-Primeiro é feito \LCOCycle($a_v$) e \LCOMerge($a_v$, $h_0$).
+Primeiro é feito \LCOCycle($a_v$) e \LCOMerge($a_v$, $h_0$, $v$).
 A rotina \LCOCycle($a_v$) não modifica a estrutura dessa ordem cíclica, já que o nó~$a_v$ já é o último nó de sua ordem cíclica.
-A rotina \LCOMerge($a_v$, $s_0$) por sua vez resulta a ordem cíclica de nós $\langle d_v, b_v, a_v, s_0 \rangle$.
+A rotina \LCOMerge($a_v$, $s_0$, $v$) por sua vez resulta a ordem cíclica de nós $\langle d_v, b_v, a_v, s_0 \rangle$.
 
-Depois é feito \LCOCycle($f_y$) e \LCOMerge($f_y$, $h_y$).
+Depois é feito \LCOCycle($f_y$) e \LCOMerge($f_y$, $h_y$, $y$).
 A rotina \LCOCycle($f_y$) não modifica a estrutura dessa ordem cíclica, já que o nó~$f_y$ já é o último nó de sua ordem cíclica.
-A rotina \nolbreaks{\LCOMerge($f_y$, $h_y$)} por sua vez resulta a ordem cíclica de nós $\langle f_y, f_y, h_y \rangle$.
+A rotina \nolbreaks{\LCOMerge($f_y$, $h_y$, $y$)} por sua vez resulta a ordem cíclica de nós $\langle f_y, f_y, h_y \rangle$.
 
 Como $i=0$, temos que~$i-1 = 3$ módulo~$4$.
 Assim o nó~$u_{i-1}$ que é calculado o predecessor na linha~\ref{Algo:MSFaddEdge:merges1} do Algoritmo~\ref{Algo:MSFaddEdge} é o nó~$a_{F_0}$, pois esse está ligado ao nó~$a_3$.
-O predecessor de $a_{F_0}$ em sua ordem cíclica é $d_{F_0}$.
-Assim \LCOCycle(\treapPredecessor($a_{F_0}$)) reestrutura a ordem cíclica de~$\hat F_0$ para ser~$\langle a_{F_0}, c_{F_0}, d_{F_0}\rangle$ e \LCOMerge($a_{F_0}$, $h_{F_0}$) resulta na ordem $\langle a_{F_0}, c_{F_0}, d_{F_0}, h_{F_0}\rangle$.
+O predecessor de $a_{F_0}$ em sua ordem cíclica é~$d_{F_0}$.
+Assim \LCOCycle(\treapPredecessor($a_{F_0}$)) reestrutura a ordem cíclica de~$\hat F_0$ para ser~$\langle a_{F_0}, c_{F_0}, d_{F_0}\rangle$ e \LCOMerge($a_{F_0}$, $h_{F_0}$, $F_0$) resulta na ordem $\langle a_{F_0}, c_{F_0}, d_{F_0}, h_{F_0}\rangle$.
 
 Como $j=0$, temos que~$j-1 = 3$ módulo~$4$.
 Assim o nó~$v_{i-1}$ que é calculado o predecessor na linha~\ref{Algo:MSFaddEdge:merges3} do Algoritmo~\ref{Algo:MSFaddEdge} é o nó~$f_{F_3}$, pois esse está ligado ao nó~$f_3$.
 O nó $f_{F_3}$ é o próprio predecessor.
-Assim \LCOCycle(\treapPredecessor($f_{F_3}$)) não altera a estrutura da ordem cíclica de~$\hat F_3$ e \LCOMerge($f_{F_3}$, $h_{F_3}$) resulta na ordem $\langle  f_{F_3}, h_{F_3}\rangle$.
+Assim \LCOCycle(\treapPredecessor($f_{F_3}$)) não altera a estrutura da ordem cíclica de~$\hat F_3$ e \LCOMerge($f_{F_3}$, $h_{F_3}$, $F_3$) resulta na ordem $\langle  f_{F_3}, h_{F_3}\rangle$.
 A Figura~\ref{fig:MSF-adiciona-ponte-2} ilustra as ADPs após esse bloco de execuções de \LCOCycle{} e \LCOMerge.
 
 \begin{figure}[htb]
@@ -817,9 +828,9 @@ A Figura~\ref{fig:MSF-adiciona-ponte-2} ilustra as ADPs após esse bloco de exec
 \end{figure}
 
 Em seguida é feito um teste de conexidade entre $v$ e $y$ que retorna falso, assim identificando que a nova aresta é uma poste.
-Assim é feito um \nolbreaks{\LCOMerge($a_{F_0}$, $f_{F_3}$)}, correspondente à linha~\ref{Algo:MSFaddEdge:linha:mergeponte} do Algoritmo~\ref{Algo:MSFaddEdge}.
+Assim é feito um \nolbreaks{\LCOMerge($a_{F_0}$, $f_{F_3}$, $F_0$)}, correspondente à linha~\ref{Algo:MSFaddEdge:linha:mergeponte} do Algoritmo~\ref{Algo:MSFaddEdge}.
 Obtendo assim a ordem cíclica $\langle a_{F_0}, c_{F_0}, d_{F_0}, h_{F_0}, f_{F_4}, h_{F_4}\rangle$ correspondente à nova face exterior do grafo.
-Por fim, é feito \LCOMerge($h_0$, $h_2$).
+Por fim, é feito \LCOMerge($h_0$, $h_2$, $\hat h$).
 A Figura~\ref{fig:MSF-adiciona-ponte-3} ilustra o grafo resultante dessa rotina.
 
 
@@ -836,8 +847,8 @@ Agora a chamada \MSFaddEdge($G$, $h$, $v$, $a$, $y$, $g$, $7$) será simulada.
 O processo é análogo ao caso anterior até a linha~\ref{Algo:MSFaddEdge:linha:deteccao-caso} do Algoritmo~\ref{Algo:MSFaddEdge}.
 Os vértices $v$ e $y$ são comparados com \LCOFindNode($a_v$) e \LCOFindNode($g_y$) e são atribuídos $0$ a variável~$i$ e $2$ a~$j$.
 Uma nova óctupla é criada e associada a~$h$ e os nós $s_i$ são adicionados nas respectivas ordens cíclicas.
-As chamadas \LCOCycle($a_v$) e \LCOMerge($a_v$, $h_0$), correspondentes à linha~\ref{Algo:MSFaddEdge:merges0} do Algoritmo~\ref{Algo:MSFaddEdge}, reestruturam a ordem cíclica de~$v$ para ser $\langle d_v, b_v, a_v, h_v \rangle$.
-Enquanto que as chamadas~\LCOCycle($g_y$) e \nolbreaks{\LCOMerge($g_y$, $h_y$)}, correspondentes à linha~\ref{Algo:MSFaddEdge:merges2} da mesma rotina, reestruturam a ordem cíclica de~$y$ para ser~$\langle f_y, f_y, g_y, h_y \rangle$.
+As chamadas \LCOCycle($a_v$) e \LCOMerge($a_v$, $h_0$, $\hat v$), correspondentes à linha~\ref{Algo:MSFaddEdge:merges0} do Algoritmo~\ref{Algo:MSFaddEdge}, reestruturam a ordem cíclica de~$v$ para ser $\langle d_v, b_v, a_v, h_v \rangle$.
+Enquanto que as chamadas~\LCOCycle($g_y$) e \nolbreaks{\LCOMerge($g_y$, $h_y$, $\hat y$)}, correspondentes à linha~\ref{Algo:MSFaddEdge:merges2} da mesma rotina, reestruturam a ordem cíclica de~$y$ para ser~$\langle f_y, f_y, g_y, h_y \rangle$.
 
 
 As linhas~\ref{Algo:MSFaddEdge:merges1} e~\ref{Algo:MSFaddEdge:merges3} fazem o mesmo para os nós~$s_1$ e~$s_3$ nas ordens cíclicas dos vértices de $\hat F^\star$.
@@ -861,10 +872,10 @@ A Figura~\ref{fig:MSF-adiciona-nao-ponte-1} ilustra as ADPs após essas modifica
 
 Após essas modificações, é feito a consulta de conexidade para verifica em qual caso a aresta~$h$ se encontra.
 Nesse caso esse teste retorna positivo e assim constata-se que~$h$ está no segundo caso.
-Assim é executado \LCOSplit($a_{F_0}$), correspondente à linha~\ref{Algo:MSFaddEdge:linha:splitnaoponte} do Algoritmo~\ref{Algo:MSFaddEdge}, que corta a ordem cíclica em duas.
+Assim é executado \LCOSplit($a_{F_0}$, $F_4$, $F_0$), correspondente à linha~\ref{Algo:MSFaddEdge:linha:splitnaoponte} do Algoritmo~\ref{Algo:MSFaddEdge}, que corta a ordem cíclica em duas.
 A primeira sendo $\langle g_{F_0}, d_{F_0}, h_{F_0}\rangle$ e a segunda $\langle a_{F_0}, c_{F_0}, g_{F_0}, f_{F_0}, h_{F_0}\rangle$.
 A primeira ordem cíclica corresponde à face~$F_4$ da Figura~\ref{fig:MSF-adiciona-nao-ponte-2}, enquanto que a segunda se mantém sendo a face exterior~$F_0$.
-Por fim, é chamado \MSFupdate($G$, $h$, $7$) que atesta que essa aresta pertence à $\hat F^\star$ e internamente executa $\LCOMerge(h_1, h_3)$.
+Por fim, é chamado \MSFupdate($G$, $h$, $7$) que atesta que essa aresta pertence à $\hat F^\star$ e internamente executa $\LCOMerge(h_1, h_3, \hat h)$.
 
 \begin{figure}
 \scalebox{1}{
@@ -877,8 +888,8 @@ Por fim, é chamado \MSFupdate($G$, $h$, $7$) que atesta que essa aresta pertenc
 
 
 As linhas~\ref{Algo:MSFaddEdge:linha:1}, \ref{Algo:MSFaddEdge:linha:2} e~\ref{Algo:MSFaddEdge:linha:const3} do Algoritmo~\ref{Algo:MSFaddEdge} possuem consumo de tempo constante, pois são consultas a tabela de símbolos~$G.H$ e uma chamada da rotina \LCOMakeOcto{}.
-As linhas remanescentes são formadas por um número constante de chamadas de \LCOFindNode, \LCOCycle{}, \LCOMerge{}, \LCOSplit{}, \MSFupdate{} e \LCOConnected{} e cada uma dessas chamadas possui consumo de tempo assintótico igual a~$\O{\lg m}$ esperado, onde~$m$ é o número de arestas no grafo corrente.
-Dessa forma, $\MSFaddEdge$ também possui consumo esperado de tempo assintótico~$\O{\lg m}$ esperado.
+As linhas remanescentes são formadas por um número constante de chamadas de \LCOFindNode, \LCOCycle{}, \LCOMerge{}, \LCOSplit{}, \MSFupdate{} e \LCOConnected{} e cada uma dessas chamadas possui consumo de tempo assintótico igual a~$\O{\lg m}$ esperado amortizado, onde~$m$ é o número de arestas no grafo corrente.
+Dessa forma, $\MSFaddEdge$ também possui consumo esperado de tempo assintótico~$\O{\lg m}$ esperado amortizado.
 
 \section{Estruturas auxiliares}
 
@@ -886,6 +897,7 @@ A implementação da biblioteca das árvores dinâmicas planas será detalhada n
 Para construir essa estrutura de dados, são necessárias duas estruturas fundamentais: a primeira é a árvore binária de busca com chave implícita, discutida inicialmente em detalhes no Capítulo~\ref{sec:TreapDeChaveImplicita} e a segunda são as link cut trees, que serão abordadas brevemente na Seção~\ref{sec:linkcuttree}.
 
 \subsection{Árvores binárias de busca com chave implícita}
+\label{sec:extrastructABB}
 
 Árvores binárias de busca com chave implícita são particularmente úteis para armazenar sequências de objetos.
 No Capítulo~\ref{sec:TreapDeChaveImplicita} elas foram utilizadas para armazenar uma sequência de arestas que representa uma árvore.
@@ -983,7 +995,8 @@ Cada nó de link cut tree possui um campo \varname{abb} que aponta para o nó de
 
 Essa estrutura de dados dá suporte às seguintes operações:
 \begin{itemize}
-\item \linkcutCreate(): Cria e retorna um novo nó de link-cut tree.
+\item \linkcutCreate(): Cria e retorna um novo nó de link cut tree.
+\item \linkcutDestroy($v$): Remove o nó~$v$ de link cut tree da memória.
 \item \linkcutAddEdge($v$, $w$): Adiciona uma aresta de~$v$ a~$w$, tornando~$v$ um filho de~$w$. Essa operação assume que~$v$ é a raiz de sua árvore e que $w$ não é um nó da árvore de~$v$.
 \item \linkcutDelEdge($v$): Remove a aresta de~$v$ para seu pai.
 	Essa operação assume que~$v$ não é a raiz de sua árvore.
@@ -1026,7 +1039,20 @@ O consumo assintótico de tempo dessa rotina é~$\O{1}$.
 \end{algorithmic}
 \end{algorithm}
 
-\TODO{\LCODestroyOcto}
+A implementação de \LCODestroyOcto{} está descrita no Algoritmo~\ref{Algo:LCODestroyOcto}.
+Primeiro a óctupla de~$e$ é obtida e apagada da tabela de símbolos, em seguida, cada nós de link cut tree é apagado da memória usando a rotina \linkcutDestroy{}. Seu consumo de tempo é constante.
+\begin{algorithm}[htb]
+\caption{\LCODestroyOcto($H$, $e$)}
+\label{Algo:LCODestroyOcto}
+\begin{algorithmic}[1]
+\State $e_0$, $e_1$, $e_2$, $e_3$, $s_0$, $s_1$, $s_2$, $s_3$ $\gets$ $H(e)$
+\State $H(e)$ $\gets$ $\Nil$
+\For {$i \in \{0,1,2,3\}$}
+  \State \linkcutDestroy($s_i$)
+  \State \linkcutDestroy($e_i$)
+\EndFor
+\end{algorithmic}
+\end{algorithm}
 
 
 A implementação de \LCOConnected{} é descrita no Algoritmo~\ref{Algo:LCOConnected}. Para consultar se dois nós de link cut trees estão na mesma árvore, simplesmente comparamos a raiz das árvores que contém~$p$ e~$q$.
@@ -1166,5 +1192,35 @@ Como \treapFirst{}, \treapLast{}, \treapSplitRight{} e \treapJoin{} consomem tem
 \State $T$, $T'$ $\gets$ \treapSplitRight($p$)
 \State $T$ $\gets$ \treapJoin($T'$, $T$)
 \State $T$.$\node$ $\gets$ $p$
+\end{algorithmic}
+\end{algorithm}
+
+
+A implementação de \treapPredecessor está descrita no Algoritmo~\ref{Algo:treapPredecessor}.
+Seu consumo esperado é~$\O{\lg m}$, onde $m$ é o número de arestas no grafo corrente.
+
+\begin{algorithm}[h!]
+\caption{\treapPredecessor($p$)}
+\label{Algo:treapPredecessor}
+\begin{algorithmic}[1]
+	\If{$p$ $=$ \treapFirst($p$)}
+\State\Return \treapLast($p$)
+\EndIf
+\If{$p.abb.esq$ $\neq$ $\Nil$}
+\State \varname{tmp} $\gets p.abb.esq$
+\While {\varname{tmp}.\varname{dir} $\neq$ $\Nil$}
+\varname{tmp} $\gets$ \varname{tmp}.\varname{dir}
+\EndWhile
+\State \Return \varname{tmp}
+\EndIf
+\State \varname{tmp} $\gets$ $p$
+\While {\varname{tmp}.\varname{pai}.\varname{esq} $=$ $tmp$} \varname{tmp} $\gets$ \varname{tmp}.\varname{pai}
+\EndWhile
+\State \varname{tmp}  $\gets$ \varname{tmp}.\varname{pai}.\varname{esq}
+\While {\varname{tmp}.\varname{dir} $\neq$ $\Nil$}
+\varname{tmp} $\gets$ \varname{tmp}.\varname{dir}
+\EndWhile
+\State \Return \varname{tmp}
+
 \end{algorithmic}
 \end{algorithm}
