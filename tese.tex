@@ -132,9 +132,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Comandos de observações       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\TODO}[1]{{{\red #1}}}
-%\newcommand{\NOTE}[1]{{{\blue #1}}}
-\newcommand{\NEW}[1]{{\blue #1}}
 
 %\newcommand{\defi}[1]{\index{#1}\textbf{#1}} % defini estilo ao definir algo no texto
 \NewDocumentCommand{\defi}{ O{#2} m }{\index{#1}\textbf{#2}}
@@ -156,11 +153,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de C           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\malloc}{\text{\TODO{alloc}}}  %(int)
-%\newcommand{\free}{\text{\TODO{delete}}}    %(ptn)
 \newcommand{\random}{\AlgoName{sorteie}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
-\newcommand{\order}{\AlgoName{ordene}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
-\newcommand{\sizeof}{\text{\TODO{sizeof}}}  %(int)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -192,12 +185,13 @@
 \newcommand{\treapOrder}{\AlgoName{ordem}}
 \newcommand{\treapJoin}{\AlgoName{junta}}
 \newcommand{\treapSplit}{\AlgoName{corta}}
-\newcommand{\treapSplitRight}{\AlgoName{corta Direita}}
+\newcommand{\treapSplitRight}{\AlgoName{cortaDireita}}
 \newcommand{\treapGetSize}{\AlgoName{tamanho}}
 \newcommand{\treapGetEdgesLevel}{\AlgoName{arestasDeNível}}
 
-\newcommand{\treapFirst}{\AlgoName{first}}
-\newcommand{\treapLast}{\AlgoName{last}}
+\newcommand{\treapFirst}{\AlgoName{primeiro}}
+\newcommand{\treapLast}{\AlgoName{último}}
+\newcommand{\treapPredecessor}{\AlgoName{\AlgoName{Pred}}}    %(F, u, v)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Euler Tour Tree %
@@ -238,25 +232,27 @@
 % Métodos de Link/Cut Tree   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\linkcutCreate}{\AlgoName{make node}}
+\newcommand{\linkcutCreate}{\AlgoName{newLCT}}
+\newcommand{\linkcutDestroy}{\AlgoName{delLCT}}
 \newcommand{\linkcutAddEdge}{\AlgoName{link}}    %(F, u, v)
 \newcommand{\linkcutDelEdge}{\AlgoName{cut}}    %(F, u, v)
 \newcommand{\linkcutEvert}{\AlgoName{\AlgoName{evert}}}    %(v)
-\newcommand{\linkcutMax}{\AlgoName{\AlgoName{find max}}}    %(F, u, v)
-\newcommand{\linkcutMin}{\AlgoName{\AlgoName{find min}}}    %(F, u, v)
-\newcommand{\linkcutParent}{\AlgoName{\AlgoName{find parent}}}    %(F, u, v)
+\newcommand{\linkcutMax}{\AlgoName{\AlgoName{max}}}    %(F, u, v)
+\newcommand{\linkcutMin}{\AlgoName{\AlgoName{min}}}    %(F, u, v)
+\newcommand{\linkcutParent}{\AlgoName{\AlgoName{parent}}}    %(F, u, v)
 \newcommand{\linkcutQuery}{\AlgoName{\AlgoName{conectadoLC}}}    %(F, u, v)
-\newcommand{\linkcutPath}{\AlgoName{\AlgoName{caminho}}}    %(F, u, v)
 \newcommand{\linkcutWeight}{\AlgoName{\AlgoName{set weight}}}    %(F, u, v)
+\newcommand{\linkcutRoot}{\AlgoName{\AlgoName{get Root}}}    %(F, u, v)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Link/Cut Tree com ordem  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\hashNP}{\AlgoName{node Path}} 
-\newcommand{\hashEdges}{\AlgoName{hashEdges}} 
+\newcommand{\LCOMakeOcto}{\AlgoName{Create Octo}}
+\newcommand{\LCODestroyOcto}{\AlgoName{Destroy Octo}}
 
-\newcommand{\LCOMakeNode}{\AlgoName{Make node}}
+\newcommand{\LCOMakeNode}{\AlgoName{Make edge}}
+\newcommand{\LCODestroyNode}{\AlgoName{Make edge}}
 \newcommand{\LCOLink}{\AlgoName{Link}}
 \newcommand{\LCOMerge}{\AlgoName{Merge}}
 \newcommand{\LCOSplit}{\AlgoName{Split}}
@@ -267,15 +263,9 @@
 \newcommand{\LCOMax}{\AlgoName{\AlgoName{Find max}}}    %(F, u, v)
 \newcommand{\LCOMin}{\AlgoName{\AlgoName{Find min}}}    %(F, u, v)
 \newcommand{\LCOEvert}{\AlgoName{\AlgoName{Evert}}}    %(F, u, v)
-\newcommand{\LCOPredecessor}{\AlgoName{\AlgoName{Pred}}}    %(F, u, v)
 \newcommand{\LCOConnected}{\AlgoName{\AlgoName{Connected}}}    %(F, u, v)
-\newcommand{\LCOLeftFace}{\AlgoName{\AlgoName{LeftFace}}}
-\newcommand{\LCONextRot}{\AlgoName{\AlgoName{NextRot}}}
 \newcommand{\LCOFindNode}{\AlgoName{Find node}}
-\newcommand{\LCOFindSubNode}{\AlgoName{Find subnode}}
 
-%\newcommand{\LCOMakeEdge}{\AlgoName{make edge}}
-%\newcommand{\LCOSplice}{\AlgoName{splice}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de MSF         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -297,15 +287,6 @@
 \newcommand{\VPSPconvert}{\AlgoName{converta}}
 \newcommand{\VPSPupdate}{\AlgoName{substitua}}
 \newcommand{\VPSPverify}{\AlgoName{verifique}}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     Nomes de Algoritmos
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\HDT}{HDT}
-\newcommand{\HK}{HK}
-\newcommand{\CLHB}{CLHB}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -393,7 +374,7 @@
   %apoio={Durante o desenvolvimento deste trabalho o autor
   %       recebeu auxílio financeiro da XXXX},
   local={São Paulo},
-  data=2024-07-02, % YYYY-MM-DD
+  data=2024-10-02, % YYYY-MM-DD
   % A licença do seu trabalho. Use CC-BY, CC-BY-NC, CC-BY-ND, CC-BY-SA,
   % CC-BY-NC-SA ou CC-BY-NC-ND para escolher a licença Creative Commons
   % correspondente (o sistema insere automaticamente o texto da licença).
@@ -438,29 +419,10 @@
 
 \maketitle % capa e folha de rosto
 
+\input{conteudo/ficha-cadastral}
 %%%%%%%%%%%%%%%% DEDICATÓRIA, AGRADECIMENTOS, RESUMO/ABSTRACT %%%%%%%%%%%%%%%%%%
 
-\begin{dedicatoria}
-Esta seção é opcional e fica numa página separada; ela pode ser usada para
-uma dedicatória ou epígrafe.
-\end{dedicatoria}
-
-% Reinicia o contador de páginas (a próxima página recebe o número "i") para
-% que a página da dedicatória não seja contada.
-\pagenumbering{roman}
-
-% Agradecimentos:
-% Se o candidato não quer fazer agradecimentos, deve simplesmente eliminar
-% esta página. A epígrafe, obviamente, é opcional; é possível colocar
-% epígrafes em todos os capítulos. O comando "\chapter*" faz esta seção
-% não ser incluída no sumário.
-\chapter*{Agradecimentos}
-\epigrafe{Do. Or do not. There is no try.}{Mestre Yoda}
-
-Texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto. Texto opcional.
+\input{agradecimentos}
 
 \input{conteudo/resumoabstract}
 
@@ -605,39 +567,39 @@ texto texto texto texto. Texto opcional.
 
 %%%% Apêndices %%%%
 
-\makeatletter
-\if@openright\cleardoublepage\else\clearpage\fi
-\makeatother
+%\makeatletter
+%\if@openright\cleardoublepage\else\clearpage\fi
+%\makeatother
 
-\pagestyle{appendix}
+%\pagestyle{appendix}
 
-\appendix
+%\appendix
 
 
 % \addappheadtotoc acrescenta a palavra "Apêndice" ao sumário; se
 % só há apêndices, sem anexos, provavelmente não é necessário.
-\addappheadtotoc
+%\addappheadtotoc
 
 %\input{conteudo/decremental}
 %\input{conteudo/apendice-exemplo-pseudocodigo}
-\par
+%\par
 
 %%%% Anexos %%%%
 
-\makeatletter
-\if@openright\cleardoublepage\else\clearpage\fi
-\makeatother
+%\makeatletter
+%\if@openright\cleardoublepage\else\clearpage\fi
+%\makeatother
 
-\pagestyle{appendix} % repete o anterior, caso você não use apêndices
+%\pagestyle{appendix} % repete o anterior, caso você não use apêndices
 
-\annex
+%\annex
 
 % \addappheadtotoc acrescenta a palavra "Anexo" ao sumário; se
 % só há anexos, sem apêndices, provavelmente não é necessário.
-\addappheadtotoc
+%\addappheadtotoc
 
 %\input{conteudo/anexo-exemplo-faq}
-\par
+%\par
 
 
 %%%%%%%%%%%%%%% SEÇÕES FINAIS (BIBLIOGRAFIA E ÍNDICE REMISSIVO) %%%%%%%%%%%%%%%%

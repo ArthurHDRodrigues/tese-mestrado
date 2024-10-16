@@ -22,7 +22,6 @@
 \draw [fill=black] (.35,.35) circle (1.5pt);
 \draw [fill=black] (.5,0) circle (1.5pt);
 
-\draw [line width=1pt,color=cyan] (-1,1.8) to  (-1,2.2); 
 \draw (-.6,1.9) node[anchor=north east] {\tiny $a_0$};
 \draw [fill=white] (-1,1.8) circle (1.5pt);
 
@@ -50,9 +49,6 @@
 \draw (1.2,2.33) node {\tiny $b_0$};
 \draw [fill=white] (1.05,2.25) circle (1.5pt);
 
-\draw (2.4,2.9) node {\tiny $c_2$};
-\draw [fill=white] (2.5,3) circle (1.5pt);
-
 % u node path
 \draw (-.2,3.5) node {\tiny $a_u$};
 \draw [fill=black] (0,3.5) circle (1.5pt);
@@ -66,8 +62,11 @@
 %
 \draw (3.95,2.1) node {$\hat z$};
 \draw [line width=1pt,color=cyan] (4.3,2) to (6.5,2); 
-\draw [line width=1pt,color=cyan] (3.7,2.3) to (3,2.7); 
+\draw [line width=1pt,color=cyan] (3.7,2.3) to (2.5,3); 
 \draw [line width=1pt,color=cyan] (3.7,1.7) to (2.9,1.15); 
+\draw (2.4,2.9) node {\tiny $c_2$};
+\draw [fill=white] (2.5,3) circle (1.5pt);
+
 
 % node path
 \draw [line width=1pt,color=cyan] (3.7,2.3) to  (3.7,1.7); 
@@ -103,11 +102,8 @@
 \draw [line width=1pt,color=red] (3.5,5) to[in=-30,out=20,looseness=4.5]  (2.8,.85); 
 
 %^c
-\draw [line width=1pt,color=red] (2.6,2.6) to  (2.9,3.1);
 \draw [line width=1pt,color=red] (2.7,4.7) to  (2.9,3.1);
 
-\draw (-1.3,1.9) node {\tiny $a_3$};
-\draw [fill=white] (-1.2,2)circle (1.5pt);
 \draw (3.07,3.1) node {\tiny $c_1$};
 \draw [fill=white] (2.9,3.1)circle (1.5pt);
 \draw (2.9,.7) node {\tiny $d_1$};
@@ -197,7 +193,7 @@
 %
 \draw (0,2.2) node {$\hat F_2$};
 
-\draw [line width=1pt,color=red] (-.8,2) to  (-.3,2); 
+\draw [line width=1pt,color=red] (-1.2,2) to  (-.3,2); 
 \draw [line width=1pt,color=red] (.8,2) to  (.3,2);   
 \draw [line width=1pt,color=red] (-.3,2) to (.3,2);   
 
@@ -209,6 +205,9 @@
 \draw [fill=white] (-.8,2) circle (1.5pt);
 \draw (.8,2.16) node {\tiny $b_1$};
 \draw [fill=white] (.8,2) circle (1.5pt);
+
+\draw (-1.3,1.9) node {\tiny $a_3$};
+\draw [fill=white] (-1.2,2)circle (1.5pt);
 
 %
 % Node F_3

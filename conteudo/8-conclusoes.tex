@@ -1,23 +1,23 @@
-\chapter{Comentários finais}
+\chapter{Estudos experimentais}
 \label{sec:conclusao}
 
-\section{Análise de estudo experimentais para o problema de conexidade em grafos dinâmicos}
-\label{sec:conclusao:xp}
+Nessa seção, comentaremos as principais avaliações empíricas já realizadas sobre algoritmos que resolvem o problema de conectividade em grafos dinâmicos.
+Iniciamos com uma revisão histórica dessas avaliações já realizadas, destacando os avanços e as limitações identificadas ao longo do tempo.
+Em seguida, comentaremos o desenrolar da nossa própria análise empírica.
 
 Em $1997$, Alberts, Cattaneo e Italiano~\cite{EmpiricalStudy1997} fizeram um estudo experimental envolvendo um algoritmo simples baseado em esparsificação proposto por Eppstein et al.~\cite{Eppstein1992SparsificationaTF} e o algoritmo de Henzinger e King~\cite{HenzingerKing}, sem a melhoria de Henzinger e Thorup~\cite{HenzingerThorup}.
 
+O algoritmo de Henzinger e King, assim como o de Holm, de Lichtenberg e Thorup~\cite{poly_log} estudado no Capítulo~\ref{sec:connDG}, associa um nível entre $0$ e $\ceil{\lg n}$ a cada aresta.
+Nesse experimento, os autores propuseram heuristicamente truncar essa estrutura de níveis, mantendo assim somente os níveis entre~$k$ e~$\ceil{\lg n}$, onde $k$ é um parâmetro pré-definido.
+Nessa simplificação, no nível~$k$, em vez de fazer a busca por aresta substituta proposta por Henzinger e King, o algoritmo faz uma busca exaustiva. Dessa forma, essa simplificação possui consumo de tempo assintótico pior do que o algoritmo original de Henzinger e King, porém ainda assim ela se saiu bem nos experimentos com grafos aleatórios.
 
-O algoritmo de Henzinger e King, assim como Holm, de Lichtenberg e Thorup~\cite{poly_log} estudado no Capítulo~\ref{sec:connDG}, associa um nível entre $0$ e $\ceil{\lg n}$ à cada aresta.
-Nesse experimento os autores propuseram heuristicamente truncar essa estrutura de níveis, mantendo assim somente os níveis entre~$k$ e~$\ceil{\lg n}$, onde $k$ é um parâmetro pré-definido.
-Nessa simplificação, no nível~$k$, ao invés de fazer a busca por aresta substitura proposta por Henzinger e King, o algoritmo faz uma busca exaustiva. Dessa forma, essa simplificação possui consumo de tempo assintótico pior do que o algoritmo original de Henzinger e King, porém ainda assim ela se saiu bem nos experimentos com grafos aleatórios.
-
-Para grafos não aleatórios, o algoritmo baseado em espasificação se saiu melhor para instâncias com poucas operações de atualização, enquanto que o algoritmo original de Henzinger e King se saiu melhor com mais operações de atualização.
+Para grafos não aleatórios, o algoritmo baseado em esparsificação se saiu melhor para instâncias com poucas operações de atualização, enquanto que o algoritmo original de Henzinger e King se saiu melhor com mais operações de atualização.
 As implementações desenvolvidas para estes experimentos foram feitas em C++, usando a plataforma Leda~\cite{LEDA}.
 
 Em $2002$, Raj Iyer, David Karger, Hariharan Rahul e Mikkel Thorup~\cite{EmpiricalStudy2002} usaram como base o estudo de Alberts et al. para comparar o então recente algoritmo de Holm, de Lichtenberg e Thorup~\cite{poly_log} com o algoritmo de Henzinger e King, considerando algumas variantes destes dois algoritmos no seu estudo.
-Entre outras coisas, os autores mostram que uma das variantes de Henzinger e King considerada tem consumo de tempo $\O{\lg^2 n}$ por operação de atualização.
+Entre outras coisas, os autores mostraram que uma das variantes de Henzinger e King considerada tem consumo de tempo $\O{\lg^2 n}$ por operação de atualização.
 
-Os autores também propõe duas heurísticas para o algoritmo de Holm, de Lichtenberg e Thorup. Essas heurísticas não invalidam as análises do consumo de tempo do algoritmo original.
+Os autores também propõem duas heurísticas para o algoritmo de Holm, de Lichtenberg e Thorup. Essas heurísticas não invalidam as análises do consumo de tempo do algoritmo original.
 
 A primeira heurística usa a ideia do algoritmo de Henzinger e King de fazer um sorteio aleatório das primeiras arestas que são testadas como possíveis substitutas, em vez de percorrer sequencialmente as arestas candidatas e ir fazendo os rebaixamentos.
 
@@ -27,20 +27,15 @@ O resultado do estudo experimental em relação a estes algoritmos é que a vers
 As implementações desenvolvidas para estes experimentos também foram feitas em C++ usando a plataforma Leda~\cite{LEDA}.
 
 
-Em $2019$, David Fernández-Baca e Lei Liu~\cite{xp-Phylogeny}\TODO{Continuar}
+Em $2019$, David Fernández-Baca e Lei Liu~\cite{xp-Phylogeny} realizaram uma avaliação de heurísticas envolvendo o algoritmo de Holm, de Lichtenberg e Thorup focada em solucionar problemas de biologia computacional com esse algoritmo.
+Esse estudo reforça a eficiência das heurísticas aplicadas a esse algoritmo.
 
 
 Mais recentemente, Chen et al.~\cite{QC22} apresentaram um outro estudo experimental, envolvendo duas heurísticas que eles propuseram e supostamente o algoritmo de Henzinger e King, entre outros.
-
 A nossa intenção inicial era incluir o algoritmo de Holm, de Lichtenberg e Thorup nesse estudo experimental. Este foi o principal motivo que nos levou a implementar o algoritmo deles em Python~3, que é a linguagem usada neste estudo experimental.
-
-No entanto, durante a fase de testes usando como base o estudo experimental de Chen e outros, notamos que a implementação do algoritmo de Henzinger e King incluída no estudo tratava-se de sua versão simplificada com níveis truncados usada no estudo de Alberts e outros, para a qual a análise original não se aplica.
+No entanto, durante a fase de testes usando como base o estudo experimental de Chen e outros, notamos que a implementação do algoritmo de Henzinger e King incluída no estudo tratava-se de sua versão simplificada com níveis truncados, usada no estudo de Alberts e outros, para a qual a análise original não se aplica.
 Na verdade, a implementação de Chen e outros desta simplificação também executa a escolha aleatória das arestas candidatas a substitutas de uma maneira pouco eficiente, o que resulta em uma implementação com consumo de tempo muito pior que o consumo do algoritmo original de Henzinger e King.
 Ou seja, não é de fato uma comparação entre as heurísticas deles e o algoritmo de Henzinger e King, como é dito no artigo.
 Após percebermos estes problemas, desistimos de estender este estudo experimental.
 Ademais, nesse meio tempo, também encontramos o trabalho de Iyer, Karger, Rahul e Thorup~\cite{EmpiricalStudy2002} que já apresenta um excelente estudo comparativo entre o algoritmo de Henzinger e King e o algoritmo de Holm, de Lichtenberg e Thorup. 
-\begin{comment}
-\section{Trabalhos futuros}
-
-Um estudo experimental com boas praticas como~\cite{guideXP1999}
-\end{comment}
+De qualquer modo, produzimos uma implementação do algoritmo de Holm, de Lichtenberg e Thorup em Python3, que pode ser acessada em~\cite{github}.
