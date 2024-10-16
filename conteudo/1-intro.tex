@@ -83,20 +83,22 @@ Comentaremos esses experimentos no Capítulo~\ref{sec:conclusao}.
 
 O algoritmo de Holm et al. para MSF possui consumo amortizado $\O{\lg^4 n}$ para cada operação, sendo assim a primeira estrutura de dados determinística com consumo de tempo poli-logarítmico para o problema MSF. Uma implementação eficiente deste algoritmo foi apresentada por Cattaneo et al. \cite{xpstudy2002} junto a um outro algoritmo mais simples e assintoticamente pior, mas que teve bom desempenho nos experimentos práticos realizados.
 
-Em $2000$, Thorup~\cite{Thorup2000} complementou o algoritmo de Holm et al.~\cite{poly_log}, adicionando uma estrutura de dados auxiliar chamada floresta estrutural, que reduz o consumo de tempo de cada operação para~$\O{\lg n\, (\lg\lg n)^3}$ esperado amortizado.
-Essa é atualmente a estrutura de dados com menor consumo de tempo assintótico conhecida para solucionar o problema de conexidade em grafos dinâmicos.
+Em $2000$, Thorup~\cite{Thorup2000} complementou o algoritmo de Holm et al.~\cite{poly_log}, adicionando uma estrutura de dados auxiliar chamada floresta estrutural, que reduz o consumo de tempo de cada operação para~$\O{\lg n\, (\lg\lg n)^3}$ esperado amortizado e~$\O{\frac{\lg n}{\lg \lg \lg n}}$ para a consulta de conexidade.
 Ela só não é ótima por um fator de $\O{(\lg\lg n)^3}$, devido ao limitante inferior de~$\Omega(\lg n)$ provado em~$2006$ por Patrascu e Demaine~\cite{lowerBoundPatrascu}.
 
 Em $2010$, Tarjan e Werneck~\cite{tarjanWerneck2010} fizeram um estudo experimental com diversas estruturas de dados para árvores dinâmicas que resolvem ambos os problemas de conexidade em florestas dinâmicas e da floresta maximal de peso mínimo,
 destacando qualidades e deficiências de cada estrutura de dados quando sujeitas a diferentes tipos de cargas de trabalho. 
 
 Desde $1997$, os algoritmos com consumo de tempo amortizado foram predominantes na literatura, porém todos possuem alguma instância com consumo de tempo $\OTheta{n}$ no pior caso.
-O problema de melhorar o tempo assintótico no pior caso continuou a permear a literatura sem avanços até $2013$, quando Kapron, King e Mountjoy \cite{bruceM} apresentaram uma estrutura de dados para o problema de conexidade em grafos dinâmicos baseada no problema \textit{cutset} que proporciona consumo $\O{\lg^4 n}$ para a inserção de arestas, $\O{\lg^5 n}$ para remoção e responde à consulta de conexidade em tempo~$\O{\lg n / \lg\lg n}$.
+O problema de melhorar o tempo assintótico no pior caso continuou a permear a literatura sem avanços até $2013$, quando Kapron, King e Mountjoy \cite{bruceM} apresentaram uma estrutura de dados para o problema de conexidade em grafos dinâmicos baseada no problema \textit{cutset} que proporciona consumo $\O{\lg^4 n}$ para a inserção de arestas, $\O{\lg^5 n}$ para remoção e responde à consulta de conexidade em tempo~$\O{\frac{\lg n}{\lg\lg n}}$.
 A estrutura responde a consultas corretamente quando a resposta é “sim” e com alta probabilidade de acerto quando a resposta é “não”. A probabilidade de falso positivo, mesmo que baixa, continuou incentivando a pesquisa na área. 
 
 Em $2015$, Kejlberg-Rasmussen et al.~\cite{kejlbergrasmussen_et_al} apresentaram uma estrutura de dados para o problema de conexidade em grafos dinâmicos que permite fazer consultas em tempo constante, mas que possui consumo de tempo para as atualizações de~$\mathrm{O}\!\left(\sqrt{\frac{n\left(\lg \lg n\right)^2}{\lg n}}\right)$, um consumo de tempo assintótico consideravelmente maior do que os últimos algoritmos citados.
 
 Em $2016$, Wulff-Nilsen~\cite{Wulff-Nilsen2016} apresentou um novo algoritmo para o problema de conexidade em grafos dinâmicos que dá suporte às atualizações com consumo~$\O{\frac{\lg^2 n}{\lg \lg n}}$ amortizado e~$\O{\frac{\lg n}{\lg \lg n}}$ para a consulta de conexidade.
+
+Em $2017$, Huang et al.~\cite{fastestConn} reorganizam a solução de Thorup~\cite{Thorup2000} obtendo uma solução com consumo de tempo de~$\O{\lg n\, (\lg\lg n)^2}$ esperado amortizado para cada atualização e~$\O{\frac{\lg n}{\lg \lg \lg n}}$ para as consultas de conexidade.
+Essa é atualmente a estrutura de dados com menor consumo de tempo assintótico conhecida para solucionar o problema de conexidade em grafos dinâmicos.
 
 Em $2022$, Chen et al. \cite{QC22} propuseram uma heurística baseada no diâmetro do grafo dinâmico e com ela desenvolveram um algoritmo que possui bom desempenho prático quando aplicado a grafos dinâmicos extraídos de situações reais.
 O consumo de tempo dessa heurística é linear em função do diâmetro do grafo, portanto as operações de atualização e de consulta possuem consumo de tempo de~$\O{n}$ no pior dos casos.
@@ -124,6 +126,8 @@ Veja um resumo dos resultados mencionados nesta seção na Tabela~\ref{tab:histo
 	$2015$ & $ \mathrm{O}\!\left(\sqrt{\frac{n\left(\lg \lg n\right)^2}{\lg n}}\right)  $ & $\mathrm{O}\!\left(\sqrt{\frac{n\left(\lg \lg n\right)^2}{\lg n}}\right)$ & $\O{1}$ & {\small determinístico; pior caso} & \cite{kejlbergrasmussen_et_al} \\
  \hline
 	$2016$ & $\O{  \frac{\lg^2 n}{\lg \lg n}}$ & $\O{ \frac{\lg^2 n}{\lg \lg n}} $   & $\O{ \frac{\lg n}{\lg \lg n}} $  & {\small determinístico; amortizado} & \cite{Wulff-Nilsen2016} \\ 
+ \hline
+	$2017$ & $\O{{\scriptstyle \lg n(\lg  \lg n)^2}}$ &  $\O{{\scriptstyle \lg n(\lg \lg n)^2}}$      & $\O{\frac{\lg n}{\lg\lg\lg n}}$  & {\small aleatorizado; amortizado }& \cite{fastestConn} \\ 
  \hline
 	$2022$ & $\O{n}$ & $\O{n} $   & $\O{n} $  & {\small determinístico; pior caso } & \cite{QC22} \\ 
  \hline
