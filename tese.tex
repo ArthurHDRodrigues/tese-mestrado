@@ -132,9 +132,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Comandos de observações       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\TODO}[1]{{{\red #1}}}
-%\newcommand{\NOTE}[1]{{{\blue #1}}}
-\newcommand{\NEW}[1]{{\blue #1}}
 
 %\newcommand{\defi}[1]{\index{#1}\textbf{#1}} % defini estilo ao definir algo no texto
 \NewDocumentCommand{\defi}{ O{#2} m }{\index{#1}\textbf{#2}}
@@ -156,11 +153,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de C           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\malloc}{\text{\TODO{alloc}}}  %(int)
-%\newcommand{\free}{\text{\TODO{delete}}}    %(ptn)
 \newcommand{\random}{\AlgoName{sorteie}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
-\newcommand{\order}{\AlgoName{ordene}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
-\newcommand{\sizeof}{\text{\TODO{sizeof}}}  %(int)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -255,9 +248,6 @@
 % Métodos de Link/Cut Tree com ordem  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\hashNP}{\AlgoName{node Path}} 
-\newcommand{\hashEdges}{\AlgoName{hashEdges}} 
-
 \newcommand{\LCOMakeOcto}{\AlgoName{Create Octo}}
 \newcommand{\LCODestroyOcto}{\AlgoName{Destroy Octo}}
 
@@ -276,8 +266,6 @@
 \newcommand{\LCOConnected}{\AlgoName{\AlgoName{Connected}}}    %(F, u, v)
 \newcommand{\LCOFindNode}{\AlgoName{Find node}}
 
-%\newcommand{\LCOMakeEdge}{\AlgoName{make edge}}
-%\newcommand{\LCOSplice}{\AlgoName{splice}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de MSF         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -299,15 +287,6 @@
 \newcommand{\VPSPconvert}{\AlgoName{converta}}
 \newcommand{\VPSPupdate}{\AlgoName{substitua}}
 \newcommand{\VPSPverify}{\AlgoName{verifique}}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     Nomes de Algoritmos
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\HDT}{HDT}
-\newcommand{\HK}{HK}
-\newcommand{\CLHB}{CLHB}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
