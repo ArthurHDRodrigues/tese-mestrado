@@ -31,7 +31,7 @@ doi = {https://doi.org/10.1016/0022-0000(78)90022-3},
 url = {https://www.sciencedirect.com/science/article/pii/0022000078900223},
 }
 
-@article{Eppstein1992SparsificationaTF,
+@article{Eppstein1997SparsificationaTF,
   author={David Eppstein and Zvi Galil and Giuseppe F. Italiano and Amnon Nissenzweig},
   title={Sparsification -- {A} technique for speeding up dynamic graph algorithms},
   journal={Journal of the ACM},
@@ -41,15 +41,36 @@ url = {https://www.sciencedirect.com/science/article/pii/0022000078900223},
   pages={669-696}
 } % OK
 
-@article{poly_log,
-  author = {Jacob Holm and Kristian de Lichtenberg and Mikkel Thorup},
-  title = {Poly-logarithmic deterministic fully-dynamic algorithms for connectivity, minimum spanning tree, 2-edge, and biconnectivity},
-  journal = {Journal of the ACM},
-  volume={48},
-  number={4},
-  year = {2001},
-  pages = {723-760}
-} % OK
+@inproceedings{Eppstein1992SparsificationaTF,
+author = {David Eppstein},
+title = {Sparsification -- {A} technique for speeding up dynamic graph algorithms},
+year = {1992},
+isbn = {0818629002},
+publisher = {IEEE Computer Society},
+address = {USA},
+url = {https://doi.org/10.1109/SFCS.1992.267818},
+doi = {10.1109/SFCS.1992.267818},
+booktitle = {Proceedings of the 33rd Annual Symposium on Foundations of Computer Science},
+pages = {60–69},
+numpages = {10},
+series = {FOCS '92}
+}
+
+@inproceedings{poly_log,
+author = {Holm, Jacob and de Lichtenberg, Kristian and Thorup, Mikkel},
+title = {Poly-logarithmic deterministic fully-dynamic algorithms for connectivity, minimum spanning tree, 2-edge, and biconnectivity},
+year = {1998},
+isbn = {0897919629},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/276698.276715},
+doi = {10.1145/276698.276715},
+booktitle = {Proceedings of the 30th Annual ACM Symposium on Theory of Computing},
+pages = {79--89},
+numpages = {11},
+location = {Dallas, Texas, USA},
+series = {STOC '98}
+}
 
 @inproceedings{Thorup2000,
   author = {Thorup, Mikkel},
@@ -61,7 +82,6 @@ url = {https://www.sciencedirect.com/science/article/pii/0022000078900223},
   isbn = {1581131844},
   publisher = {Association for Computing Machinery},
   address = {New York, NY, USA},
-  url = {https://doi.org/10.1145/335305.335345},
   doi = {10.1145/335305.335345},
   location = {Portland, Oregon, USA}
 } % OK
@@ -71,14 +91,14 @@ url = {https://www.sciencedirect.com/science/article/pii/0022000078900223},
   title = {Dynamic Spanning Trees for Connectivity Queries on Fully-dynamic Undirected Graphs (Extended Version)},
   booktitle = {Proceedings of the
 Very Large Data Bases Endowment},
-  series = {PVLDB '22},
+  series = {VLDB '22},
   year = {2022},
   pages = {3263-3276},
   isbn = {21508097},
   publisher = {Very Large Data Bases}
 }
 @article{HHSRecentAdvances2022,
-author = {Hanauer, Kathrin and Henzinger, Monika and Schulz, Christian},
+author = {Hanauer, Kathrin and Henzinger, Monika Rauch and Schulz, Christian},
 title = {Recent Advances in Fully Dynamic Graph Algorithms – {A} Quick Reference Guide},
 journal = {ACM J. Exp. Algorithmics},
 year = {2022},
@@ -88,15 +108,21 @@ url = {https://doi.org/10.1145/3555806},
 articleno = {1.11}
 }
 
-@article{HenzingerKing,
-  author = {Henzinger, Monika R. and King, Valerie},
-  title = {Randomized Fully Dynamic Graph Algorithms with Polylogarithmic Time per Operation},
-  journal = {Journal of ACM},
-  year = {1999},
-  volume = {46},
-  number = {4},
-  pages = {502–516}
-} % OK
+@inproceedings{HenzingerKing,
+author = {Henzinger, Monika Rauch and King, Valerie},
+title = {Randomized dynamic graph algorithms with polylogarithmic time per operation},
+year = {1995},
+isbn = {0897917189},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+doi = {10.1145/225058.225269},
+booktitle = {Proceedings of the 27th Annual ACM Symposium on Theory of Computing},
+pages = {519--527},
+numpages = {9},
+location = {Las Vegas, Nevada, USA},
+series = {STOC '95}
+}
+
 
 @article{HenzingerThorup,
   author = {Henzinger, Monika R. and Thorup, Mikkel},
@@ -118,7 +144,13 @@ articleno = {1.11}
   pages = {540-545}
 } % OK
 
-
+@inproceedings{AragonSeidel1989,
+  author = {Aragon, Cecilia and Seidel, Raimund},
+  title = {Randomized Search Trees},
+  booktitle = {Proceedings of the 30th IEEE Symposium on Foundations of Computer Science},
+  year = {1989},
+  pages = {540-545}
+} % OK
 
 @inproceedings{bruceM,
   author = {Bruce M. Kapron and Valerie King and Ben Mountjoy},
@@ -147,12 +179,12 @@ articleno = {1.11}
    author = {Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest and Clifford Stein},
    publisher = {The MIT Press},
    isbn =      {0262032937; 9780262032933; 0262531968; 9780262531962; 0070131511; 9780070131514},
-   year = {2001},
-   edition = {2}
+   year = {2022},
+   edition = {4}
 } % OK
 
 @article{tarjan1985,
-  author = {Tarjan, Robert E. and Vishkin, Uzi},
+  author = {Tarjan, Robert Endre and Vishkin, Uzi},
   title = {An Efficient Parallel Biconnectivity Algorithm},
   journal = {SIAM Journal on Computing},
   volume = {14},
@@ -166,7 +198,6 @@ articleno = {1.11}
   title = {A data structure for dynamic trees},
   journal = {Journal of Computer and System Sciences},
   volume = {26},
-  number = {3},
   pages = {362-391},
   year = {1983}
 }
@@ -216,6 +247,7 @@ pages = {4–34},
 numpages = {30}
 }
 
+
 @book{Zaroliagis2002,
 author="Zaroliagis, Christos D.",
 title="Implementations and Experimental Studies of Dynamic Graph Algorithms",
@@ -230,7 +262,7 @@ url="https://doi.org/10.1007/3-540-36383-1_11"
 }
 
 @InProceedings{MSF-HK,
-author="Henzinger, Monika R.
+author="Henzinger, Monika Rauch
 and King, Valerie",
 title="Maintaining minimum spanning trees in dynamic graphs",
 booktitle="Automata, Languages and Programming",
@@ -246,7 +278,6 @@ isbn="978-3-540-69194-5"
 author = {Tarjan, Robert E. and Werneck, Renato F.},
 title = {Dynamic Trees in Practice},
 year = {2010},
-issue_date = {2009},
 publisher = {Association for Computing Machinery},
 address = {New York, NY, USA},
 volume = {14},
@@ -254,20 +285,17 @@ issn = {1084-6654},
 url = {https://doi.org/10.1145/1498698.1594231},
 doi = {10.1145/1498698.1594231},
 journal = {ACM J. Exp. Algorithmics},
-month = {jan},
-articleno = {5},
-numpages = {21},
 }
 
-@article{simpleAndEfficient2022,
-author = {David A. Bader and Paul Burkhardt},
-title = {A Simple and Efficient Algorithm for Finding Minimum Spanning Tree Replacement Edges},
-year = {2022},
-volume = {26},
-number = {4},
-pages = {577--588},
-journal = {Journal of Graph Algorithms and Applications},
-}
+%@article{simpleAndEfficient2022,
+%author = {David A. Bader and Paul Burkhardt},
+%title = {A Simple and Efficient Algorithm for Finding Minimum Spanning Tree Replacement Edges},
+%year = {2022},
+%volume = {26},
+%number = {4},
+%pages = {577--588},
+%journal = {Journal of Graph Algorithms and Applications},
+%}
 
 
 
@@ -315,26 +343,26 @@ title={A lower bound for finding predecessors in {Y}ao's cell probe model},
 journal={Combinatorica},
 volume={8},
 year={1988},
-number={3},
+%number={3},
 pages={235-247},
 issn={1439-6912},
 doi={10.1007/BF02126797}
 }
 
 
-@InProceedings{AHLTMinDiameter,
-author="Alstrup, Stephen
-and Holm, Jacob
-and de Lichtenberg, Kristian
-and Thorup, Mikkel",
-title="Minimizing diameters of dynamic trees",
-booktitle="Automata, Languages and Programming",
-year="1997",
-publisher="Springer Berlin Heidelberg",
-address="Berlin, Heidelberg",
-pages="270--280",
-isbn="978-3-540-69194-5"
-}
+%@InProceedings{AHLTMinDiameter,
+%author="Alstrup, Stephen
+%and Holm, Jacob
+%and de Lichtenberg, Kristian
+%and Thorup, Mikkel",
+%title="Minimizing diameters of dynamic trees",
+%booktitle="Automata, Languages and Programming",
+%year="1997",
+%publisher="Springer Berlin Heidelberg",
+%address="Berlin, Heidelberg",
+%pages="270--280",
+%isbn="978-3-540-69194-5"
+%}
 
 @InProceedings{kejlbergrasmussen_et_al,
   author =	{Casper Kejlberg-Rasmussen and Tsvi Kopelowitz and Seth Pettie and Mikkel Thorup},
@@ -368,14 +396,152 @@ address="New York, NY",
 pages="738--741",
 isbn="978-1-4939-2864-4",
 doi="10.1007/978-1-4939-2864-4_569",
-url="https://doi.org/10.1007/978-1-4939-2864-4_569"
 }
 
 
-@inproceedings{nr-aaai15,
-      title = {The Network Data Repository with Interactive Graph Analytics and Visualization},
-      author={Ryan A. Rossi and Nesreen K. Ahmed},
-      booktitle = {Proceedings of the Twenty-Ninth AAAI Conference on Artificial Intelligence},
-      url={http://networkrepository.com},
-      year={2015}
-  }
+%@inproceedings{nr-aaai15,
+%      title = {The Network Data Repository with Interactive Graph Analytics and Visualization},
+%      author={Ryan A. Rossi and Nesreen K. Ahmed},
+%      booktitle = {Proceedings of the Twenty-Ninth AAAI Conference on Artificial Intelligence},
+%      url={http://networkrepository.com},
+%      year={2015}
+%}
+@mastersthesis{linkcuttree,
+title   = {Link-cut trees e aplicações em estruturas de dados retroativas},
+author = {Noronha, Felipe Castro de and Fernandes, Cristina Gomes},
+year = {2022},
+url={https://bdta.abcd.usp.br/directbitstream/2fbf453b-b7db-4f95-a805-e41dc8eb7b0f/3122356.pdf},
+school = {Instituto de Matemática e Estatística, Universidade de São Paulo},
+type = {Trabalho de Conclusão de Curso}
+}
+%@inproceedings{KONECT,
+%author = {Kunegis, J\'{e}r\^{o}me},
+%title = {KONECT: the Koblenz network collection},
+%year = {2013},
+%isbn = {9781450320382},
+%publisher = {Association for Computing Machinery},
+%address = {New York, NY, USA},
+%url = {https://doi.org/10.1145/2487788.2488173},
+%doi = {10.1145/2487788.2488173},
+%booktitle = {Proceedings of the 22nd International Conference on World Wide Web},
+%pages = {1343–1350},
+%numpages = {8},
+%keywords = {web observatory, network analysis},
+%location = {Rio de Janeiro, Brazil},
+%series = {WWW '13 Companion}
+%}
+
+%@inproceedings{guideXP1999,
+%  title={A theoretician's guide to the experimental analysis of algorithms},
+%  author={David S. Johnson},
+%  booktitle={Data Structures, Near Neighbor Searches, and Methodology},
+%  year={1999},
+%  url={https://api.semanticscholar.org/CorpusID:11281694}
+%}
+
+@article{LEDA,
+author = {Mehlhorn, Kurt and N\"{a}her, Stefan},
+title = {LEDA: a platform for combinatorial and geometric computing},
+year = {1995},
+issue_date = {Jan. 1995},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {38},
+number = {1},
+issn = {0001-0782},
+doi = {10.1145/204865.204889},
+journal = {Commun. ACM},
+pages = {96--102},
+numpages = {7}
+}
+
+@article{xp-Phylogeny,
+author = {Fernández-Baca, David and Liu, Lei},
+title = {Tree Compatibility, Incomplete Directed Perfect Phylogeny, and Dynamic Graph Connectivity: An Experimental Study},
+journal = {Algorithms},
+volume = {12},
+year = {2019},
+number = {3},
+url = {https://www.mdpi.com/1999-4893/12/3/53},
+issn = {1999-4893},
+doi = {10.3390/a12030053}
+}
+
+@inproceedings{NikoletseasRSY,
+author        = {Sotiris E. Nikoletseas and John H. Reif and Paul G. Spirakis and Moti Yung},
+booktitle     = {Proceedings of the 22nd International Colloquium on Automata, Languages and Programming},
+doi    = {10.1007/3-540-60084-1_71},
+isbn   = {3-540-60084-1},
+pages  = {159--170},
+publisher     = {Springer-Verlag},
+series = {Lecture Notes in Computer Science},
+title  = {Stochastic Graphs Have Short Memory: Fully Dynamic Connectivity in Poly-Log Expected Time},
+volume = {944},
+year   = {1995},
+}
+
+@InProceedings{Fatourou,
+author={Fatourou, Panagiota
+and Spirakis, Paul
+and Zarafidis, Panagiotis
+and Zoura, Anna},
+editor={Vitter, Jeffrey S.
+and Zaroliagis, Christos D.},
+title={Implementation and Experimental Evaluation of Graph Connectivity Algorithms Using {L}EDA},
+booktitle={Algorithm Engineering},
+year={1999},
+publisher={Springer Berlin Heidelberg},
+address={Berlin, Heidelberg},
+pages={124--138},
+isbn={978-3-540-48318-2}
+}
+
+@mastersthesis{noma2003,
+title   = {Análise experimental de algoritmos de planaridade},
+author = {Noma, Alexandre},
+school = {Instituto de Matemática e Estatística, Universidade de São Paulo},
+year = {2003},
+type = {Dissertação de Mestrado},
+address = {São Paulo},
+}
+@book{Diestel,
+   title =     {Graph Theory},
+   author =    {Diestel, Reinhard},
+   publisher = {Springer},
+   isbn =      {9783540261834; 3540261834},
+   year =      {2024},
+   series =    {Graduate Texts in Mathematics},
+   edition =   {6},
+}
+@misc{treap,
+  title = {Treap},
+  howpublished = {\url{https://en.wikipedia.org/wiki/Treap}},
+  note = {Acessado em: 2024-09-28}
+}
+
+@misc{github,
+  title = {Repositório Git},
+  howpublished = {\url{https://github.com/ArthurHDRodrigues/dynamic-connectivity/}},
+  author = {Arthur Henrique Dias Rodrigues},
+  note = {Acessado em: 2024-09-28}
+}
+
+@book{EncyclopediaAlgorithms,
+title = {Encyclopedia of Algorithms},
+author = {Kao, Ming-Yang},
+publisher = {Springer Publishing Company},
+edition = {2},
+year = {2016},
+isbn = {978-1-4939-2865-1}
+}
+
+@inproceedings{fastestConn,
+author = {Shang-En Huang and Dawei Huang and Tsvi Kopelowitz and Seth Pettie},
+booktitle = {Proceedings of the 2017 Annual ACM-SIAM Symposium on Discrete Algorithms (SODA)},
+year={2017},
+title = {Fully Dynamic Connectivity in {O}(log n(log log n)²) Amortized Expected Time},
+pages = {510-520},
+doi = {10.1137/1.9781611974782.32},
+}
+
+

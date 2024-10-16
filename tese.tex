@@ -45,6 +45,7 @@
   marginparsep=5mm,
 }
 
+\usepackage{nolbreaks}
 % Vários pacotes e opções de configuração genéricos; para personalizar o
 % resultado, modifique estes arquivos.
 \input{extras/basics}
@@ -124,25 +125,25 @@
 \makeatother
 
 \newtheorem{theorem}{Teorema}
+\newtheorem{lemma}[theorem]{Lema}
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Comandos de observações       %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\TODO}[1]{{{\red #1}}}
-%\newcommand{\NOTE}[1]{{{\blue #1}}}
-\newcommand{\NEW}[1]{{\blue #1}}
+
+%\newcommand{\defi}[1]{\index{#1}\textbf{#1}} % defini estilo ao definir algo no texto
+\NewDocumentCommand{\defi}{ O{#2} m }{\index{#1}\textbf{#2}}
 
 
-\newcommand{\defi}[1]{\textbf{#1}} % defini estilo ao definir algo no texto
-
-\newcommand{\node}{n\acute{o}}
+\renewcommand{\leq}{\leqslant}
+\newcommand{\ceil}[1]{\lceil{#1}\rceil}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Comandos de notação assintotica   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\renewcommand{\O}[1]{\text{O}\left(#1\right)}
+\renewcommand{\O}[1]{\mathrm{O}(#1)}
 \newcommand{\Otil}[1]{\text{Õ}(#1)}
 \newcommand{\OTheta}[1]{\Theta(#1)}
 
@@ -152,10 +153,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de C           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\malloc}{\text{\TODO{alloc}}}  %(int)
-\newcommand{\free}{\text{\TODO{delete}}}    %(ptn)
 \newcommand{\random}{\AlgoName{sorteie}} %(max_rand) escolhe um inteiro não negativo menor que max_rand
-\newcommand{\sizeof}{\text{\TODO{sizeof}}}  %(int)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    Nomes de váriaveis      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\varname}[1]{\textit{#1}}
+\newcommand{\altvarname}[1]{$#1$}
+\newcommand{\node}{\mathit{n\acute{o}}}
+\newcommand{\var}{\mathit{var}}
+
+
+\newcommand{\R}{\mathbb{R}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -163,7 +173,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\graphCreate}{\AlgoName{novoGrafo}}
 \newcommand{\graphAdd}{\AlgoName{ligueGLA}}
-\newcommand{\graphDel}{\AlgoName{removeGLA}}
+\newcommand{\graphDel}{\AlgoName{removaGLA}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de Treap       %
@@ -175,8 +185,13 @@
 \newcommand{\treapOrder}{\AlgoName{ordem}}
 \newcommand{\treapJoin}{\AlgoName{junta}}
 \newcommand{\treapSplit}{\AlgoName{corta}}
+\newcommand{\treapSplitRight}{\AlgoName{cortaDireita}}
 \newcommand{\treapGetSize}{\AlgoName{tamanho}}
 \newcommand{\treapGetEdgesLevel}{\AlgoName{arestasDeNível}}
+
+\newcommand{\treapFirst}{\AlgoName{primeiro}}
+\newcommand{\treapLast}{\AlgoName{último}}
+\newcommand{\treapPredecessor}{\AlgoName{\AlgoName{Pred}}}    %(F, u, v)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Euler Tour Tree %
@@ -192,11 +207,8 @@
 % Métodos da tabela hash         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\dymForestHash}{$H$}  %simbolo que identifica a matriz/hash da floresta
-
 \newcommand{\nivel}{\AlgoName{nível}} 
 \newcommand{\hashCreate}{\AlgoName{novoDicio}}     
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Métodos de Florestas dinamicas %
@@ -216,12 +228,49 @@
 \newcommand{\dymGraphReplace}{\AlgoName{\AlgoName{substituaGD}}} %(G, u, v, i)
 \newcommand{\dymGraphHash}{$H$}  %simbolo que identifica a matriz/hash da floresta
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Métodos de Link/Cut Tree   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\newcommand{\linkcutCreate}{\AlgoName{newLCT}}
+\newcommand{\linkcutDestroy}{\AlgoName{delLCT}}
+\newcommand{\linkcutAddEdge}{\AlgoName{link}}    %(F, u, v)
+\newcommand{\linkcutDelEdge}{\AlgoName{cut}}    %(F, u, v)
+\newcommand{\linkcutEvert}{\AlgoName{\AlgoName{evert}}}    %(v)
+\newcommand{\linkcutMax}{\AlgoName{\AlgoName{max}}}    %(F, u, v)
+\newcommand{\linkcutMin}{\AlgoName{\AlgoName{min}}}    %(F, u, v)
+\newcommand{\linkcutParent}{\AlgoName{\AlgoName{parent}}}    %(F, u, v)
+\newcommand{\linkcutQuery}{\AlgoName{\AlgoName{conectadoLC}}}    %(F, u, v)
+\newcommand{\linkcutWeight}{\AlgoName{\AlgoName{set weight}}}    %(F, u, v)
+\newcommand{\linkcutRoot}{\AlgoName{\AlgoName{get Root}}}    %(F, u, v)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Métodos de Link/Cut Tree com ordem  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\LCOMakeOcto}{\AlgoName{Create Octo}}
+\newcommand{\LCODestroyOcto}{\AlgoName{Destroy Octo}}
+
+\newcommand{\LCOMakeNode}{\AlgoName{Make edge}}
+\newcommand{\LCODestroyNode}{\AlgoName{Make edge}}
+\newcommand{\LCOLink}{\AlgoName{Link}}
+\newcommand{\LCOMerge}{\AlgoName{Merge}}
+\newcommand{\LCOSplit}{\AlgoName{Split}}
+\newcommand{\LCOCycle}{\AlgoName{Cycle}}
+\newcommand{\LCOParent}{\AlgoName{\AlgoName{Parent}}}    %(F, u, v)
+\newcommand{\LCORoot}{\AlgoName{Root}}
+\newcommand{\LCOAddCost}{\AlgoName{Set weight}}
+\newcommand{\LCOMax}{\AlgoName{\AlgoName{Find max}}}    %(F, u, v)
+\newcommand{\LCOMin}{\AlgoName{\AlgoName{Find min}}}    %(F, u, v)
+\newcommand{\LCOEvert}{\AlgoName{\AlgoName{Evert}}}    %(F, u, v)
+\newcommand{\LCOConnected}{\AlgoName{\AlgoName{Connected}}}    %(F, u, v)
+\newcommand{\LCOFindNode}{\AlgoName{Find node}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     Métodos de MSF         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\MSFCreate}{\AlgoName{novoGDP}} %(n)
+\newcommand{\MSFupdate}{\AlgoName{mudaPesoGDP}} %(n)
 \newcommand{\MSFaddEdge}{\AlgoName{ligueGDP}}    %(G, u, v, w)
 \newcommand{\MSFdelEdge}{\AlgoName{removaGDP}}    %(G, u, v)
 \newcommand{\MSFweight}{\AlgoName{pesoGDP}}    %(G)
@@ -238,53 +287,6 @@
 \newcommand{\VPSPconvert}{\AlgoName{converta}}
 \newcommand{\VPSPupdate}{\AlgoName{substitua}}
 \newcommand{\VPSPverify}{\AlgoName{verifique}}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     Nomes de Algoritmos
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\HDT}{HDT}
-\newcommand{\HK}{HK}
-\newcommand{\CLHB}{CLHB}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Comandos para gráficos 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\legenda}{
-\begin{center}
-\begin{tabular}{| c c c c c c c c|}
-\hline
-	\ref{pgfplots:Dtree:QueryCall} & Dtree & \ref{pgfplots:nDtree:QueryCall} & nDtree & \ref{pgfplots:HK:QueryCall} & HK & \ref{pgfplots:HDT:QueryCall} & HDT\\
-\hline
-\end{tabular}
-\end{center}
-}
-
-\newcommand{\tabela}[3]{
-\begin{tikzpicture}
-    \begin{axis}[
-		 ylabel=tempo médio (s),
-		 xticklabel=\empty,
-		 xlabel=\empty,
-		 xlabel=pontos de testes,
-		 scaled x ticks=false,
-		 width=0.3\linewidth,
-                 title={#2}
-	         ]
-    \addplot[orange] table [x=ts, y=Dtree, col sep=comma] {#1};
-	    \label{pgfplots:Dtree:#3}
-    \addplot[brown] table [x=ts, y=nDtree, col sep=comma] {#1};
-	    \label{pgfplots:nDtree:#3}
-    \addplot[black] table [x=ts, y=HK, col sep=comma] {#1};
-	    \label{pgfplots:HK:#3}
-    \addplot[blue] table [x=ts, y=HDT, col sep=comma] {#1};
-	    \label{pgfplots:HDT:#3}
-\end{axis}
-\end{tikzpicture}
-}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -316,8 +318,8 @@
     titlept={Algoritmos para conexidade em\\ grafos dinâmicos},
     titleen={Algorithms for dynamic graph connectivity},
     % Opcional, mas se houver deve existir nas duas línguas
-    subtitlept={um subtítulo},
-    subtitleen={a subtitle},
+    %subtitlept={um subtítulo},
+    %subtitleen={a subtitle},
 }
 
 \author{Arthur Henrique Dias Rodrigues}
@@ -372,7 +374,7 @@
   %apoio={Durante o desenvolvimento deste trabalho o autor
   %       recebeu auxílio financeiro da XXXX},
   local={São Paulo},
-  data=2024-05-12, % YYYY-MM-DD
+  data=2024-10-02, % YYYY-MM-DD
   % A licença do seu trabalho. Use CC-BY, CC-BY-NC, CC-BY-ND, CC-BY-SA,
   % CC-BY-NC-SA ou CC-BY-NC-ND para escolher a licença Creative Commons
   % correspondente (o sistema insere automaticamente o texto da licença).
@@ -381,8 +383,8 @@
   % observe que apenas TCCs sob alguma licença Creative Commons serão
   % acrescentados ao BDTA. Se você tem alguma intenção de publicar o
   % trabalho comercialmente no futuro, sugerimos a licença CC-BY-NC-ND.
-  %direitos={CC-BY}, % Creative Commons Attribution 4.0 International License
-  direitos={CC-BY-NC-ND}, % Creative Commons Attribution / NonCommercial /
+  direitos={CC-BY}, % Creative Commons Attribution 4.0 International License
+  %direitos={CC-BY-NC-ND}, % Creative Commons Attribution / NonCommercial /
                            % NoDerivatives 4.0 International License
   %direitos={Autorizo a reprodução e divulgação total ou parcial
   %          deste trabalho, por qualquer meio convencional ou
@@ -417,29 +419,10 @@
 
 \maketitle % capa e folha de rosto
 
+\input{conteudo/ficha-cadastral}
 %%%%%%%%%%%%%%%% DEDICATÓRIA, AGRADECIMENTOS, RESUMO/ABSTRACT %%%%%%%%%%%%%%%%%%
 
-\begin{dedicatoria}
-Esta seção é opcional e fica numa página separada; ela pode ser usada para
-uma dedicatória ou epígrafe.
-\end{dedicatoria}
-
-% Reinicia o contador de páginas (a próxima página recebe o número "i") para
-% que a página da dedicatória não seja contada.
-\pagenumbering{roman}
-
-% Agradecimentos:
-% Se o candidato não quer fazer agradecimentos, deve simplesmente eliminar
-% esta página. A epígrafe, obviamente, é opcional; é possível colocar
-% epígrafes em todos os capítulos. O comando "\chapter*" faz esta seção
-% não ser incluída no sumário.
-\chapter*{Agradecimentos}
-\epigrafe{Do. Or do not. There is no try.}{Mestre Yoda}
-
-Texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto texto texto texto texto texto texto texto texto texto
-texto texto texto texto. Texto opcional.
+\input{agradecimentos}
 
 \input{conteudo/resumoabstract}
 
@@ -521,21 +504,21 @@ texto texto texto texto. Texto opcional.
 % pois o índice é opcional). É comum colocar esses itens no final do documento,
 % junto com o comando \printindex, mas em alguns casos isso torna necessário
 % executar texindy (ou makeindex) mais de uma vez, então colocar aqui é melhor.
-\index{Inglês|see{Língua estrangeira}}
-\index{Figuras|see{Floats}}
-\index{Tabelas|see{Floats}}
-\index{Código-fonte|see{Floats}}
-\index{Subcaptions|see{Subfiguras}}
-\index{Sublegendas|see{Subfiguras}}
-\index{Equações|see{Modo matemático}}
-\index{Fórmulas|see{Modo matemático}}
-\index{Rodapé, notas|see{Notas de rodapé}}
-\index{Captions|see{Legendas}}
-\index{Versão original|see{Tese/Dissertação, versões}}
-\index{Versão corrigida|see{Tese/Dissertação, versões}}
-\index{Palavras estrangeiras|see{Língua estrangeira}}
-\index{Floats!Algoritmo|see{Floats, ordem}}
-
+%\index{Inglês|see{Língua estrangeira}}
+%\index{Figuras|see{Floats}}
+%\index{Tabelas|see{Floats}}
+%\index{Código-fonte|see{Floats}}
+%\index{Subcaptions|see{Subfiguras}}
+%\index{Sublegendas|see{Subfiguras}}
+%\index{Equações|see{Modo matemático}}
+%\index{Fórmulas|see{Modo matemático}}
+%\index{Rodapé, notas|see{Notas de rodapé}}
+%\index{Captions|see{Legendas}}
+%\index{Versão original|see{Tese/Dissertação, versões}}
+%\index{Versão corrigida|see{Tese/Dissertação, versões}}
+%\index{Palavras estrangeiras|see{Língua estrangeira}}
+%\index{Floats!Algoritmo|see{Floats, ordem}}
+%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPÍTULOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -554,9 +537,9 @@ texto texto texto texto. Texto opcional.
 \input{conteudo/2-DF}
 \input{conteudo/3-treaps}
 \input{conteudo/4-connDG}
-\input{conteudo/experimentos}
-\input{conteudo/limitante}
-\input{conteudo/MSF}
+\input{conteudo/6-MSF}
+\input{conteudo/7-limitante}
+\input{conteudo/8-conclusoes}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% APÊNDICES E ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -584,39 +567,39 @@ texto texto texto texto. Texto opcional.
 
 %%%% Apêndices %%%%
 
-\makeatletter
-\if@openright\cleardoublepage\else\clearpage\fi
-\makeatother
+%\makeatletter
+%\if@openright\cleardoublepage\else\clearpage\fi
+%\makeatother
 
-\pagestyle{appendix}
+%\pagestyle{appendix}
 
-\appendix
+%\appendix
 
 
 % \addappheadtotoc acrescenta a palavra "Apêndice" ao sumário; se
 % só há apêndices, sem anexos, provavelmente não é necessário.
-\addappheadtotoc
+%\addappheadtotoc
 
-\input{conteudo/decremental}
+%\input{conteudo/decremental}
 %\input{conteudo/apendice-exemplo-pseudocodigo}
-\par
+%\par
 
 %%%% Anexos %%%%
 
-\makeatletter
-\if@openright\cleardoublepage\else\clearpage\fi
-\makeatother
+%\makeatletter
+%\if@openright\cleardoublepage\else\clearpage\fi
+%\makeatother
 
-\pagestyle{appendix} % repete o anterior, caso você não use apêndices
+%\pagestyle{appendix} % repete o anterior, caso você não use apêndices
 
-\annex
+%\annex
 
 % \addappheadtotoc acrescenta a palavra "Anexo" ao sumário; se
 % só há anexos, sem apêndices, provavelmente não é necessário.
-\addappheadtotoc
+%\addappheadtotoc
 
 %\input{conteudo/anexo-exemplo-faq}
-\par
+%\par
 
 
 %%%%%%%%%%%%%%% SEÇÕES FINAIS (BIBLIOGRAFIA E ÍNDICE REMISSIVO) %%%%%%%%%%%%%%%%
