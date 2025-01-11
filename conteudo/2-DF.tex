@@ -199,9 +199,13 @@ Por exemplo, se aplicarmos \ETmovetofront($F$,2) e \ETmovetofront($F$,5), onde $
 55~54~40~03~33~30~00~04~44~45~~~~~\text{e}~~~~~~22~21~11~12.\label{eq:apos-moveToFront}
 \end{equation}
 
+\NEW{
+A implementação de \ETmovetofront($F$, $u$) está descrita no Algoritmo~\ref{Algo:ETmovetofront} e diagramada na Figura~\ref{fig:algorit-move-to-front}.
+}
 Para implementar~\ETmovetofront($F$, $u$), basta cortar a sequência em \varname{uu} chamando \treapSplit(\varname{uu}) e concatenar as sequências resultantes de forma apropriada com~\treapJoin{}.
 Note que, como \treapSplit{} remove \varname{uu} da sequência, temos que adicioná-lo novamente à sequência como pode ser visto na linha~\ref{Algo:ETmovetofront:3} do Algoritmo~\ref{Algo:ETmovetofront}.
 
+\newpage
 \begin{algorithm}[htb]
 \caption{\ETmovetofront($F$, $u$)}
 \label{Algo:ETmovetofront}
@@ -213,7 +217,6 @@ Note que, como \treapSplit{} remove \varname{uu} da sequência, temos que adicio
 \end{algorithm}
 
 Notemos que, devido às linhas~\ref{Algo:ETmovetofront:2} e~\ref{Algo:ETmovetofront:3} do Algoritmo~\ref{Algo:ETmovetofront}, o consumo de tempo de \ETmovetofront{} é $\O{\lg n}$.
-Com a rotina \ETmovetofront{} implementada, podemos elaborar~\dymForestAddEdge{}, descrita no Algoritmo~\ref{Algo:dymForestAddEdge}.
 
 \begin{figure}[htb]
 \centering
@@ -222,11 +225,12 @@ Com a rotina \ETmovetofront{} implementada, podemos elaborar~\dymForestAddEdge{}
 \label{fig:algorit-move-to-front}
 \end{figure}
 
+Com a rotina \ETmovetofront{} implementada, podemos elaborar~\dymForestAddEdge{}, descrita no Algoritmo~\ref{Algo:dymForestAddEdge} \NEW{e diagramada na Figura~\ref{fig:algorit-add-sequencias}}.
 Primeiro, usamos \ETmovetofront{} para mover~\varname{uu} e~$vv$ para o início de suas sequências.
 Em seguida, criamos novos nós~$uv$ e~$vu$; os adicionamos à tabela de símbolos e usamos \treapJoin{} pra unir todas as sequências de tal forma que a sequência resultante seja a sequência Euleriana correspondente à árvore resultante da adição da aresta~$uv$.
 
 
-\begin{algorithm}[htb]
+\begin{algorithm}[h]
 \caption{\dymForestAddEdge($F$, $u$, $v$)}
 \label{Algo:dymForestAddEdge}
 \begin{algorithmic}[1]
@@ -239,6 +243,14 @@ Em seguida, criamos novos nós~$uv$ e~$vu$; os adicionamos à tabela de símbolo
 \State \treapJoin($U$, $uv$, $V$, $vu$)
 \end{algorithmic}
 \end{algorithm}
+
+
+\begin{figure}[H]
+\centering
+\input{fig/ABB-add-sequencia.tex}
+\caption{Sequências ao longo da execução de \dymForestAddEdge($F$, $u$, $v$).}
+\label{fig:algorit-add-sequencias}
+\end{figure}
 
 Dessa forma, se quisermos adicionar uma aresta ligando os vértices~$2$ e~$5$ na floresta da Figura~\ref{fig:algorit-del-pos}, obtendo assim a floresta da Figura~\ref{fig:algorit-add-pos}, primeiro temos que mover $22$ e $55$ para o início de suas sequências, como fizemos com as sequências \eqref{eq:apos-moveToFront}. Em seguida criamos os nós contendo $25$ e $52$ e unimos essas sequências, obtendo assim a sequência:
 \begin{equation}
