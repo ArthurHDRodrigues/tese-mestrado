@@ -167,15 +167,12 @@ O problema da floresta maximal de peso mínimo (MSF) em grafos dinâmicos planos
 Para resolver o problema da floresta geradora de peso mínimo em grafos planos ponderados dinâmicos, Eppstein et al.~\cite{EPPSTEIN-planar} propuseram o uso de uma estrutura de dados que chamaremos de \defi[arvore@\'arvore!dinâmica plana]{árvores dinâmicas planas} (ADP). Originalmente os autores denominaram essa estrutura de \textit{edge ordered dynamic tree}.
 Com essa estrutura, eles obtém implementações de \MSFCreate{} e \MSFweight{} que consomem tempo constante e \MSFaddEdge{}, \MSFdelEdge{} e \MSFupdate{} que consomem tempo~$\O{\lg m}$ esperado amortizado, onde~$m$ é o número de arestas no grafo corrente. 
 
-
-\NEW{
 A base da solução introduzida por esses autores é usar árvores dinâmicas planas para manter uma floresta~$F$ dinâmica de peso mínimo do grafo e a floresta geradora de peso máximo do grafo dual associada a~$F$ como definido no Teorema~\ref{teo:MSFdual}.
 
 A ideia de manter uma certa estrutura do grafo primal junto à sua respectiva estrutura dual está presente em outros problemas envolvendo grafos planos.
 Por exemplo, para calcular o diagrama de Voronoi de um conjunto de pontos, Guibas e Stolfi~\cite{stolfi} mantém, além do diagrama em si, a triangulação de Delaunaya do mesmo conjunto de pontos, que é a estrutura dual associada ao diagrama de Voronoi.
 O resultado dessa ideia, tanto para Guibas e Stolfi quanto para Eppstein et al., são algoritmos simples e elegantes para solucionar seus respectivos problemas.
 No restante dessa seção, vamos apresentar as árvores dinâmicas planas.
-}
 
 Cada componente conexa do grafo plano dinâmico ponderado~$G$ é representada em um plano distinto.
 Consequentemente, a face exterior de cada componente conexa é considerada distinta das faces exteriores das outras componentes.
