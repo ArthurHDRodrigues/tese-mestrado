@@ -133,24 +133,6 @@ Para manter os códigos mais legíveis, vamos abreviar chamadas repetidas de \tr
 Para implementar a operação \dymForestDelEdge($F$, $u$, $v$), descrita no Algoritmo~\ref{Algo:dymForestDelEdge}, 
 primeiro utilizaremos o dicionário para obter ponteiros para os nós que armazenam os arcos~$uv$ e~$vu$.
 
-Em seguida, aplicaremos~\treapSplit($uv$) dividindo essa sequência em duas partes, nomeadas~$A$ e~$B$, como pode ser visto na Figura~\ref{fig:algorit-cut-seqxy}.
-\begin{figure}[htb]
-\centering
-\input{fig/algorit-cut-seqxy.tex}
-\caption{Sequências $A$ e $B$ após a chamada de \treapSplit($uv$) em \dymForestDelEdge($F$, $u$, $v$).}
-\label{fig:algorit-cut-seqxy}
-\end{figure}
-
-Como a sequência original é Euleriana, sabemos que o primeiro e último vértice dessa sequência coincidem. Na Figura~\ref{fig:algorit-cut-seqxy} chamamos esse vértice de~$w$.
-Dessa forma~$A$ representa uma trilha de~$w$ até~$u$ e~$B$ representa uma trilha de~$v$ até~$w$.
-
-Note que não sabemos se $vu$ está na sequência~$A$ ou na sequência~$B$, mas não precisaremos dessa informação, pois podemos fazer a concatenação de~$B$ com~$A$,
-chamando \treapJoin($B$, $A$), obtendo uma trilha de~$v$ até~$u$ que passa pelo arco~$vu$ em algum ponto.
-
-Por fim, para concluir esse algoritmo, basta chamar~\treapSplit($vu$) para dividir essa sequência em duas.
-A primeira sendo a sequência Euleriana que representa a árvore que contém o vértice~$v$ e a segunda sendo a sequência Euleriana que contém o vértice~$u$.
-Omitimos desse pseudocódigo a liberação dos nós da estrutura que não são mais usados.
-
 \begin{algorithm}[htb]
 \caption{\dymForestDelEdge($F$, $u$, $v$)}
 \label{Algo:dymForestDelEdge}
@@ -164,6 +146,22 @@ Omitimos desse pseudocódigo a liberação dos nós da estrutura que não são m
 \State $F[v,u]$ $\gets$ $\Nil{}$\label{Algo:dymForestDelEdge:7}
 \end{algorithmic}
 \end{algorithm}
+
+Em seguida, aplicaremos~\treapSplit($uv$) dividindo essa sequência em duas partes, nomeadas~$A$ e~$B$, como pode ser visto na Figura~\ref{fig:algorit-cut-seqxy}.
+\begin{figure}[htb]
+\centering
+\input{fig/ABB-corta-pseudocodigo}
+\caption{Sequências ao longo da execução de \dymForestDelEdge($F$, $u$, $v$).}
+\label{fig:algorit-cut-seqxy}
+\end{figure}
+
+Note que não sabemos se $vu$ está na sequência~$A$ ou na sequência~$B$, mas não precisaremos dessa informação, pois podemos fazer a concatenação de~$B$ com~$A$,
+chamando \treapJoin($B$, $A$), obtendo uma sequência que passa pelo arco~$vu$ em algum ponto.
+Na Figura~\ref{fig:algorit-cut-seqxy}, essa sequência é $C~vu~D~A$.
+
+Por fim, para concluir esse algoritmo, basta chamar~\treapSplit($vu$) para dividir essa sequência em duas.
+A primeira sendo a sequência Euleriana que representa a árvore que contém o vértice~$v$ e a segunda sendo a sequência Euleriana que contém o vértice~$u$.
+Omitimos desse pseudocódigo a liberação de memória alocada para os nós $uv$ e $vu$.
 
 Notemos que as linhas~\ref{Algo:dymForestDelEdge:1},~\ref{Algo:dymForestDelEdge:2},~\ref{Algo:dymForestDelEdge:6} e~\ref{Algo:dymForestDelEdge:7} do Algoritmo~\ref{Algo:dymForestDelEdge} consumem tempo esperado constante, enquanto que as linhas~\ref{Algo:dymForestDelEdge:3},~\ref{Algo:dymForestDelEdge:4} e~\ref{Algo:dymForestDelEdge:5}, e consequentemente \dymForestDelEdge{}, possuem consumo de tempo~$\O{\lg n}$, onde~$n$ é o número de vértices de~$F$.
 
@@ -197,9 +195,11 @@ Por exemplo, se aplicarmos \ETmovetofront($F$,2) e \ETmovetofront($F$,5), onde $
 55~54~40~03~33~30~00~04~44~45~~~~~\text{e}~~~~~~22~21~11~12.\label{eq:apos-moveToFront}
 \end{equation}
 
+A implementação de \ETmovetofront($F$, $u$) está descrita no Algoritmo~\ref{Algo:ETmovetofront} e diagramada na Figura~\ref{fig:algorit-move-to-front}.
 Para implementar~\ETmovetofront($F$, $u$), basta cortar a sequência em \varname{uu} chamando \treapSplit(\varname{uu}) e concatenar as sequências resultantes de forma apropriada com~\treapJoin{}.
 Note que, como \treapSplit{} remove \varname{uu} da sequência, temos que adicioná-lo novamente à sequência como pode ser visto na linha~\ref{Algo:ETmovetofront:3} do Algoritmo~\ref{Algo:ETmovetofront}.
 
+\newpage
 \begin{algorithm}[htb]
 \caption{\ETmovetofront($F$, $u$)}
 \label{Algo:ETmovetofront}
@@ -211,10 +211,20 @@ Note que, como \treapSplit{} remove \varname{uu} da sequência, temos que adicio
 \end{algorithm}
 
 Notemos que, devido às linhas~\ref{Algo:ETmovetofront:2} e~\ref{Algo:ETmovetofront:3} do Algoritmo~\ref{Algo:ETmovetofront}, o consumo de tempo de \ETmovetofront{} é $\O{\lg n}$.
-Com a rotina \ETmovetofront{} implementada, podemos elaborar~\dymForestAddEdge{}, descrita no Algoritmo~\ref{Algo:dymForestAddEdge}.
+
+\begin{figure}[htb]
+\centering
+\input{fig/ABB-moveToFront}
+\caption{Sequências ao longo da execução de \ETmovetofront($F$, $u$).}
+\label{fig:algorit-move-to-front}
+\end{figure}
+
+Com a rotina \ETmovetofront{} implementada, podemos elaborar~\dymForestAddEdge{}, descrita no Algoritmo~\ref{Algo:dymForestAddEdge} e diagramada na Figura~\ref{fig:algorit-add-sequencias}.
+Primeiro, usamos \ETmovetofront{} para mover~\varname{uu} e~$vv$ para o início de suas sequências.
+Em seguida, criamos novos nós~$uv$ e~$vu$; os adicionamos à tabela de símbolos e usamos \treapJoin{} pra unir todas as sequências de tal forma que a sequência resultante seja a sequência Euleriana correspondente à árvore resultante da adição da aresta~$uv$.
 
 
-\begin{algorithm}[htb]
+\begin{algorithm}[h]
 \caption{\dymForestAddEdge($F$, $u$, $v$)}
 \label{Algo:dymForestAddEdge}
 \begin{algorithmic}[1]
@@ -228,8 +238,13 @@ Com a rotina \ETmovetofront{} implementada, podemos elaborar~\dymForestAddEdge{}
 \end{algorithmic}
 \end{algorithm}
 
-Primeiro, usamos \ETmovetofront{} para mover~\varname{uu} e~$vv$ para o início de suas sequências.
-Em seguida, criamos novos nós~$uv$ e~$vu$; os adicionamos à tabela de símbolos e usamos \treapJoin{} pra unir todas as sequências de tal forma que a sequência resultante seja a sequência Euleriana correspondente à árvore resultante da adição da aresta~$uv$.
+
+\begin{figure}[H]
+\centering
+\input{fig/ABB-add-sequencia.tex}
+\caption{Sequências ao longo da execução de \dymForestAddEdge($F$, $u$, $v$).}
+\label{fig:algorit-add-sequencias}
+\end{figure}
 
 Dessa forma, se quisermos adicionar uma aresta ligando os vértices~$2$ e~$5$ na floresta da Figura~\ref{fig:algorit-del-pos}, obtendo assim a floresta da Figura~\ref{fig:algorit-add-pos}, primeiro temos que mover $22$ e $55$ para o início de suas sequências, como fizemos com as sequências \eqref{eq:apos-moveToFront}. Em seguida criamos os nós contendo $25$ e $52$ e unimos essas sequências, obtendo assim a sequência:
 \begin{equation}
