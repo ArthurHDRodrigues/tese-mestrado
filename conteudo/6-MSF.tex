@@ -8,6 +8,7 @@ O estudo desse problema se inicia com uma revisão de conceitos de planaridade e
 Esses conceitos são bem estabelecidos na literatura e essas seções são baseadas na Seção~4.2 do livro \textit{Graph Theory} de Reinhard Diestel~\cite{Diestel}.
 
 Os conceitos apresentando nessas seções serão usados nas Seções~\ref{sec:definition-MSF} para definir formalmente o problema de floresta maximal de peso mínimo em grafos ponderados planos dinâmicos e na Seção~\ref{sec:ADP} para fundamentar a estrutura de dados chamada árvores dinâmicas planas proposta por Eppstein et al. para solucionar esse problema.
+
 Em seguida, a biblioteca das árvores dinâmicas planas é definida na Seção~\ref{sec:EODT} e na Seção~\ref{sec:MSFcomADPs} é mostrado como usar essa estrutura de dados para solucionar o problema MSF.
 
 Por fim, na Seção~\ref{sec:struct-aux} são apresentadas estruturas de dados auxiliares que serão usadas para implementar as árvores dinâmicas planas. Essa implementação é feita na Seção~\ref{sec:implementacao-ADP}, que concluí o presente capítulo.
@@ -159,14 +160,19 @@ O problema da floresta maximal de peso mínimo (MSF) em grafos dinâmicos planos
 \item \MSFweight($G$): Devolve o peso de uma MSF de $G$.
 \end{itemize}
 
-
+\newpage
 \section{Árvores dinâmicas planas}
 \label{sec:ADP}
 
 Para resolver o problema da floresta geradora de peso mínimo em grafos planos ponderados dinâmicos, Eppstein et al.~\cite{EPPSTEIN-planar} propuseram o uso de uma estrutura de dados que chamaremos de \defi[arvore@\'arvore!dinâmica plana]{árvores dinâmicas planas} (ADP). Originalmente os autores denominaram essa estrutura de \textit{edge ordered dynamic tree}.
 Com essa estrutura, eles obtém implementações de \MSFCreate{} e \MSFweight{} que consomem tempo constante e \MSFaddEdge{}, \MSFdelEdge{} e \MSFupdate{} que consomem tempo~$\O{\lg m}$ esperado amortizado, onde~$m$ é o número de arestas no grafo corrente. 
 
+A base da solução introduzida por esses autores é usar árvores dinâmicas planas para manter uma floresta~$F$ dinâmica de peso mínimo do grafo e a floresta geradora de peso máximo do grafo dual associada a~$F$ como definido no Teorema~\ref{teo:MSFdual}.
 
+A ideia de manter uma certa estrutura do grafo primal junto à sua respectiva estrutura dual está presente em outros problemas envolvendo grafos planos.
+Por exemplo, para calcular o diagrama de Voronoi de um conjunto de pontos, Guibas e Stolfi~\cite{stolfi} mantém, além do diagrama em si, a triangulação de Delaunay do mesmo conjunto de pontos, que é a estrutura dual associada ao diagrama de Voronoi.
+O resultado dessa ideia, tanto para Guibas e Stolfi quanto para Eppstein et al., são algoritmos simples e elegantes para solucionar seus respectivos problemas.
+No restante dessa seção, vamos apresentar as árvores dinâmicas planas.
 
 Cada componente conexa do grafo plano dinâmico ponderado~$G$ é representada em um plano distinto.
 Consequentemente, a face exterior de cada componente conexa é considerada distinta das faces exteriores das outras componentes.
@@ -188,7 +194,8 @@ Se uma aresta $e^\star$ de $T^\star$ é incidente às faces~$F_1$ e~$F_2$ de~$C$
 Se uma aresta $d^\star$ de~$C^\star$ não está em $T^\star$ e é incidente às faces~$F_1$ e~$F_2$ de~$C$, então $\hat d_1$ e $\hat d_3$ são ligados a~$\hat F_1$ e~$\hat F_2$ respectivamente.
 Na Figura~\ref{fig:MSF-figura-3}, a árvore $\hat T^\star$ está colorida em vermelho.
 
-\begin{minipage}[b]{0.4\textwidth}
+\hspace{-.5cm}
+\begin{minipage}[b]{0.2\textwidth}
 \centering
 \begin{tabular}{| c  c |} 
  \hline
@@ -213,7 +220,7 @@ Na Figura~\ref{fig:MSF-figura-3}, a árvore $\hat T^\star$ está colorida em ver
 \end{tabular}
 \captionof{table}{Tabela de pesos}
 \end{minipage}
-\hfill
+\hspace{1.5cm}
 \begin{minipage}[b]{0.5\textwidth}
     \centering
 \input{fig/MSF-basico-3}
@@ -1204,7 +1211,6 @@ Como \treapFirst{}, \treapLast{}, \treapSplitRight{} e \treapJoin{} consomem tem
 \end{algorithmic}
 \end{algorithm}
 
-\newpage
 A implementação de \treapPredecessor{} está descrita no Algoritmo~\ref{Algo:treapPredecessor}.
 Seu consumo esperado é~$\O{\lg m}$, onde $m$ é o número de arestas no grafo corrente.
 
