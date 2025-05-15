@@ -194,7 +194,7 @@ Se uma aresta $e^\star$ de $T^\star$ é incidente às faces~$F_1$ e~$F_2$ de~$C$
 Se uma aresta $d^\star$ de~$C^\star$ não está em $T^\star$ e é incidente às faces~$F_1$ e~$F_2$ de~$C$, então $\hat d_1$ e $\hat d_3$ são ligados a~$\hat F_1$ e~$\hat F_2$ respectivamente.
 Na Figura~\ref{fig:MSF-figura-3}, a árvore $\hat T^\star$ está colorida em vermelho.
 
-\hspace{-.5cm}
+\hspace{-.7cm}
 \begin{minipage}[b]{0.2\textwidth}
 \centering
 \begin{tabular}{| c  c |} 
@@ -220,7 +220,7 @@ Na Figura~\ref{fig:MSF-figura-3}, a árvore $\hat T^\star$ está colorida em ver
 \end{tabular}
 \captionof{table}{Tabela de pesos}
 \end{minipage}
-\hspace{1.5cm}
+\hspace{1.3cm}
 \begin{minipage}[b]{0.5\textwidth}
     \centering
 \input{fig/MSF-basico-3}
@@ -661,7 +661,7 @@ Por fim, a óctupla é desalocada da memória.
 \caption{Antes de remover $e$.}
 \label{fig:MSF-ordem-ciclica-nao-ponte}
 \end{subfigure}
-\hfill
+\hspace{2cm}
 \begin{subfigure}{.4\textwidth}
 \input{fig/MSF-ordem-ciclica-nao-ponte-depois}
 \caption{Depois de remover~$e$.}
@@ -679,18 +679,19 @@ A ordem da face resultante é $\langle a_{F_2}, d_{F_1}, c_{F_1}\rangle$, como i
 Note que esse vértice de ADP representa a face~$F_6$ da Figura~\ref{fig:MSF-remove-nao-ponte}. 
 
 \begin{figure}[h!]
+\hspace{-1cm}
 \begin{subfigure}{.2\textwidth}
 \input{fig/MSF-remove-aresta-ex-1}
 \caption{Após linha~\ref{Algo:MSFdelEdge:linha:split}.}
 \label{fig:MSF-remove-aresta-ex-1}
 \end{subfigure}
-\hfill
+\hspace{2cm}
 \begin{subfigure}{.2\textwidth}
 \input{fig/MSF-remove-aresta-ex-2}
 \caption{Após linha~\ref{Algo:MSFdelEdge:linha:merge}.}
 \label{fig:MSF-remove-aresta-ex-2}
 \end{subfigure}
-\hfill
+\hspace{2cm}
 \begin{subfigure}{.2\textwidth}
 \input{fig/MSF-remove-aresta-ex-3}
 \caption{Após linha~\ref{Algo:MSFdelEdge:linha:desaloca}.}
@@ -757,17 +758,14 @@ A Figura~\ref{fig:antes-depois-adiciona} ilustra os grafos obtidos por essas ins
 
 
 \begin{figure}[htb]
+\hspace{-2cm}
 \begin{subfigure}{0.45\textwidth}
-\scalebox{1}{
 \input{fig/MSF-adiciona-ponte.tex}
-}
 \caption{Após a adição da ponte~$h$.}
 \label{fig:MSF-adiciona-ponte}
 \end{subfigure}
 \begin{subfigure}{0.45\textwidth}
-\scalebox{1}{
 \input{fig/MSF-adiciona-nao-ponte}
-}
 \caption{Após a adição de~$h$.}
 \label{fig:MSF-adiciona-nao-ponte}
 \end{subfigure}
